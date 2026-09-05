@@ -1,6 +1,6 @@
-# MetaCoach
+# Habitrack
 
-Aplicación web y móvil de seguimiento de metas y hábitos. Los usuarios registran objetivos y su progreso, mientras un "coach" supervisa el avance de varios usuarios y accede a reportes de cumplimiento y evolución.
+Aplicación web y móvil de seguimiento de metas y hábitos. Los usuarios registran objetivos y su progreso.
 
 ## Contexto académico
 Proyecto final del curso Ingeniería de Software 2 — Universidad de los Llanos.
