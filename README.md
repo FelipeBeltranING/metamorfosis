@@ -1,6 +1,6 @@
-# Habitrack
+# Metamorfosis
 
-Aplicación web y móvil de seguimiento de metas y hábitos. Los usuarios registran objetivos y su progreso.
+Aplicación web y móvil de seguimiento de metas. Los usuarios registran objetivos y su progreso.
 
 ## Contexto académico
 Proyecto final del curso Ingeniería de Software 2 — Universidad de los Llanos.
