@@ -1,4 +1,16 @@
+# Java / Maven
+target/
+*.class
+*.log
+
+# Claves y configuración local (NUNCA subir)
+application-local.properties
 .env
-node_modules/
 .env.*
-!.env.example
+
+# Editores
+.idea/
+*.iml
+
+# Node (por si luego hay frontend)
+node_modules/
