@@ -1,0 +1,281 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="HU1 - Crear meta" id="hu1-class-diagram-v3">
+    <mxGraphModel dx="2934" dy="1624" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2600" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-1" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=16;fontStyle=1;strokeColor=none;fillColor=none;" value="Diagrama de secuencia — HU1: Crear meta" vertex="1">
+          <mxGeometry height="30" width="700" x="1212.2352941176473" y="456.11764705882365" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-2" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;recursiveResize=0;container=0;collapsible=0;width=60;height=24;fillColor=none;fontSize=12;fontStyle=1;" value="alt" vertex="1">
+          <mxGeometry height="1180" width="2010" x="1202.2352941176473" y="836.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-3" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;recursiveResize=0;container=0;collapsible=0;width=60;height=24;fillColor=none;fontSize=12;fontStyle=1;" value="alt" vertex="1">
+          <mxGeometry height="734" width="1970" x="1222.2352941176473" y="1258.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-4" edge="1" parent="1" style="html=1;dashed=1;endArrow=none;startArrow=none;strokeColor=#000000;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1202.2352941176473" y="1026.1176470588236" as="sourcePoint" />
+            <mxPoint x="3212.2352941176473" y="1026.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-5" edge="1" parent="1" style="html=1;dashed=1;endArrow=none;startArrow=none;strokeColor=#000000;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1222.2352941176473" y="1408.1176470588236" as="sourcePoint" />
+            <mxPoint x="3192.2352941176473" y="1408.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-6" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;strokeColor=none;fillColor=none;spacingLeft=2;whiteSpace=nowrap;" value="[datos inválidos]" vertex="1">
+          <mxGeometry height="16" width="97" x="1272.2352941176473" y="839.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-7" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;strokeColor=none;fillColor=none;spacingLeft=2;whiteSpace=nowrap;" value="[usuario no existe]" vertex="1">
+          <mxGeometry height="16" width="109" x="1292.2352941176473" y="1261.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-8" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;strokeColor=none;fillColor=none;spacingLeft=2;whiteSpace=nowrap;" value="[datos válidos]" vertex="1">
+          <mxGeometry height="16" width="87" x="1210.2352941176473" y="1029.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-9" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;strokeColor=none;fillColor=none;spacingLeft=2;whiteSpace=nowrap;" value="[usuario existe]" vertex="1">
+          <mxGeometry height="16" width="92" x="1230.2352941176473" y="1411.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-10" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" value="«actor»&lt;br&gt;Usuario" vertex="1">
+          <mxGeometry height="1520" width="150" x="1207.2352941176473" y="526.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-11" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" value="«boundary»&lt;br&gt;Formulario" vertex="1">
+          <mxGeometry height="1520" width="150" x="1397.2352941176473" y="526.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-12" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«RestController»&lt;br&gt;MetaController" vertex="1">
+          <mxGeometry height="1520" width="150" x="1597.2352941176473" y="526.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-13" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Service»&lt;br&gt;MetaService" vertex="1">
+          <mxGeometry height="1520" width="150" x="1847.2352941176473" y="526.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-14" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«interface»&lt;br&gt;UsuarioRepository" vertex="1">
+          <mxGeometry height="1520" width="150" x="2047.2352941176473" y="526.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-15" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«interface»&lt;br&gt;MetaRepository" vertex="1">
+          <mxGeometry height="1520" width="150" x="2217.2352941176473" y="526.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-16" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" value="«database»&lt;br&gt;PostgreSQL (Supabase)" vertex="1">
+          <mxGeometry height="1520" width="150" x="2417.2352941176473" y="526.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-17" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;u&gt;meta : Meta&lt;/u&gt;" vertex="1">
+          <mxGeometry height="635" width="150" x="2587.2352941176473" y="1411.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-18" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;u&gt;participacion : Participacion&lt;/u&gt;" vertex="1">
+          <mxGeometry height="535" width="150" x="2847.2352941176473" y="1511.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-19" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;u&gt;registro : Registro&lt;/u&gt;" vertex="1">
+          <mxGeometry height="485" width="150" x="3047.2352941176473" y="1561.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-20" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="1374" width="10" x="1467.2352941176473" y="598.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-21" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="1238" width="10" x="1667.2352941176473" y="690.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-22" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="1140" width="10" x="1917.2352941176473" y="744.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-23" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="152" width="10" x="2117.2352941176473" y="1078.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-24" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="60" width="10" x="2487.2352941176473" y="1126.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-25" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="64" width="10" x="2487.2352941176473" y="1732.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-26" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="156" width="10" x="2287.2352941176473" y="1684.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-27" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="156" width="10" x="2657.2352941176473" y="1494.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-28" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="1: completarFormulario()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1282.2352941176473" y="606.1176470588236" as="sourcePoint" />
+            <mxPoint x="1467.2352941176473" y="606.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-29" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="2: presionarCrearMeta() [N1]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1282.2352941176473" y="650.1176470588236" as="sourcePoint" />
+            <mxPoint x="1467.2352941176473" y="650.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-30" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="3: crearMeta(solicitud,&lt;br&gt;codigoUsuario) [N2]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1477.2352941176473" y="698.1176470588236" as="sourcePoint" />
+            <mxPoint x="1667.2352941176473" y="698.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-31" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="4: crearMeta(solicitud,&lt;br&gt;codigoUsuario)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1677.2352941176473" y="752.1176470588236" as="sourcePoint" />
+            <mxPoint x="1917.2352941176473" y="752.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-32" edge="1" parent="1" style="html=1;align=left;spacingLeft=2;endArrow=block;endFill=1;endSize=8;fontSize=11;labelBackgroundColor=#ffffff;" value="5: validar(solicitud)">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1967.2352941176473" y="798.1176470588236" />
+              <mxPoint x="1967.2352941176473" y="828.1176470588236" />
+            </Array>
+            <mxPoint x="1927.2352941176473" y="798.1176470588236" as="sourcePoint" />
+            <mxPoint x="1927.2352941176473" y="828.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-33" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="6: ValidacionException">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1917.2352941176473" y="906.1176470588236" as="sourcePoint" />
+            <mxPoint x="1677.2352941176473" y="906.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-34" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="7: 400 Bad Request [N5]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1667.2352941176473" y="950.1176470588236" as="sourcePoint" />
+            <mxPoint x="1477.2352941176473" y="950.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-35" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="8: mostrarErrores()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1467.2352941176473" y="994.1176470588236" as="sourcePoint" />
+            <mxPoint x="1282.2352941176473" y="994.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-36" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="9: findById(&lt;br&gt;codigoUsuario)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1927.2352941176473" y="1086.1176470588236" as="sourcePoint" />
+            <mxPoint x="2117.2352941176473" y="1086.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-37" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="10: SELECT usuario WHERE codigo_usuario = ?">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2127.2352941176473" y="1134.1176470588236" as="sourcePoint" />
+            <mxPoint x="2487.2352941176473" y="1134.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-38" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="11: fila (o vacío)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2487.2352941176473" y="1178.1176470588236" as="sourcePoint" />
+            <mxPoint x="2127.2352941176473" y="1178.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-39" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="12: Optional&lt;Usuario&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2117.2352941176473" y="1222.1176470588236" as="sourcePoint" />
+            <mxPoint x="1927.2352941176473" y="1222.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-40" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="13: UsuarioNoEncontradoException">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1917.2352941176473" y="1302.1176470588236" as="sourcePoint" />
+            <mxPoint x="1677.2352941176473" y="1302.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-41" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="14: 404 Not Found [N5]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1667.2352941176473" y="1346.1176470588236" as="sourcePoint" />
+            <mxPoint x="1477.2352941176473" y="1346.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-42" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="15: mostrarError(mensaje)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1467.2352941176473" y="1390.1176470588236" as="sourcePoint" />
+            <mxPoint x="1282.2352941176473" y="1390.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-43" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="16: «create» Meta(nombre, plazo, tipo)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1927.2352941176473" y="1436.1176470588236" as="sourcePoint" />
+            <mxPoint x="2587.2352941176473" y="1436.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-44" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="17: crear(creador) [N4]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1927.2352941176473" y="1502.1176470588236" as="sourcePoint" />
+            <mxPoint x="2657.2352941176473" y="1502.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-45" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="18: «create»&lt;br&gt;Participacion(ACEPTADA)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2667.2352941176473" y="1536.1176470588236" as="sourcePoint" />
+            <mxPoint x="2847.2352941176473" y="1536.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-46" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="19: «create» Registro(cumplimiento = false)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2667.2352941176473" y="1586.1176470588236" as="sourcePoint" />
+            <mxPoint x="3047.2352941176473" y="1586.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-47" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="20: (void)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2657.2352941176473" y="1642.1176470588236" as="sourcePoint" />
+            <mxPoint x="1927.2352941176473" y="1642.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-48" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="21: save(meta) [N3]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1927.2352941176473" y="1692.1176470588236" as="sourcePoint" />
+            <mxPoint x="2287.2352941176473" y="1692.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-49" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="22: INSERT INTO meta,&lt;br&gt;participacion y registro">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2297.2352941176473" y="1740.1176470588236" as="sourcePoint" />
+            <mxPoint x="2487.2352941176473" y="1740.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-50" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="23: filas insertadas">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2487.2352941176473" y="1788.1176470588236" as="sourcePoint" />
+            <mxPoint x="2297.2352941176473" y="1788.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-51" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="24: meta">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2287.2352941176473" y="1832.1176470588236" as="sourcePoint" />
+            <mxPoint x="1927.2352941176473" y="1832.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-52" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="25: meta">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1917.2352941176473" y="1876.1176470588236" as="sourcePoint" />
+            <mxPoint x="1677.2352941176473" y="1876.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-53" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="26: 201 Created (meta) [N5]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1667.2352941176473" y="1920.1176470588236" as="sourcePoint" />
+            <mxPoint x="1477.2352941176473" y="1920.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-54" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="27: mostrarMetaCreada()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1467.2352941176473" y="1964.1176470588236" as="sourcePoint" />
+            <mxPoint x="1282.2352941176473" y="1964.1176470588236" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-55" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=13;fontStyle=1;strokeColor=none;fillColor=none;" value="Notas de implementación" vertex="1">
+          <mxGeometry height="24" width="360" x="3282.2352941176473" y="506.11764705882365" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-56" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff9b1;strokeColor=#d6b656;size=12;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;N1&lt;/b&gt;&lt;br&gt;Validación en el cliente: el formulario revisa campos vacíos antes de enviar (estados D2/M2). El servidor vuelve a validar siempre." vertex="1">
+          <mxGeometry height="76" width="360" x="3282.2352941176473" y="536.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-57" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff9b1;strokeColor=#d6b656;size=12;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;N2&lt;/b&gt;&lt;br&gt;Endpoint: POST /api/metas con cuerpo JSON {nombre, plazo, tipo}. codigoUsuario sale del token JWT (T8); mientras no exista el login se envía como parámetro." vertex="1">
+          <mxGeometry height="76" width="360" x="3282.2352941176473" y="626.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-58" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff9b1;strokeColor=#d6b656;size=12;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;N3&lt;/b&gt;&lt;br&gt;crearMeta es @Transactional: la meta, la participación y el registro se guardan juntos. Si algo falla: rollback y respuesta 500 (prueba PT-08)." vertex="1">
+          <mxGeometry height="76" width="360" x="3282.2352941176473" y="716.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-59" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff9b1;strokeColor=#d6b656;size=12;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;N4&lt;/b&gt;&lt;br&gt;Al crear: estado = ACTIVA, oculta = false, fechaCreacion = hoy; participación del creador = ACEPTADA; primer registro con cumplimiento = false." vertex="1">
+          <mxGeometry height="76" width="360" x="3282.2352941176473" y="806.1176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="1x_JnLSAQ8EL8_6-nKH3-60" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff9b1;strokeColor=#d6b656;size=12;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;N5&lt;/b&gt;&lt;br&gt;Códigos HTTP: 201 meta creada · 400 datos inválidos · 404 usuario no existe · 500 error del servidor." vertex="1">
+          <mxGeometry height="62" width="360" x="3282.2352941176473" y="896.1176470588236" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
