@@ -30,7 +30,7 @@ public class SeguridadConfig {
     }
 
     @Bean
-    CorsConfigurationSource cors(@Value("${app.cors.allowed-origins}") List<String> origenes) {
+    CorsConfigurationSource corsConfigurationSource(@Value("${app.cors.allowed-origins}") List<String> origenes) {
         CorsConfiguration c = new CorsConfiguration();
         c.setAllowedOrigins(origenes);
         c.setAllowedMethods(List.of(HttpMethod.GET.name(), HttpMethod.POST.name(),
