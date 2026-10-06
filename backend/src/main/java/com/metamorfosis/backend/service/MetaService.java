@@ -40,6 +40,17 @@ public class MetaService {
         return MetaResponse.desde(metaRepository.save(meta));
     }
 
+    /** Lista las metas activas del usuario (HU3). Devuelve lista vacía si no tiene ninguna. */
+    @Transactional(readOnly = true)
+    public List<MetaResponse> listarMetasActivas(Integer codigoUsuario) {
+        if (!usuarioRepository.existsById(codigoUsuario)) {
+            throw new UsuarioNoEncontradoException(codigoUsuario);
+        }
+        return metaRepository.findActivasByParticipante(codigoUsuario).stream()
+                .map(MetaResponse::desde)
+                .toList();
+    }
+
     private void validar(CrearMetaRequest s) {
         List<String> errores = new ArrayList<>();
         if (s == null || s.nombre() == null || s.nombre().isBlank()) {
