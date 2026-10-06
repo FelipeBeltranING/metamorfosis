@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/metas")
@@ -27,5 +28,11 @@ public class MetaController {
         URI ubicacion = ServletUriComponentsBuilder.fromCurrentRequest()
                 .replaceQuery(null).path("/{id}").buildAndExpand(creada.codigoMeta()).toUri();
         return ResponseEntity.created(ubicacion).body(creada);
+    }
+
+    /** HU3: metas activas del usuario. TEMPORAL: codigoUsuario por parámetro (luego JWT). */
+    @GetMapping
+    public ResponseEntity<List<MetaResponse>> listarMetasActivas(@RequestParam Integer codigoUsuario) {
+        return ResponseEntity.ok(metaService.listarMetasActivas(codigoUsuario));
     }
 }
