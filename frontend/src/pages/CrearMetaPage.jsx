@@ -5,6 +5,7 @@ import BotonOpcion from '../components/BotonOpcion';
 import MensajeError from '../components/MensajeError';
 import { crearMeta } from '../services/metaService';
 import { NOMBRE_MAX, PLAZOS, TIPOS } from '../constants/opcionesMeta';
+import { useNavigate } from 'react-router-dom';
 
 const FORMULARIO_VACIO = { nombre: '', plazo: '', tipo: '' };
 
@@ -19,6 +20,7 @@ function validar({ nombre, plazo, tipo }) {
 }
 
 export default function CrearMetaPage() {
+  const navigate = useNavigate();
   const [formulario, setFormulario] = useState(FORMULARIO_VACIO);
   const [errores, setErrores] = useState({});
   const [errorServidor, setErrorServidor] = useState('');
@@ -58,8 +60,7 @@ export default function CrearMetaPage() {
         plazo: formulario.plazo,
         tipo: formulario.tipo,
       });
-      limpiar();
-      setMetaCreada(true);
+      navigate('/metas', { state: { metaCreada: true } });
     } catch (error) {
       const detalle = error.errores?.length ? `: ${error.errores.join(', ')}` : '';
       setErrorServidor(`${error.message}${detalle}`);
@@ -163,7 +164,7 @@ export default function CrearMetaPage() {
           <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-end">
             <button
               type="button"
-              onClick={limpiar}
+              onClick={() => navigate('/metas')}
               className="h-12 rounded-xl px-6 text-base font-bold text-gray-500 hover:bg-slate-100"
             >
               Cancelar

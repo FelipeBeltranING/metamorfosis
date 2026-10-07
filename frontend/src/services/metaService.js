@@ -24,3 +24,17 @@ export async function crearMeta(solicitud) {
   }
   return datos;
 }
+
+/** Lista las metas activas del usuario. Lanza Error con mensaje legible si falla. */
+export async function listarMetas() {
+  let respuesta;
+  try {
+    respuesta = await fetch(`${API_URL}/api/metas?codigoUsuario=${CODIGO_USUARIO_TEMPORAL}`);
+  } catch {
+    throw new Error('No se pudo conectar con el servidor');
+  }
+
+  const datos = await respuesta.json().catch(() => null);
+  if (!respuesta.ok) throw new Error(datos?.mensaje ?? 'Error inesperado');
+  return datos;
+}
