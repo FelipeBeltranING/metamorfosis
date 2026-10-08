@@ -1,4 +1,4 @@
-package com.metamorfosis.backend.controller;
+package com.metamorfosis.backend.dto;
 
 public record RegistroRequest(
     String nombre,
