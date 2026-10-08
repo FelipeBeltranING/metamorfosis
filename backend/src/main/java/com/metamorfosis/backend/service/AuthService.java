@@ -4,9 +4,7 @@ import com.metamorfosis.backend.dto.RegistroRequest;
 import com.metamorfosis.backend.dto.UsuarioResponse;
 import com.metamorfosis.backend.exception.EmailYaRegistradoException;
 import com.metamorfosis.backend.exception.ValidacionException;
-import com.metamorfosis.backend.model.Mascota;
 import com.metamorfosis.backend.model.Usuario;
-import com.metamorfosis.backend.repository.MascotaRepository;
 import com.metamorfosis.backend.repository.UsuarioRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,14 +23,11 @@ public class AuthService {
             Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 
     private final UsuarioRepository usuarioRepository;
-    private final MascotaRepository mascotaRepository;
     private final PasswordEncoder passwordEncoder;
 
     public AuthService(UsuarioRepository usuarioRepository,
-                       MascotaRepository mascotaRepository,
                        PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
-        this.mascotaRepository = mascotaRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -52,15 +47,11 @@ public class AuthService {
                 email,
                 hash);
 
-        Mascota mascotaPorDefecto = mascotaRepository.findByEsPorDefectoTrue()
-                .orElseThrow(() -> new IllegalStateException("No hay una mascota por defecto configurada"));
-        usuario.asignarMascotaActiva(mascotaPorDefecto);
 
         try {
             Usuario guardado = usuarioRepository.save(usuario);
             return UsuarioResponse.desde(guardado);
         } catch (DataIntegrityViolationException e) {
-            // Otro registro con el mismo email se coló entre existsByEmail y save
             throw new EmailYaRegistradoException("El email ya está registrado");
         }
     }

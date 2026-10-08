@@ -1,7 +1,8 @@
 package com.metamorfosis.backend.exception;
 
-public class EmailyaRegistradoException extends RuntimeException {
-    public EmailyaRegistradoException(String email) {
-        super("El email " + email + " ya está registrado");
+public class EmailYaRegistradoException extends RuntimeException {
+
+    public EmailYaRegistradoException(String mensaje) {
+        super(mensaje);
     }
 }
