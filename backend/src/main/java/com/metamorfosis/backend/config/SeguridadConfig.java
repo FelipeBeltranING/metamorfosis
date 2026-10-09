@@ -7,6 +7,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -18,12 +20,17 @@ import java.util.List;
 public class SeguridadConfig {
 
     @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     SecurityFilterChain filtros(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)            // API stateless sin cookies de sesión
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .cors(c -> {})
             .authorizeHttpRequests(a -> a
-                // TODO (Sprint de login): cambiar a .authenticated() y validar el JWT
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/**").permitAll()
                 .anyRequest().denyAll());
         return http.build();

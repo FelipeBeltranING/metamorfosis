@@ -13,7 +13,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.util.List;
 
-/** Traduce excepciones a códigos HTTP (400, 404, 500) sin filtrar detalles internos. */
 @RestControllerAdvice
 public class ManejadorExcepciones {
 
@@ -38,11 +37,15 @@ public class ManejadorExcepciones {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> errorInterno(Exception e) {
-        log.error("Error inesperado", e); // el detalle queda solo en el log
+        log.error("Error inesperado", e);
         return responder(HttpStatus.INTERNAL_SERVER_ERROR, "Error interno del servidor", List.of());
     }
 
     private ResponseEntity<ErrorResponse> responder(HttpStatus estado, String mensaje, List<String> errores) {
         return ResponseEntity.status(estado).body(new ErrorResponse(estado.value(), mensaje, errores));
+    }
+    @ExceptionHandler(EmailYaRegistradoException.class)
+    public ResponseEntity<ErrorResponse> emailYaRegistrado(EmailYaRegistradoException e) {
+        return responder(HttpStatus.CONFLICT, e.getMessage(), List.of());
     }
 }
