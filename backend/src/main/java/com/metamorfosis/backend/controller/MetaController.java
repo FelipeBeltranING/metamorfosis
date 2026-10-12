@@ -35,4 +35,12 @@ public class MetaController {
     public ResponseEntity<List<MetaResponse>> listarMetasActivas(@RequestParam Integer codigoUsuario) {
         return ResponseEntity.ok(metaService.listarMetasActivas(codigoUsuario));
     }
+
+    /** HU2: edita una meta. TEMPORAL: codigoUsuario por parámetro (luego JWT). */
+    @PutMapping("/{codigoMeta}")
+    public ResponseEntity<MetaResponse> editarMeta(@PathVariable Integer codigoMeta,
+                                                   @RequestBody CrearMetaRequest solicitud,
+                                                   @RequestParam Integer codigoUsuario) {
+        return ResponseEntity.ok(metaService.editarMeta(codigoMeta, solicitud, codigoUsuario));
+    }
 }

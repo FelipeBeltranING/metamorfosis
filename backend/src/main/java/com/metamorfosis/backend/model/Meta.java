@@ -63,6 +63,13 @@ public class Meta {
         this.registros.add(new Registro(this, creador));
     }
 
+        /** HU2: actualiza los datos editables. No cambia estado, visibilidad ni creador. */
+    public void editar(String nombre, Plazo plazo, TipoMeta tipo) {
+        this.nombre = nombre;
+        this.plazo = plazo;
+        this.tipo = tipo;
+    }
+    
     public Integer getCodigoMeta() { return codigoMeta; }
     public Usuario getCreador() { return creador; }
     public String getNombre() { return nombre; }

@@ -10,6 +10,9 @@ import com.metamorfosis.backend.repository.MetaRepository;
 import com.metamorfosis.backend.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.metamorfosis.backend.exception.MetaNoEncontradaException;
+import com.metamorfosis.backend.exception.PermisoDenegadoException;
+import com.metamorfosis.backend.model.EstadoMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,25 @@ public class MetaService {
         return metaRepository.findActivasByParticipante(codigoUsuario).stream()
                 .map(MetaResponse::desde)
                 .toList();
+    }
+
+    /** HU2: edita nombre, plazo y tipo. Solo el creador edita y una meta CUMPLIDA no se edita. */
+    @Transactional
+    public MetaResponse editarMeta(Integer codigoMeta, CrearMetaRequest solicitud, Integer codigoUsuario) {
+        validar(solicitud);
+
+        Meta meta = metaRepository.findById(codigoMeta)
+                .orElseThrow(() -> new MetaNoEncontradaException(codigoMeta));
+
+        if (!meta.getCreador().getCodigoUsuario().equals(codigoUsuario)) {
+            throw new PermisoDenegadoException("Solo el creador puede editar la meta");
+        }
+        if (meta.getEstado() == EstadoMeta.CUMPLIDA) {
+            throw new ValidacionException(List.of("Una meta cumplida no se puede editar"));
+        }
+
+        meta.editar(solicitud.nombre().trim(), solicitud.plazo(), solicitud.tipo());
+        return MetaResponse.desde(metaRepository.save(meta));
     }
 
     private void validar(CrearMetaRequest s) {
