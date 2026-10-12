@@ -48,4 +48,14 @@ public class ManejadorExcepciones {
     public ResponseEntity<ErrorResponse> emailYaRegistrado(EmailYaRegistradoException e) {
         return responder(HttpStatus.CONFLICT, e.getMessage(), List.of());
     }
+
+        @ExceptionHandler(MetaNoEncontradaException.class)
+    public ResponseEntity<ErrorResponse> metaNoEncontrada(MetaNoEncontradaException e) {
+        return responder(HttpStatus.NOT_FOUND, e.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(PermisoDenegadoException.class)
+    public ResponseEntity<ErrorResponse> permisoDenegado(PermisoDenegadoException e) {
+        return responder(HttpStatus.FORBIDDEN, e.getMessage(), List.of());
+    }
 }
