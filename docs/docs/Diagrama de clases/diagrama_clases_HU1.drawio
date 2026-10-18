@@ -1,0 +1,554 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="HU1 - Crear meta" id="hu1-class">
+    <mxGraphModel dx="3471" dy="1648" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3100" pageHeight="1500" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="MetaController" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«RestController»&lt;br&gt;&lt;b&gt;MetaController&lt;/b&gt;" vertex="1">
+          <mxGeometry height="82" width="680" x="40" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaController_a0" parent="MetaController" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="" vertex="1">
+          <mxGeometry height="10" width="680" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaController_div" parent="MetaController" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="8" width="680" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaController_m0" parent="MetaController" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ crearMeta(solicitud: CrearMetaRequest, codigoUsuario: Integer): ResponseEntity&lt;MetaResponse&gt;" vertex="1">
+          <mxGeometry height="20" width="680" y="62" as="geometry" />
+        </mxCell>
+        <mxCell id="CrearMetaRequest" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«DTO»&lt;br&gt;&lt;b&gt;CrearMetaRequest&lt;/b&gt;" vertex="1">
+          <mxGeometry height="172" width="400" x="800" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="CrearMetaRequest_a0" parent="CrearMetaRequest" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- nombre: String" vertex="1">
+          <mxGeometry height="20" width="400" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="CrearMetaRequest_a1" parent="CrearMetaRequest" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- plazo: Plazo" vertex="1">
+          <mxGeometry height="20" width="400" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="CrearMetaRequest_a2" parent="CrearMetaRequest" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- tipo: TipoMeta" vertex="1">
+          <mxGeometry height="20" width="400" y="84" as="geometry" />
+        </mxCell>
+        <mxCell id="CrearMetaRequest_div" parent="CrearMetaRequest" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="8" width="400" y="104" as="geometry" />
+        </mxCell>
+        <mxCell id="CrearMetaRequest_m0" parent="CrearMetaRequest" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ nombre(): String" vertex="1">
+          <mxGeometry height="20" width="400" y="112" as="geometry" />
+        </mxCell>
+        <mxCell id="CrearMetaRequest_m1" parent="CrearMetaRequest" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ plazo(): Plazo" vertex="1">
+          <mxGeometry height="20" width="400" y="132" as="geometry" />
+        </mxCell>
+        <mxCell id="CrearMetaRequest_m2" parent="CrearMetaRequest" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ tipo(): TipoMeta" vertex="1">
+          <mxGeometry height="20" width="400" y="152" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«DTO»&lt;br&gt;&lt;b&gt;MetaResponse&lt;/b&gt;" vertex="1">
+          <mxGeometry height="352" width="400" x="800" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_a0" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- codigoMeta: Integer" vertex="1">
+          <mxGeometry height="20" width="400" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_a1" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- nombre: String" vertex="1">
+          <mxGeometry height="20" width="400" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_a2" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- plazo: Plazo" vertex="1">
+          <mxGeometry height="20" width="400" y="84" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_a3" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- tipo: TipoMeta" vertex="1">
+          <mxGeometry height="20" width="400" y="104" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_a4" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- estado: EstadoMeta" vertex="1">
+          <mxGeometry height="20" width="400" y="124" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_a5" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- oculta: boolean" vertex="1">
+          <mxGeometry height="20" width="400" y="144" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_a6" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- fechaCreacion: LocalDate" vertex="1">
+          <mxGeometry height="20" width="400" y="164" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_div" parent="MetaResponse" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="8" width="400" y="184" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_m0" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ codigoMeta(): Integer" vertex="1">
+          <mxGeometry height="20" width="400" y="192" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_m1" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ nombre(): String" vertex="1">
+          <mxGeometry height="20" width="400" y="212" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_m2" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ plazo(): Plazo" vertex="1">
+          <mxGeometry height="20" width="400" y="232" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_m3" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ tipo(): TipoMeta" vertex="1">
+          <mxGeometry height="20" width="400" y="252" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_m4" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ estado(): EstadoMeta" vertex="1">
+          <mxGeometry height="20" width="400" y="272" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_m5" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ oculta(): boolean" vertex="1">
+          <mxGeometry height="20" width="400" y="292" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_m6" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ fechaCreacion(): LocalDate" vertex="1">
+          <mxGeometry height="20" width="400" y="312" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaResponse_m7" parent="MetaResponse" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;fontStyle=4;" value="+ desde(m: Meta): MetaResponse" vertex="1">
+          <mxGeometry height="20" width="400" y="332" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaService" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Service»&lt;br&gt;&lt;b&gt;MetaService&lt;/b&gt;" vertex="1">
+          <mxGeometry height="112" width="620" x="1300" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaService_a0" parent="MetaService" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;fontStyle=4;" value="- NOMBRE_MAX: int = 200 {readOnly}" vertex="1">
+          <mxGeometry height="20" width="620" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaService_div" parent="MetaService" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="8" width="620" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaService_m0" parent="MetaService" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ crearMeta(solicitud: CrearMetaRequest, codigoUsuario: Integer): MetaResponse" vertex="1">
+          <mxGeometry height="20" width="620" y="72" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaService_m1" parent="MetaService" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- validar(s: CrearMetaRequest): void" vertex="1">
+          <mxGeometry height="20" width="620" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaRepository" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Repository»&lt;br&gt;&lt;b&gt;MetaRepository&lt;/b&gt;" vertex="1">
+          <mxGeometry height="72" width="330" x="2160" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaRepository_a0" parent="MetaRepository" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="" vertex="1">
+          <mxGeometry height="10" width="330" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaRepository_div" parent="MetaRepository" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="8" width="330" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="MetaRepository_m0" parent="MetaRepository" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="" vertex="1">
+          <mxGeometry height="10" width="330" y="62" as="geometry" />
+        </mxCell>
+        <mxCell id="UsuarioRepository" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Repository»&lt;br&gt;&lt;b&gt;UsuarioRepository&lt;/b&gt;" vertex="1">
+          <mxGeometry height="72" width="330" x="2160" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="UsuarioRepository_a0" parent="UsuarioRepository" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="" vertex="1">
+          <mxGeometry height="10" width="330" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="UsuarioRepository_div" parent="UsuarioRepository" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="8" width="330" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="UsuarioRepository_m0" parent="UsuarioRepository" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="" vertex="1">
+          <mxGeometry height="10" width="330" y="62" as="geometry" />
+        </mxCell>
+        <mxCell id="JpaRepository" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Interface»&lt;br&gt;&lt;b&gt;JpaRepository&amp;lt;T, ID&amp;gt;&lt;/b&gt;" vertex="1">
+          <mxGeometry height="102" width="380" x="2610" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="JpaRepository_a0" parent="JpaRepository" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="" vertex="1">
+          <mxGeometry height="10" width="380" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="JpaRepository_div" parent="JpaRepository" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="8" width="380" y="54" as="geometry" />
+        </mxCell>
+        <mxCell id="JpaRepository_m0" parent="JpaRepository" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ save(entity: S): S" vertex="1">
+          <mxGeometry height="20" width="380" y="62" as="geometry" />
+        </mxCell>
+        <mxCell id="JpaRepository_m1" parent="JpaRepository" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ findById(id: ID): Optional&lt;T&gt;" vertex="1">
+          <mxGeometry height="20" width="380" y="82" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Entity»&lt;br&gt;&lt;b&gt;Meta&lt;/b&gt;" vertex="1">
+          <mxGeometry height="372" width="440" x="1440" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_a0" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- codigoMeta: Integer" vertex="1">
+          <mxGeometry height="20" width="440" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_a1" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- nombre: String" vertex="1">
+          <mxGeometry height="20" width="440" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_a2" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- plazo: Plazo" vertex="1">
+          <mxGeometry height="20" width="440" y="84" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_a3" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- tipo: TipoMeta" vertex="1">
+          <mxGeometry height="20" width="440" y="104" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_a4" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- estado: EstadoMeta = EstadoMeta.ACTIVA" vertex="1">
+          <mxGeometry height="20" width="440" y="124" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_a5" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- oculta: boolean = false" vertex="1">
+          <mxGeometry height="20" width="440" y="144" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_a6" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- fechaCreacion: LocalDate" vertex="1">
+          <mxGeometry height="20" width="440" y="164" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_div" parent="Meta" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="8" width="440" y="184" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_m0" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ Meta(nombre: String, plazo: Plazo, tipo: TipoMeta)" vertex="1">
+          <mxGeometry height="20" width="440" y="192" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_m1" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ crear(creador: Usuario): void" vertex="1">
+          <mxGeometry height="20" width="440" y="212" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_m2" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ getCodigoMeta(): Integer" vertex="1">
+          <mxGeometry height="20" width="440" y="232" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_m3" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ getNombre(): String" vertex="1">
+          <mxGeometry height="20" width="440" y="252" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_m4" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ getPlazo(): Plazo" vertex="1">
+          <mxGeometry height="20" width="440" y="272" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_m5" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ getTipo(): TipoMeta" vertex="1">
+          <mxGeometry height="20" width="440" y="292" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_m6" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ getEstado(): EstadoMeta" vertex="1">
+          <mxGeometry height="20" width="440" y="312" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_m7" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ isOculta(): boolean" vertex="1">
+          <mxGeometry height="20" width="440" y="332" as="geometry" />
+        </mxCell>
+        <mxCell id="Meta_m8" parent="Meta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ getFechaCreacion(): LocalDate" vertex="1">
+          <mxGeometry height="20" width="440" y="352" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Entity»&lt;br&gt;&lt;b&gt;Usuario&lt;/b&gt;" vertex="1">
+          <mxGeometry height="242" width="340" x="1540" y="1040" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario_a0" parent="Usuario" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- codigoUsuario: Integer" vertex="1">
+          <mxGeometry height="20" width="340" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario_a1" parent="Usuario" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- nombre: String" vertex="1">
+          <mxGeometry height="20" width="340" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario_a2" parent="Usuario" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- apellido: String" vertex="1">
+          <mxGeometry height="20" width="340" y="84" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario_a3" parent="Usuario" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- email: String" vertex="1">
+          <mxGeometry height="20" width="340" y="104" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario_a4" parent="Usuario" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- passwordHash: String" vertex="1">
+          <mxGeometry height="20" width="340" y="124" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario_a5" parent="Usuario" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- fotoPerfil: String" vertex="1">
+          <mxGeometry height="20" width="340" y="144" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario_a6" parent="Usuario" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- perfilPrivado: boolean = false" vertex="1">
+          <mxGeometry height="20" width="340" y="164" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario_a7" parent="Usuario" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- puntos: int = 0" vertex="1">
+          <mxGeometry height="20" width="340" y="184" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario_a8" parent="Usuario" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- fechaRegistro: LocalDate = LocalDate.now()" vertex="1">
+          <mxGeometry height="20" width="340" y="204" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario_div" parent="Usuario" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="8" width="340" y="224" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario_m0" parent="Usuario" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="" vertex="1">
+          <mxGeometry height="10" width="340" y="232" as="geometry" />
+        </mxCell>
+        <mxCell id="Participacion" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Entity»&lt;br&gt;&lt;b&gt;Participacion&lt;/b&gt;" vertex="1">
+          <mxGeometry height="112" width="580" x="800" y="1040" as="geometry" />
+        </mxCell>
+        <mxCell id="Participacion_a0" parent="Participacion" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- estadoInvitacion: EstadoInvitacion" vertex="1">
+          <mxGeometry height="20" width="580" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="Participacion_a1" parent="Participacion" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- fechaCumplida: LocalDate" vertex="1">
+          <mxGeometry height="20" width="580" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="Participacion_div" parent="Participacion" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="8" width="580" y="84" as="geometry" />
+        </mxCell>
+        <mxCell id="Participacion_m0" parent="Participacion" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ Participacion(usuario: Usuario, meta: Meta, estadoInvitacion: EstadoInvitacion)" vertex="1">
+          <mxGeometry height="20" width="580" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="Registro" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Entity»&lt;br&gt;&lt;b&gt;Registro&lt;/b&gt;" vertex="1">
+          <mxGeometry height="132" width="360" x="2060" y="1040" as="geometry" />
+        </mxCell>
+        <mxCell id="Registro_a0" parent="Registro" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- codigoRegistro: Integer" vertex="1">
+          <mxGeometry height="20" width="360" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="Registro_a1" parent="Registro" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- fechaRegistro: LocalDate = LocalDate.now()" vertex="1">
+          <mxGeometry height="20" width="360" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="Registro_a2" parent="Registro" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- cumplimiento: boolean = false" vertex="1">
+          <mxGeometry height="20" width="360" y="84" as="geometry" />
+        </mxCell>
+        <mxCell id="Registro_div" parent="Registro" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="8" width="360" y="104" as="geometry" />
+        </mxCell>
+        <mxCell id="Registro_m0" parent="Registro" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ Registro(meta: Meta, usuario: Usuario)" vertex="1">
+          <mxGeometry height="20" width="360" y="112" as="geometry" />
+        </mxCell>
+        <mxCell id="ParticipacionId" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Embeddable»&lt;br&gt;&lt;b&gt;ParticipacionId&lt;/b&gt;" vertex="1">
+          <mxGeometry height="132" width="330" x="800" y="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="ParticipacionId_a0" parent="ParticipacionId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- codigoUsuario: Integer" vertex="1">
+          <mxGeometry height="20" width="330" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="ParticipacionId_a1" parent="ParticipacionId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- codigoMeta: Integer" vertex="1">
+          <mxGeometry height="20" width="330" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="ParticipacionId_div" parent="ParticipacionId" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="8" width="330" y="84" as="geometry" />
+        </mxCell>
+        <mxCell id="ParticipacionId_m0" parent="ParticipacionId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ equals(o: Object): boolean" vertex="1">
+          <mxGeometry height="20" width="330" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="ParticipacionId_m1" parent="ParticipacionId" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ hashCode(): int" vertex="1">
+          <mxGeometry height="20" width="330" y="112" as="geometry" />
+        </mxCell>
+        <mxCell id="Plazo" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Enumeration»&lt;br&gt;&lt;b&gt;Plazo&lt;/b&gt;" vertex="1">
+          <mxGeometry height="104" width="180" x="2040" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="Plazo_0" parent="Plazo" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="CORTO" vertex="1">
+          <mxGeometry height="20" width="180" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="Plazo_1" parent="Plazo" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="MEDIANO" vertex="1">
+          <mxGeometry height="20" width="180" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="Plazo_2" parent="Plazo" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="LARGO" vertex="1">
+          <mxGeometry height="20" width="180" y="84" as="geometry" />
+        </mxCell>
+        <mxCell id="EstadoMeta" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Enumeration»&lt;br&gt;&lt;b&gt;EstadoMeta&lt;/b&gt;" vertex="1">
+          <mxGeometry height="84" width="180" x="2040" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="EstadoMeta_0" parent="EstadoMeta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="ACTIVA" vertex="1">
+          <mxGeometry height="20" width="180" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="EstadoMeta_1" parent="EstadoMeta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="CUMPLIDA" vertex="1">
+          <mxGeometry height="20" width="180" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="TipoMeta" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Enumeration»&lt;br&gt;&lt;b&gt;TipoMeta&lt;/b&gt;" vertex="1">
+          <mxGeometry height="204" width="220" x="2040" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="TipoMeta_0" parent="TipoMeta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="PERSONAL" vertex="1">
+          <mxGeometry height="20" width="220" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="TipoMeta_1" parent="TipoMeta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="PROFESIONAL" vertex="1">
+          <mxGeometry height="20" width="220" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="TipoMeta_2" parent="TipoMeta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="FINANCIERA" vertex="1">
+          <mxGeometry height="20" width="220" y="84" as="geometry" />
+        </mxCell>
+        <mxCell id="TipoMeta_3" parent="TipoMeta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="SOCIAL_FAMILIAR" vertex="1">
+          <mxGeometry height="20" width="220" y="104" as="geometry" />
+        </mxCell>
+        <mxCell id="TipoMeta_4" parent="TipoMeta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="SALUD_BIENESTAR" vertex="1">
+          <mxGeometry height="20" width="220" y="124" as="geometry" />
+        </mxCell>
+        <mxCell id="TipoMeta_5" parent="TipoMeta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="ACADEMICA" vertex="1">
+          <mxGeometry height="20" width="220" y="144" as="geometry" />
+        </mxCell>
+        <mxCell id="TipoMeta_6" parent="TipoMeta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="RECREATIVA_OCIO" vertex="1">
+          <mxGeometry height="20" width="220" y="164" as="geometry" />
+        </mxCell>
+        <mxCell id="TipoMeta_7" parent="TipoMeta" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="OTRO" vertex="1">
+          <mxGeometry height="20" width="220" y="184" as="geometry" />
+        </mxCell>
+        <mxCell id="EstadoInvitacion" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Enumeration»&lt;br&gt;&lt;b&gt;EstadoInvitacion&lt;/b&gt;" vertex="1">
+          <mxGeometry height="104" width="200" x="440" y="1044" as="geometry" />
+        </mxCell>
+        <mxCell id="EstadoInvitacion_0" parent="EstadoInvitacion" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="PENDIENTE" vertex="1">
+          <mxGeometry height="20" width="200" y="44" as="geometry" />
+        </mxCell>
+        <mxCell id="EstadoInvitacion_1" parent="EstadoInvitacion" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="ACEPTADA" vertex="1">
+          <mxGeometry height="20" width="200" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="EstadoInvitacion_2" parent="EstadoInvitacion" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="RECHAZADA" vertex="1">
+          <mxGeometry height="20" width="200" y="84" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="MetaController" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;endArrow=open;endFill=0;endSize=8;exitX=0.5000;exitY=0;entryX=0.5000;entryY=0;" target="MetaService" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="380" y="70" />
+              <mxPoint x="1610" y="70" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l2" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="1" vertex="1">
+          <mxGeometry height="16" width="14" x="386" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="l3" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="1" vertex="1">
+          <mxGeometry height="16" width="14" x="1616" y="92" as="geometry" />
+        </mxCell>
+        <mxCell id="l4" parent="1" style="text;html=1;align=right;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="- metaService" vertex="1">
+          <mxGeometry height="16" width="100" x="1480" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="MetaController" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;dashed=1;endArrow=open;endFill=0;endSize=8;exitX=1;exitY=0.3659;entryX=0;entryY=0.1744;" target="CrearMetaRequest" value="«use»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="MetaController" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;dashed=1;endArrow=open;endFill=0;endSize=8;exitX=1;exitY=0.7317;entryX=0;entryY=0.1136;" target="MetaResponse" value="«use»">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="760" y="180" />
+              <mxPoint x="760" y="400" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="MetaService" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;dashed=1;endArrow=open;endFill=0;endSize=8;exitX=0;exitY=0.2679;entryX=1;entryY=0.1744;" target="CrearMetaRequest" value="«use»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="MetaService" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;dashed=1;endArrow=open;endFill=0;endSize=8;exitX=0;exitY=0.6250;entryX=1;entryY=0.1136;" target="MetaResponse" value="«use»">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1250" y="190" />
+              <mxPoint x="1250" y="400" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="MetaService" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;dashed=1;endArrow=open;endFill=0;endSize=8;exitX=0.5484;exitY=1;entryX=0.4545;entryY=0;" target="Meta" value="«use»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="MetaResponse" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;dashed=1;endArrow=open;endFill=0;endSize=8;exitX=1;exitY=0.6250;entryX=0;entryY=0.2151;" target="Meta" value="«use»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="MetaService" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;endArrow=open;endFill=0;endSize=8;exitX=1;exitY=0.2679;entryX=0;entryY=0.4167;" target="MetaRepository" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l12" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="1" vertex="1">
+          <mxGeometry height="16" width="14" x="1926" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="l13" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="- metaRepository" vertex="1">
+          <mxGeometry height="16" width="95" x="1990" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="l14" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="1" vertex="1">
+          <mxGeometry height="16" width="14" x="2140" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="MetaService" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;endArrow=open;endFill=0;endSize=8;exitX=1;exitY=0.6250;entryX=0;entryY=0.4167;" target="UsuarioRepository" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2030" y="190" />
+              <mxPoint x="2030" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l16" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="1" vertex="1">
+          <mxGeometry height="16" width="14" x="1926" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="l17" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="- usuarioRepository" vertex="1">
+          <mxGeometry height="16" width="106" x="2036" y="272" as="geometry" />
+        </mxCell>
+        <mxCell id="l18" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="1" vertex="1">
+          <mxGeometry height="16" width="14" x="2142" y="272" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="1" source="MetaRepository" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=0;endSize=12;exitX=1;exitY=0.4167;entryX=0;entryY=0.2941;" target="JpaRepository" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2550" y="150" />
+              <mxPoint x="2550" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="1" source="UsuarioRepository" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;endArrow=block;endFill=0;endSize=12;exitX=1;exitY=0.4167;entryX=0;entryY=0.7353;" target="JpaRepository" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2550" y="290" />
+              <mxPoint x="2550" y="235" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l21" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="«bind»" vertex="1">
+          <mxGeometry height="16" width="60" x="2500" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="l22" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="&lt;Meta, Integer&gt;" vertex="1">
+          <mxGeometry height="16" width="100" x="2500" y="114" as="geometry" />
+        </mxCell>
+        <mxCell id="l23" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="«bind»" vertex="1">
+          <mxGeometry height="16" width="60" x="2500" y="298" as="geometry" />
+        </mxCell>
+        <mxCell id="l24" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="&lt;Usuario, Integer&gt;" vertex="1">
+          <mxGeometry height="16" width="110" x="2500" y="312" as="geometry" />
+        </mxCell>
+        <mxCell id="e25" edge="1" parent="1" source="Meta" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;endArrow=open;endFill=0;endSize=8;exitX=0.5455;exitY=1;entryX=0.4118;entryY=0;" target="Usuario" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l26" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="*" vertex="1">
+          <mxGeometry height="16" width="14" x="1686" y="878" as="geometry" />
+        </mxCell>
+        <mxCell id="l27" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="- creador" vertex="1">
+          <mxGeometry height="16" width="60" x="1686" y="1004" as="geometry" />
+        </mxCell>
+        <mxCell id="l28" parent="1" style="text;html=1;align=right;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="1" vertex="1">
+          <mxGeometry height="16" width="14" x="1664" y="1022" as="geometry" />
+        </mxCell>
+        <mxCell id="e29" edge="1" parent="1" source="Meta" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;startArrow=open;startFill=0;startSize=8;endArrow=open;endFill=0;endSize=8;exitX=0.0909;exitY=1;entryX=0.5862;entryY=0;" target="Participacion" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1480" y="980" />
+              <mxPoint x="1140" y="980" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l30" parent="1" style="text;html=1;align=right;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="1" vertex="1">
+          <mxGeometry height="16" width="14" x="1462" y="878" as="geometry" />
+        </mxCell>
+        <mxCell id="l31" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="- meta" vertex="1">
+          <mxGeometry height="16" width="40" x="1486" y="896" as="geometry" />
+        </mxCell>
+        <mxCell id="l32" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="- participaciones" vertex="1">
+          <mxGeometry height="16" width="100" x="1150" y="962" as="geometry" />
+        </mxCell>
+        <mxCell id="l33" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="0..*" vertex="1">
+          <mxGeometry height="16" width="34" x="1146" y="1008" as="geometry" />
+        </mxCell>
+        <mxCell id="e34" edge="1" parent="1" source="Meta" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;startArrow=open;startFill=0;startSize=8;endArrow=open;endFill=0;endSize=8;exitX=0.9091;exitY=1;entryX=0.5000;entryY=0;" target="Registro" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1840" y="980" />
+              <mxPoint x="2240" y="980" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l35" parent="1" style="text;html=1;align=right;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="1" vertex="1">
+          <mxGeometry height="16" width="14" x="1822" y="878" as="geometry" />
+        </mxCell>
+        <mxCell id="l36" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="- meta" vertex="1">
+          <mxGeometry height="16" width="40" x="1846" y="896" as="geometry" />
+        </mxCell>
+        <mxCell id="l37" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="- registros" vertex="1">
+          <mxGeometry height="16" width="75" x="2150" y="962" as="geometry" />
+        </mxCell>
+        <mxCell id="l38" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="0..*" vertex="1">
+          <mxGeometry height="16" width="34" x="2246" y="1008" as="geometry" />
+        </mxCell>
+        <mxCell id="e39" edge="1" parent="1" source="Participacion" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;endArrow=open;endFill=0;endSize=8;exitX=1;exitY=0.3571;entryX=0;entryY=0.1653;" target="Usuario" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l40" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="*" vertex="1">
+          <mxGeometry height="16" width="14" x="1366" y="1062" as="geometry" />
+        </mxCell>
+        <mxCell id="l41" parent="1" style="text;html=1;align=right;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="1" vertex="1">
+          <mxGeometry height="16" width="14" x="1520" y="1062" as="geometry" />
+        </mxCell>
+        <mxCell id="l42" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="- usuario" vertex="1">
+          <mxGeometry height="16" width="55" x="1420" y="1086" as="geometry" />
+        </mxCell>
+        <mxCell id="e43" edge="1" parent="1" source="Registro" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;endArrow=open;endFill=0;endSize=8;exitX=0;exitY=0.3030;entryX=1;entryY=0.1653;" target="Usuario" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l44" parent="1" style="text;html=1;align=right;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="*" vertex="1">
+          <mxGeometry height="16" width="14" x="2040" y="1062" as="geometry" />
+        </mxCell>
+        <mxCell id="l45" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="1" vertex="1">
+          <mxGeometry height="16" width="14" x="1886" y="1062" as="geometry" />
+        </mxCell>
+        <mxCell id="l46" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="- usuario" vertex="1">
+          <mxGeometry height="16" width="55" x="1940" y="1086" as="geometry" />
+        </mxCell>
+        <mxCell id="e47" edge="1" parent="1" source="Participacion" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;endArrow=open;endFill=0;endSize=8;exitX=0.2414;exitY=1;entryX=0.4242;entryY=0;" target="ParticipacionId" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l48" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="1" vertex="1">
+          <mxGeometry height="16" width="14" x="946" y="1156" as="geometry" />
+        </mxCell>
+        <mxCell id="l49" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="- id" vertex="1">
+          <mxGeometry height="16" width="25" x="946" y="1190" as="geometry" />
+        </mxCell>
+        <mxCell id="l50" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fontColor=#000000;strokeColor=none;fillColor=none;whiteSpace=nowrap;spacing=0;" value="1" vertex="1">
+          <mxGeometry height="16" width="14" x="946" y="1220" as="geometry" />
+        </mxCell>
+        <mxCell id="e51" edge="1" parent="1" source="Meta" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;dashed=1;endArrow=open;endFill=0;endSize=8;exitX=1;exitY=0.0860;entryX=0;entryY=0.5000;" target="Plazo" value="«use»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e52" edge="1" parent="1" source="Meta" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;dashed=1;endArrow=open;endFill=0;endSize=8;exitX=1;exitY=0.4355;entryX=0;entryY=0.5000;" target="EstadoMeta" value="«use»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e53" edge="1" parent="1" source="Meta" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;dashed=1;endArrow=open;endFill=0;endSize=8;exitX=1;exitY=0.9194;entryX=0;entryY=0.5000;" target="TipoMeta" value="«use»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e54" edge="1" parent="1" source="Participacion" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;dashed=1;endArrow=open;endFill=0;endSize=8;exitX=0;exitY=0.5000;entryX=1;entryY=0.5000;" target="EstadoInvitacion" value="«use»">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
