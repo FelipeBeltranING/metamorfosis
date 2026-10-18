@@ -38,3 +38,22 @@ export async function listarMetas() {
   if (!respuesta.ok) throw new Error(datos?.mensaje ?? 'Error inesperado');
   return datos;
 }
+
+/** Elimina una meta (solo su creador puede). Lanza Error con mensaje legible si falla. */
+export async function eliminarMeta(codigoMeta) {
+  let respuesta;
+  try {
+    respuesta = await fetch(
+      `${API_URL}/api/metas/${codigoMeta}?codigoUsuario=${CODIGO_USUARIO_TEMPORAL}`,
+      { method: 'DELETE' },
+    );
+  } catch {
+    throw new Error('No se pudo conectar con el servidor');
+  }
+
+  if (!respuesta.ok) {
+    const datos = await respuesta.json().catch(() => null);
+    throw new Error(datos?.mensaje ?? 'Error inesperado');
+  }
+  // 204 No Content: no hay cuerpo que leer.
+}
