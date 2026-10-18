@@ -38,3 +38,51 @@ export async function listarMetas() {
   if (!respuesta.ok) throw new Error(datos?.mensaje ?? 'Error inesperado');
   return datos;
 }
+
+/** Elimina una meta (solo su creador puede). Lanza Error con mensaje legible si falla. */
+export async function eliminarMeta(codigoMeta) {
+  let respuesta;
+  try {
+    respuesta = await fetch(
+      `${API_URL}/api/metas/${codigoMeta}?codigoUsuario=${CODIGO_USUARIO_TEMPORAL}`,
+      { method: 'DELETE' },
+    );
+  } catch {
+    throw new Error('No se pudo conectar con el servidor');
+  }
+
+  if (!respuesta.ok) {
+    const datos = await respuesta.json().catch(() => null);
+    throw new Error(datos?.mensaje ?? 'Error inesperado');
+  }
+  // 204 No Content: no hay cuerpo que leer.
+}
+
+/**
+ * Edita una meta (solo su creador puede). Lanza Error con `mensaje`, `errores` y `estado`
+ * (código HTTP) para que la pantalla distinga 404, 403 y 400. Sin `estado` = sin conexión.
+ */
+export async function editarMeta(codigoMeta, solicitud) {
+  let respuesta;
+  try {
+    respuesta = await fetch(
+      `${API_URL}/api/metas/${codigoMeta}?codigoUsuario=${CODIGO_USUARIO_TEMPORAL}`,
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(solicitud),
+      },
+    );
+  } catch {
+    throw new Error('No se pudo conectar con el servidor');
+  }
+
+  const datos = await respuesta.json().catch(() => null);
+  if (!respuesta.ok) {
+    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    error.errores = datos?.errores ?? [];
+    error.estado = respuesta.status;
+    throw error;
+  }
+  return datos;
+}
