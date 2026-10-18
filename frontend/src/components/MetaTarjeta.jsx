@@ -1,5 +1,4 @@
-import { Clock } from 'lucide-react';
-import MenuTarjeta from './MenuTarjeta';
+import { Clock, Trash2 } from 'lucide-react';
 import { PLAZOS, TIPOS } from '../constants/opcionesMeta';
 
 const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((t) => [t.valor, t]));
@@ -14,7 +13,7 @@ function Chip({ Icono, texto }) {
   );
 }
 
-export default function MetaTarjeta({ meta, onEditar, onEliminar }) {
+export default function MetaTarjeta({ meta, onEliminar }) {
   const tipo = TIPO_POR_VALOR[meta.tipo] ?? TIPO_POR_VALOR.OTRO;
   const plazo = PLAZO_POR_VALOR[meta.plazo];
 
@@ -29,12 +28,15 @@ export default function MetaTarjeta({ meta, onEditar, onEliminar }) {
             <span className="text-[10px]" aria-hidden="true">●</span>
             Activa
           </span>
-          {(onEditar || onEliminar) && (
-            <MenuTarjeta
-              nombre={meta.nombre}
-              onEditar={onEditar && (() => onEditar(meta))}
-              onEliminar={onEliminar && (() => onEliminar(meta))}
-            />
+          {onEliminar && (
+            <button
+              type="button"
+              onClick={() => onEliminar(meta)}
+              aria-label={`Eliminar la meta ${meta.nombre}`}
+              className="flex size-11 items-center justify-center rounded-xl text-gray-500 transition hover:bg-red-50 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300"
+            >
+              <Trash2 className="size-5" aria-hidden="true" />
+            </button>
           )}
         </div>
       </div>

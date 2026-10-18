@@ -1,108 +1,79 @@
+import { useEffect } from 'react';
+import { CircleAlert, TriangleAlert } from 'lucide-react';
 
-import { CircleAlert, LoaderCircle, Trash2, X } from 'lucide-react';
-
-export default function ConfirmarEliminarModal({
-  meta,
-  eliminando,
-  error,
-  onConfirmar,
-  onCancelar,
-}) {
-  const nombreMeta = meta?.titulo || meta?.nombre || 'esta meta';
+/**
+ * Confirmación para eliminar una meta (HU4). En móvil sube desde abajo; en escritorio va centrada.
+ * No se puede cerrar mientras se está eliminando.
+ */
+export default function ConfirmarEliminarModal({ meta, eliminando, error, onConfirmar, onCancelar }) {
+  // Esc cierra el cuadro (salvo que ya se esté eliminando).
+  useEffect(() => {
+    const alPresionar = (evento) => {
+      if (evento.key === 'Escape' && !eliminando) onCancelar();
+    };
+    document.addEventListener('keydown', alPresionar);
+    return () => document.removeEventListener('keydown', alPresionar);
+  }, [eliminando, onCancelar]);
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-      onMouseDown={(e) => {
-        if (e.target === e.currentTarget && !eliminando) {
-          onCancelar();
-        }
-      }}
+      className="fixed inset-0 z-50 flex items-end justify-center bg-gray-900/50 sm:items-center sm:p-4"
+      onClick={() => !eliminando && onCancelar()}
     >
-      <section
+      <div
         role="alertdialog"
         aria-modal="true"
-        aria-labelledby="titulo-confirmar-eliminar"
-        aria-describedby="descripcion-confirmar-eliminar"
-        className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"
+        aria-labelledby="eliminar-titulo"
+        aria-describedby="eliminar-descripcion"
+        onClick={(evento) => evento.stopPropagation()}
+        className="flex w-full flex-col gap-6 rounded-t-3xl bg-white p-6 sm:w-96 sm:rounded-3xl sm:p-8"
       >
-        <div className="mb-5 flex items-start justify-between">
-          <div className="flex size-12 items-center justify-center rounded-xl bg-red-50 text-red-600">
-            <Trash2 className="size-6" aria-hidden="true" />
-          </div>
-
-          <button
-            type="button"
-            onClick={onCancelar}
-            disabled={eliminando}
-            aria-label="Cerrar ventana"
-            className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 disabled:opacity-50"
-          >
-            <X className="size-5" aria-hidden="true" />
-          </button>
+        <div className="flex size-14 items-center justify-center rounded-2xl bg-red-50">
+          <TriangleAlert className="size-7 text-red-600" aria-hidden="true" />
         </div>
 
-        <h2
-          id="titulo-confirmar-eliminar"
-          className="text-xl font-bold text-gray-900"
-        >
-          ¿Eliminar esta meta?
-        </h2>
-
-        <p
-          id="descripcion-confirmar-eliminar"
-          className="mt-3 text-sm leading-6 text-gray-600"
-        >
-          ¿Seguro que deseas eliminar <strong>{nombreMeta}</strong>?
-          Esta acción no se puede deshacer.
-        </p>
+        <div className="flex flex-col gap-3">
+          <h2 id="eliminar-titulo" className="text-2xl font-bold text-gray-900">
+            ¿Eliminar esta meta?
+          </h2>
+          <p id="eliminar-descripcion" className="text-base text-gray-900">
+            Vas a eliminar «<strong className="break-words font-bold">{meta.nombre}</strong>». Se
+            borrarán también sus registros de progreso. Esta acción no se puede deshacer.
+          </p>
+        </div>
 
         {error && (
-          <div
+          <p
+            id="eliminar-error"
             role="alert"
-            className="mt-4 flex gap-2 rounded-xl bg-red-50 p-3 text-sm text-red-700"
+            className="flex items-start gap-2 text-sm font-semibold leading-5 text-red-600"
           >
-            <CircleAlert
-              className="size-5 shrink-0"
-              aria-hidden="true"
-            />
-            <p>{error}</p>
-          </div>
+            <CircleAlert className="size-5 shrink-0" aria-hidden="true" />
+            {error}
+          </p>
         )}
 
-        <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <button
             type="button"
             onClick={onCancelar}
             disabled={eliminando}
-            className="h-11 rounded-xl border border-gray-200 px-5 font-semibold text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+            autoFocus
+            className="h-14 w-full rounded-xl border border-zinc-200 bg-white px-6 text-base font-bold text-gray-900 focus:outline-none focus:ring-[3px] focus:ring-inset focus:ring-violet-400 enabled:hover:bg-slate-50 disabled:cursor-not-allowed disabled:bg-gray-100 sm:w-36"
           >
             Cancelar
           </button>
-
           <button
             type="button"
             onClick={onConfirmar}
             disabled={eliminando}
-            className="flex h-11 items-center justify-center gap-2 rounded-xl bg-red-600 px-5 font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+            aria-busy={eliminando}
+            className="h-14 w-full rounded-xl bg-red-600 px-6 text-base font-bold text-white focus:outline-none focus:ring-2 focus:ring-red-300 enabled:hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-red-800 sm:w-40"
           >
-            {eliminando ? (
-              <>
-                <LoaderCircle
-                  className="size-4 animate-spin"
-                  aria-hidden="true"
-                />
-                Eliminando...
-              </>
-            ) : (
-              <>
-                <Trash2 className="size-4" aria-hidden="true" />
-                Eliminar meta
-              </>
-            )}
+            {eliminando ? 'Eliminando…' : 'Sí, eliminar'}
           </button>
         </div>
-      </section>
+      </div>
     </div>
   );
 }
