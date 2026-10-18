@@ -73,6 +73,20 @@ public class MetaService {
         return MetaResponse.desde(metaRepository.save(meta));
     }
 
+    /** HU4: elimina una meta. Solo su creador puede eliminarla. */
+    @Transactional
+    public void eliminarMeta(Integer codigoMeta, Integer codigoUsuario) {
+        Meta meta = metaRepository.findById(codigoMeta)
+                .orElseThrow(() -> new MetaNoEncontradaException(codigoMeta));
+
+        if (!meta.getCreador().getCodigoUsuario().equals(codigoUsuario)) {
+            throw new PermisoDenegadoException(
+                    "Solo el creador puede eliminar la meta"
+            );
+        }
+        metaRepository.delete(meta);
+    }
+
     private void validar(CrearMetaRequest s) {
         List<String> errores = new ArrayList<>();
         if (s == null || s.nombre() == null || s.nombre().isBlank()) {
