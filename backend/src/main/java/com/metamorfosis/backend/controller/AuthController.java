@@ -2,6 +2,8 @@ package com.metamorfosis.backend.controller;
 
 import com.metamorfosis.backend.dto.RegistroRequest;
 import com.metamorfosis.backend.dto.UsuarioResponse;
+import com.metamorfosis.backend.dto.LoginRequest;
+import com.metamorfosis.backend.dto.LoginResponse;
 import com.metamorfosis.backend.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,4 +27,10 @@ public class AuthController {
         UsuarioResponse respuesta = authService.registrar(solicitud);
         return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> iniciarSesion(@RequestBody LoginRequest solicitud) {
+        return ResponseEntity.ok(authService.iniciarSesion(solicitud));
+    }
+    
 }
