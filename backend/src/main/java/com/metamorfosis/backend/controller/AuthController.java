@@ -3,7 +3,6 @@ package com.metamorfosis.backend.controller;
 import com.metamorfosis.backend.dto.RegistroRequest;
 import com.metamorfosis.backend.dto.UsuarioResponse;
 import com.metamorfosis.backend.service.AuthService;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +21,7 @@ public class AuthController {
     }
 
     @PostMapping("/registro")
-    public ResponseEntity<UsuarioResponse> registrar(@Valid @RequestBody RegistroRequest solicitud) {
+    public ResponseEntity<UsuarioResponse> registrar(@RequestBody RegistroRequest solicitud) {
         UsuarioResponse respuesta = authService.registrar(solicitud);
         return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
     }

@@ -6,7 +6,8 @@ public record UsuarioResponse(
         Integer codigoUsuario,
         String nombre,
         String apellido,
-        String email) {
+        String email
+) {
 
     public static UsuarioResponse desde(Usuario usuario) {
         return new UsuarioResponse(
