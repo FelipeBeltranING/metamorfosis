@@ -7,5 +7,6 @@ package com.metamorfosis.backend.model;
 public enum AccionLog {
     CREAR_META,     // HU1
     EDITAR_META,    // HU2
-    LISTAR_METAS    // HU3
+    LISTAR_METAS,   // HU3
+    ELIMINAR_META   // HU4
 }
