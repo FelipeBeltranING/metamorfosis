@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CircleCheck, Plus } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Encabezado from '../components/Encabezado';
@@ -6,7 +6,8 @@ import MetaTarjeta from '../components/MetaTarjeta';
 import MetaTarjetaEsqueleto from '../components/MetaTarjetaEsqueleto';
 import EstadoVacio from '../components/EstadoVacio';
 import EstadoError from '../components/EstadoError';
-import { listarMetas } from '../services/metaService';
+import ConfirmarEliminarModal from '../components/ConfirmarEliminarModal';
+import { eliminarMeta, listarMetas } from '../services/metaService';
 
 export default function MisMetasPage() {
   const location = useLocation();
@@ -14,6 +15,10 @@ export default function MisMetasPage() {
   const [estado, setEstado] = useState({ fase: 'cargando' });
   const [intento, setIntento] = useState(0);
   const [metaCreada, setMetaCreada] = useState(() => Boolean(location.state?.metaCreada));
+  const [metaAEliminar, setMetaAEliminar] = useState(null);
+  const [eliminando, setEliminando] = useState(false);
+  const [errorEliminar, setErrorEliminar] = useState('');
+  const [metaEliminada, setMetaEliminada] = useState(false);
 
   // Carga de metas (se repite al reintentar).
   useEffect(() => {
@@ -33,6 +38,38 @@ export default function MisMetasPage() {
     const temporizador = setTimeout(() => setMetaCreada(false), 4000);
     return () => clearTimeout(temporizador);
   }, [metaCreada, navigate, location.pathname]);
+
+  // Toast de "meta eliminada": se oculta a los 4 s.
+  useEffect(() => {
+    if (!metaEliminada) return undefined;
+    const temporizador = setTimeout(() => setMetaEliminada(false), 4000);
+    return () => clearTimeout(temporizador);
+  }, [metaEliminada]);
+
+  const abrirConfirmacion = (meta) => {
+    setErrorEliminar('');
+    setMetaAEliminar(meta);
+  };
+
+  const cancelarEliminar = useCallback(() => setMetaAEliminar(null), []);
+
+  const confirmarEliminar = async () => {
+    const { codigoMeta } = metaAEliminar;
+    setEliminando(true);
+    setErrorEliminar('');
+    try {
+      await eliminarMeta(codigoMeta);
+      setEstado((actual) => (actual.fase === 'lista'
+        ? { ...actual, metas: actual.metas.filter((m) => m.codigoMeta !== codigoMeta) }
+        : actual));
+      setMetaAEliminar(null);
+      setMetaEliminada(true);
+    } catch (error) {
+      setErrorEliminar(error.message);
+    } finally {
+      setEliminando(false);
+    }
+  };
 
   const reintentar = () => {
     setEstado({ fase: 'cargando' });
@@ -68,7 +105,9 @@ export default function MisMetasPage() {
 
         {estado.fase === 'lista' && estado.metas.length > 0 && (
           <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {estado.metas.map((meta) => <MetaTarjeta key={meta.codigoMeta} meta={meta} />)}
+            {estado.metas.map((meta) => (
+              <MetaTarjeta key={meta.codigoMeta} meta={meta} onEliminar={abrirConfirmacion} />
+            ))}
           </ul>
         )}
       </main>
@@ -82,6 +121,16 @@ export default function MisMetasPage() {
         <Plus className="size-6" aria-hidden="true" />
       </Link>
 
+      {metaAEliminar && (
+        <ConfirmarEliminarModal
+          meta={metaAEliminar}
+          eliminando={eliminando}
+          error={errorEliminar}
+          onConfirmar={confirmarEliminar}
+          onCancelar={cancelarEliminar}
+        />
+      )}
+
       {metaCreada && (
         <div
           role="status"
@@ -89,6 +138,16 @@ export default function MisMetasPage() {
         >
           <CircleCheck className="size-6 shrink-0" aria-hidden="true" />
           ¡Meta creada! Ya aparece en tus metas activas.
+        </div>
+      )}
+
+      {metaEliminada && (
+        <div
+          role="status"
+          className="fixed bottom-24 left-1/2 flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-center gap-3 rounded-xl bg-emerald-400 p-4 text-sm font-semibold text-gray-900 shadow-lg sm:bottom-6"
+        >
+          <CircleCheck className="size-6 shrink-0" aria-hidden="true" />
+          Meta eliminada.
         </div>
       )}
     </div>
