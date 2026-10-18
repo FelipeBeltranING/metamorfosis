@@ -1,4 +1,4 @@
-import { Clock } from 'lucide-react';
+import { Clock, Trash2 } from 'lucide-react';
 import { PLAZOS, TIPOS } from '../constants/opcionesMeta';
 
 const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((t) => [t.valor, t]));
@@ -13,7 +13,7 @@ function Chip({ Icono, texto }) {
   );
 }
 
-export default function MetaTarjeta({ meta }) {
+export default function MetaTarjeta({ meta, onEliminar }) {
   const tipo = TIPO_POR_VALOR[meta.tipo] ?? TIPO_POR_VALOR.OTRO;
   const plazo = PLAZO_POR_VALOR[meta.plazo];
 
@@ -23,10 +23,22 @@ export default function MetaTarjeta({ meta }) {
         <div className="flex size-12 items-center justify-center rounded-xl bg-violet-50">
           <tipo.Icono className="size-6 text-violet-600" aria-hidden="true" />
         </div>
-        <span className="flex items-center gap-1.5 rounded-xl bg-emerald-400 px-3 py-2 text-sm font-bold text-gray-900">
-          <span className="text-[10px]" aria-hidden="true">●</span>
-          Activa
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="flex items-center gap-1.5 rounded-xl bg-emerald-400 px-3 py-2 text-sm font-bold text-gray-900">
+            <span className="text-[10px]" aria-hidden="true">●</span>
+            Activa
+          </span>
+          {onEliminar && (
+            <button
+              type="button"
+              onClick={() => onEliminar(meta)}
+              aria-label={`Eliminar la meta ${meta.nombre}`}
+              className="flex size-11 items-center justify-center rounded-xl text-gray-500 transition hover:bg-red-50 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300"
+            >
+              <Trash2 className="size-5" aria-hidden="true" />
+            </button>
+          )}
+        </div>
       </div>
       <h2 className="line-clamp-2 break-words text-xl font-bold text-gray-900 sm:text-2xl">
         {meta.nombre}
