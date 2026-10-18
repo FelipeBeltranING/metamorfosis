@@ -1,5 +1,7 @@
 package com.metamorfosis.backend.service;
 
+import com.metamorfosis.backend.auditoria.Auditar;
+import com.metamorfosis.backend.auditoria.ContextoAuditoria;
 import com.metamorfosis.backend.dto.CrearMetaRequest;
 import com.metamorfosis.backend.dto.MetaResponse;
 import com.metamorfosis.backend.exception.UsuarioNoEncontradoException;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.metamorfosis.backend.exception.MetaNoEncontradaException;
 import com.metamorfosis.backend.exception.PermisoDenegadoException;
+import com.metamorfosis.backend.model.AccionLog;
+import com.metamorfosis.backend.model.EntidadLog;
 import com.metamorfosis.backend.model.EstadoMeta;
 
 import java.util.ArrayList;
@@ -31,6 +35,7 @@ public class MetaService {
     }
 
     /** Crea la meta, la participación del creador y su primer registro en una sola transacción. */
+    @Auditar(accion = AccionLog.CREAR_META, entidad = EntidadLog.META)
     @Transactional
     public MetaResponse crearMeta(CrearMetaRequest solicitud, Integer codigoUsuario) {
         validar(solicitud);
@@ -44,6 +49,7 @@ public class MetaService {
     }
 
     /** Lista las metas activas del usuario (HU3). Devuelve lista vacía si no tiene ninguna. */
+    @Auditar(accion = AccionLog.LISTAR_METAS, entidad = EntidadLog.META)
     @Transactional(readOnly = true)
     public List<MetaResponse> listarMetasActivas(Integer codigoUsuario) {
         if (!usuarioRepository.existsById(codigoUsuario)) {
@@ -55,6 +61,7 @@ public class MetaService {
     }
 
     /** HU2: edita nombre, plazo y tipo. Solo el creador edita y una meta CUMPLIDA no se edita. */
+    @Auditar(accion = AccionLog.EDITAR_META, entidad = EntidadLog.META)
     @Transactional
     public MetaResponse editarMeta(Integer codigoMeta, CrearMetaRequest solicitud, Integer codigoUsuario) {
         validar(solicitud);
@@ -69,21 +76,32 @@ public class MetaService {
             throw new ValidacionException(List.of("Una meta cumplida no se puede editar"));
         }
 
+        // Para el log: valores anteriores (los nuevos salen de la respuesta)
+        ContextoAuditoria.agregar("nombreAnterior", meta.getNombre());
+        ContextoAuditoria.agregar("plazoAnterior", meta.getPlazo());
+        ContextoAuditoria.agregar("tipoAnterior", meta.getTipo());
+
         meta.editar(solicitud.nombre().trim(), solicitud.plazo(), solicitud.tipo());
         return MetaResponse.desde(metaRepository.save(meta));
     }
 
-    /** HU4: elimina una meta. Solo su creador puede eliminarla. */
+    /** HU4: elimina una meta con sus participaciones y registros. Solo la elimina su creador. */
+    @Auditar(accion = AccionLog.ELIMINAR_META, entidad = EntidadLog.META)
     @Transactional
     public void eliminarMeta(Integer codigoMeta, Integer codigoUsuario) {
         Meta meta = metaRepository.findById(codigoMeta)
                 .orElseThrow(() -> new MetaNoEncontradaException(codigoMeta));
 
         if (!meta.getCreador().getCodigoUsuario().equals(codigoUsuario)) {
-            throw new PermisoDenegadoException(
-                    "Solo el creador puede eliminar la meta"
-            );
+            throw new PermisoDenegadoException("Solo el creador puede eliminar la meta");
         }
+
+        // Para el log: qué meta se borró (después de eliminarla ya no se podría consultar)
+        ContextoAuditoria.agregar("nombre", meta.getNombre());
+        ContextoAuditoria.agregar("plazo", meta.getPlazo());
+        ContextoAuditoria.agregar("tipo", meta.getTipo());
+        ContextoAuditoria.agregar("estado", meta.getEstado());
+
         metaRepository.delete(meta);
     }
 
