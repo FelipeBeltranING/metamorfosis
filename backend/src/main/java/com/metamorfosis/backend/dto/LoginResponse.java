@@ -1,5 +1,7 @@
 package com.metamorfosis.backend.dto;
 
-public class LoginResponse {
+public record LoginResponse (
+    String token,
+    Integer idUsuario)
     
-}
+{}
