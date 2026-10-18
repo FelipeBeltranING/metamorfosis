@@ -25,4 +25,10 @@ public class AuthController {
         UsuarioResponse respuesta = authService.registrar(solicitud);
         return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest solicitud) {
+        return ResponseEntity.ok(authService.login(solicitud));
+    }
+    
 }
