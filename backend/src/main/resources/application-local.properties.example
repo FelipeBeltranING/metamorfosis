@@ -1,3 +1,6 @@
 spring.datasource.url=jdbc:postgresql://aws-0-REGION.pooler.supabase.com:5432/postgres
 spring.datasource.username=postgres.PROJECT-REF
 spring.datasource.password=CAMBIAR
+
+app.jwt.secret=CAMBIAR-por-un-secreto-largo-y-aleatorio
+app.jwt.expiracion-minutos=60

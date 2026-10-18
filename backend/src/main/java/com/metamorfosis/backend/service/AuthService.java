@@ -27,7 +27,6 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final LogService logService;
-    // Hash real calculado al arrancar; solo sirve para igualar tiempos de respuesta en el login.
     private final String hashRelleno;
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
@@ -45,7 +44,6 @@ public class AuthService {
 
     @Transactional
     public UsuarioResponse registrar(RegistroRequest solicitud) {
-        // 1. Validaciones de formato y campos obligatorios
         validar(solicitud);
 
         if (usuarioRepository.existsByEmail(solicitud.email())) {
