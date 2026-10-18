@@ -144,7 +144,7 @@ export default function MisMetasPage() {
       {metaEliminada && (
         <div
           role="status"
-          className="fixed bottom-24 left-1/2 flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-center gap-3 rounded-xl bg-emerald-400 p-4 text-sm font-semibold text-gray-900 shadow-lg sm:bottom-6"
+          className="fixed bottom-24 left-1/2 flex w-[calc(100%-2rem)] max-w-[640px] -translate-x-1/2 items-center gap-3 rounded-xl bg-emerald-400 p-4 text-sm font-semibold leading-5 text-gray-900 shadow-[0_4px_16px_rgba(30,27,46,0.07)] sm:bottom-8"
         >
           <CircleCheck className="size-6 shrink-0" aria-hidden="true" />
           Meta eliminada.
