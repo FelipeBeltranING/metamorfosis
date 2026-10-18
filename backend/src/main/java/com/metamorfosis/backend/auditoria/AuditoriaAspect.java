@@ -14,8 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import java.lang.reflect.Method;
-import org.springframework.core.annotation.AnnotatedElementUtils;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -39,14 +37,8 @@ public class AuditoriaAspect {
         this.logService = logService;
     }
 
-    @Around("@annotation(com.metamorfosis.backend.auditoria.Auditar)")
-    public Object auditar(ProceedingJoinPoint pjp) throws Throwable {
-        Method metodo = ((MethodSignature) pjp.getSignature()).getMethod();
-        Auditar auditar = AnnotatedElementUtils.findMergedAnnotation(metodo, Auditar.class);
-        if (auditar == null) {
-            return pjp.proceed();
-        }
-
+    @Around(value = "@annotation(auditar)", argNames = "pjp,auditar")
+    public Object auditar(ProceedingJoinPoint pjp, Auditar auditar) throws Throwable {
         ContextoAuditoria.limpiar();
         try {
             Object resultado = pjp.proceed();

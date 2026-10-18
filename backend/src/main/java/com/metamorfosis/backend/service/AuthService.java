@@ -4,6 +4,9 @@ import com.metamorfosis.backend.dto.RegistroRequest;
 import com.metamorfosis.backend.dto.UsuarioResponse;
 import com.metamorfosis.backend.exception.EmailYaRegistradoException;
 import com.metamorfosis.backend.exception.ValidacionException;
+import com.metamorfosis.backend.model.AccionLog;
+import com.metamorfosis.backend.model.EntidadLog;
+import com.metamorfosis.backend.model.ResultadoLog;
 import com.metamorfosis.backend.model.Usuario;
 import com.metamorfosis.backend.repository.UsuarioRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,11 +48,13 @@ public class AuthService {
         Usuario guardado = usuarioRepository.save(nuevoUsuario);
         UsuarioResponse respuesta = UsuarioResponse.desde(guardado);
 
-        logService.registrarExito(
+        logService.registrar(
             guardado.getCodigoUsuario(),
-            LogService.ACCION_REGISTRO,
-            LogService.ENTIDAD_USUARIO,
-            guardado.getCodigoUsuario()
+            AccionLog.REGISTRAR_USUARIO,
+            EntidadLog.USUARIO,
+            guardado.getCodigoUsuario(),
+            ResultadoLog.EXITO,
+            null
         );
 
         return respuesta;

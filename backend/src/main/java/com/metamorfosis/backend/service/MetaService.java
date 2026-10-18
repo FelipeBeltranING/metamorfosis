@@ -85,7 +85,7 @@ public class MetaService {
         return MetaResponse.desde(metaRepository.save(meta));
     }
 
-    /** HU4: elimina una meta con sus participaciones y registros. Solo la elimina su creador. */
+    /** HU4: elimina una meta. Solo su creador puede eliminarla. */
     @Auditar(accion = AccionLog.ELIMINAR_META, entidad = EntidadLog.META)
     @Transactional
     public void eliminarMeta(Integer codigoMeta, Integer codigoUsuario) {
@@ -93,15 +93,10 @@ public class MetaService {
                 .orElseThrow(() -> new MetaNoEncontradaException(codigoMeta));
 
         if (!meta.getCreador().getCodigoUsuario().equals(codigoUsuario)) {
-            throw new PermisoDenegadoException("Solo el creador puede eliminar la meta");
+            throw new PermisoDenegadoException(
+                    "Solo el creador puede eliminar la meta"
+            );
         }
-
-        // Para el log: qué meta se borró (después de eliminarla ya no se podría consultar)
-        ContextoAuditoria.agregar("nombre", meta.getNombre());
-        ContextoAuditoria.agregar("plazo", meta.getPlazo());
-        ContextoAuditoria.agregar("tipo", meta.getTipo());
-        ContextoAuditoria.agregar("estado", meta.getEstado());
-
         metaRepository.delete(meta);
     }
 
