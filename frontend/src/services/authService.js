@@ -30,3 +30,13 @@ async function post(ruta, solicitud) {
 export function registrar({ nombre, apellido, email, password }) {
   return post('/api/auth/registro', { nombre, apellido, email, password });
 }
+
+/**
+ * Inicia sesión. 200 -> { token, codigoUsuario }. 401 = credenciales incorrectas,
+ * 400 = datos inválidos (el detalle viene en `errores`).
+ */
+export async function iniciarSesion({ email, password }) {
+  const datos = await post('/api/auth/login', { email, password });
+  if (!datos?.token || !datos?.codigoUsuario) throw new Error('Respuesta inesperada del servidor');
+  return datos;
+}

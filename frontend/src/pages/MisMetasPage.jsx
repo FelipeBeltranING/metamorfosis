@@ -13,12 +13,14 @@ const AVISOS = {
   creada: '¡Meta creada! Ya aparece en tus metas activas.',
   actualizada: '¡Meta actualizada!',
   eliminada: 'Meta eliminada.',
+  sesion: '¡Sesión iniciada!',
 };
 
 /** Qué aviso mostrar al llegar a la lista (viene en el estado de navegación). */
 function avisoInicial(estadoNavegacion) {
   if (estadoNavegacion?.metaCreada) return 'creada';
   if (estadoNavegacion?.metaActualizada) return 'actualizada';
+  if (estadoNavegacion?.sesionIniciada) return 'sesion';
   return null;
 }
 
