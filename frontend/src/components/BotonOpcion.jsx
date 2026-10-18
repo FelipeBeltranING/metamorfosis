@@ -3,24 +3,30 @@
  * vertical = true: estilo de "plazo" (círculo arriba); false: estilo de "tipo" (icono a la izquierda).
  */
 export default function BotonOpcion({
-  grupo, valor, etiqueta, Icono, seleccionado, conError, onChange, vertical = false,
+  grupo, valor, etiqueta, Icono, seleccionado, conError, deshabilitado = false, onChange, vertical = false,
 }) {
   const borde = seleccionado
     ? 'border-violet-600 bg-violet-50'
     : conError
-      ? 'border-red-500'
-      : 'border-zinc-200';
+      ? 'border-red-500 bg-white'
+      : deshabilitado
+        ? 'border-zinc-200 bg-slate-100'
+        : 'border-zinc-200 bg-white';
+  const interaccion = deshabilitado
+    ? 'cursor-not-allowed'
+    : 'cursor-pointer transition hover:border-violet-400 focus-within:ring-2 focus-within:ring-violet-300';
   const disposicion = vertical ? 'min-h-16 flex-col justify-center text-center' : 'min-h-14';
 
   return (
     <label
-      className={`flex cursor-pointer items-center gap-2 rounded-xl border bg-white px-2.5 text-sm font-semibold text-gray-900 transition hover:border-violet-400 focus-within:ring-2 focus-within:ring-violet-300 ${disposicion} ${borde}`}
+      className={`flex items-center gap-2 rounded-xl border px-2.5 text-sm font-semibold text-gray-900 ${interaccion} ${disposicion} ${borde}`}
     >
       <input
         type="radio"
         name={grupo}
         value={valor}
         checked={seleccionado}
+        disabled={deshabilitado}
         onChange={() => onChange(valor)}
         className="sr-only"
       />

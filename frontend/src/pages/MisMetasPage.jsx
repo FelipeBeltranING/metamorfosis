@@ -31,13 +31,13 @@ export default function MisMetasPage() {
     };
   }, [intento]);
 
-  // Toast de éxito: se limpia el estado de navegación y se oculta a los 4 s.
+  // Aviso de éxito: se limpia el estado de navegación y se oculta a los 4 s.
   useEffect(() => {
-    if (!metaCreada) return undefined;
+    if (!aviso) return undefined;
     navigate(location.pathname, { replace: true, state: null });
-    const temporizador = setTimeout(() => setMetaCreada(false), 4000);
+    const temporizador = setTimeout(() => setAviso(null), 4000);
     return () => clearTimeout(temporizador);
-  }, [metaCreada, navigate, location.pathname]);
+  }, [aviso, navigate, location.pathname]);
 
   // Toast de "meta eliminada": se oculta a los 4 s.
   useEffect(() => {
@@ -74,6 +74,37 @@ export default function MisMetasPage() {
   const reintentar = () => {
     setEstado({ fase: 'cargando' });
     setIntento((n) => n + 1);
+  };
+
+  // HU2: la pantalla de edición recibe la meta para precargar el formulario.
+  const abrirEdicion = (meta) => {
+    navigate(`/metas/${meta.codigoMeta}/editar`, { state: { meta } });
+  };
+
+  // HU4: eliminar con confirmación.
+  const abrirConfirmacion = (meta) => {
+    setErrorEliminar('');
+    setMetaAEliminar(meta);
+  };
+
+  const cancelarEliminar = useCallback(() => setMetaAEliminar(null), []);
+
+  const confirmarEliminar = async () => {
+    const { codigoMeta } = metaAEliminar;
+    setEliminando(true);
+    setErrorEliminar('');
+    try {
+      await eliminarMeta(codigoMeta);
+      setEstado((actual) => (actual.fase === 'lista'
+        ? { ...actual, metas: actual.metas.filter((m) => m.codigoMeta !== codigoMeta) }
+        : actual));
+      setMetaAEliminar(null);
+      setAviso('eliminada');
+    } catch (error) {
+      setErrorEliminar(error.message);
+    } finally {
+      setEliminando(false);
+    }
   };
 
   return (
@@ -134,10 +165,10 @@ export default function MisMetasPage() {
       {metaCreada && (
         <div
           role="status"
-          className="fixed bottom-24 left-1/2 flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-center gap-3 rounded-xl bg-emerald-400 p-4 text-sm font-semibold text-gray-900 shadow-lg sm:bottom-6"
+          className="fixed bottom-24 left-1/2 flex w-[calc(100%-2rem)] max-w-[640px] -translate-x-1/2 items-center gap-3 rounded-xl bg-emerald-400 p-4 text-sm font-semibold leading-5 text-gray-900 shadow-[0_4px_16px_rgba(30,27,46,0.07)] sm:bottom-8"
         >
           <CircleCheck className="size-6 shrink-0" aria-hidden="true" />
-          ¡Meta creada! Ya aparece en tus metas activas.
+          {AVISOS[aviso]}
         </div>
       )}
 
