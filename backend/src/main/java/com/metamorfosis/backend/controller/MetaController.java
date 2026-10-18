@@ -43,12 +43,4 @@ public class MetaController {
                                                    @RequestParam Integer codigoUsuario) {
         return ResponseEntity.ok(metaService.editarMeta(codigoMeta, solicitud, codigoUsuario));
     }
-
-    /** HU4: elimina una meta. TEMPORAL: codigoUsuario por parámetro (luego JWT). */
-    @DeleteMapping("/{codigoMeta}")
-    public ResponseEntity<Void> eliminarMeta(@PathVariable Integer codigoMeta,
-                                             @RequestParam Integer codigoUsuario) {
-        metaService.eliminarMeta(codigoMeta, codigoUsuario);
-        return ResponseEntity.noContent().build();
-    }
 }

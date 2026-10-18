@@ -1,0 +1,208 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="HU3 - Secuencia ver metas activas" id="hu3-seq">
+    <mxGraphModel dx="2516" dy="1249" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="1300" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="titulo" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=16;fontStyle=1;strokeColor=none;fillColor=none;" value="Diagrama de secuencia — HU3: Ver metas activas" vertex="1">
+          <mxGeometry height="30" width="700" x="40" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="frame0" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;recursiveResize=0;container=0;collapsible=0;width=60;height=24;fillColor=none;fontSize=12;fontStyle=1;" value="alt" vertex="1">
+          <mxGeometry height="690" width="1580" x="30" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="sep0" edge="1" parent="1" style="html=1;dashed=1;endArrow=none;startArrow=none;strokeColor=#000000;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="30" y="672" as="sourcePoint" />
+            <mxPoint x="1610" y="672" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="guard0" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;strokeColor=none;fillColor=none;spacingLeft=2;whiteSpace=nowrap;" value="[usuario no existe]" vertex="1">
+          <mxGeometry height="16" width="109" x="100" y="493" as="geometry" />
+        </mxCell>
+        <mxCell id="guard1" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;strokeColor=none;fillColor=none;spacingLeft=2;whiteSpace=nowrap;" value="[usuario existe]" vertex="1">
+          <mxGeometry height="16" width="92" x="38" y="675" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_U" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" value="«actor»&lt;br&gt;Usuario" vertex="1">
+          <mxGeometry height="1150" width="150" x="35" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_F" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" value="«boundary»&lt;br&gt;PantallaMisMetas" vertex="1">
+          <mxGeometry height="1150" width="150" x="225" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_C" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«RestController»&lt;br&gt;MetaController" vertex="1">
+          <mxGeometry height="1150" width="150" x="425" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_S" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Service»&lt;br&gt;MetaService" vertex="1">
+          <mxGeometry height="1150" width="150" x="675" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_UR" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«interface»&lt;br&gt;UsuarioRepository" vertex="1">
+          <mxGeometry height="1150" width="150" x="875" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_MR" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«interface»&lt;br&gt;MetaRepository" vertex="1">
+          <mxGeometry height="1150" width="150" x="1045" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_BD" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" value="«database»&lt;br&gt;PostgreSQL (Supabase)" vertex="1">
+          <mxGeometry height="1150" width="150" x="1245" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_R" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;u&gt;metaResponse : MetaResponse&lt;/u&gt;" vertex="1">
+          <mxGeometry height="330" width="150" x="1445" y="910" as="geometry" />
+        </mxCell>
+        <mxCell id="bar0" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="984" width="10" x="295" y="162" as="geometry" />
+        </mxCell>
+        <mxCell id="bar1" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="896" width="10" x="495" y="206" as="geometry" />
+        </mxCell>
+        <mxCell id="bar2" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="804" width="10" x="745" y="254" as="geometry" />
+        </mxCell>
+        <mxCell id="bar3" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="152" width="10" x="945" y="308" as="geometry" />
+        </mxCell>
+        <mxCell id="bar4" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="60" width="10" x="1315" y="356" as="geometry" />
+        </mxCell>
+        <mxCell id="bar5" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="62" width="10" x="1315" y="782" as="geometry" />
+        </mxCell>
+        <mxCell id="bar6" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="172" width="10" x="1115" y="716" as="geometry" />
+        </mxCell>
+        <mxCell id="bar7" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;fillColor=#ffffff;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="38" width="10" x="1515" y="968" as="geometry" />
+        </mxCell>
+        <mxCell id="msg1" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="1: abrirMisMetas()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="110" y="170" as="sourcePoint" />
+            <mxPoint x="295" y="170" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg2" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="2: listarMetasActivas(codigoUsuario) [N1]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="305" y="214" as="sourcePoint" />
+            <mxPoint x="495" y="214" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg3" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="3: listarMetasActivas(&lt;br&gt;codigoUsuario)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="505" y="262" as="sourcePoint" />
+            <mxPoint x="745" y="262" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg4" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="4: existsById(&lt;br&gt;codigoUsuario)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="755" y="316" as="sourcePoint" />
+            <mxPoint x="945" y="316" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg5" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="5: SELECT 1 FROM usuario WHERE codigo_usuario = ?">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="955" y="364" as="sourcePoint" />
+            <mxPoint x="1315" y="364" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg6" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="6: fila (o vacío)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1315" y="408" as="sourcePoint" />
+            <mxPoint x="955" y="408" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg7" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="7: Boolean">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="945" y="452" as="sourcePoint" />
+            <mxPoint x="755" y="452" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg8" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="8: UsuarioNoEncontradoException">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="745" y="540" as="sourcePoint" />
+            <mxPoint x="505" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg9" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="9: 404 Not Found [N4]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="495" y="584" as="sourcePoint" />
+            <mxPoint x="305" y="584" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg10" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="10: mostrarError(mensaje)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="295" y="628" as="sourcePoint" />
+            <mxPoint x="110" y="628" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg11" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="11: findActivasByParticipante(&lt;br&gt;codigoUsuario) [N2]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="755" y="724" as="sourcePoint" />
+            <mxPoint x="1115" y="724" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg12" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="12: SELECT meta JOIN participacion&lt;br&gt;WHERE ACEPTADA y ACTIVA&lt;br&gt;ORDER BY fecha_creacion DESC">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1125" y="790" as="sourcePoint" />
+            <mxPoint x="1315" y="790" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg13" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="13: filas">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1315" y="836" as="sourcePoint" />
+            <mxPoint x="1125" y="836" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg14" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="14: List&lt;Meta&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1115" y="880" as="sourcePoint" />
+            <mxPoint x="755" y="880" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg15" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;endSize=8;labelBackgroundColor=#ffffff;fontSize=11;" value="15: «create» MetaResponse.desde(meta)&lt;br&gt;[por cada meta] [N3]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="755" y="935" as="sourcePoint" />
+            <mxPoint x="1445" y="935" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg16" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="16: metaResponse">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1515" y="998" as="sourcePoint" />
+            <mxPoint x="755" y="998" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg17" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="17: List&lt;MetaResponse&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="745" y="1050" as="sourcePoint" />
+            <mxPoint x="505" y="1050" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg18" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="18: 200 OK (List&lt;MetaResponse&gt;) [N4]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="495" y="1094" as="sourcePoint" />
+            <mxPoint x="305" y="1094" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg19" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;endSize=8;dashed=1;labelBackgroundColor=#ffffff;fontSize=11;" value="19: mostrarMetasActivas(metas) [N5]">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="295" y="1138" as="sourcePoint" />
+            <mxPoint x="110" y="1138" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="notas_t" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontSize=13;fontStyle=1;strokeColor=none;fillColor=none;" value="Notas de implementación" vertex="1">
+          <mxGeometry height="24" width="360" x="1700" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="nota_N1" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff9b1;strokeColor=#d6b656;size=12;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;N1&lt;/b&gt;&lt;br&gt;Endpoint: GET /api/metas?codigoUsuario=&lt;id&gt;. El código de usuario viaja por parámetro de forma temporal hasta que exista el login (JWT)." vertex="1">
+          <mxGeometry height="80" width="360" x="1700" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="nota_N2" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff9b1;strokeColor=#d6b656;size=12;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;N2&lt;/b&gt;&lt;br&gt;Consulta con @Query: metas donde el usuario tiene participación ACEPTADA y la meta está ACTIVA, ordenadas por fechaCreacion descendente." vertex="1">
+          <mxGeometry height="80" width="360" x="1700" y="196" as="geometry" />
+        </mxCell>
+        <mxCell id="nota_N3" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff9b1;strokeColor=#d6b656;size=12;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;N3&lt;/b&gt;&lt;br&gt;listarMetasActivas es @Transactional(readOnly = true). Cada Meta se convierte a MetaResponse (DTO): nunca se expone la entidad." vertex="1">
+          <mxGeometry height="80" width="360" x="1700" y="292" as="geometry" />
+        </mxCell>
+        <mxCell id="nota_N4" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff9b1;strokeColor=#d6b656;size=12;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;N4&lt;/b&gt;&lt;br&gt;Códigos HTTP: 200 lista de metas (puede ser vacía) · 404 usuario no existe · 500 error interno sin detalles." vertex="1">
+          <mxGeometry height="62" width="360" x="1700" y="388" as="geometry" />
+        </mxCell>
+        <mxCell id="nota_N5" parent="1" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff9b1;strokeColor=#d6b656;size=12;align=left;verticalAlign=top;spacing=6;fontSize=11;" value="&lt;b&gt;N5&lt;/b&gt;&lt;br&gt;Si la lista llega vacía, la pantalla muestra el estado vacío; si trae metas, las muestra como tarjetas (estados D3/M5)." vertex="1">
+          <mxGeometry height="76" width="360" x="1700" y="466" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

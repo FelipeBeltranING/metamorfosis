@@ -9,16 +9,28 @@ import EstadoError from '../components/EstadoError';
 import ConfirmarEliminarModal from '../components/ConfirmarEliminarModal';
 import { eliminarMeta, listarMetas } from '../services/metaService';
 
+const AVISOS = {
+  creada: '¡Meta creada! Ya aparece en tus metas activas.',
+  actualizada: '¡Meta actualizada!',
+  eliminada: 'Meta eliminada.',
+};
+
+/** Qué aviso mostrar al llegar a la lista (viene en el estado de navegación). */
+function avisoInicial(estadoNavegacion) {
+  if (estadoNavegacion?.metaCreada) return 'creada';
+  if (estadoNavegacion?.metaActualizada) return 'actualizada';
+  return null;
+}
+
 export default function MisMetasPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [estado, setEstado] = useState({ fase: 'cargando' });
   const [intento, setIntento] = useState(0);
-  const [metaCreada, setMetaCreada] = useState(() => Boolean(location.state?.metaCreada));
+  const [aviso, setAviso] = useState(() => avisoInicial(location.state));
   const [metaAEliminar, setMetaAEliminar] = useState(null);
   const [eliminando, setEliminando] = useState(false);
   const [errorEliminar, setErrorEliminar] = useState('');
-  const [metaEliminada, setMetaEliminada] = useState(false);
 
   // Carga de metas (se repite al reintentar).
   useEffect(() => {
@@ -38,38 +50,6 @@ export default function MisMetasPage() {
     const temporizador = setTimeout(() => setAviso(null), 4000);
     return () => clearTimeout(temporizador);
   }, [aviso, navigate, location.pathname]);
-
-  // Toast de "meta eliminada": se oculta a los 4 s.
-  useEffect(() => {
-    if (!metaEliminada) return undefined;
-    const temporizador = setTimeout(() => setMetaEliminada(false), 4000);
-    return () => clearTimeout(temporizador);
-  }, [metaEliminada]);
-
-  const abrirConfirmacion = (meta) => {
-    setErrorEliminar('');
-    setMetaAEliminar(meta);
-  };
-
-  const cancelarEliminar = useCallback(() => setMetaAEliminar(null), []);
-
-  const confirmarEliminar = async () => {
-    const { codigoMeta } = metaAEliminar;
-    setEliminando(true);
-    setErrorEliminar('');
-    try {
-      await eliminarMeta(codigoMeta);
-      setEstado((actual) => (actual.fase === 'lista'
-        ? { ...actual, metas: actual.metas.filter((m) => m.codigoMeta !== codigoMeta) }
-        : actual));
-      setMetaAEliminar(null);
-      setMetaEliminada(true);
-    } catch (error) {
-      setErrorEliminar(error.message);
-    } finally {
-      setEliminando(false);
-    }
-  };
 
   const reintentar = () => {
     setEstado({ fase: 'cargando' });
@@ -137,7 +117,12 @@ export default function MisMetasPage() {
         {estado.fase === 'lista' && estado.metas.length > 0 && (
           <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {estado.metas.map((meta) => (
-              <MetaTarjeta key={meta.codigoMeta} meta={meta} onEliminar={abrirConfirmacion} />
+              <MetaTarjeta
+                key={meta.codigoMeta}
+                meta={meta}
+                onEditar={abrirEdicion}
+                onEliminar={abrirConfirmacion}
+              />
             ))}
           </ul>
         )}
@@ -162,23 +147,13 @@ export default function MisMetasPage() {
         />
       )}
 
-      {metaCreada && (
+      {aviso && (
         <div
           role="status"
           className="fixed bottom-24 left-1/2 flex w-[calc(100%-2rem)] max-w-[640px] -translate-x-1/2 items-center gap-3 rounded-xl bg-emerald-400 p-4 text-sm font-semibold leading-5 text-gray-900 shadow-[0_4px_16px_rgba(30,27,46,0.07)] sm:bottom-8"
         >
           <CircleCheck className="size-6 shrink-0" aria-hidden="true" />
           {AVISOS[aviso]}
-        </div>
-      )}
-
-      {metaEliminada && (
-        <div
-          role="status"
-          className="fixed bottom-24 left-1/2 flex w-[calc(100%-2rem)] max-w-[640px] -translate-x-1/2 items-center gap-3 rounded-xl bg-emerald-400 p-4 text-sm font-semibold leading-5 text-gray-900 shadow-[0_4px_16px_rgba(30,27,46,0.07)] sm:bottom-8"
-        >
-          <CircleCheck className="size-6 shrink-0" aria-hidden="true" />
-          Meta eliminada.
         </div>
       )}
     </div>
