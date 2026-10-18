@@ -14,7 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-
+ import org.springframework.core.annotation.AnnotationUtils;
+ 
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -37,20 +38,25 @@ public class AuditoriaAspect {
         this.logService = logService;
     }
 
-    @Around(value = "@annotation(auditar)", argNames = "pjp,auditar")
-    public Object auditar(ProceedingJoinPoint pjp, Auditar auditar) throws Throwable {
+   
+
+@Around("@annotation(com.metamorfosis.backend.auditoria.Auditar)")
+public Object auditar(ProceedingJoinPoint pjp) throws Throwable {
+    MethodSignature firma = (MethodSignature) pjp.getSignature();
+    Auditar auditar = AnnotationUtils.findAnnotation(firma.getMethod(), Auditar.class);
+
+    ContextoAuditoria.limpiar();
+    try {
+        Object resultado = pjp.proceed();
+        guardar(pjp, auditar, ResultadoLog.EXITO, resultado, null);
+        return resultado;
+    } catch (Throwable e) {
+        guardar(pjp, auditar, ResultadoLog.ERROR, null, e);
+        throw e;
+    } finally {
         ContextoAuditoria.limpiar();
-        try {
-            Object resultado = pjp.proceed();
-            guardar(pjp, auditar, ResultadoLog.EXITO, resultado, null);
-            return resultado;
-        } catch (Throwable e) {
-            guardar(pjp, auditar, ResultadoLog.ERROR, null, e);
-            throw e;
-        } finally {
-            ContextoAuditoria.limpiar();
-        }
     }
+}
 
     private void guardar(ProceedingJoinPoint pjp, Auditar auditar, ResultadoLog resultado,
                          Object retorno, Throwable error) {
