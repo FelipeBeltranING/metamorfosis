@@ -54,6 +54,11 @@ public class ManejadorExcepciones {
         return responder(HttpStatus.NOT_FOUND, e.getMessage(), List.of());
     }
 
+    @ExceptionHandler(CredencialesInvalidasException.class)
+    public ResponseEntity<ErrorResponse> credencialesInvalidas(CredencialesInvalidasException e) {
+        return responder(HttpStatus.UNAUTHORIZED, e.getMessage(), List.of());
+    }
+
     @ExceptionHandler(PermisoDenegadoException.class)
     public ResponseEntity<ErrorResponse> permisoDenegado(PermisoDenegadoException e) {
         return responder(HttpStatus.FORBIDDEN, e.getMessage(), List.of());
