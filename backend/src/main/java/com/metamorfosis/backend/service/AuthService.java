@@ -6,7 +6,6 @@ import com.metamorfosis.backend.exception.EmailYaRegistradoException;
 import com.metamorfosis.backend.exception.ValidacionException;
 import com.metamorfosis.backend.model.Usuario;
 import com.metamorfosis.backend.repository.UsuarioRepository;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,62 +17,69 @@ import java.util.regex.Pattern;
 @Service
 public class AuthService {
 
-    private static final int LONGITUD_MINIMA_PASSWORD = 8;
-    private static final Pattern FORMATO_EMAIL =
-            Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final LogService logService;
 
-    public AuthService(UsuarioRepository usuarioRepository,
-                       PasswordEncoder passwordEncoder) {
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$");
+
+    public AuthService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, LogService logService) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.logService = logService;
     }
 
     @Transactional
     public UsuarioResponse registrar(RegistroRequest solicitud) {
+        // 1. Validaciones de formato y campos obligatorios
         validar(solicitud);
 
-        String email = solicitud.email().trim().toLowerCase();
-        if (usuarioRepository.existsByEmail(email)) {
+        if (usuarioRepository.existsByEmail(solicitud.email())) {
             throw new EmailYaRegistradoException("El email ya está registrado");
         }
 
-        String hash = passwordEncoder.encode(solicitud.password());
-        Usuario usuario = new Usuario(
-                solicitud.nombre().trim(),
-                solicitud.apellido().trim(),
-                email,
-                hash);
+        String passwordHash = passwordEncoder.encode(solicitud.password());
+        Usuario nuevoUsuario = new Usuario(solicitud.nombre(), solicitud.apellido(), solicitud.email(), passwordHash);
+        
+        Usuario guardado = usuarioRepository.save(nuevoUsuario);
+        UsuarioResponse respuesta = UsuarioResponse.desde(guardado);
 
+        logService.registrarExito(
+            guardado.getCodigoUsuario(),
+            LogService.ACCION_REGISTRO,
+            LogService.ENTIDAD_USUARIO,
+            guardado.getCodigoUsuario()
+        );
 
-        try {
-            Usuario guardado = usuarioRepository.save(usuario);
-            return UsuarioResponse.desde(guardado);
-        } catch (DataIntegrityViolationException e) {
-            throw new EmailYaRegistradoException("El email ya está registrado");
-        }
+        return respuesta;
     }
 
-    private void validar(RegistroRequest s) {
+    private void validar(RegistroRequest solicitud) {
         List<String> errores = new ArrayList<>();
-        if (s == null) {
-            errores.add("La solicitud de registro no puede ser nula");
-        } else {
-            if (estaVacio(s.nombre())) errores.add("El nombre no puede estar vacío");
-            if (estaVacio(s.apellido())) errores.add("El apellido no puede estar vacío");
-            if (estaVacio(s.email()) || !FORMATO_EMAIL.matcher(s.email().trim()).matches()) {
-                errores.add("El email no es válido, escriba un formato válido");
-            }
-            if (s.password() == null || s.password().length() < LONGITUD_MINIMA_PASSWORD) {
-                errores.add("La contraseña debe tener al menos " + LONGITUD_MINIMA_PASSWORD + " caracteres");
-            }
-        }
-        if (!errores.isEmpty()) throw new ValidacionException(errores);
-    }
 
-    private boolean estaVacio(String valor) {
-        return valor == null || valor.isBlank();
+        if (solicitud.nombre() == null || solicitud.nombre().isBlank()) {
+            errores.add("El nombre es obligatorio");
+        }
+        
+        if (solicitud.apellido() == null || solicitud.apellido().isBlank()) {
+            errores.add("El apellido es obligatorio");
+        }
+        
+        if (solicitud.email() == null || solicitud.email().isBlank()) {
+            errores.add("El email es obligatorio");
+        } else if (!EMAIL_PATTERN.matcher(solicitud.email()).matches()) {
+            errores.add("El formato del email no es válido");
+        }
+        
+        if (solicitud.password() == null || solicitud.password().isBlank()) {
+            errores.add("La contraseña es obligatoria");
+        } else if (!PASSWORD_PATTERN.matcher(solicitud.password()).matches()) {
+            errores.add("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
+        }
+
+        if (!errores.isEmpty()) {
+            throw new ValidacionException(errores);
+        }
     }
 }
