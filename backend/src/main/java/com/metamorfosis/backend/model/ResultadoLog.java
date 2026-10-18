@@ -1,5 +1,6 @@
 package com.metamorfosis.backend.model;
 
-public class ResultadoLog {
-    
+public enum ResultadoLog {
+    EXITO,
+    ERROR
 }
