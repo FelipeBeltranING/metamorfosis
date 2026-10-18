@@ -1,15 +1,27 @@
+import { obtenerSesion } from './sesionService';
+
 const API_URL = import.meta.env.VITE_API_URL;
 
-// TODO (Sprint de login): el código de usuario saldrá del token JWT.
-const CODIGO_USUARIO_TEMPORAL = 1;
+/** Sesión vigente, o Error legible si no hay (p. ej. el token expiró con la pantalla abierta). */
+function sesionActiva() {
+  const sesion = obtenerSesion();
+  if (!sesion) throw new Error('Tu sesión expiró. Inicia sesión de nuevo.');
+  return sesion;
+}
+
+const autorizacion = (token) => ({ Authorization: `Bearer ${token}` });
+
+// TODO: cuando el backend valide el JWT, quitar el parámetro `codigoUsuario` de las
+// peticiones (el servidor lo tomará del token).
 
 /** Crea una meta. Lanza Error con `mensaje` y `errores` si el servidor la rechaza. */
 export async function crearMeta(solicitud) {
+  const { codigoUsuario, token } = sesionActiva();
   let respuesta;
   try {
-    respuesta = await fetch(`${API_URL}/api/metas?codigoUsuario=${CODIGO_USUARIO_TEMPORAL}`, {
+    respuesta = await fetch(`${API_URL}/api/metas?codigoUsuario=${codigoUsuario}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...autorizacion(token) },
       body: JSON.stringify(solicitud),
     });
   } catch {
@@ -27,9 +39,12 @@ export async function crearMeta(solicitud) {
 
 /** Lista las metas activas del usuario. Lanza Error con mensaje legible si falla. */
 export async function listarMetas() {
+  const { codigoUsuario, token } = sesionActiva();
   let respuesta;
   try {
-    respuesta = await fetch(`${API_URL}/api/metas?codigoUsuario=${CODIGO_USUARIO_TEMPORAL}`);
+    respuesta = await fetch(`${API_URL}/api/metas?codigoUsuario=${codigoUsuario}`, {
+      headers: autorizacion(token),
+    });
   } catch {
     throw new Error('No se pudo conectar con el servidor');
   }
@@ -41,11 +56,12 @@ export async function listarMetas() {
 
 /** Elimina una meta (solo su creador puede). Lanza Error con mensaje legible si falla. */
 export async function eliminarMeta(codigoMeta) {
+  const { codigoUsuario, token } = sesionActiva();
   let respuesta;
   try {
     respuesta = await fetch(
-      `${API_URL}/api/metas/${codigoMeta}?codigoUsuario=${CODIGO_USUARIO_TEMPORAL}`,
-      { method: 'DELETE' },
+      `${API_URL}/api/metas/${codigoMeta}?codigoUsuario=${codigoUsuario}`,
+      { method: 'DELETE', headers: autorizacion(token) },
     );
   } catch {
     throw new Error('No se pudo conectar con el servidor');
@@ -63,13 +79,14 @@ export async function eliminarMeta(codigoMeta) {
  * (código HTTP) para que la pantalla distinga 404, 403 y 400. Sin `estado` = sin conexión.
  */
 export async function editarMeta(codigoMeta, solicitud) {
+  const { codigoUsuario, token } = sesionActiva();
   let respuesta;
   try {
     respuesta = await fetch(
-      `${API_URL}/api/metas/${codigoMeta}?codigoUsuario=${CODIGO_USUARIO_TEMPORAL}`,
+      `${API_URL}/api/metas/${codigoMeta}?codigoUsuario=${codigoUsuario}`,
       {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...autorizacion(token) },
         body: JSON.stringify(solicitud),
       },
     );
