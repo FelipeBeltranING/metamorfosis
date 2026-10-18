@@ -1,5 +1,6 @@
 package com.metamorfosis.backend.dto;
 
-public class LoginRequest {
-    
-}
+public record LoginRequest(
+    String email,
+    String password
+){}
