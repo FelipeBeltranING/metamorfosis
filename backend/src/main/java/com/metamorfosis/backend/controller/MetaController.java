@@ -2,7 +2,10 @@ package com.metamorfosis.backend.controller;
 
 import com.metamorfosis.backend.dto.CrearMetaRequest;
 import com.metamorfosis.backend.dto.MetaResponse;
+import com.metamorfosis.backend.dto.RegistrarCumplimientoRequest;
+import com.metamorfosis.backend.dto.RegistroResponse;
 import com.metamorfosis.backend.service.MetaService;
+import com.metamorfosis.backend.service.RegistroService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +19,11 @@ import java.util.List;
 public class MetaController {
 
     private final MetaService metaService;
+    private final RegistroService registroService;
 
-    public MetaController(MetaService metaService) {
+    public MetaController(MetaService metaService, RegistroService registroService) {
         this.metaService = metaService;
+        this.registroService = registroService;
     }
 
     /** HU1: crea una meta. El usuario sale del token JWT, no de la petición. */
@@ -54,5 +59,16 @@ public class MetaController {
         metaService.eliminarMeta(codigoMeta, codigoUsuario);
 
         return ResponseEntity.noContent().build();
+    }
+
+    /** HU5: registra el cumplimiento de la meta en una fecha determinada (solo participantes). */
+    @PostMapping("/{codigoMeta}/registros")
+    public ResponseEntity<RegistroResponse> registrarCumplimiento(
+            @PathVariable Integer codigoMeta,
+            @RequestBody RegistrarCumplimientoRequest solicitud,
+            @AuthenticationPrincipal Integer codigoUsuario) {
+
+        return ResponseEntity.ok(
+                registroService.registrarCumplimiento(codigoMeta, solicitud, codigoUsuario));
     }
 }
