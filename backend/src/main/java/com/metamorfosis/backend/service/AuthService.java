@@ -109,7 +109,13 @@ public class AuthService {
         }
 
         String token = jwtService.generarToken(usuario);
-        LoginResponse respuesta = new LoginResponse(token, usuario.getCodigoUsuario());
+        LoginResponse respuesta = new LoginResponse(
+            token,
+            usuario.getCodigoUsuario(),
+            usuario.getNombre(),
+            usuario.getApellido(),
+            usuario.getEmail()
+        );
 
         logService.registrar(
             usuario.getCodigoUsuario(),
