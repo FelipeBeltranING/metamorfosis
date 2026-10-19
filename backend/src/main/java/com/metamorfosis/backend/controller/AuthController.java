@@ -2,6 +2,7 @@ package com.metamorfosis.backend.controller;
 
 import com.metamorfosis.backend.dto.RegistroRequest;
 import com.metamorfosis.backend.dto.UsuarioResponse;
+import com.metamorfosis.backend.exception.TokenInvalidoException;
 import com.metamorfosis.backend.dto.LoginRequest;
 import com.metamorfosis.backend.dto.LoginResponse;
 import com.metamorfosis.backend.service.AuthService;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +33,15 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> iniciarSesion(@RequestBody LoginRequest solicitud) {
         return ResponseEntity.ok(authService.iniciarSesion(solicitud));
+    }
+
+    public ResponseEntity<Void> cerrarSesion(
+            @RequestHeader(value = "Authorization", required = false) String autorizacion) {
+        if (autorizacion == null || !autorizacion.startsWith("Bearer ")) {
+            throw new TokenInvalidoException("Falta el token de autorización");
+        }
+        authService.cerrarSesion(autorizacion.substring("Bearer ".length()).trim());
+        return ResponseEntity.noContent().build();
     }
     
 }

@@ -4,6 +4,7 @@ import com.metamorfosis.backend.dto.CrearMetaRequest;
 import com.metamorfosis.backend.dto.MetaResponse;
 import com.metamorfosis.backend.service.MetaService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -20,35 +21,35 @@ public class MetaController {
         this.metaService = metaService;
     }
 
-    /** TEMPORAL: codigoUsuario llega por parámetro hasta que exista el login (saldrá del JWT). */
+    /** HU1: crea una meta. El usuario sale del token JWT, no de la petición. */
     @PostMapping
     public ResponseEntity<MetaResponse> crearMeta(@RequestBody CrearMetaRequest solicitud,
-                                                  @RequestParam Integer codigoUsuario) {
+                                                  @AuthenticationPrincipal Integer codigoUsuario) {
         MetaResponse creada = metaService.crearMeta(solicitud, codigoUsuario);
         URI ubicacion = ServletUriComponentsBuilder.fromCurrentRequest()
                 .replaceQuery(null).path("/{id}").buildAndExpand(creada.codigoMeta()).toUri();
         return ResponseEntity.created(ubicacion).body(creada);
     }
 
-    /** HU3: metas activas del usuario. TEMPORAL: codigoUsuario por parámetro (luego JWT). */
+    /** HU3: metas activas del usuario autenticado. */
     @GetMapping
-    public ResponseEntity<List<MetaResponse>> listarMetasActivas(@RequestParam Integer codigoUsuario) {
+    public ResponseEntity<List<MetaResponse>> listarMetasActivas(@AuthenticationPrincipal Integer codigoUsuario) {
         return ResponseEntity.ok(metaService.listarMetasActivas(codigoUsuario));
     }
 
-    /** HU2: edita una meta. TEMPORAL: codigoUsuario por parámetro (luego JWT). */
+    /** HU2: edita una meta (solo su creador). */
     @PutMapping("/{codigoMeta}")
     public ResponseEntity<MetaResponse> editarMeta(@PathVariable Integer codigoMeta,
                                                    @RequestBody CrearMetaRequest solicitud,
-                                                   @RequestParam Integer codigoUsuario) {
+                                                   @AuthenticationPrincipal Integer codigoUsuario) {
         return ResponseEntity.ok(metaService.editarMeta(codigoMeta, solicitud, codigoUsuario));
     }
 
-    /** HU4: elimina una meta. TEMPORAL: codigoUsuario por parámetro (luego JWT). */
+    /** HU4: elimina una meta (solo su creador). */
     @DeleteMapping("/{codigoMeta}")
     public ResponseEntity<Void> eliminarMeta(
             @PathVariable Integer codigoMeta,
-            @RequestParam Integer codigoUsuario) {
+            @AuthenticationPrincipal Integer codigoUsuario) {
 
         metaService.eliminarMeta(codigoMeta, codigoUsuario);
 
