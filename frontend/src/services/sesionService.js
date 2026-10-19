@@ -1,22 +1,31 @@
 const CLAVE_SESION = 'metamorfosis.sesion';
 
-/** Fecha de expiración (ms) leída del claim `exp` del JWT, o null si no se puede leer. */
-function expiracionDelToken(token) {
+/** Contenido (claims) del JWT, o null si no se puede leer. No verifica la firma: eso lo hace el servidor. */
+function leerCarga(token) {
   try {
     const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-    const carga = JSON.parse(atob(base64.padEnd(Math.ceil(base64.length / 4) * 4, '=')));
-    return typeof carga.exp === 'number' ? carga.exp * 1000 : null;
+    const binario = atob(base64.padEnd(Math.ceil(base64.length / 4) * 4, '='));
+    return JSON.parse(new TextDecoder().decode(Uint8Array.from(binario, (c) => c.charCodeAt(0))));
   } catch {
     return null;
   }
 }
 
-/** Guarda la sesión que devuelve el login: { token, codigoUsuario }. */
-export function guardarSesion({ token, codigoUsuario }) {
-  localStorage.setItem(CLAVE_SESION, JSON.stringify({ token, codigoUsuario }));
+/** Fecha de expiración (ms) leída del claim `exp` del JWT, o null si no se puede leer. */
+function expiracionDelToken(token) {
+  const exp = leerCarga(token)?.exp;
+  return typeof exp === 'number' ? exp * 1000 : null;
 }
 
-/** Cierra la sesión local (la usará también el botón de cerrar sesión cuando exista). */
+/** Guarda la sesión que devuelve el login: { token, codigoUsuario } y, si vienen, nombre, apellido y email. */
+export function guardarSesion({ token, codigoUsuario, nombre, apellido, email }) {
+  localStorage.setItem(
+    CLAVE_SESION,
+    JSON.stringify({ token, codigoUsuario, nombre, apellido, email }),
+  );
+}
+
+/** Borra la sesión de este navegador. No avisa al servidor (para eso, ver `cerrarSesionRemota`). */
 export function cerrarSesion() {
   try {
     localStorage.removeItem(CLAVE_SESION);
@@ -25,7 +34,7 @@ export function cerrarSesion() {
   }
 }
 
-/** Sesión vigente { token, codigoUsuario } o null. Si el token ya expiró, la borra. */
+/** Sesión vigente o null. Si el token ya expiró, la borra. */
 export function obtenerSesion() {
   try {
     const guardada = localStorage.getItem(CLAVE_SESION);
@@ -43,4 +52,15 @@ export function obtenerSesion() {
     cerrarSesion();
     return null;
   }
+}
+
+/**
+ * Datos para mostrar en el menú de perfil: { nombre, email }. El nombre viene de la respuesta
+ * del login (puede faltar); el correo, de la respuesta o del claim `email` del token.
+ */
+export function datosPerfil(sesion) {
+  if (!sesion) return null;
+  const nombre = [sesion.nombre, sesion.apellido].filter(Boolean).join(' ');
+  const email = sesion.email || leerCarga(sesion.token)?.email || '';
+  return { nombre, email };
 }

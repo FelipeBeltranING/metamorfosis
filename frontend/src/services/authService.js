@@ -4,13 +4,16 @@ const API_URL = import.meta.env.VITE_API_URL;
  * POST JSON a la API. Lanza Error con `mensaje`, `errores` y `estado` (código HTTP)
  * para que la pantalla distinga 400, 401, 409... Sin `estado` = sin conexión.
  */
-async function post(ruta, solicitud) {
+async function post(ruta, solicitud, token) {
   let respuesta;
   try {
     respuesta = await fetch(`${API_URL}${ruta}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(solicitud),
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: solicitud && JSON.stringify(solicitud),
     });
   } catch {
     throw new Error('No se pudo conectar con el servidor');
@@ -39,4 +42,12 @@ export async function iniciarSesion({ email, password }) {
   const datos = await post('/api/auth/login', { email, password });
   if (!datos?.token || !datos?.codigoUsuario) throw new Error('Respuesta inesperada del servidor');
   return datos;
+}
+
+/**
+ * Cierra la sesión en el servidor (revoca el token). 204 sin cuerpo. 401 si el token ya no sirve
+ * (falso, expirado o ya cerrado).
+ */
+export function cerrarSesionRemota(token) {
+  return post('/api/auth/logout', null, token);
 }

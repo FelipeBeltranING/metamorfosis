@@ -39,11 +39,20 @@ export default function MisMetasPage() {
     let activo = true;
     listarMetas()
       .then((metas) => activo && setEstado({ fase: 'lista', metas }))
-      .catch((error) => activo && setEstado({ fase: 'error', mensaje: error.message }));
+      .catch((error) => activo && setEstado({
+        fase: 'error',
+        mensaje: error.message,
+        sesionExpirada: error.estado === 401,
+      }));
     return () => {
       activo = false;
     };
   }, [intento]);
+
+  // Sesión vencida o revocada: de vuelta al login.
+  useEffect(() => {
+    if (estado.sesionExpirada) navigate('/login', { replace: true });
+  }, [estado, navigate]);
 
   // Aviso de éxito: se limpia el estado de navegación y se oculta a los 4 s.
   useEffect(() => {

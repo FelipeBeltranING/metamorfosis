@@ -34,7 +34,8 @@ public class AuthController {
     public ResponseEntity<LoginResponse> iniciarSesion(@RequestBody LoginRequest solicitud) {
         return ResponseEntity.ok(authService.iniciarSesion(solicitud));
     }
-
+    
+    @PostMapping("/logout")
     public ResponseEntity<Void> cerrarSesion(
             @RequestHeader(value = "Authorization", required = false) String autorizacion) {
         if (autorizacion == null || !autorizacion.startsWith("Bearer ")) {

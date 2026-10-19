@@ -1,4 +1,5 @@
-import { Sprout, User } from 'lucide-react';
+import { Sprout } from 'lucide-react';
+import MenuPerfil from './MenuPerfil';
 
 export default function Encabezado() {
   return (
@@ -9,9 +10,7 @@ export default function Encabezado() {
         </div>
         <span className="text-xl font-bold text-gray-900 sm:text-2xl">Metamorfosis</span>
       </div>
-      <div className="flex size-10 items-center justify-center rounded-full bg-violet-100 sm:size-12">
-        <User className="size-6 text-violet-600" aria-label="Perfil" />
-      </div>
+      <MenuPerfil />
     </header>
   );
 }

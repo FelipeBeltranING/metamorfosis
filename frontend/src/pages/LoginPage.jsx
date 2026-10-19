@@ -10,6 +10,19 @@ import { REGEX_EMAIL, TEXTO_USUARIO_MAX } from '../constants/validaciones';
 
 const MENSAJE_CREDENCIALES = 'Correo o contraseña incorrectos.';
 
+const AVISOS = {
+  cuentaCreada: '¡Cuenta creada! Ya puedes iniciar sesión.',
+  sesionCerrada: 'Sesión cerrada.',
+};
+
+/** Qué aviso mostrar al llegar (viene en el estado de navegación). */
+function avisoInicial(estadoNavegacion) {
+  if (estadoNavegacion?.cuentaCreada) return 'cuentaCreada';
+  if (estadoNavegacion?.sesionCerrada) return 'sesionCerrada';
+  return null;
+}
+
+/** Validación del cliente. Las claves coinciden con los id de los campos. */
 function validar({ email, password }) {
   const errores = {};
   if (!REGEX_EMAIL.test(email.trim())) errores.email = 'Ingresa un correo válido';
@@ -24,15 +37,15 @@ export default function LoginPage() {
   const [errores, setErrores] = useState({});
   const [errorServidor, setErrorServidor] = useState('');
   const [enviando, setEnviando] = useState(false);
-  const [cuentaCreada, setCuentaCreada] = useState(() => Boolean(location.state?.cuentaCreada));
+  const [aviso, setAviso] = useState(() => avisoInicial(location.state));
 
-  // Aviso de cuenta creada: se limpia el estado de navegación y se oculta a los 4 s.
+  // Aviso de éxito: se limpia el estado de navegación y se oculta a los 4 s.
   useEffect(() => {
-    if (!cuentaCreada) return undefined;
+    if (!aviso) return undefined;
     navigate(location.pathname, { replace: true, state: null });
-    const temporizador = setTimeout(() => setCuentaCreada(false), 4000);
+    const temporizador = setTimeout(() => setAviso(null), 4000);
     return () => clearTimeout(temporizador);
-  }, [cuentaCreada, navigate, location.pathname]);
+  }, [aviso, navigate, location.pathname]);
 
   const actualizar = (campo, valor) => {
     setFormulario((anterior) => ({ ...anterior, [campo]: valor }));
@@ -122,13 +135,13 @@ export default function LoginPage() {
         </p>
       </form>
 
-      {cuentaCreada && (
+      {aviso && (
         <div
           role="status"
           className="fixed bottom-10 left-1/2 flex w-[calc(100%-2rem)] max-w-[440px] -translate-x-1/2 items-center gap-3 rounded-xl bg-emerald-400 px-4 py-3 text-sm font-bold text-gray-900 shadow-lg"
         >
           <CircleCheck className="size-[18px] shrink-0" aria-hidden="true" />
-          ¡Cuenta creada! Ya puedes iniciar sesión.
+          {AVISOS[aviso]}
         </div>
       )}
     </LayoutAuth>
