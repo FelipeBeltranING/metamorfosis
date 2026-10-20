@@ -2,8 +2,15 @@ import { useState } from 'react';
 import { CalendarCheck, Check, CircleAlert, LoaderCircle, X, XCircle } from 'lucide-react';
 import BotonOpcion from './BotonOpcion';
 
-const HOY = new Date().toISOString().slice(0, 10);
+function fechaLocalHoy() {
+  const ahora = new Date();
+  const anio = ahora.getFullYear();
+  const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+  const dia = String(ahora.getDate()).padStart(2, '0');
+  return `${anio}-${mes}-${dia}`;
+}
 
+const HOY = fechaLocalHoy();
 /**
  * HU5: registra el cumplimiento de una meta en una fecha elegida por el usuario
  * (hoy o un día anterior). Misma estructura y estilo que ConfirmarEliminarModal.

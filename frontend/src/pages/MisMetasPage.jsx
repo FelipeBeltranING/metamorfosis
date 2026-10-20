@@ -10,7 +10,15 @@ import ConfirmarEliminarModal from '../components/ConfirmarEliminarModal';
 import RegistrarCumplimientoModal from '../components/RegistrarCumplimientoModal';
 import { eliminarMeta, listarMetas, registrarCumplimiento } from '../services/metaService';
 
-const HOY = new Date().toISOString().slice(0, 10);
+function fechaLocalHoy() {
+  const ahora = new Date();
+  const anio = ahora.getFullYear();
+  const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+  const dia = String(ahora.getDate()).padStart(2, '0');
+  return `${anio}-${mes}-${dia}`;
+}
+
+const HOY = fechaLocalHoy();
 
 const AVISOS = {
   creada: '¡Meta creada! Ya aparece en tus metas activas.',
