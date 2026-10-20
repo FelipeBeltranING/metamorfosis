@@ -79,7 +79,7 @@ class RegistroServiceTest {
         assertEquals(99, respuesta.codigoRegistro());
         assertEquals(10, respuesta.codigoMeta());
         assertEquals(1, respuesta.codigoUsuario());
-        assertEquals(fecha, respuesta.fechaRegistro());
+        assertEquals(fecha, respuesta.fechaFinalizacion());
         assertTrue(respuesta.cumplimiento());
         verify(registroRepository).save(any(Registro.class));
     }

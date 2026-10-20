@@ -1,4 +1,4 @@
-import { Clock } from 'lucide-react';
+import { Check, Clock, LoaderCircle } from 'lucide-react';
 import MenuTarjeta from './MenuTarjeta';
 import { PLAZOS, TIPOS } from '../constants/opcionesMeta';
 
@@ -14,7 +14,33 @@ function Chip({ Icono, texto }) {
   );
 }
 
-export default function MetaTarjeta({ meta, onEditar, onEliminar }) {
+/** HU5: botón circular para marcar/desmarcar el cumplimiento de hoy con un solo toque. */
+function BotonCumplimientoHoy({ nombreMeta, cumplidaHoy, marcando, onClick }) {
+  const base = 'flex size-10 shrink-0 items-center justify-center rounded-full border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300 disabled:cursor-not-allowed';
+  const estado = cumplidaHoy
+    ? 'border-emerald-400 bg-emerald-400 text-gray-900 hover:bg-emerald-500'
+    : 'border-zinc-300 bg-white text-transparent hover:border-violet-400';
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={marcando}
+      aria-pressed={cumplidaHoy}
+      aria-label={cumplidaHoy ? `Quitar cumplimiento de hoy de ${nombreMeta}` : `Marcar ${nombreMeta} como cumplida hoy`}
+      title={cumplidaHoy ? 'Cumplida hoy' : 'Marcar como cumplida hoy'}
+      className={`${base} ${estado}`}
+    >
+      {marcando
+        ? <LoaderCircle className="size-4 animate-spin text-gray-400" aria-hidden="true" />
+        : <Check className="size-5" aria-hidden="true" />}
+    </button>
+  );
+}
+
+export default function MetaTarjeta({
+  meta, cumplidaHoy = false, marcandoHoy = false, onMarcarHoy, onRegistrarCumplimiento, onEditar, onEliminar,
+}) {
   const tipo = TIPO_POR_VALOR[meta.tipo] ?? TIPO_POR_VALOR.OTRO;
   const plazo = PLAZO_POR_VALOR[meta.plazo];
 
@@ -29,9 +55,18 @@ export default function MetaTarjeta({ meta, onEditar, onEliminar }) {
             <span className="text-[10px]" aria-hidden="true">●</span>
             Activa
           </span>
-          {(onEditar || onEliminar) && (
+          {onMarcarHoy && (
+            <BotonCumplimientoHoy
+              nombreMeta={meta.nombre}
+              cumplidaHoy={cumplidaHoy}
+              marcando={marcandoHoy}
+              onClick={() => onMarcarHoy(meta)}
+            />
+          )}
+          {(onRegistrarCumplimiento || onEditar || onEliminar) && (
             <MenuTarjeta
               nombre={meta.nombre}
+              onRegistrarCumplimiento={onRegistrarCumplimiento && (() => onRegistrarCumplimiento(meta))}
               onEditar={onEditar && (() => onEditar(meta))}
               onEliminar={onEliminar && (() => onEliminar(meta))}
             />
