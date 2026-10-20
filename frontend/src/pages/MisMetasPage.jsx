@@ -42,8 +42,9 @@ export default function MisMetasPage() {
   const [metaARegistrar, setMetaARegistrar] = useState(null);
   const [registrando, setRegistrando] = useState(false);
   const [errorRegistrar, setErrorRegistrar] = useState('');
-  // HU5: acción rápida "marcar hoy" desde la tarjeta (optimista, solo para esta sesión:
-  // la lista de metas no trae el historial de registros, así que no persiste al recargar).
+  // HU5: acción rápida "marcar hoy" desde la tarjeta. El backend indica en cada meta
+  // (campo cumplidaHoy) si ya hay un registro cumplido de hoy, así que esto sí persiste
+  // al recargar la página; marcadasHoy se sincroniza con esa respuesta en cada carga.
   const [marcadasHoy, setMarcadasHoy] = useState(() => new Set());
   const [marcandoHoyCodigo, setMarcandoHoyCodigo] = useState(null);
 
@@ -51,7 +52,11 @@ export default function MisMetasPage() {
   useEffect(() => {
     let activo = true;
     listarMetas()
-      .then((metas) => activo && setEstado({ fase: 'lista', metas }))
+      .then((metas) => {
+        if (!activo) return;
+        setEstado({ fase: 'lista', metas });
+        setMarcadasHoy(new Set(metas.filter((m) => m.cumplidaHoy).map((m) => m.codigoMeta)));
+      })
       .catch((error) => activo && setEstado({
         fase: 'error',
         mensaje: error.message,

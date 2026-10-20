@@ -1,6 +1,7 @@
 package com.metamorfosis.backend.service;
 
 import com.metamorfosis.backend.auditoria.Auditar;
+import com.metamorfosis.backend.auditoria.ContextoAuditoria;
 import com.metamorfosis.backend.dto.RegistrarCumplimientoRequest;
 import com.metamorfosis.backend.dto.RegistroResponse;
 import com.metamorfosis.backend.exception.MetaNoEncontradaException;
@@ -71,6 +72,12 @@ public class RegistroService {
                 .orElseGet(() -> new Registro(meta, usuario, solicitud.fechaFinalizacion()));
 
         registro.actualizarCumplimiento(solicitud.cumplimiento());
+
+        // Para el log: qué pasó exactamente (se marcó o se quitó), en qué fecha y en qué meta.
+        ContextoAuditoria.agregar("accion", Boolean.TRUE.equals(solicitud.cumplimiento()) ? "marcado" : "quitado");
+        ContextoAuditoria.agregar("fechaFinalizacion", solicitud.fechaFinalizacion());
+        ContextoAuditoria.agregar("cumplimiento", solicitud.cumplimiento());
+        ContextoAuditoria.agregar("codigoMeta", codigoMeta);
 
         return RegistroResponse.desde(registroRepository.save(registro));
     }
