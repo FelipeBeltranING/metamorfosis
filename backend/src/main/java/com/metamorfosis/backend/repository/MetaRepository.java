@@ -22,4 +22,15 @@ public interface MetaRepository extends JpaRepository<Meta, Integer> {
             order by m.fechaCreacion desc, m.codigoMeta desc
             """)
     List<Meta> findActivasByParticipante(@Param("codigoUsuario") Integer codigoUsuario);
+
+    /** HU5: true si el usuario participa en la meta con invitación ACEPTADA (puede registrar cumplimiento). */
+    @Query("""
+            select case when count(p) > 0 then true else false end
+            from Participacion p
+            where p.meta.codigoMeta = :codigoMeta
+              and p.usuario.codigoUsuario = :codigoUsuario
+              and p.estadoInvitacion = com.metamorfosis.backend.model.EstadoInvitacion.ACEPTADA
+            """)
+    boolean esParticipanteAceptado(@Param("codigoMeta") Integer codigoMeta,
+                                    @Param("codigoUsuario") Integer codigoUsuario);
 }

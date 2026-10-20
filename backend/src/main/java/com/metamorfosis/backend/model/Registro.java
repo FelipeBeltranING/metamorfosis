@@ -33,6 +33,21 @@ public class Registro {
         this.usuario = usuario;
     }
 
+    /** HU5: registro de cumplimiento en una fecha determinada (no necesariamente hoy). */
+    public Registro(Meta meta, Usuario usuario, LocalDate fechaRegistro) {
+        this.meta = meta;
+        this.usuario = usuario;
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    /** HU5: marca o desmarca el cumplimiento de este registro. */
+    public void actualizarCumplimiento(boolean cumplimiento) {
+        this.cumplimiento = cumplimiento;
+    }
+
     public Integer getCodigoRegistro() { return codigoRegistro; }
+    public Meta getMeta() { return meta; }
+    public Usuario getUsuario() { return usuario; }
+    public LocalDate getFechaRegistro() { return fechaRegistro; }
     public boolean isCumplimiento() { return cumplimiento; }
 }

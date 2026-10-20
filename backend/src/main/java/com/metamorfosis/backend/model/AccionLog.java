@@ -9,6 +9,7 @@ public enum AccionLog {
     EDITAR_META,        // HU2
     LISTAR_METAS,       // HU3
     ELIMINAR_META,      // HU4
+    REGISTRAR_CUMPLIMIENTO, // HU5
     REGISTRAR_USUARIO,  // HU8
     INICIAR_SESION,     // HU9
     CERRAR_SESION       // HU10
