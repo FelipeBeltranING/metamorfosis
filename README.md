@@ -31,7 +31,7 @@ Todos los integrantes actúan como **desarrolladores** y cada uno documenta su p
 🚧 Sprint 0 en curso.
 
 ## Instalación
-_Pendiente de definir stack tecnológico (Sprint 0)._
+_Pendiente de definir stack tecnológico (Sprint 0).
 
 ## Licencia
 Este proyecto está bajo la licencia MIT. Ver [LICENSE](LICENSE).
