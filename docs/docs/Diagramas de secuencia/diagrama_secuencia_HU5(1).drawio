@@ -1,0 +1,196 @@
+<mxfile host="Electron">
+  <diagram name="HU5 - Registrar cumplimiento" id="hu5-seq">
+    <mxGraphModel dx="2396" dy="1219" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2100" pageHeight="1050" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v2" parent="1" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;verticalAlign=top;spacingTop=50;labelBackgroundColor=#FFFFFF;fillColor=#f5f5f5;strokeColor=#666666;" value="Usuario" vertex="1">
+          <mxGeometry height="920" width="50" x="75" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="v3" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" value="«boundary»&lt;br&gt;AppWeb (React)" vertex="1">
+          <mxGeometry height="920" width="150" x="265" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="v4" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«RestController»&lt;br&gt;MetaController" vertex="1">
+          <mxGeometry height="920" width="150" x="575" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="v5" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Service»&lt;br&gt;RegistroService" vertex="1">
+          <mxGeometry height="920" width="160" x="890" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="v6" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«interface»&lt;br&gt;MetaRepository" vertex="1">
+          <mxGeometry height="920" width="160" x="1170" y="39" as="geometry" />
+        </mxCell>
+        <mxCell id="v7" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«interface»&lt;br&gt;RegistroRepository" vertex="1">
+          <mxGeometry height="920" width="170" x="1435" y="39" as="geometry" />
+        </mxCell>
+        <mxCell id="v8" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" value="«Entity»&lt;br&gt;Registro" vertex="1">
+          <mxGeometry height="920" width="150" x="1715" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="v9" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="742" width="10" x="335" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="v10" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="546" width="10" x="340" y="234" as="geometry" />
+        </mxCell>
+        <mxCell id="v11" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="24" width="10" x="340" y="822" as="geometry" />
+        </mxCell>
+        <mxCell id="v12" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="476" width="10" x="645" y="304" as="geometry" />
+        </mxCell>
+        <mxCell id="v13" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="24" width="10" x="650" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="v14" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="386" width="10" x="965" y="346" as="geometry" />
+        </mxCell>
+        <mxCell id="v16" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="38" width="10" x="1245" y="448" as="geometry" />
+        </mxCell>
+        <mxCell id="v17" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="38" width="10" x="1515" y="508" as="geometry" />
+        </mxCell>
+        <mxCell id="v18" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="46" width="10" x="1785" y="562" as="geometry" />
+        </mxCell>
+        <mxCell id="v19" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="38" width="10" x="1515" y="608" as="geometry" />
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="marcarCumplimiento*(meta, fechaFinalizacion, cumplido)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="150" as="sourcePoint" />
+            <mxPoint x="335" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e21" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;rounded=0;strokeColor=#000000;fontSize=11;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="385" y="234" />
+              <mxPoint x="385" y="258" />
+            </Array>
+            <mxPoint x="345" y="234" as="sourcePoint" />
+            <mxPoint x="350" y="258" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v22" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="POST /api/metas/{codigoMeta}/registros*&lt;br&gt;{fechaFinalizacion, cumplimiento}" vertex="1">
+          <mxGeometry height="34" width="230" x="391" y="237" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="registrarCumplimiento*(codigoMeta, solicitud, codigoUsuario)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="350" y="304" as="sourcePoint" />
+            <mxPoint x="645" y="304" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e24" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="findById(codigoMeta)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="655" y="346" as="sourcePoint" />
+            <mxPoint x="965" y="346" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e25" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="Optional&amp;lt;Meta&amp;gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="388" as="sourcePoint" />
+            <mxPoint x="655" y="388" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e27" edge="1" parent="1" source="v14" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="esParticipanteAceptado(codigoMeta, codigoUsuario)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="448" as="sourcePoint" />
+            <mxPoint x="1245" y="448" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e28" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;entryX=0.767;entryY=0.363;entryDx=0;entryDy=0;entryPerimeter=0;" target="v14" value="boolean">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1245" y="486" as="sourcePoint" />
+            <mxPoint x="965" y="486" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v29" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=10;fontStyle=2;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="[participante aceptado]" vertex="1">
+          <mxGeometry height="18" width="200" x="975" y="490" as="geometry" />
+        </mxCell>
+        <mxCell id="e30" edge="1" parent="1" source="v14" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=10;exitX=0.906;exitY=0.42;exitDx=0;exitDy=0;exitPerimeter=0;" value="findByMeta_CodigoMetaAndUsuario_CodigoUsuarioAndFechaRegistro(...)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="508" as="sourcePoint" />
+            <mxPoint x="1515" y="508" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e31" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=10;" target="v14" value="Optional&amp;lt;Registro&amp;gt; (vacío si es la primera vez ese día)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1515" y="546" as="sourcePoint" />
+            <mxPoint x="965" y="546" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v29b" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=10;fontStyle=2;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="[no existía registro ese día]" vertex="1">
+          <mxGeometry height="16" width="220" x="975" y="554" as="geometry" />
+        </mxCell>
+        <mxCell id="e32a" edge="1" parent="1" source="v14" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=10;exitX=0.88;exitY=0.583;exitDx=0;exitDy=0;exitPerimeter=0;" value="new Registro(meta, usuario, fechaFinalizacion)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="571" as="sourcePoint" />
+            <mxPoint x="1785" y="571" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e32b" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=10;" value="actualizarCumplimiento*(cumplimiento)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="598" as="sourcePoint" />
+            <mxPoint x="1785" y="598" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e33" edge="1" parent="1" source="v14" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;exitX=0.96;exitY=0.679;exitDx=0;exitDy=0;exitPerimeter=0;" value="save(registro)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="608" as="sourcePoint" />
+            <mxPoint x="1515" y="608" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e36" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="Registro">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1515" y="646" as="sourcePoint" />
+            <mxPoint x="965" y="646" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e37" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="RegistroResponse.desde(registro)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="965" y="710" as="sourcePoint" />
+            <mxPoint x="655" y="710" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e38" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;rounded=0;strokeColor=#000000;fontSize=11;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="695" y="710" />
+              <mxPoint x="695" y="734" />
+            </Array>
+            <mxPoint x="655" y="710" as="sourcePoint" />
+            <mxPoint x="660" y="734" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v39" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="ResponseEntity.ok(respuesta):&lt;br&gt;ResponseEntity&amp;lt;RegistroResponse&amp;gt;" vertex="1">
+          <mxGeometry height="34" width="260" x="701" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="e40" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="RegistroResponse">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="645" y="780" as="sourcePoint" />
+            <mxPoint x="350" y="780" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e41" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;rounded=0;strokeColor=#000000;fontSize=11;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="385" y="822" />
+              <mxPoint x="385" y="846" />
+            </Array>
+            <mxPoint x="345" y="822" as="sourcePoint" />
+            <mxPoint x="350" y="846" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="v42" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="setMarcadasHoy*(...)&lt;br&gt;setAviso(&#39;cumplimiento&#39;)" vertex="1">
+          <mxGeometry height="34" width="220" x="391" y="817" as="geometry" />
+        </mxCell>
+        <mxCell id="e43" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="MisMetasPage()*">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="335" y="892" as="sourcePoint" />
+            <mxPoint x="100" y="892" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
