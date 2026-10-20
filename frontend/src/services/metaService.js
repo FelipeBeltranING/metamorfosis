@@ -109,3 +109,31 @@ export async function editarMeta(codigoMeta, solicitud) {
   }
   return datos;
 }
+
+/**
+ * HU5: registra (o actualiza) el cumplimiento de una meta en una fecha determinada.
+ * Lanza Error con `mensaje`, `errores` y `estado` igual que editarMeta.
+ */
+export async function registrarCumplimiento(codigoMeta, solicitud) {
+  const encabezados = cabeceras({ 'Content-Type': 'application/json' });
+  let respuesta;
+  try {
+    respuesta = await fetch(`${API_URL}/api/metas/${codigoMeta}/registros`, {
+      method: 'POST',
+      headers: encabezados,
+      body: JSON.stringify(solicitud),
+    });
+  } catch {
+    throw new Error('No se pudo conectar con el servidor');
+  }
+
+  if (respuesta.status === 401) throw errorSesionExpirada();
+  const datos = await respuesta.json().catch(() => null);
+  if (!respuesta.ok) {
+    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    error.errores = datos?.errores ?? [];
+    error.estado = respuesta.status;
+    throw error;
+  }
+  return datos;
+}
