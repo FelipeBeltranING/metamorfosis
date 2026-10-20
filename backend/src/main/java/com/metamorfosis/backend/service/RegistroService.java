@@ -67,8 +67,8 @@ public class RegistroService {
 
         Registro registro = registroRepository
                 .findByMeta_CodigoMetaAndUsuario_CodigoUsuarioAndFechaRegistro(
-                        codigoMeta, codigoUsuario, solicitud.fecha())
-                .orElseGet(() -> new Registro(meta, usuario, solicitud.fecha()));
+                        codigoMeta, codigoUsuario, solicitud.fechaFinalizacion())
+                .orElseGet(() -> new Registro(meta, usuario, solicitud.fechaFinalizacion()));
 
         registro.actualizarCumplimiento(solicitud.cumplimiento());
 
@@ -77,10 +77,10 @@ public class RegistroService {
 
     private void validar(RegistrarCumplimientoRequest s) {
         List<String> errores = new ArrayList<>();
-        if (s == null || s.fecha() == null) {
-            errores.add("La fecha es obligatoria");
-        } else if (s.fecha().isAfter(LocalDate.now())) {
-            errores.add("No se puede registrar el cumplimiento de una fecha futura");
+        if (s == null || s.fechaFinalizacion() == null) {
+            errores.add("La fecha de finalización es obligatoria");
+        } else if (s.fechaFinalizacion().isAfter(LocalDate.now())) {
+            errores.add("La fecha de finalización no puede ser una fecha futura");
         }
         if (s == null || s.cumplimiento() == null) {
             errores.add("El cumplimiento es obligatorio");
