@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { CalendarCheck, Check, CircleAlert, LoaderCircle, X, XCircle } from 'lucide-react';
-import BotonOpcion from './BotonOpcion';
+import { CalendarCheck, CircleAlert, LoaderCircle, X } from 'lucide-react';
 
 function fechaLocalHoy() {
   const ahora = new Date();
@@ -23,7 +22,6 @@ export default function RegistrarCumplimientoModal({
   onCancelar,
 }) {
   const [fechaFinalizacion, setFechaFinalizacion] = useState(HOY);
-  const [cumplimiento, setCumplimiento] = useState(true);
   const [errorFecha, setErrorFecha] = useState('');
 
   const nombreMeta = meta?.nombre || 'esta meta';
@@ -42,7 +40,7 @@ export default function RegistrarCumplimientoModal({
       setErrorFecha('No puedes elegir una fecha futura');
       return;
     }
-    onConfirmar({ fechaFinalizacion, cumplimiento });
+    onConfirmar({ fechaFinalizacion, cumplimiento: true });
   };
 
   return (
@@ -88,7 +86,7 @@ export default function RegistrarCumplimientoModal({
           id="descripcion-registrar-cumplimiento"
           className="mt-3 text-sm leading-6 text-gray-600"
         >
-          ¿Cumpliste <strong>{nombreMeta}</strong>? Elige la fecha y marca si la cumpliste o no.
+          ¿Cuándo cumpliste <strong>{nombreMeta}</strong>? Elige la fecha en la que la cumpliste.
         </p>
 
         <div className="mt-5 flex flex-col gap-1.5">
@@ -114,27 +112,6 @@ export default function RegistrarCumplimientoModal({
               {errorFecha}
             </p>
           )}
-        </div>
-
-        <div className="mt-4 grid grid-cols-2 gap-2.5">
-          <BotonOpcion
-            grupo="cumplimiento"
-            valor="si"
-            etiqueta="Sí la cumplí"
-            Icono={Check}
-            seleccionado={cumplimiento === true}
-            deshabilitado={guardando}
-            onChange={() => setCumplimiento(true)}
-          />
-          <BotonOpcion
-            grupo="cumplimiento"
-            valor="no"
-            etiqueta="No la cumplí"
-            Icono={XCircle}
-            seleccionado={cumplimiento === false}
-            deshabilitado={guardando}
-            onChange={() => setCumplimiento(false)}
-          />
         </div>
 
         {error && (
