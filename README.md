@@ -28,7 +28,7 @@ Todos los integrantes actúan como **desarrolladores** y cada uno documenta su p
 - Internacionalización (opcional)
 
 ## Estado
-🚧 Sprint 0 en curso.
+🚧 Sprint 1 en curso.
 
 ## Instalación
 _Pendiente de definir stack tecnológico (Sprint 0)._
