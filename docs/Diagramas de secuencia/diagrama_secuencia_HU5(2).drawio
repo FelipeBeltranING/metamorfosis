@@ -1,0 +1,465 @@
+<mxfile host="Electron">
+  <diagram name="HU5 - Registrar cumplimiento" id="hu5-seq">
+    <mxGraphModel dx="1265" dy="778" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4600" pageHeight="2500" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="L_usr" parent="1" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;verticalAlign=top;spacingTop=50;labelBackgroundColor=#FFFFFF;fillColor=#f5f5f5;strokeColor=#666666;" value="Usuario" vertex="1">
+          <mxGeometry height="2380" width="50" x="75" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_web" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" value="«boundary»&lt;br&gt;AppWeb (React)" vertex="1">
+          <mxGeometry height="2380" width="150" x="265" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_ctl" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«RestController»&lt;br&gt;MetaController" vertex="1">
+          <mxGeometry height="2380" width="150" x="545" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_asp" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Aspect»&lt;br&gt;AuditoriaAspect" vertex="1">
+          <mxGeometry height="2380" width="150" x="815" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_svc" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Service»&lt;br&gt;RegistroService" vertex="1">
+          <mxGeometry height="2380" width="160" x="1150" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_aud" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Utility»&lt;br&gt;ContextoAuditoria" vertex="1">
+          <mxGeometry height="2380" width="160" x="1410" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_mre" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Repository»&lt;br&gt;MetaRepository" vertex="1">
+          <mxGeometry height="2380" width="160" x="1660" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_ure" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Repository»&lt;br&gt;UsuarioRepository" vertex="1">
+          <mxGeometry height="2380" width="170" x="1905" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_rre" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Repository»&lt;br&gt;RegistroRepository" vertex="1">
+          <mxGeometry height="2380" width="170" x="2205" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_reg" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" value="«Entity»&lt;br&gt;Registro" vertex="1">
+          <mxGeometry height="2380" width="150" x="2535" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_met" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" value="«Entity»&lt;br&gt;Meta" vertex="1">
+          <mxGeometry height="2380" width="150" x="2785" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_usu" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" value="«Entity»&lt;br&gt;Usuario" vertex="1">
+          <mxGeometry height="2380" width="150" x="3015" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_res" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" value="«DTO»&lt;br&gt;RegistroResponse" vertex="1">
+          <mxGeometry height="2380" width="170" x="3255" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_lsv" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Service»&lt;br&gt;LogService" vertex="1">
+          <mxGeometry height="2380" width="150" x="3595" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_lre" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Repository»&lt;br&gt;LogActividadRepository" vertex="1">
+          <mxGeometry height="2380" width="190" x="3845" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="L_lac" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#f5f5f5;strokeColor=#666666;" value="«Entity»&lt;br&gt;LogActividad" vertex="1">
+          <mxGeometry height="2380" width="150" x="4115" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="b1" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="2140" width="10" x="335" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="1930" width="10" x="340" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="b3" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="1830" width="10" x="615" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="b4" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="1770" width="10" x="885" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="b5" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="1180" width="10" x="890" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="b6" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="450" width="10" x="890" y="1570" as="geometry" />
+        </mxCell>
+        <mxCell id="b7" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="1060" width="10" x="1225" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="b8" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="24" width="10" x="1230" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="b9" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="1735" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="b10" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="1735" y="740" as="geometry" />
+        </mxCell>
+        <mxCell id="b11" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="30" width="10" x="2855" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="b12" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="20" width="10" x="2855" y="1380" as="geometry" />
+        </mxCell>
+        <mxCell id="b13" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="1985" y="830" as="geometry" />
+        </mxCell>
+        <mxCell id="b14" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="2285" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="b15" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="2285" y="1200" as="geometry" />
+        </mxCell>
+        <mxCell id="b16" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="24" width="10" x="2605" y="1030" as="geometry" />
+        </mxCell>
+        <mxCell id="b17" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="24" width="10" x="2605" y="1100" as="geometry" />
+        </mxCell>
+        <mxCell id="b18" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="30" width="10" x="2605" y="1330" as="geometry" />
+        </mxCell>
+        <mxCell id="b19" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="30" width="10" x="1485" y="1150" as="geometry" />
+        </mxCell>
+        <mxCell id="b20" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="24" width="10" x="1485" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="b21" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="30" width="10" x="1485" y="1620" as="geometry" />
+        </mxCell>
+        <mxCell id="b22" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="24" width="10" x="1485" y="2040" as="geometry" />
+        </mxCell>
+        <mxCell id="b23" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="180" width="10" x="3335" y="1290" as="geometry" />
+        </mxCell>
+        <mxCell id="b24" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="20" width="10" x="3085" y="1420" as="geometry" />
+        </mxCell>
+        <mxCell id="b25" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="150" width="10" x="3665" y="1850" as="geometry" />
+        </mxCell>
+        <mxCell id="b26" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="24" width="10" x="4185" y="1900" as="geometry" />
+        </mxCell>
+        <mxCell id="b27" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
+          <mxGeometry height="40" width="10" x="3935" y="1950" as="geometry" />
+        </mxCell>
+        <mxCell id="m28" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="confirmarRegistroCumplimiento*({fechaFinalizacion, cumplimiento})">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="150" as="sourcePoint" />
+            <mxPoint x="335" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s29" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;rounded=0;strokeColor=#000000;fontSize=11;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="385" y="200" />
+              <mxPoint x="385" y="224" />
+            </Array>
+            <mxPoint x="345" y="200" as="sourcePoint" />
+            <mxPoint x="350" y="224" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t30" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="registrarCumplimiento*(codigoMeta, solicitud)" vertex="1">
+          <mxGeometry height="20" width="330" x="391" y="197" as="geometry" />
+        </mxCell>
+        <mxCell id="m31" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="POST /api/metas/{codigoMeta}/registros {fechaFinalizacion, cumplimiento}">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="350" y="260" as="sourcePoint" />
+            <mxPoint x="615" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m32" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="registrarCumplimiento*(codigoMeta, solicitud, codigoUsuario)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="625" y="310" as="sourcePoint" />
+            <mxPoint x="885" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s33" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;rounded=0;strokeColor=#000000;fontSize=11;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="935" y="350" />
+              <mxPoint x="935" y="374" />
+            </Array>
+            <mxPoint x="895" y="350" as="sourcePoint" />
+            <mxPoint x="900" y="374" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t34" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="auditar(pjp): Object" vertex="1">
+          <mxGeometry height="20" width="200" x="941" y="347" as="geometry" />
+        </mxCell>
+        <mxCell id="m35" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="limpiar()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="895" y="410" as="sourcePoint" />
+            <mxPoint x="1485" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m36" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="registrarCumplimiento*(codigoMeta, solicitud, codigoUsuario)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="900" y="460" as="sourcePoint" />
+            <mxPoint x="1225" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s37" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;rounded=0;strokeColor=#000000;fontSize=11;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1275" y="510" />
+              <mxPoint x="1275" y="534" />
+            </Array>
+            <mxPoint x="1235" y="510" as="sourcePoint" />
+            <mxPoint x="1240" y="534" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t38" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="validar(solicitud): void" vertex="1">
+          <mxGeometry height="20" width="200" x="1281" y="507" as="geometry" />
+        </mxCell>
+        <mxCell id="m39" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="MetaRepository.findById(codigoMeta)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1235" y="570" as="sourcePoint" />
+            <mxPoint x="1735" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m40" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="Optional&amp;lt;Meta&amp;gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1735" y="610" as="sourcePoint" />
+            <mxPoint x="1235" y="610" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m41" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="Meta.getEstado()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1235" y="660" as="sourcePoint" />
+            <mxPoint x="2855" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m42" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="EstadoMeta">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2855" y="690" as="sourcePoint" />
+            <mxPoint x="1235" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m43" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="esParticipanteAceptado(codigoMeta, codigoUsuario)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1235" y="740" as="sourcePoint" />
+            <mxPoint x="1735" y="740" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m44" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="boolean">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1735" y="780" as="sourcePoint" />
+            <mxPoint x="1235" y="780" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m45" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="UsuarioRepository.findById(codigoUsuario)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1235" y="830" as="sourcePoint" />
+            <mxPoint x="1985" y="830" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m46" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="Optional&amp;lt;Usuario&amp;gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1985" y="870" as="sourcePoint" />
+            <mxPoint x="1235" y="870" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m47" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="findByMeta_CodigoMetaAndUsuario_CodigoUsuarioAndFechaRegistro(codigoMeta, codigoUsuario, fechaFinalizacion)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1235" y="920" as="sourcePoint" />
+            <mxPoint x="2285" y="920" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m48" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="Optional&amp;lt;Registro&amp;gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2285" y="960" as="sourcePoint" />
+            <mxPoint x="1235" y="960" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f49" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;width=40;height=20;fontSize=11;fillColor=none;strokeColor=#000000;" value="opt" vertex="1">
+          <mxGeometry height="80" width="1570" x="1170" y="990" as="geometry" />
+        </mxCell>
+        <mxCell id="n50" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=10;fontStyle=2;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="[no existía registro de esa meta, usuario y fecha]" vertex="1">
+          <mxGeometry height="18" width="330" x="1220" y="993" as="geometry" />
+        </mxCell>
+        <mxCell id="m51" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="«create» Registro(meta, usuario, fechaFinalizacion)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1235" y="1030" as="sourcePoint" />
+            <mxPoint x="2605" y="1030" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m52" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="actualizarCumplimiento*(cumplimiento)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1235" y="1100" as="sourcePoint" />
+            <mxPoint x="2605" y="1100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m53" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="ContextoAuditoria,agregar(clave, valor) ×4: accion, fechaFinalizacion, cumplimiento, codigoMeta">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1235" y="1150" as="sourcePoint" />
+            <mxPoint x="1485" y="1150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m54" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="save(registro)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1235" y="1200" as="sourcePoint" />
+            <mxPoint x="2285" y="1200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m55" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="Registro">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2285" y="1240" as="sourcePoint" />
+            <mxPoint x="1235" y="1240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m56" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="RegistroResponse.desde(registro)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1235" y="1290" as="sourcePoint" />
+            <mxPoint x="3335" y="1290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m57" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="getCodigoRegistro(), getMeta(), getUsuario(), getFechaRegistro(), isCumplimiento()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="3335" y="1330" as="sourcePoint" />
+            <mxPoint x="2615" y="1330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m58" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="getCodigoMeta()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="3335" y="1380" as="sourcePoint" />
+            <mxPoint x="2865" y="1380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m59" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="getCodigoUsuario()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="3335" y="1420" as="sourcePoint" />
+            <mxPoint x="3095" y="1420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m60" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="RegistroResponse">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="3335" y="1470" as="sourcePoint" />
+            <mxPoint x="1235" y="1470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m61" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="RegistroResponse">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1225" y="1520" as="sourcePoint" />
+            <mxPoint x="900" y="1520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s62" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;rounded=0;strokeColor=#000000;fontSize=11;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="935" y="1570" />
+              <mxPoint x="935" y="1594" />
+            </Array>
+            <mxPoint x="895" y="1570" as="sourcePoint" />
+            <mxPoint x="900" y="1594" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t63" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="guardar(pjp, auditar, resultado, retorno, error): void" vertex="1">
+          <mxGeometry height="20" width="400" x="941" y="1567" as="geometry" />
+        </mxCell>
+        <mxCell id="m64" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="ContextoAuditoria.obtener()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="905" y="1620" as="sourcePoint" />
+            <mxPoint x="1485" y="1620" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m65" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="Map&amp;lt;String, Object&amp;gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1485" y="1650" as="sourcePoint" />
+            <mxPoint x="905" y="1650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s66" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;rounded=0;strokeColor=#000000;fontSize=11;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="945" y="1700" />
+              <mxPoint x="945" y="1724" />
+            </Array>
+            <mxPoint x="905" y="1700" as="sourcePoint" />
+            <mxPoint x="910" y="1724" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t67" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="parametroEntero(pjp, nombre): Integer" vertex="1">
+          <mxGeometry height="20" width="300" x="951" y="1697" as="geometry" />
+        </mxCell>
+        <mxCell id="s68" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;rounded=0;strokeColor=#000000;fontSize=11;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="945" y="1750" />
+              <mxPoint x="945" y="1774" />
+            </Array>
+            <mxPoint x="905" y="1750" as="sourcePoint" />
+            <mxPoint x="910" y="1774" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t69" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="codigoEntidad(pjp, entidad, retorno): Integer" vertex="1">
+          <mxGeometry height="20" width="320" x="951" y="1747" as="geometry" />
+        </mxCell>
+        <mxCell id="s70" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;rounded=0;strokeColor=#000000;fontSize=11;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="945" y="1800" />
+              <mxPoint x="945" y="1824" />
+            </Array>
+            <mxPoint x="905" y="1800" as="sourcePoint" />
+            <mxPoint x="910" y="1824" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t71" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="aJson(valor): String" vertex="1">
+          <mxGeometry height="20" width="200" x="951" y="1797" as="geometry" />
+        </mxCell>
+        <mxCell id="m72" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="LogService.registrar(codigoUsuario, accion, entidad, codigoEntidad, resultado, detalle): void">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="905" y="1850" as="sourcePoint" />
+            <mxPoint x="3665" y="1850" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m73" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="«create» LogActividad(codigoUsuario, accion, entidad, codigoEntidad, resultado, detalle)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="3675" y="1900" as="sourcePoint" />
+            <mxPoint x="4185" y="1900" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m74" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="LogActividad.save(entity)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="3675" y="1950" as="sourcePoint" />
+            <mxPoint x="3935" y="1950" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m75" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="LogActividad">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="3935" y="1990" as="sourcePoint" />
+            <mxPoint x="3675" y="1990" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m76" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="limpiar()">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="900" y="2040" as="sourcePoint" />
+            <mxPoint x="1485" y="2040" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m77" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="RegistroResponse">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="885" y="2090" as="sourcePoint" />
+            <mxPoint x="625" y="2090" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m78" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="ResponseEntity.ok(respuesta): ResponseEntity&amp;lt;RegistroResponse&amp;gt;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="615" y="2130" as="sourcePoint" />
+            <mxPoint x="350" y="2130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="s79" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;rounded=0;strokeColor=#000000;fontSize=11;" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="385" y="2180" />
+              <mxPoint x="385" y="2204" />
+            </Array>
+            <mxPoint x="345" y="2180" as="sourcePoint" />
+            <mxPoint x="350" y="2204" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="t80" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="setMarcadasHoy*(...)&lt;br&gt;setMetaARegistrar(null)&lt;br&gt;setAviso(&#39;cumplimiento&#39;)" vertex="1">
+          <mxGeometry height="51" width="240" x="391" y="2177" as="geometry" />
+        </mxCell>
+        <mxCell id="m81" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="MisMetasPage()*">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="335" y="2290" as="sourcePoint" />
+            <mxPoint x="100" y="2290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
