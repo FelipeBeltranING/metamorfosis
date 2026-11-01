@@ -76,6 +76,9 @@ export default function LoginPage() {
     } catch (error) {
       if (error.estado === 401) {
         setErrorServidor(MENSAJE_CREDENCIALES);
+      } else if (error.estado === 429) {
+        // HU9: demasiados intentos fallidos; el servidor dice cuántos minutos esperar.
+        setErrorServidor(error.message);
       } else {
         const detalle = error.errores?.length ? `: ${error.errores.join(', ')}` : '';
         setErrorServidor(`${error.message}${detalle}`);
