@@ -3,6 +3,7 @@ package com.metamorfosis.backend.exception;
 import com.metamorfosis.backend.dto.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -60,6 +61,13 @@ public class ManejadorExcepciones {
     @ExceptionHandler(CredencialesInvalidasException.class)
     public ResponseEntity<ErrorResponse> credencialesInvalidas(CredencialesInvalidasException e) {
         return responder(HttpStatus.UNAUTHORIZED, e.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(CuentaBloqueadaException.class)
+    public ResponseEntity<ErrorResponse> cuentaBloqueada(CuentaBloqueadaException e) {
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .header(HttpHeaders.RETRY_AFTER, String.valueOf(e.getSegundosRestantes()))
+                .body(new ErrorResponse(HttpStatus.TOO_MANY_REQUESTS.value(), e.getMessage(), List.of()));
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
