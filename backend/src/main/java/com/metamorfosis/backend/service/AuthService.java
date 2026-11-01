@@ -87,13 +87,7 @@ public class AuthService {
         return respuesta;
     }
 
-    /**
-     * HU9: valida credenciales y entrega un JWT. Cuando fallan, el mensaje al cliente es el
-     * mismo sea cual sea el motivo (no revela si el email existe); el motivo real solo queda
-     * en el log de actividad, que se guarda en su propia transacción.
-     * Tras 5 fallos seguidos con el mismo email, el login queda bloqueado 5 minutos (429),
-     * exista o no la cuenta, para no revelar qué correos están registrados.
-     */
+    
     public LoginResponse iniciarSesion(LoginRequest solicitud) {
         solicitud = new LoginRequest(normalizarEmail(solicitud.email()), solicitud.password());
         validar(solicitud);
@@ -148,11 +142,6 @@ public class AuthService {
         return respuesta;
     }
 
-    /**
-     * HU10: cierra la sesión revocando el token (se guarda su jti hasta que caduque) para que deje
-     * de servir aunque su firma siga siendo válida. Si el token es falso, ya expiró o ya fue
-     * cerrado, responde 401 y el intento queda en el log.
-     */
     @Transactional
     public void cerrarSesion(String token) {
         String jti;
