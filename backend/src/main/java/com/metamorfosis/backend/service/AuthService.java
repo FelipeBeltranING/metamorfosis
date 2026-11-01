@@ -5,6 +5,7 @@ import com.metamorfosis.backend.dto.LoginResponse;
 import com.metamorfosis.backend.dto.RegistroRequest;
 import com.metamorfosis.backend.dto.UsuarioResponse;
 import com.metamorfosis.backend.exception.CredencialesInvalidasException;
+import com.metamorfosis.backend.exception.CuentaBloqueadaException;
 import com.metamorfosis.backend.exception.EmailYaRegistradoException;
 import com.metamorfosis.backend.exception.TokenInvalidoException;
 import com.metamorfosis.backend.exception.ValidacionException;
@@ -34,6 +35,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final TokenRevocadoRepository tokenRevocadoRepository;
     private final LogService logService;
+    private final BloqueoLoginService bloqueoLoginService;
     // Hash real calculado al arrancar; solo sirve para igualar tiempos de respuesta en el login.
     private final String hashRelleno;
 
@@ -44,12 +46,13 @@ public class AuthService {
 
     public AuthService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder,
                        JwtService jwtService, TokenRevocadoRepository tokenRevocadoRepository,
-                       LogService logService) {
+                       LogService logService, BloqueoLoginService bloqueoLoginService) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.tokenRevocadoRepository = tokenRevocadoRepository;
         this.logService = logService;
+        this.bloqueoLoginService = bloqueoLoginService;
         this.hashRelleno = passwordEncoder.encode("relleno-para-igualar-tiempos");
     }
 
@@ -88,6 +91,8 @@ public class AuthService {
      * HU9: valida credenciales y entrega un JWT. Cuando fallan, el mensaje al cliente es el
      * mismo sea cual sea el motivo (no revela si el email existe); el motivo real solo queda
      * en el log de actividad, que se guarda en su propia transacción.
+     * Tras 5 fallos seguidos con el mismo email, el login queda bloqueado 5 minutos (429),
+     * exista o no la cuenta, para no revelar qué correos están registrados.
      */
     public LoginResponse iniciarSesion(LoginRequest solicitud) {
         solicitud = new LoginRequest(normalizarEmail(solicitud.email()), solicitud.password());
@@ -95,18 +100,32 @@ public class AuthService {
 
         Usuario usuario = usuarioRepository.findByEmailIgnoreCase(solicitud.email()).orElse(null);
 
+        // Si el email está bloqueado se rechaza sin verificar la contraseña:
+        // durante el bloqueo ni la contraseña correcta permite entrar.
+        long segundosBloqueado = bloqueoLoginService.segundosBloqueado(solicitud.email());
+        if (segundosBloqueado > 0) {
+            registrarFallo(AccionLog.INICIAR_SESION,
+                    usuario == null ? null : usuario.getCodigoUsuario(), "CUENTA_BLOQUEADA");
+            throw new CuentaBloqueadaException(segundosBloqueado);
+        }
+
         if (usuario == null) {
             // Se compara contra un hash de relleno para que la respuesta tarde lo mismo
             // exista o no el email (evita enumerar usuarios midiendo tiempos).
             passwordEncoder.matches(solicitud.password(), hashRelleno);
+            bloqueoLoginService.registrarFallo(solicitud.email());
             registrarFallo(AccionLog.INICIAR_SESION, null, "USUARIO_INEXISTENTE");
             throw new CredencialesInvalidasException(MENSAJE_CREDENCIALES);
         }
 
         if (!passwordEncoder.matches(solicitud.password(), usuario.getPasswordHash())) {
+            bloqueoLoginService.registrarFallo(solicitud.email());
             registrarFallo(AccionLog.INICIAR_SESION, usuario.getCodigoUsuario(), "PASSWORD_INCORRECTO");
             throw new CredencialesInvalidasException(MENSAJE_CREDENCIALES);
         }
+
+        // Login correcto: se reinicia el contador de fallos de ese email.
+        bloqueoLoginService.limpiar(solicitud.email());
 
         String token = jwtService.generarToken(usuario);
         LoginResponse respuesta = new LoginResponse(
