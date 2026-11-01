@@ -36,7 +36,8 @@ export function registrar({ nombre, apellido, email, password }) {
 
 /**
  * Inicia sesión. 200 -> { token, codigoUsuario }. 401 = credenciales incorrectas,
- * 400 = datos inválidos (el detalle viene en `errores`).
+ * 400 = datos inválidos (el detalle viene en `errores`), 429 = demasiados intentos
+ * fallidos (bloqueo temporal; el mensaje dice cuántos minutos esperar).
  */
 export async function iniciarSesion({ email, password }) {
   const datos = await post('/api/auth/login', { email, password });
