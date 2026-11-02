@@ -35,6 +35,17 @@ public class Participacion {
         this.estadoInvitacion = estadoInvitacion;
     }
 
+    /** HU6: guarda el día en que el usuario cumplió la meta. */
+    public void marcarCumplida(LocalDate fecha) {
+        this.fechaCumplida = fecha;
+    }
+
+    /** HU6: la meta vuelve a estar activa, así que se borra la fecha de cumplimiento. */
+    public void reabrir() {
+        this.fechaCumplida = null;
+    }
+
+    public Usuario getUsuario() { return usuario; }
     public EstadoInvitacion getEstadoInvitacion() { return estadoInvitacion; }
     public LocalDate getFechaCumplida() { return fechaCumplida; }
 }
