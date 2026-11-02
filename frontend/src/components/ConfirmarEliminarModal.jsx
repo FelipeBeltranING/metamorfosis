@@ -3,6 +3,7 @@ import { CircleAlert, LoaderCircle, Trash2, X } from 'lucide-react';
 
 export default function ConfirmarEliminarModal({
   meta,
+  resumen,
   eliminando,
   error,
   onConfirmar,
@@ -54,8 +55,25 @@ export default function ConfirmarEliminarModal({
           className="mt-3 text-sm leading-6 text-gray-600"
         >
           ¿Seguro que deseas eliminar <strong>{nombreMeta}</strong>?
-          Esta acción no se puede deshacer.
+          {resumen?.totalSubMetas > 0 ? ' Se eliminará junto con todo su camino:' : ' Esta acción no se puede deshacer.'}
         </p>
+
+        {/* HU4 + sub-metas: se borran en cascada sus sub-metas y registros. */}
+        {resumen?.totalSubMetas > 0 && (
+          <>
+            <ul className="mt-3 flex flex-col gap-1.5 text-sm text-gray-700">
+              <li className="rounded-lg bg-slate-50 px-3 py-2">
+                <strong className="text-gray-900">{resumen.totalSubMetas}</strong>
+                {resumen.totalSubMetas === 1 ? ' sub-meta' : ' sub-metas'}
+              </li>
+              <li className="rounded-lg bg-slate-50 px-3 py-2">
+                <strong className="text-gray-900">{resumen.totalRegistros}</strong>
+                {resumen.totalRegistros === 1 ? ' día registrado' : ' días registrados'} y sus estadísticas
+              </li>
+            </ul>
+            <p className="mt-3 text-sm text-gray-600">Esta acción no se puede deshacer.</p>
+          </>
+        )}
 
         {error && (
           <div
