@@ -6,6 +6,7 @@ import com.metamorfosis.backend.dto.SolicitudRegistroResponse;
 import com.metamorfosis.backend.dto.TokenRequest;
 import com.metamorfosis.backend.dto.UsuarioResponse;
 import com.metamorfosis.backend.exception.TokenInvalidoException;
+import com.metamorfosis.backend.dto.EstadoSolicitudResponse;
 import com.metamorfosis.backend.dto.LoginRequest;
 import com.metamorfosis.backend.dto.LoginResponse;
 import com.metamorfosis.backend.service.AuthService;
@@ -38,7 +39,19 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(solicitudRegistroService.solicitar(pedido));
     }
 
-    /** HU8 paso 2: comprueba el enlace del correo y devuelve el email autorizado. Solo lee. */
+    /** HU8: botón "Autorizar y continuar" del correo. */
+    @PostMapping("/registro/autorizar")
+    public ResponseEntity<SolicitudRegistroResponse> autorizarRegistro(@RequestBody TokenRequest pedido) {
+        return ResponseEntity.ok(solicitudRegistroService.autorizar(pedido == null ? null : pedido.token()));
+    }
+
+    /** HU8: la página donde se pidió el registro pregunta si ya se autorizó (con su sesión). */
+    @GetMapping("/registro/estado/{sesion}")
+    public ResponseEntity<EstadoSolicitudResponse> estadoSolicitud(@PathVariable String sesion) {
+        return ResponseEntity.ok(solicitudRegistroService.estado(sesion));
+    }
+
+    /** HU8: el formulario comprueba su token (del correo o de la sesión) y obtiene el email. Solo lee. */
     @GetMapping("/registro/solicitud/{token}")
     public ResponseEntity<SolicitudRegistroResponse> consultarSolicitud(@PathVariable String token) {
         return ResponseEntity.ok(solicitudRegistroService.consultar(token));
