@@ -1,29 +1,70 @@
 import { useEffect, useState } from 'react';
-import { Check, CircleAlert, Copy, LoaderCircle, Mail, MessageCircle, Send, Share2, X } from 'lucide-react';
+import { Check, CircleAlert, Copy, Download, Image as IconoImagen, LoaderCircle, Share2, X } from 'lucide-react';
 import { crearEnlace } from '../services/logroService';
+import { obtenerSesion } from '../services/sesionService';
+import { generarTarjetaLogro } from '../utils/tarjetaLogro';
+
+/** "Laura" + "Gómez" → "Laura G.", igual que en el enlace público. */
+function nombreVisible() {
+  const sesion = obtenerSesion();
+  const nombre = sesion?.nombre?.trim() ?? '';
+  const apellido = sesion?.apellido?.trim() ?? '';
+  return apellido ? `${nombre} ${apellido[0]}.` : nombre;
+}
+
+/** Nombre de archivo seguro: "Leer 20 libros" → "logro-leer-20-libros.png". */
+function nombreArchivo(nombreMeta) {
+  const base = nombreMeta
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+    .slice(0, 40);
+  return `logro-${base || 'metamorfosis'}.png`;
+}
 
 /**
- * HU21: compartir un logro. Pide al backend el enlace público (lo crea o reutiliza) y ofrece
- * WhatsApp, Telegram, correo, copiar y el menú nativo del dispositivo. El mensaje es editable.
+ * HU21: compartir un logro como imagen. Crea (o reutiliza) el enlace público, dibuja la
+ * tarjeta del logro y la ofrece para compartir desde el celular, descargar o copiar.
  */
 export default function CompartirLogroModal({ meta, onCerrar }) {
-  const [enlace, setEnlace] = useState(null);
+  const [datos, setDatos] = useState(null); // { url, archivo, vistaPrevia }
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
-  const [mensaje, setMensaje] = useState(`¡Cumplí mi meta "${meta.nombre}" en Metamorfosis! 🦋`);
-  const [copiado, setCopiado] = useState(false);
+  const [aviso, setAviso] = useState('');
   const [intento, setIntento] = useState(0);
 
   useEffect(() => {
     let activo = true;
-    crearEnlace(meta.codigoMeta)
-      .then((datos) => activo && setEnlace(datos.url))
-      .catch((e) => activo && setError(e.errores?.[0] ?? e.message))
-      .finally(() => activo && setCargando(false));
+    let vistaPrevia = null;
+    (async () => {
+      try {
+        const enlace = await crearEnlace(meta.codigoMeta);
+        const blob = await generarTarjetaLogro({
+          nombreMeta: meta.nombre,
+          nombreVisible: nombreVisible(),
+          fechaCumplida: enlace.fechaCumplida ?? meta.fechaCumplida,
+        });
+        if (!activo) return;
+        vistaPrevia = URL.createObjectURL(blob);
+        const archivo = new File([blob], nombreArchivo(meta.nombre), { type: 'image/png' });
+        setDatos({ url: enlace.url, archivo, vistaPrevia });
+      } catch (e) {
+        if (activo) setError(e.errores?.[0] ?? e.message);
+      } finally {
+        if (activo) setCargando(false);
+      }
+    })();
     return () => {
       activo = false;
+      if (vistaPrevia) URL.revokeObjectURL(vistaPrevia);
     };
-  }, [meta.codigoMeta, intento]);
+  }, [meta.codigoMeta, meta.nombre, meta.fechaCumplida, intento]);
+
+  // Los avisos ("Imagen copiada") se ocultan solos.
+  useEffect(() => {
+    if (!aviso) return undefined;
+    const temporizador = setTimeout(() => setAviso(''), 2500);
+    return () => clearTimeout(temporizador);
+  }, [aviso]);
 
   const reintentar = () => {
     setError('');
@@ -31,32 +72,36 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
     setIntento((n) => n + 1);
   };
 
-  const textoCompleto = `${mensaje} ${enlace ?? ''}`.trim();
-  const texto = encodeURIComponent(textoCompleto);
-  const opciones = enlace
-    ? [
-        { nombre: 'WhatsApp', Icono: MessageCircle, href: `https://wa.me/?text=${texto}`, color: 'bg-emerald-50 text-emerald-700' },
-        { nombre: 'Telegram', Icono: Send, href: `https://t.me/share/url?url=${encodeURIComponent(enlace)}&text=${encodeURIComponent(mensaje)}`, color: 'bg-sky-50 text-sky-700' },
-        { nombre: 'Correo', Icono: Mail, href: `mailto:?subject=${encodeURIComponent('¡Cumplí una meta!')}&body=${texto}`, color: 'bg-amber-50 text-amber-700' },
-      ]
-    : [];
+  const texto = `¡Cumplí mi meta "${meta.nombre}" en Metamorfosis! 🦋`;
+  const puedeCompartirImagen = Boolean(datos)
+    && typeof navigator.canShare === 'function'
+    && navigator.canShare({ files: [datos.archivo] });
+  const puedeCopiarImagen = typeof window.ClipboardItem === 'function' && Boolean(navigator.clipboard?.write);
 
-  const copiar = async () => {
+  const compartirImagen = async () => {
     try {
-      await navigator.clipboard.writeText(textoCompleto);
-      setCopiado(true);
-      setTimeout(() => setCopiado(false), 2000);
-    } catch {
-      setError('No se pudo copiar. Selecciona el enlace y cópialo manualmente.');
+      await navigator.share({ files: [datos.archivo], title: 'Metamorfosis', text: `${texto} ${datos.url}` });
+    } catch (e) {
+      // Cancelar el menú del sistema no es un error.
+      if (e?.name !== 'AbortError') setError('No se pudo compartir. Descarga la imagen y envíala tú.');
     }
   };
 
-  const puedeCompartirNativo = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
-  const compartirNativo = async () => {
+  const copiarImagen = async () => {
     try {
-      await navigator.share({ title: 'Metamorfosis', text: mensaje, url: enlace });
+      await navigator.clipboard.write([new window.ClipboardItem({ 'image/png': datos.archivo })]);
+      setAviso('Imagen copiada. Pégala en el chat o correo.');
     } catch {
-      // El usuario canceló el menú del sistema: no es un error.
+      setError('No se pudo copiar la imagen. Descárgala y adjúntala.');
+    }
+  };
+
+  const copiarEnlace = async () => {
+    try {
+      await navigator.clipboard.writeText(datos.url);
+      setAviso('Enlace copiado');
+    } catch {
+      setError('No se pudo copiar. Selecciona el enlace y cópialo manualmente.');
     }
   };
 
@@ -71,7 +116,7 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="titulo-compartir-logro"
-        className="relative w-full max-w-md rounded-t-3xl bg-white px-5 pb-7 pt-3 shadow-2xl sm:rounded-2xl sm:p-6"
+        className="relative max-h-[95vh] w-full max-w-lg overflow-y-auto rounded-t-3xl bg-white px-5 pb-7 pt-3 shadow-2xl sm:rounded-2xl sm:p-6"
       >
         <div aria-hidden="true" className="mx-auto h-1 w-10 rounded-full bg-gray-300 sm:hidden" />
         <div className="mt-4 flex items-start justify-between sm:mt-0">
@@ -89,13 +134,13 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
         </div>
 
         {cargando && (
-          <p className="mt-6 flex items-center justify-center gap-2 py-8 text-sm text-gray-600" role="status">
-            <LoaderCircle className="size-5 animate-spin text-violet-600" aria-hidden="true" />
-            Preparando tu enlace...
-          </p>
+          <div role="status" className="mt-4 flex aspect-[1200/630] w-full flex-col items-center justify-center gap-2 rounded-xl bg-violet-50 text-sm text-violet-700">
+            <LoaderCircle className="size-6 animate-spin" aria-hidden="true" />
+            Preparando tu imagen...
+          </div>
         )}
 
-        {!cargando && error && !enlace && (
+        {!cargando && !datos && error && (
           <div className="mt-6">
             <div role="alert" className="flex gap-2 rounded-xl bg-red-50 p-3 text-sm text-red-700">
               <CircleAlert className="size-5 shrink-0" aria-hidden="true" />
@@ -111,69 +156,74 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
           </div>
         )}
 
-        {enlace && (
+        {datos && (
           <>
-            <label htmlFor="mensaje-logro" className="mt-5 block text-sm font-semibold text-gray-700">
-              Mensaje
-            </label>
-            <textarea
-              id="mensaje-logro"
-              value={mensaje}
-              onChange={(e) => setMensaje(e.target.value)}
-              maxLength={280}
-              rows={3}
-              className="mt-1.5 w-full resize-none rounded-xl border border-gray-200 p-3 text-[15px] text-gray-800 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-200"
+            <img
+              src={datos.vistaPrevia}
+              alt={`Tarjeta del logro: ${meta.nombre}, cumplida.`}
+              width={1200}
+              height={630}
+              className="mt-4 w-full rounded-xl shadow-sm ring-1 ring-black/5"
             />
 
-            <div className="mt-4 grid grid-cols-3 gap-3">
-              {opciones.map(({ nombre, Icono, href, color }) => (
-                <a
-                  key={nombre}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-1.5 rounded-xl border border-gray-100 py-3 text-[13px] font-semibold text-gray-700 hover:bg-gray-50"
+            {puedeCompartirImagen && (
+              <button
+                type="button"
+                onClick={compartirImagen}
+                className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-violet-600 font-bold text-white hover:bg-violet-700"
+              >
+                <Share2 className="size-5" aria-hidden="true" />
+                Compartir imagen
+              </button>
+            )}
+
+            <div className={`grid gap-3 ${puedeCompartirImagen ? 'mt-3' : 'mt-5'} ${puedeCopiarImagen ? 'grid-cols-2' : 'grid-cols-1'}`}>
+              <a
+                href={datos.vistaPrevia}
+                download={datos.archivo.name}
+                className={`flex h-12 items-center justify-center gap-2 rounded-xl font-bold ${
+                  puedeCompartirImagen
+                    ? 'border border-gray-200 text-gray-700 hover:bg-gray-50'
+                    : 'bg-violet-600 text-white hover:bg-violet-700'
+                }`}
+              >
+                <Download className="size-5" aria-hidden="true" />
+                Descargar
+              </a>
+              {puedeCopiarImagen && (
+                <button
+                  type="button"
+                  onClick={copiarImagen}
+                  className="flex h-12 items-center justify-center gap-2 rounded-xl border border-gray-200 font-bold text-gray-700 hover:bg-gray-50"
                 >
-                  <span className={`flex size-10 items-center justify-center rounded-full ${color}`}>
-                    <Icono className="size-5" aria-hidden="true" />
-                  </span>
-                  {nombre}
-                </a>
-              ))}
+                  <IconoImagen className="size-5" aria-hidden="true" />
+                  Copiar imagen
+                </button>
+              )}
             </div>
 
-            <div className="mt-4 flex items-center gap-2 rounded-xl bg-slate-50 p-2 pl-3">
-              <span className="min-w-0 flex-1 truncate text-sm text-gray-600" title={enlace}>
-                {enlace}
+            <p className="mt-5 text-sm font-semibold text-gray-700">O comparte el enlace</p>
+            <div className="mt-1.5 flex items-center gap-2 rounded-xl bg-slate-50 p-2 pl-3">
+              <span className="min-w-0 flex-1 truncate text-sm text-gray-600" title={datos.url}>
+                {datos.url}
               </span>
               <button
                 type="button"
-                onClick={copiar}
+                onClick={copiarEnlace}
                 className="flex h-9 shrink-0 items-center gap-1.5 rounded-lg bg-white px-3 text-sm font-semibold text-violet-700 shadow-sm hover:bg-violet-50"
               >
-                {copiado ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
-                {copiado ? 'Copiado' : 'Copiar'}
+                {aviso === 'Enlace copiado' ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
+                {aviso === 'Enlace copiado' ? 'Copiado' : 'Copiar'}
               </button>
             </div>
-            <p className="sr-only" aria-live="polite">{copiado ? 'Enlace copiado' : ''}</p>
 
-            {error && (
-              <p role="alert" className="mt-3 text-sm text-red-700">{error}</p>
-            )}
+            <p role="status" aria-live="polite" className="mt-3 min-h-5 text-center text-sm font-semibold text-emerald-700">
+              {aviso}
+            </p>
+            {error && <p role="alert" className="text-center text-sm text-red-700">{error}</p>}
 
-            {puedeCompartirNativo && (
-              <button
-                type="button"
-                onClick={compartirNativo}
-                className="mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-violet-600 font-bold text-white hover:bg-violet-700"
-              >
-                <Share2 className="size-5" aria-hidden="true" />
-                Más opciones
-              </button>
-            )}
-
-            <p className="mt-4 text-center text-xs text-gray-500">
-              Quien abra el enlace solo verá esta meta y tu nombre con la inicial del apellido.
+            <p className="mt-2 text-center text-xs text-gray-500">
+              La imagen y el enlace solo muestran esta meta y tu nombre con la inicial del apellido.
             </p>
           </>
         )}
