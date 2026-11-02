@@ -175,6 +175,15 @@ export default function MetaTarjeta({
           <span>Pendiente</span>
         )}
       </div>
+      {/* HU6 + sub-metas: el camino de una meta cumplida queda para consultar. */}
+      {cumplida && onCompartir && (
+        <Link
+          to={`/metas/${meta.codigoMeta}`}
+          className="flex h-11 items-center justify-center rounded-xl border border-zinc-200 bg-white font-semibold text-gray-700 hover:bg-gray-50"
+        >
+          Ver cómo recorriste el camino
+        </Link>
+      )}
       {/* HU21: una meta cumplida se puede compartir como logro. */}
       {cumplida && onCompartir && (
         <button
