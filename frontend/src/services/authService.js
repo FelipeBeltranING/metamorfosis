@@ -30,7 +30,8 @@ async function post(ruta, solicitud, token) {
 }
 
 /**
- * HU8 paso 1: pide el correo de autorización. 202 -> { email, fechaExpiracion }.
+ * HU8 paso 1: pide el correo de autorización. 202 -> { email, fechaExpiracion, sesion }.
+ * `sesion` sirve para preguntar con consultarEstado() si el dueño ya autorizó.
  * 409 = correo ya registrado, 429 = reenvío muy seguido o el dueño rechazó el registro.
  */
 export function solicitarRegistro(email) {
@@ -42,6 +43,31 @@ export async function consultarSolicitud(token) {
   let respuesta;
   try {
     respuesta = await fetch(`${API_URL}/api/auth/registro/solicitud/${encodeURIComponent(token)}`);
+  } catch {
+    throw new Error('No se pudo conectar con el servidor');
+  }
+  const datos = await respuesta.json().catch(() => null);
+  if (!respuesta.ok) {
+    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    error.estado = respuesta.status;
+    throw error;
+  }
+  return datos;
+}
+
+/** HU8: botón "Autorizar y continuar" del correo. 200 -> { email, fechaExpiracion }; 410 = enlace no válido. */
+export function autorizarRegistro(token) {
+  return post('/api/auth/registro/autorizar', { token });
+}
+
+/**
+ * HU8: la página donde se pidió el registro pregunta si ya se autorizó.
+ * 200 -> { estado: 'PENDIENTE' | 'AUTORIZADA' | 'RECHAZADA' | 'VENCIDA' }; 410 = la solicitud ya no existe.
+ */
+export async function consultarEstado(sesion) {
+  let respuesta;
+  try {
+    respuesta = await fetch(`${API_URL}/api/auth/registro/estado/${encodeURIComponent(sesion)}`);
   } catch {
     throw new Error('No se pudo conectar con el servidor');
   }
