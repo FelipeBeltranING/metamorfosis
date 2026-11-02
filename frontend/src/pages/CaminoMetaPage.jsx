@@ -19,7 +19,7 @@ import { detalleSubMeta, formatearNumero } from '../utils/subMetas';
 const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((t) => [t.valor, t.etiqueta]));
 const PLAZO_POR_VALOR = Object.fromEntries(PLAZOS.map((p) => [p.valor, p.etiqueta]));
 // 5 días en el celular y 7 desde sm: la 6.ª y 7.ª columna se ocultan en pantallas angostas.
-const COLUMNAS = 'grid grid-cols-[minmax(0,1fr)_repeat(5,44px)] gap-1 sm:grid-cols-[minmax(200px,1fr)_repeat(7,64px)] sm:gap-2';
+const COLUMNAS = 'grid grid-cols-5 gap-1 sm:grid-cols-[minmax(200px,1fr)_repeat(7,64px)] sm:gap-2';
 const OCULTA_EN_MOVIL = (i) => (i >= 5 ? 'hidden sm:flex' : 'flex');
 
 /**
@@ -290,7 +290,7 @@ export default function CaminoMetaPage() {
 
             <div role="table" aria-label="Sub-metas de los últimos días" className="flex flex-col gap-2">
               <div role="row" className={`${COLUMNAS} items-end px-1`}>
-                <span role="columnheader" className="px-2 text-[13px] font-bold text-gray-600">Sub-meta</span>
+                <span role="columnheader" className="hidden px-2 text-[13px] font-bold text-gray-600 sm:block">Sub-meta</span>
                 {fechas.map((f, i) => (
                   <span key={f} role="columnheader" className={`${OCULTA_EN_MOVIL(i)} flex-col items-center text-[11px] font-extrabold leading-tight sm:text-xs ${f === camino.hoy ? 'text-violet-700' : 'text-gray-600'}`}>
                     <span>{f === camino.hoy ? 'Hoy' : diaCorto(f)}</span>
@@ -299,8 +299,8 @@ export default function CaminoMetaPage() {
                 ))}
               </div>
               {camino.subMetas.map(({ subMeta, dias }) => (
-                <div key={subMeta.codigoSubMeta} role="row" className={`${COLUMNAS} items-center rounded-xl bg-slate-50 py-1.5 pl-1 pr-1`}>
-                  <div role="rowheader" className="flex min-w-0 items-center gap-0.5">
+                <div key={subMeta.codigoSubMeta} role="row" className={`${COLUMNAS} items-center rounded-xl bg-slate-50 py-1.5 pl-1 pr-1 gap-y-1.5`}>
+                  <div role="rowheader" className="col-span-full flex min-w-0 items-center gap-0.5 sm:col-span-1">
                     <MenuSubMeta subMeta={subMeta} puedeEditar={camino.puedeEditar} onEliminar={(s) => { setErrorEliminar(''); setAEliminar(s); }} />
                     <Link to={`/submetas/${subMeta.codigoSubMeta}`} className="min-w-0 py-1">
                       <span className="block truncate text-[15px] font-bold text-gray-900 sm:text-base">{subMeta.nombre}</span>
