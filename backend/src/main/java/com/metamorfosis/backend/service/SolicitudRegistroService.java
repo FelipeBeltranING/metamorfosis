@@ -1,5 +1,6 @@
 package com.metamorfosis.backend.service;
 
+import com.metamorfosis.backend.dto.EstadoSolicitudResponse;
 import com.metamorfosis.backend.dto.SolicitudRegistroRequest;
 import com.metamorfosis.backend.dto.SolicitudRegistroResponse;
 import com.metamorfosis.backend.exception.EmailYaRegistradoException;
@@ -34,11 +35,14 @@ import java.util.regex.Pattern;
 
 /**
  * HU8: solo se crea una cuenta si el dueño del correo la autoriza.
- *   1. solicitar: guarda el email con un token y envía el correo con "Autorizar" y "No fui yo".
- *   2. consultar: la página del enlace comprueba el token (no cambia nada, así que los
- *      antivirus o Gmail pueden abrir el enlace sin efectos).
- *   3. AuthService.registrar valida el token con validarParaRegistro y lo consume al crear la cuenta.
- *   4. rechazar: "No fui yo" invalida el enlace y bloquea el email por 24 h.
+ *   1. solicitar: guarda el email con dos tokens. El del correo va en los botones "Autorizar" y
+ *      "No fui yo"; el de sesión vuelve al navegador que hizo la solicitud.
+ *   2. autorizar: el botón del correo marca la solicitud como autorizada.
+ *   3. estado: la página donde se pidió el registro pregunta con su sesión; cuando ve
+ *      AUTORIZADA, abre el formulario sola.
+ *   4. AuthService.registrar acepta cualquiera de los dos tokens, pero solo si ya se autorizó,
+ *      y consume la solicitud al crear la cuenta.
+ *   5. rechazar: "No fui yo" invalida el enlace y bloquea el email por 24 h.
  */
 @Service
 public class SolicitudRegistroService {
@@ -47,6 +51,7 @@ public class SolicitudRegistroService {
     static final Duration BLOQUEO_RECHAZO = Duration.ofHours(24);
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
     private static final String MENSAJE_ENLACE_INVALIDO = "Este enlace ya no es válido. Pide uno nuevo para registrarte.";
+    private static final String MENSAJE_SIN_AUTORIZAR = "Primero autoriza el registro desde el correo que te enviamos.";
 
     private final SolicitudRegistroRepository solicitudRepository;
     private final UsuarioRepository usuarioRepository;
@@ -108,34 +113,80 @@ public class SolicitudRegistroService {
         }
 
         String token = generarToken();
-        solicitud.renovar(hash(token), ahora, ahora.plusMinutes(minutosVigencia));
+        String sesion = generarToken();
+        solicitud.renovar(hash(token), hash(sesion), ahora, ahora.plusMinutes(minutosVigencia));
         solicitudRepository.save(solicitud);
 
-        String urlAutorizar = urlFrontend + "/registro/completar?token=" + token;
+        String urlAutorizar = urlFrontend + "/registro/autorizar?token=" + token;
         String urlRechazar = urlFrontend + "/registro/rechazar?token=" + token;
         correoService.enviar(email, PlantillaAutorizacion.ASUNTO,
                 PlantillaAutorizacion.html(email, urlAutorizar, urlRechazar, minutosVigencia),
                 PlantillaAutorizacion.texto(email, urlAutorizar, urlRechazar, minutosVigencia));
 
         logService.registrar(null, AccionLog.SOLICITAR_REGISTRO, EntidadLog.USUARIO, null, ResultadoLog.EXITO, null);
-        return new SolicitudRegistroResponse(email, solicitud.getFechaExpiracion());
+        return new SolicitudRegistroResponse(email, solicitud.getFechaExpiracion(), sesion);
     }
 
-    /** Paso 2: la página del enlace comprueba el token y obtiene el email autorizado. Solo lee. */
+    /** Paso 2: el dueño del correo tocó "Autorizar y continuar". Repetirlo no hace daño. */
+    @Transactional
+    public SolicitudRegistroResponse autorizar(String tokenCorreo) {
+        SolicitudRegistro solicitud = buscarPorTokenCorreo(tokenCorreo);
+        solicitud.autorizar(LocalDateTime.now(reloj));
+        solicitudRepository.save(solicitud);
+        return new SolicitudRegistroResponse(solicitud.getEmail(), solicitud.getFechaExpiracion(), null);
+    }
+
+    /** Paso 3: la página donde se pidió el registro pregunta en qué va su solicitud. Solo lee. */
+    @Transactional(readOnly = true)
+    public EstadoSolicitudResponse estado(String sesion) {
+        if (sesion == null || sesion.isBlank()) {
+            throw new SolicitudInvalidaException(MENSAJE_ENLACE_INVALIDO);
+        }
+        LocalDateTime ahora = LocalDateTime.now(reloj);
+        SolicitudRegistro solicitud = solicitudRepository.findBySesionHash(hash(sesion.trim()))
+                .orElseThrow(() -> new SolicitudInvalidaException("Esta solicitud ya no está activa."));
+
+        if (solicitud.estaBloqueada(ahora)) return new EstadoSolicitudResponse(EstadoSolicitudResponse.Estado.RECHAZADA);
+        if (!solicitud.estaVigente(ahora)) return new EstadoSolicitudResponse(EstadoSolicitudResponse.Estado.VENCIDA);
+        if (solicitud.estaAutorizada()) return new EstadoSolicitudResponse(EstadoSolicitudResponse.Estado.AUTORIZADA);
+        return new EstadoSolicitudResponse(EstadoSolicitudResponse.Estado.PENDIENTE);
+    }
+
+    /** El formulario comprueba el token (del correo o de la sesión) y obtiene el email autorizado. Solo lee. */
     @Transactional(readOnly = true)
     public SolicitudRegistroResponse consultar(String token) {
         SolicitudRegistro solicitud = validarParaRegistro(token);
-        return new SolicitudRegistroResponse(solicitud.getEmail(), solicitud.getFechaExpiracion());
+        return new SolicitudRegistroResponse(solicitud.getEmail(), solicitud.getFechaExpiracion(), null);
     }
 
-    /** La solicitud vigente de ese token, o SolicitudInvalidaException (410). La usa AuthService.registrar. */
+    /**
+     * La solicitud vigente y ya autorizada de ese token (del correo o de la sesión), o
+     * SolicitudInvalidaException (410). La usa AuthService.registrar.
+     */
     @Transactional(readOnly = true)
     public SolicitudRegistro validarParaRegistro(String token) {
         if (token == null || token.isBlank()) {
             throw new SolicitudInvalidaException(MENSAJE_ENLACE_INVALIDO);
         }
+        String hashToken = hash(token.trim());
         LocalDateTime ahora = LocalDateTime.now(reloj);
-        return solicitudRepository.findByTokenHash(hash(token.trim()))
+        SolicitudRegistro solicitud = solicitudRepository.findByTokenHash(hashToken)
+                .or(() -> solicitudRepository.findBySesionHash(hashToken))
+                .filter(s -> s.estaVigente(ahora))
+                .orElseThrow(() -> new SolicitudInvalidaException(MENSAJE_ENLACE_INVALIDO));
+        if (!solicitud.estaAutorizada()) {
+            throw new SolicitudInvalidaException(MENSAJE_SIN_AUTORIZAR);
+        }
+        return solicitud;
+    }
+
+    /** Solicitud vigente del token que va en el correo (no acepta el de sesión). */
+    private SolicitudRegistro buscarPorTokenCorreo(String tokenCorreo) {
+        if (tokenCorreo == null || tokenCorreo.isBlank()) {
+            throw new SolicitudInvalidaException(MENSAJE_ENLACE_INVALIDO);
+        }
+        LocalDateTime ahora = LocalDateTime.now(reloj);
+        return solicitudRepository.findByTokenHash(hash(tokenCorreo.trim()))
                 .filter(s -> s.estaVigente(ahora))
                 .orElseThrow(() -> new SolicitudInvalidaException(MENSAJE_ENLACE_INVALIDO));
     }
@@ -149,7 +200,7 @@ public class SolicitudRegistroService {
     /** "No fui yo": el enlace deja de servir y el email no recibe más correos por 24 h. */
     @Transactional
     public void rechazar(String token) {
-        SolicitudRegistro solicitud = validarParaRegistro(token);
+        SolicitudRegistro solicitud = buscarPorTokenCorreo(token);
         solicitud.bloquear(LocalDateTime.now(reloj).plus(BLOQUEO_RECHAZO));
         solicitudRepository.save(solicitud);
         logService.registrar(null, AccionLog.RECHAZAR_REGISTRO, EntidadLog.USUARIO, null, ResultadoLog.EXITO, null);
