@@ -1,6 +1,9 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import MisMetasPage from './pages/MisMetasPage';
 import MisLogrosPage from './pages/MisLogrosPage';
+import CaminoMetaPage from './pages/CaminoMetaPage';
+import SubMetaFormPage from './pages/SubMetaFormPage';
+import EstadisticasSubMetaPage from './pages/EstadisticasSubMetaPage';
 import CrearMetaPage from './pages/CrearMetaPage';
 import EditarMetaPage from './pages/EditarMetaPage';
 import RegistroPage from './pages/RegistroPage';
@@ -28,6 +31,11 @@ export default function App() {
           <Route path="/metas/nueva" element={<CrearMetaPage />} />
           <Route path="/metas/:codigoMeta/editar" element={<EditarMetaPage />} />
           <Route path="/mis-logros" element={<MisLogrosPage />} />
+          {/* Sub-metas: el camino de cada meta. */}
+          <Route path="/metas/:codigoMeta" element={<CaminoMetaPage />} />
+          <Route path="/metas/:codigoMeta/submetas/nueva" element={<SubMetaFormPage />} />
+          <Route path="/submetas/:codigoSubMeta" element={<EstadisticasSubMetaPage />} />
+          <Route path="/submetas/:codigoSubMeta/editar" element={<SubMetaFormPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/metas" replace />} />
       </Routes>
