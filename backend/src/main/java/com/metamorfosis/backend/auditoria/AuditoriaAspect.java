@@ -1,5 +1,6 @@
 package com.metamorfosis.backend.auditoria;
 
+import com.metamorfosis.backend.dto.LogroCompartidoResponse;
 import com.metamorfosis.backend.dto.MetaResponse;
 import com.metamorfosis.backend.exception.ValidacionException;
 import com.metamorfosis.backend.model.EntidadLog;
@@ -71,6 +72,8 @@ public Object auditar(ProceedingJoinPoint pjp) throws Throwable {
                 detalle.put("plazo", m.plazo());
                 detalle.put("tipo", m.tipo());
                 detalle.put("estado", m.estado());
+            } else if (retorno instanceof LogroCompartidoResponse l) {
+                detalle.put("token", l.token());   // HU21: qué enlace se compartió
             } else if (retorno instanceof Collection<?> c) {
                 detalle.put("cantidad", c.size());
             }
