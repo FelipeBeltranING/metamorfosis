@@ -59,6 +59,25 @@ public class ManejadorExcepciones {
     }
 
     /** HU21: enlace de logro que no existe. */
+    /** HU8: enlace de autorización vencido, usado o inexistente. */
+    @ExceptionHandler(SolicitudInvalidaException.class)
+    public ResponseEntity<ErrorResponse> solicitudInvalida(SolicitudInvalidaException e) {
+        return responder(HttpStatus.GONE, e.getMessage(), List.of());
+    }
+
+    /** HU8: reenvío muy seguido o email bloqueado porque el dueño respondió "No fui yo". */
+    @ExceptionHandler(SolicitudBloqueadaException.class)
+    public ResponseEntity<ErrorResponse> solicitudBloqueada(SolicitudBloqueadaException e) {
+        return responder(HttpStatus.TOO_MANY_REQUESTS, e.getMessage(), List.of());
+    }
+
+    /** HU8: el proveedor de correo falló; el detalle queda en el log del servidor. */
+    @ExceptionHandler(CorreoNoEnviadoException.class)
+    public ResponseEntity<ErrorResponse> correoNoEnviado(CorreoNoEnviadoException e) {
+        log.error("No se pudo enviar el correo", e);
+        return responder(HttpStatus.SERVICE_UNAVAILABLE, e.getMessage(), List.of());
+    }
+
     @ExceptionHandler(LogroNoEncontradoException.class)
     public ResponseEntity<ErrorResponse> logroNoEncontrado(LogroNoEncontradoException e) {
         return responder(HttpStatus.NOT_FOUND, e.getMessage(), List.of());

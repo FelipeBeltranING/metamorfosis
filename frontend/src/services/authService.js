@@ -29,9 +29,68 @@ async function post(ruta, solicitud, token) {
   return datos;
 }
 
-/** Registra un usuario nuevo. 201 -> { codigoUsuario, nombre, apellido, email }. 409 = correo ya registrado. */
-export function registrar({ nombre, apellido, email, password }) {
-  return post('/api/auth/registro', { nombre, apellido, email, password });
+/**
+ * HU8 paso 1: pide el correo de autorización. 202 -> { email, fechaExpiracion, sesion }.
+ * `sesion` sirve para preguntar con consultarEstado() si el dueño ya autorizó.
+ * 409 = correo ya registrado, 429 = reenvío muy seguido o el dueño rechazó el registro.
+ */
+export function solicitarRegistro(email) {
+  return post('/api/auth/registro/solicitar', { email });
+}
+
+/** HU8 paso 2: comprueba el enlace del correo. 200 -> { email, fechaExpiracion }; 410 = enlace no válido. */
+export async function consultarSolicitud(token) {
+  let respuesta;
+  try {
+    respuesta = await fetch(`${API_URL}/api/auth/registro/solicitud/${encodeURIComponent(token)}`);
+  } catch {
+    throw new Error('No se pudo conectar con el servidor');
+  }
+  const datos = await respuesta.json().catch(() => null);
+  if (!respuesta.ok) {
+    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    error.estado = respuesta.status;
+    throw error;
+  }
+  return datos;
+}
+
+/** HU8: botón "Autorizar y continuar" del correo. 200 -> { email, fechaExpiracion }; 410 = enlace no válido. */
+export function autorizarRegistro(token) {
+  return post('/api/auth/registro/autorizar', { token });
+}
+
+/**
+ * HU8: la página donde se pidió el registro pregunta si ya se autorizó.
+ * 200 -> { estado: 'PENDIENTE' | 'AUTORIZADA' | 'RECHAZADA' | 'VENCIDA' }; 410 = la solicitud ya no existe.
+ */
+export async function consultarEstado(sesion) {
+  let respuesta;
+  try {
+    respuesta = await fetch(`${API_URL}/api/auth/registro/estado/${encodeURIComponent(sesion)}`);
+  } catch {
+    throw new Error('No se pudo conectar con el servidor');
+  }
+  const datos = await respuesta.json().catch(() => null);
+  if (!respuesta.ok) {
+    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    error.estado = respuesta.status;
+    throw error;
+  }
+  return datos;
+}
+
+/** HU8: "No fui yo". 204 sin cuerpo; 410 = enlace no válido. */
+export function rechazarRegistro(token) {
+  return post('/api/auth/registro/rechazar', { token });
+}
+
+/**
+ * HU8 paso 3: crea la cuenta con el token del correo (el email sale del token).
+ * 201 -> { codigoUsuario, nombre, apellido, email }. 410 = enlace no válido, 409 = correo ya registrado.
+ */
+export function registrar({ token, nombre, apellido, password }) {
+  return post('/api/auth/registro', { token, nombre, apellido, password });
 }
 
 /**

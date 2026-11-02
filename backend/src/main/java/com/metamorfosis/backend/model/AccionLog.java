@@ -14,6 +14,8 @@ public enum AccionLog {
     COMPARTIR_LOGRO,    // HU21
     LISTAR_LOGROS,      // HU21 (Mis logros)
     REGISTRAR_USUARIO,  // HU8
+    SOLICITAR_REGISTRO, // HU8: se envió el correo de autorización
+    RECHAZAR_REGISTRO,  // HU8: el dueño del correo respondió "No fui yo"
     INICIAR_SESION,     // HU9
     CERRAR_SESION       // HU10
 }

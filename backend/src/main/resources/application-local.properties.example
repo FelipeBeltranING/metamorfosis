@@ -4,3 +4,8 @@ spring.datasource.password=CAMBIAR
 
 app.jwt.secret=CAMBIAR-por-un-secreto-largo-y-aleatorio
 app.jwt.expiracion-minutos=60
+
+# HU8: para enviar correos de verdad (si no, quedan en el log del backend)
+# app.correo.proveedor=brevo
+# app.correo.brevo.api-key=xkeysib-CAMBIAR
+# app.correo.remitente=correo-verificado-en-brevo@gmail.com
