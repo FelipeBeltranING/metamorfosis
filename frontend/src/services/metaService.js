@@ -5,7 +5,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 const MENSAJE_SESION_EXPIRADA = 'Tu sesión expiró. Inicia sesión de nuevo.';
 
 /** Error 401 de sesión: borra la sesión local para que las rutas protegidas manden al login. */
-function errorSesionExpirada() {
+export function errorSesionExpirada() {
   cerrarSesion();
   const error = new Error(MENSAJE_SESION_EXPIRADA);
   error.estado = 401;
@@ -13,7 +13,7 @@ function errorSesionExpirada() {
 }
 
 /** Cabeceras con el token de la sesión vigente (el servidor saca de ahí al usuario). */
-function cabeceras(extra = {}) {
+export function cabeceras(extra = {}) {
   const sesion = obtenerSesion();
   if (!sesion) throw errorSesionExpirada();
   return { ...extra, Authorization: `Bearer ${sesion.token}` };
@@ -57,6 +57,23 @@ export async function listarMetas() {
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) throw new Error(datos?.mensaje ?? 'Error inesperado');
   // Si no llega una lista (p. ej. la petición no llegó a la API), mejor un error que una pantalla rota.
+  if (!Array.isArray(datos)) throw new Error('Respuesta inesperada del servidor');
+  return datos;
+}
+
+/** HU21 (Mis logros): metas cumplidas del usuario. Lanza Error con mensaje legible si falla. */
+export async function listarCumplidas() {
+  const encabezados = cabeceras();
+  let respuesta;
+  try {
+    respuesta = await fetch(`${API_URL}/api/metas/cumplidas`, { headers: encabezados });
+  } catch {
+    throw new Error('No se pudo conectar con el servidor');
+  }
+
+  if (respuesta.status === 401) throw errorSesionExpirada();
+  const datos = await respuesta.json().catch(() => null);
+  if (!respuesta.ok) throw new Error(datos?.mensaje ?? 'Error inesperado');
   if (!Array.isArray(datos)) throw new Error('Respuesta inesperada del servidor');
   return datos;
 }

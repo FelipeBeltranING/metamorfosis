@@ -11,6 +11,8 @@ public enum AccionLog {
     ELIMINAR_META,      // HU4
     REGISTRAR_CUMPLIMIENTO, // HU5 (retirada; se conserva porque hay filas en log_actividad con este valor)
     MARCAR_CUMPLIDA,    // HU6
+    COMPARTIR_LOGRO,    // HU21
+    LISTAR_LOGROS,      // HU21 (Mis logros)
     REGISTRAR_USUARIO,  // HU8
     INICIAR_SESION,     // HU9
     CERRAR_SESION       // HU10

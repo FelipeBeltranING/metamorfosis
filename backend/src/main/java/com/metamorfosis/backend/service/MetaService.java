@@ -61,6 +61,18 @@ public class MetaService {
                 .toList();
     }
 
+    /** HU21 (Mis logros): metas cumplidas del usuario, con la fecha en que se cumplieron. */
+    @Auditar(accion = AccionLog.LISTAR_LOGROS, entidad = EntidadLog.META)
+    @Transactional(readOnly = true)
+    public List<MetaResponse> listarCumplidas(Integer codigoUsuario) {
+        if (!usuarioRepository.existsById(codigoUsuario)) {
+            throw new UsuarioNoEncontradoException(codigoUsuario);
+        }
+        return metaRepository.findCumplidasByParticipante(codigoUsuario).stream()
+                .map(MetaResponse::desde)
+                .toList();
+    }
+
     /** HU2: edita nombre, plazo y tipo. Solo el creador edita y una meta CUMPLIDA no se edita. */
     @Auditar(accion = AccionLog.EDITAR_META, entidad = EntidadLog.META)
     @Transactional

@@ -1,4 +1,4 @@
-import { Check, Clock } from 'lucide-react';
+import { Check, Clock, Share2 } from 'lucide-react';
 import MenuTarjeta from './MenuTarjeta';
 import { PLAZOS, TIPOS } from '../constants/opcionesMeta';
 
@@ -55,7 +55,7 @@ function CirculoCumplida({ nombreMeta, cumplida, onClick }) {
 }
 
 export default function MetaTarjeta({
-  meta, onMarcarCumplida, onEditar, onEliminar,
+  meta, onMarcarCumplida, onEditar, onEliminar, onCompartir,
 }) {
   const tipo = TIPO_POR_VALOR[meta.tipo] ?? TIPO_POR_VALOR.OTRO;
   const plazo = PLAZO_POR_VALOR[meta.plazo];
@@ -114,6 +114,17 @@ export default function MetaTarjeta({
           <span>Pendiente</span>
         )}
       </div>
+      {/* HU21: una meta cumplida se puede compartir como logro. */}
+      {cumplida && onCompartir && (
+        <button
+          type="button"
+          onClick={() => onCompartir(meta)}
+          className="flex h-11 items-center justify-center gap-2 rounded-xl border border-violet-200 bg-white font-semibold text-violet-700 hover:bg-violet-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
+        >
+          <Share2 className="size-4" aria-hidden="true" />
+          Compartir logro
+        </button>
+      )}
     </li>
   );
 }

@@ -42,6 +42,7 @@ public class SeguridadConfig {
             }))
             .authorizeHttpRequests(a -> a
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/logros/**").permitAll()   // HU21: logro compartido
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().denyAll());
         return http.build();

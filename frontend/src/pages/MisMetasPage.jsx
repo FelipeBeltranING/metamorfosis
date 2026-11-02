@@ -8,6 +8,7 @@ import EstadoVacio from '../components/EstadoVacio';
 import EstadoError from '../components/EstadoError';
 import ConfirmarEliminarModal from '../components/ConfirmarEliminarModal';
 import ConfirmarCumplidaModal from '../components/ConfirmarCumplidaModal';
+import CompartirLogroModal from '../components/CompartirLogroModal';
 import { eliminarMeta, listarMetas, marcarCumplida } from '../services/metaService';
 
 const AVISOS = {
@@ -39,6 +40,8 @@ export default function MisMetasPage() {
   const [metaAMarcar, setMetaAMarcar] = useState(null);
   const [marcando, setMarcando] = useState(false);
   const [errorMarcar, setErrorMarcar] = useState('');
+  // HU21: meta cumplida que se va a compartir.
+  const [metaACompartir, setMetaACompartir] = useState(null);
   // Aviso de error fuera del diálogo (por ejemplo, la meta ya no existe).
   const [errorLista, setErrorLista] = useState('');
 
@@ -202,6 +205,7 @@ export default function MisMetasPage() {
                 onMarcarCumplida={abrirMarcarCumplida}
                 onEditar={abrirEdicion}
                 onEliminar={abrirConfirmacion}
+                onCompartir={setMetaACompartir}
               />
             ))}
           </ul>
@@ -235,6 +239,10 @@ export default function MisMetasPage() {
           onConfirmar={confirmarMarcarCumplida}
           onCancelar={cancelarMarcarCumplida}
         />
+      )}
+
+      {metaACompartir && (
+        <CompartirLogroModal meta={metaACompartir} onCerrar={() => setMetaACompartir(null)} />
       )}
 
       {aviso && (

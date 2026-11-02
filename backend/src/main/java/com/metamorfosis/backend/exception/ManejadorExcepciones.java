@@ -58,6 +58,12 @@ public class ManejadorExcepciones {
         return responder(HttpStatus.NOT_FOUND, e.getMessage(), List.of());
     }
 
+    /** HU21: enlace de logro que no existe. */
+    @ExceptionHandler(LogroNoEncontradoException.class)
+    public ResponseEntity<ErrorResponse> logroNoEncontrado(LogroNoEncontradoException e) {
+        return responder(HttpStatus.NOT_FOUND, e.getMessage(), List.of());
+    }
+
     @ExceptionHandler(CredencialesInvalidasException.class)
     public ResponseEntity<ErrorResponse> credencialesInvalidas(CredencialesInvalidasException e) {
         return responder(HttpStatus.UNAUTHORIZED, e.getMessage(), List.of());
