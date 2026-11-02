@@ -39,12 +39,6 @@ export default function CrearMetaPage() {
     setErrores((anterior) => ({ ...anterior, [campo]: undefined }));
   };
 
-  const limpiar = () => {
-    setFormulario(FORMULARIO_VACIO);
-    setErrores({});
-    setErrorServidor('');
-  };
-
   const enviar = async (evento) => {
     evento.preventDefault();
     setErrorServidor('');
