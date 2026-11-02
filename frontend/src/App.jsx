@@ -4,6 +4,8 @@ import MisLogrosPage from './pages/MisLogrosPage';
 import CrearMetaPage from './pages/CrearMetaPage';
 import EditarMetaPage from './pages/EditarMetaPage';
 import RegistroPage from './pages/RegistroPage';
+import SolicitarRegistroPage from './pages/SolicitarRegistroPage';
+import RechazarRegistroPage from './pages/RechazarRegistroPage';
 import LoginPage from './pages/LoginPage';
 import LogroPublicoPage from './pages/LogroPublicoPage';
 import RutaProtegida from './components/RutaProtegida';
@@ -13,7 +15,10 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navigate to="/metas" replace />} />
-        <Route path="/registro" element={<RegistroPage />} />
+        {/* HU8: primero se autoriza el correo; el formulario solo abre con el enlace. */}
+        <Route path="/registro" element={<SolicitarRegistroPage />} />
+        <Route path="/registro/completar" element={<RegistroPage />} />
+        <Route path="/registro/rechazar" element={<RechazarRegistroPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/logros/:token" element={<LogroPublicoPage />} />
         <Route element={<RutaProtegida />}>
