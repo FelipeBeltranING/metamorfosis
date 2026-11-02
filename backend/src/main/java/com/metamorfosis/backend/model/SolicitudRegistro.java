@@ -22,6 +22,13 @@ public class SolicitudRegistro {
     @Column(name = "token_hash", unique = true, length = 64)
     private String tokenHash;
 
+    /** Hash del token que guarda el navegador que pidió el registro (para consultar el estado). */
+    @Column(name = "sesion_hash", unique = true, length = 64)
+    private String sesionHash;
+
+    @Column(name = "fecha_autorizacion")
+    private LocalDateTime fechaAutorizacion;
+
     @Column(name = "fecha_expiracion", nullable = false)
     private LocalDateTime fechaExpiracion;
 
@@ -37,9 +44,11 @@ public class SolicitudRegistro {
         this.email = email;
     }
 
-    /** Deja la solicitud lista con un enlace nuevo (el anterior deja de servir). */
-    public void renovar(String tokenHash, LocalDateTime ahora, LocalDateTime fechaExpiracion) {
+    /** Deja la solicitud lista con un enlace nuevo (el anterior deja de servir) y sin autorizar. */
+    public void renovar(String tokenHash, String sesionHash, LocalDateTime ahora, LocalDateTime fechaExpiracion) {
         this.tokenHash = tokenHash;
+        this.sesionHash = sesionHash;
+        this.fechaAutorizacion = null;
         this.fechaUltimoEnvio = ahora;
         this.fechaExpiracion = fechaExpiracion;
         this.bloqueadoHasta = null;
@@ -50,6 +59,15 @@ public class SolicitudRegistro {
         this.tokenHash = null;
         this.bloqueadoHasta = hasta;
         this.fechaExpiracion = hasta; // la limpieza la borra cuando termine el bloqueo
+    }
+
+    /** El dueño del correo tocó "Autorizar y continuar". Repetirlo no cambia la fecha. */
+    public void autorizar(LocalDateTime ahora) {
+        if (fechaAutorizacion == null) fechaAutorizacion = ahora;
+    }
+
+    public boolean estaAutorizada() {
+        return fechaAutorizacion != null;
     }
 
     public boolean estaBloqueada(LocalDateTime ahora) {
@@ -63,6 +81,8 @@ public class SolicitudRegistro {
     public Integer getCodigoSolicitud() { return codigoSolicitud; }
     public String getEmail() { return email; }
     public String getTokenHash() { return tokenHash; }
+    public String getSesionHash() { return sesionHash; }
+    public LocalDateTime getFechaAutorizacion() { return fechaAutorizacion; }
     public LocalDateTime getFechaExpiracion() { return fechaExpiracion; }
     public LocalDateTime getFechaUltimoEnvio() { return fechaUltimoEnvio; }
     public LocalDateTime getBloqueadoHasta() { return bloqueadoHasta; }
