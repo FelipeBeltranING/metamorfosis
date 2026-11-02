@@ -9,7 +9,6 @@ import com.metamorfosis.backend.exception.ValidacionException;
 import com.metamorfosis.backend.model.Meta;
 import com.metamorfosis.backend.model.Usuario;
 import com.metamorfosis.backend.repository.MetaRepository;
-import com.metamorfosis.backend.repository.RegistroRepository;
 import com.metamorfosis.backend.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +20,7 @@ import com.metamorfosis.backend.model.EstadoMeta;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class MetaService {
@@ -32,13 +29,10 @@ public class MetaService {
 
     private final MetaRepository metaRepository;
     private final UsuarioRepository usuarioRepository;
-    private final RegistroRepository registroRepository;
 
-    public MetaService(MetaRepository metaRepository, UsuarioRepository usuarioRepository,
-                       RegistroRepository registroRepository) {
+    public MetaService(MetaRepository metaRepository, UsuarioRepository usuarioRepository) {
         this.metaRepository = metaRepository;
         this.usuarioRepository = usuarioRepository;
-        this.registroRepository = registroRepository;
     }
 
     /** Crea la meta, la participación del creador y su primer registro en una sola transacción. */
@@ -62,11 +56,8 @@ public class MetaService {
         if (!usuarioRepository.existsById(codigoUsuario)) {
             throw new UsuarioNoEncontradoException(codigoUsuario);
         }
-        // HU5: para que la tarjeta muestre cuáles metas ya quedaron marcadas hoy.
-        Set<Integer> cumplidasHoy = new HashSet<>(
-                registroRepository.findCodigosMetaCumplidasEnFecha(codigoUsuario, LocalDate.now()));
         return metaRepository.findActivasByParticipante(codigoUsuario).stream()
-                .map(m -> MetaResponse.desde(m, cumplidasHoy.contains(m.getCodigoMeta())))
+                .map(MetaResponse::desde)
                 .toList();
     }
 
@@ -108,6 +99,28 @@ public class MetaService {
             );
         }
         metaRepository.delete(meta);
+    }
+
+    /**
+     * HU6: marca la meta como CUMPLIDA. Solo el creador puede hacerlo, la fecha la pone el
+     * servidor y no se puede deshacer. Si ya estaba cumplida no cambia nada y conserva la
+     * fecha original (doble clic, dos pestañas abiertas).
+     */
+    @Auditar(accion = AccionLog.MARCAR_CUMPLIDA, entidad = EntidadLog.META)
+    @Transactional
+    public MetaResponse marcarCumplida(Integer codigoMeta, Integer codigoUsuario) {
+        Meta meta = metaRepository.findById(codigoMeta)
+                .orElseThrow(() -> new MetaNoEncontradaException(codigoMeta));
+
+        if (!meta.getCreador().getCodigoUsuario().equals(codigoUsuario)) {
+            throw new PermisoDenegadoException("Solo el creador puede marcar la meta como cumplida");
+        }
+        if (meta.getEstado() == EstadoMeta.CUMPLIDA) {
+            return MetaResponse.desde(meta);
+        }
+
+        meta.marcarCumplida(codigoUsuario, LocalDate.now());
+        return MetaResponse.desde(metaRepository.save(meta));
     }
 
     private void validar(CrearMetaRequest s) {

@@ -111,27 +111,25 @@ export async function editarMeta(codigoMeta, solicitud) {
 }
 
 /**
- * HU5: registra (o actualiza) el cumplimiento de una meta en una fecha determinada.
- * Lanza Error con `mensaje`, `errores` y `estado` igual que editarMeta.
+ * HU6: marca la meta como cumplida (no se puede deshacer). Devuelve la meta actualizada.
+ * Lanza Error con `mensaje` y `estado` (código HTTP); sin `estado` = sin conexión.
  */
-export async function registrarCumplimiento(codigoMeta, solicitud) {
-  const encabezados = cabeceras({ 'Content-Type': 'application/json' });
+export async function marcarCumplida(codigoMeta) {
+  const encabezados = cabeceras();
   let respuesta;
   try {
-    respuesta = await fetch(`${API_URL}/api/metas/${codigoMeta}/registros`, {
-      method: 'POST',
+    respuesta = await fetch(`${API_URL}/api/metas/${codigoMeta}/cumplida`, {
+      method: 'PATCH',
       headers: encabezados,
-      body: JSON.stringify(solicitud),
     });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error('No se pudo marcar la meta. Revisa tu conexión e inténtalo de nuevo');
   }
 
   if (respuesta.status === 401) throw errorSesionExpirada();
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
     const error = new Error(datos?.mensaje ?? 'Error inesperado');
-    error.errores = datos?.errores ?? [];
     error.estado = respuesta.status;
     throw error;
   }

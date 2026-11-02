@@ -52,7 +52,7 @@ public class SeguridadConfig {
         CorsConfiguration c = new CorsConfiguration();
         c.setAllowedOrigins(origenes);
         c.setAllowedMethods(List.of(HttpMethod.GET.name(), HttpMethod.POST.name(),
-                HttpMethod.PUT.name(), HttpMethod.DELETE.name()));
+                HttpMethod.PUT.name(), HttpMethod.PATCH.name(), HttpMethod.DELETE.name()));
         c.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         UrlBasedCorsConfigurationSource fuente = new UrlBasedCorsConfigurationSource();
         fuente.registerCorsConfiguration("/api/**", c);

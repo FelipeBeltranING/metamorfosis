@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "meta")
@@ -69,7 +70,24 @@ public class Meta {
         this.plazo = plazo;
         this.tipo = tipo;
     }
-    
+
+    /** HU6: la meta queda CUMPLIDA (no se puede deshacer) y la fecha se guarda en la participación del usuario. */
+    public void marcarCumplida(Integer codigoUsuario, LocalDate fecha) {
+        this.estado = EstadoMeta.CUMPLIDA;
+        participacionDe(codigoUsuario).ifPresent(p -> p.marcarCumplida(fecha));
+    }
+
+    /** HU6: fecha en que el usuario cumplió la meta, o null si no la ha cumplido. */
+    public LocalDate getFechaCumplida(Integer codigoUsuario) {
+        return participacionDe(codigoUsuario).map(Participacion::getFechaCumplida).orElse(null);
+    }
+
+    private Optional<Participacion> participacionDe(Integer codigoUsuario) {
+        return participaciones.stream()
+                .filter(p -> p.getUsuario().getCodigoUsuario().equals(codigoUsuario))
+                .findFirst();
+    }
+
     public Integer getCodigoMeta() { return codigoMeta; }
     public Usuario getCreador() { return creador; }
     public String getNombre() { return nombre; }
