@@ -15,6 +15,8 @@ public interface SolicitudRegistroRepository extends JpaRepository<SolicitudRegi
 
     Optional<SolicitudRegistro> findByTokenHash(String tokenHash);
 
+    Optional<SolicitudRegistro> findBySesionHash(String sesionHash);
+
     /** Borra las solicitudes vencidas (y los bloqueos que ya terminaron). Devuelve cuántas borró. */
     @Modifying
     @Query("delete from SolicitudRegistro s where s.fechaExpiracion < :ahora")
