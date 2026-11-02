@@ -12,6 +12,7 @@ import com.metamorfosis.backend.exception.ValidacionException;
 import com.metamorfosis.backend.model.AccionLog;
 import com.metamorfosis.backend.model.EntidadLog;
 import com.metamorfosis.backend.model.ResultadoLog;
+import com.metamorfosis.backend.model.SolicitudRegistro;
 import com.metamorfosis.backend.model.TokenRevocado;
 import com.metamorfosis.backend.model.Usuario;
 import com.metamorfosis.backend.repository.TokenRevocadoRepository;
@@ -36,6 +37,7 @@ public class AuthService {
     private final TokenRevocadoRepository tokenRevocadoRepository;
     private final LogService logService;
     private final BloqueoLoginService bloqueoLoginService;
+    private final SolicitudRegistroService solicitudRegistroService;
     // Hash real calculado al arrancar; solo sirve para igualar tiempos de respuesta en el login.
     private final String hashRelleno;
 
@@ -46,33 +48,44 @@ public class AuthService {
 
     public AuthService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder,
                        JwtService jwtService, TokenRevocadoRepository tokenRevocadoRepository,
-                       LogService logService, BloqueoLoginService bloqueoLoginService) {
+                       LogService logService, BloqueoLoginService bloqueoLoginService,
+                       SolicitudRegistroService solicitudRegistroService) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.tokenRevocadoRepository = tokenRevocadoRepository;
         this.logService = logService;
         this.bloqueoLoginService = bloqueoLoginService;
+        this.solicitudRegistroService = solicitudRegistroService;
         this.hashRelleno = passwordEncoder.encode("relleno-para-igualar-tiempos");
     }
 
+    /**
+     * HU8: crea la cuenta solo si el token del correo es válido. El email sale de la
+     * solicitud autorizada; al terminar, el enlace queda usado.
+     */
     @Transactional
     public UsuarioResponse registrar(RegistroRequest solicitud) {
-        // El email se guarda sin espacios y en minúsculas para que "Ana@x.com" y "ana@x.com" sean el mismo
-        solicitud = new RegistroRequest(solicitud.nombre(), solicitud.apellido(),
-                normalizarEmail(solicitud.email()), solicitud.password());
+        if (solicitud == null) {
+            throw new ValidacionException(List.of("Faltan los datos del registro"));
+        }
+        // 1. Sin autorización del correo no hay registro (410 si el enlace no sirve)
+        SolicitudRegistro autorizada = solicitudRegistroService.validarParaRegistro(solicitud.token());
+        String email = autorizada.getEmail();
 
-        // 1. Validaciones de formato y campos obligatorios
+        // 2. Validaciones de formato y campos obligatorios
         validar(solicitud);
 
-        if (usuarioRepository.existsByEmailIgnoreCase(solicitud.email())) {
+        // 3. Por si alguien registró ese email mientras tanto
+        if (usuarioRepository.existsByEmailIgnoreCase(email)) {
             throw new EmailYaRegistradoException("El email ya está registrado");
         }
 
         String passwordHash = passwordEncoder.encode(solicitud.password());
-        Usuario nuevoUsuario = new Usuario(solicitud.nombre(), solicitud.apellido(), solicitud.email(), passwordHash);
-        
+        Usuario nuevoUsuario = new Usuario(solicitud.nombre().trim(), solicitud.apellido().trim(), email, passwordHash);
+
         Usuario guardado = usuarioRepository.save(nuevoUsuario);
+        solicitudRegistroService.consumir(autorizada);
         UsuarioResponse respuesta = UsuarioResponse.desde(guardado);
 
         logService.registrar(
@@ -222,12 +235,6 @@ public class AuthService {
         
         if (solicitud.apellido() == null || solicitud.apellido().isBlank()) {
             errores.add("El apellido es obligatorio");
-        }
-        
-        if (solicitud.email() == null || solicitud.email().isBlank()) {
-            errores.add("El email es obligatorio");
-        } else if (!EMAIL_PATTERN.matcher(solicitud.email()).matches()) {
-            errores.add("El formato del email no es válido");
         }
         
         if (solicitud.password() == null || solicitud.password().isBlank()) {
