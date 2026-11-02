@@ -23,6 +23,20 @@ public interface MetaRepository extends JpaRepository<Meta, Integer> {
             """)
     List<Meta> findActivasByParticipante(@Param("codigoUsuario") Integer codigoUsuario);
 
+    /**
+     * HU21 (Mis logros): metas CUMPLIDAS en las que el usuario participa con invitación ACEPTADA,
+     * de la cumplida más recientemente a la más antigua.
+     */
+    @Query("""
+            select m from Meta m
+            join m.participaciones p
+            where p.usuario.codigoUsuario = :codigoUsuario
+              and p.estadoInvitacion = com.metamorfosis.backend.model.EstadoInvitacion.ACEPTADA
+              and m.estado = com.metamorfosis.backend.model.EstadoMeta.CUMPLIDA
+            order by p.fechaCumplida desc nulls last, m.codigoMeta desc
+            """)
+    List<Meta> findCumplidasByParticipante(@Param("codigoUsuario") Integer codigoUsuario);
+
     /** HU5: true si el usuario participa en la meta con invitación ACEPTADA (puede registrar cumplimiento). */
     @Query("""
             select case when count(p) > 0 then true else false end
