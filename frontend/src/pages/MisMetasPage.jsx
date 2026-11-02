@@ -7,25 +7,15 @@ import MetaTarjetaEsqueleto from '../components/MetaTarjetaEsqueleto';
 import EstadoVacio from '../components/EstadoVacio';
 import EstadoError from '../components/EstadoError';
 import ConfirmarEliminarModal from '../components/ConfirmarEliminarModal';
-import RegistrarCumplimientoModal from '../components/RegistrarCumplimientoModal';
-import { eliminarMeta, listarMetas, registrarCumplimiento } from '../services/metaService';
-
-function fechaLocalHoy() {
-  const ahora = new Date();
-  const anio = ahora.getFullYear();
-  const mes = String(ahora.getMonth() + 1).padStart(2, '0');
-  const dia = String(ahora.getDate()).padStart(2, '0');
-  return `${anio}-${mes}-${dia}`;
-}
-
-const HOY = fechaLocalHoy();
+import { cambiarEstado, eliminarMeta, listarMetas } from '../services/metaService';
 
 const AVISOS = {
   creada: '¡Meta creada! Ya aparece en tus metas activas.',
   actualizada: '¡Meta actualizada!',
   eliminada: 'Meta eliminada.',
   sesion: '¡Sesión iniciada!',
-  cumplimiento: '¡Cumplimiento registrado!',
+  cumplida: '¡Meta cumplida! Si fue un error, vuelve a pulsar el círculo.',
+  reactivada: 'La meta volvió a estar activa.',
 };
 
 /** Qué aviso mostrar al llegar a la lista (viene en el estado de navegación). */
@@ -45,16 +35,10 @@ export default function MisMetasPage() {
   const [metaAEliminar, setMetaAEliminar] = useState(null);
   const [eliminando, setEliminando] = useState(false);
   const [errorEliminar, setErrorEliminar] = useState('');
+  // HU6: meta cuyo estado se está guardando y mensaje de error del círculo.
+  const [guardandoCodigo, setGuardandoCodigo] = useState(null);
+  const [errorEstado, setErrorEstado] = useState('');
 
-  // HU5: registrar cumplimiento (modal con fecha elegida).
-  const [metaARegistrar, setMetaARegistrar] = useState(null);
-  const [registrando, setRegistrando] = useState(false);
-  const [errorRegistrar, setErrorRegistrar] = useState('');
-  // HU5: acción rápida "marcar hoy" desde la tarjeta. El backend indica en cada meta
-  // (campo cumplidaHoy) si ya hay un registro cumplido de hoy, así que esto sí persiste
-  // al recargar la página; marcadasHoy se sincroniza con esa respuesta en cada carga.
-  const [marcadasHoy, setMarcadasHoy] = useState(() => new Set());
-  const [marcandoHoyCodigo, setMarcandoHoyCodigo] = useState(null);
 
   // Carga de metas (se repite al reintentar).
   useEffect(() => {
@@ -63,7 +47,6 @@ export default function MisMetasPage() {
       .then((metas) => {
         if (!activo) return;
         setEstado({ fase: 'lista', metas });
-        setMarcadasHoy(new Set(metas.filter((m) => m.cumplidaHoy).map((m) => m.codigoMeta)));
       })
       .catch((error) => activo && setEstado({
         fase: 'error',
@@ -88,12 +71,12 @@ export default function MisMetasPage() {
     return () => clearTimeout(temporizador);
   }, [aviso, navigate, location.pathname]);
 
-  // Error de la acción rápida "marcar hoy" (sin modal abierto): se oculta solo a los 5 s.
+  // HU6: el error del círculo se oculta solo a los 5 s.
   useEffect(() => {
-    if (!errorRegistrar || metaARegistrar) return undefined;
-    const temporizador = setTimeout(() => setErrorRegistrar(''), 5000);
+    if (!errorEstado) return undefined;
+    const temporizador = setTimeout(() => setErrorEstado(''), 5000);
     return () => clearTimeout(temporizador);
-  }, [errorRegistrar, metaARegistrar]);
+  }, [errorEstado]);
 
   const reintentar = () => {
     setEstado({ fase: 'cargando' });
@@ -131,55 +114,41 @@ export default function MisMetasPage() {
     }
   };
 
-  // HU5: abrir/cerrar el modal de registro de cumplimiento.
-  const abrirRegistroCumplimiento = (meta) => {
-    setErrorRegistrar('');
-    setMetaARegistrar(meta);
-  };
-
-  const cancelarRegistroCumplimiento = useCallback(() => setMetaARegistrar(null), []);
-
-  const confirmarRegistroCumplimiento = async ({ fechaFinalizacion, cumplimiento }) => {
-    const { codigoMeta } = metaARegistrar;
-    setRegistrando(true);
-    setErrorRegistrar('');
-    try {
-      await registrarCumplimiento(codigoMeta, { fechaFinalizacion, cumplimiento });
-      if (fechaFinalizacion === HOY) {
-        setMarcadasHoy((actual) => {
-          const siguiente = new Set(actual);
-          if (cumplimiento) siguiente.add(codigoMeta); else siguiente.delete(codigoMeta);
-          return siguiente;
-        });
+  /** Reemplaza una meta de la lista (o la quita si `nueva` es null). */
+  const actualizarMeta = (codigoMeta, nueva) => {
+    setEstado((actual) => (actual.fase === 'lista'
+      ? {
+        ...actual,
+        metas: nueva
+          ? actual.metas.map((m) => (m.codigoMeta === codigoMeta ? nueva : m))
+          : actual.metas.filter((m) => m.codigoMeta !== codigoMeta),
       }
-      setMetaARegistrar(null);
-      setAviso('cumplimiento');
-    } catch (error) {
-      setErrorRegistrar(error.message);
-    } finally {
-      setRegistrando(false);
-    }
+      : actual));
   };
 
-  // HU5: acción rápida de la tarjeta para marcar/desmarcar el cumplimiento de hoy.
-  const marcarHoy = async (meta) => {
-    const yaMarcada = marcadasHoy.has(meta.codigoMeta);
-    setMarcandoHoyCodigo(meta.codigoMeta);
+  // HU6: el círculo cambia la meta entre ACTIVA y CUMPLIDA. La tarjeta cambia de una vez
+  // y, si el servidor falla, vuelve a como estaba.
+  const cambiarEstadoMeta = async (meta, cumplida) => {
+    if (guardandoCodigo !== null) return;
+    setGuardandoCodigo(meta.codigoMeta);
+    setErrorEstado('');
+    actualizarMeta(meta.codigoMeta, { ...meta, estado: cumplida ? 'CUMPLIDA' : 'ACTIVA' });
     try {
-      await registrarCumplimiento(meta.codigoMeta, {
-        fechaFinalizacion: HOY,
-        cumplimiento: !yaMarcada,
-      });
-      setMarcadasHoy((actual) => {
-        const siguiente = new Set(actual);
-        if (yaMarcada) siguiente.delete(meta.codigoMeta); else siguiente.add(meta.codigoMeta);
-        return siguiente;
-      });
-      setAviso('cumplimiento');
+      const actualizada = await cambiarEstado(meta.codigoMeta, cumplida);
+      actualizarMeta(meta.codigoMeta, actualizada);
+      setAviso(cumplida ? 'cumplida' : 'reactivada');
     } catch (error) {
-      setErrorRegistrar(error.message);
+      if (error.estado === 401) {
+        navigate('/login', { replace: true });
+      } else if (error.estado === 404) {
+        actualizarMeta(meta.codigoMeta, null);
+        setErrorEstado('Esta meta ya no existe');
+      } else {
+        actualizarMeta(meta.codigoMeta, meta);
+        setErrorEstado(error.message);
+      }
     } finally {
-      setMarcandoHoyCodigo(null);
+      setGuardandoCodigo(null);
     }
   };
 
@@ -189,7 +158,12 @@ export default function MisMetasPage() {
 
       <main className="mx-auto w-full max-w-[960px] px-4 pb-28 pt-6 sm:pb-10 sm:pt-12">
         <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold sm:text-3xl">Mis metas activas</h1>
+          <div>
+            <h1 className="text-2xl font-bold sm:text-3xl">Mis metas</h1>
+            <p className="mt-1 text-sm text-gray-500 sm:text-base">
+              Marca el círculo cuando logres una meta. Si te equivocas, vuelve a pulsarlo.
+            </p>
+          </div>
           <Link
             to="/metas/nueva"
             className="hidden h-14 items-center rounded-xl bg-violet-600 px-6 text-base font-bold text-white hover:bg-violet-700 sm:flex"
@@ -216,10 +190,8 @@ export default function MisMetasPage() {
               <MetaTarjeta
                 key={meta.codigoMeta}
                 meta={meta}
-                cumplidaHoy={marcadasHoy.has(meta.codigoMeta)}
-                marcandoHoy={marcandoHoyCodigo === meta.codigoMeta}
-                onMarcarHoy={marcarHoy}
-                onRegistrarCumplimiento={abrirRegistroCumplimiento}
+                guardando={guardandoCodigo === meta.codigoMeta}
+                onCambiarEstado={cambiarEstadoMeta}
                 onEditar={abrirEdicion}
                 onEliminar={abrirConfirmacion}
               />
@@ -247,16 +219,6 @@ export default function MisMetasPage() {
         />
       )}
 
-      {metaARegistrar && (
-        <RegistrarCumplimientoModal
-          meta={metaARegistrar}
-          guardando={registrando}
-          error={errorRegistrar}
-          onConfirmar={confirmarRegistroCumplimiento}
-          onCancelar={cancelarRegistroCumplimiento}
-        />
-      )}
-
       {aviso && (
         <div
           role="status"
@@ -267,12 +229,12 @@ export default function MisMetasPage() {
         </div>
       )}
 
-      {!metaARegistrar && errorRegistrar && (
+      {errorEstado && (
         <div
           role="alert"
           className="fixed bottom-24 left-1/2 flex w-[calc(100%-2rem)] max-w-[640px] -translate-x-1/2 items-center gap-3 rounded-xl bg-red-50 p-4 text-sm font-semibold leading-5 text-red-700 shadow-[0_4px_16px_rgba(30,27,46,0.07)] sm:bottom-8"
         >
-          {errorRegistrar}
+          {errorEstado}
         </div>
       )}
     </div>
