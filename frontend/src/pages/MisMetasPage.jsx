@@ -10,6 +10,7 @@ import ConfirmarEliminarModal from '../components/ConfirmarEliminarModal';
 import ConfirmarCumplidaModal from '../components/ConfirmarCumplidaModal';
 import CompartirLogroModal from '../components/CompartirLogroModal';
 import { eliminarMeta, listarMetas, marcarCumplida } from '../services/metaService';
+import { obtenerResumenes } from '../services/subMetaService';
 
 const AVISOS = {
   creada: '¡Meta creada! Ya aparece en tus metas activas.',
@@ -44,6 +45,8 @@ export default function MisMetasPage() {
   const [metaACompartir, setMetaACompartir] = useState(null);
   // Aviso de error fuera del diálogo (por ejemplo, la meta ya no existe).
   const [errorLista, setErrorLista] = useState('');
+  // Sub-metas: constancia y sub-metas de hoy de cada meta, por código de meta.
+  const [resumenes, setResumenes] = useState({});
 
 
   // Carga de metas (se repite al reintentar).
@@ -59,6 +62,10 @@ export default function MisMetasPage() {
         mensaje: error.message,
         sesionExpirada: error.estado === 401,
       }));
+    // Si el resumen falla, las tarjetas se ven igual pero sin la parte del camino.
+    obtenerResumenes()
+      .then((lista) => activo && setResumenes(Object.fromEntries(lista.map((r) => [r.codigoMeta, r]))))
+      .catch(() => {});
     return () => {
       activo = false;
     };
@@ -202,6 +209,7 @@ export default function MisMetasPage() {
               <MetaTarjeta
                 key={meta.codigoMeta}
                 meta={meta}
+                resumen={resumenes[meta.codigoMeta]}
                 onMarcarCumplida={abrirMarcarCumplida}
                 onEditar={abrirEdicion}
                 onEliminar={abrirConfirmacion}
@@ -224,6 +232,7 @@ export default function MisMetasPage() {
       {metaAEliminar && (
         <ConfirmarEliminarModal
           meta={metaAEliminar}
+          resumen={resumenes[metaAEliminar.codigoMeta]}
           eliminando={eliminando}
           error={errorEliminar}
           onConfirmar={confirmarEliminar}
