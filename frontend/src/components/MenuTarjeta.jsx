@@ -69,7 +69,7 @@ export default function MenuTarjeta({ nombre, onEditar, editarBloqueado = false,
                 Editar
               </button>
               <p id={idAyuda} className="text-sm leading-5 text-gray-500">
-                Una meta cumplida no se puede editar. Desmárcala primero.
+                Una meta cumplida no se puede editar.
               </p>
             </div>
           )}

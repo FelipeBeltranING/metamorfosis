@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 /**
  * Respuesta pública de una meta (no se expone la entidad).
- * HU6: fechaCumplida es el día en que el creador la marcó como cumplida (null si está activa).
+ * HU6: fechaCumplida es el día en que el creador la marcó como cumplida (null si sigue activa).
  */
 public record MetaResponse(Integer codigoMeta, String nombre, Plazo plazo, TipoMeta tipo,
                            EstadoMeta estado, boolean oculta, LocalDate fechaCreacion,

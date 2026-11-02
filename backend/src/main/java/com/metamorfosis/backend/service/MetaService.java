@@ -2,7 +2,6 @@ package com.metamorfosis.backend.service;
 
 import com.metamorfosis.backend.auditoria.Auditar;
 import com.metamorfosis.backend.auditoria.ContextoAuditoria;
-import com.metamorfosis.backend.dto.CambiarEstadoRequest;
 import com.metamorfosis.backend.dto.CrearMetaRequest;
 import com.metamorfosis.backend.dto.MetaResponse;
 import com.metamorfosis.backend.exception.UsuarioNoEncontradoException;
@@ -103,41 +102,25 @@ public class MetaService {
     }
 
     /**
-     * HU6: marca la meta como cumplida (cumplida = true) o la devuelve a activa (false).
-     * Solo el creador cambia el estado. La fecha de cumplimiento la pone el servidor.
-     * Pedir el estado que la meta ya tiene no cambia nada (doble clic, dos pestañas).
+     * HU6: marca la meta como CUMPLIDA. Solo el creador puede hacerlo, la fecha la pone el
+     * servidor y no se puede deshacer. Si ya estaba cumplida no cambia nada y conserva la
+     * fecha original (doble clic, dos pestañas abiertas).
      */
     @Auditar(accion = AccionLog.MARCAR_CUMPLIDA, entidad = EntidadLog.META)
     @Transactional
-    public MetaResponse cambiarEstado(Integer codigoMeta, CambiarEstadoRequest solicitud, Integer codigoUsuario) {
-        validar(solicitud);
-
+    public MetaResponse marcarCumplida(Integer codigoMeta, Integer codigoUsuario) {
         Meta meta = metaRepository.findById(codigoMeta)
                 .orElseThrow(() -> new MetaNoEncontradaException(codigoMeta));
 
         if (!meta.getCreador().getCodigoUsuario().equals(codigoUsuario)) {
             throw new PermisoDenegadoException("Solo el creador puede marcar la meta como cumplida");
         }
-
-        boolean yaCumplida = meta.getEstado() == EstadoMeta.CUMPLIDA;
-        if (solicitud.cumplida() == yaCumplida) {
+        if (meta.getEstado() == EstadoMeta.CUMPLIDA) {
             return MetaResponse.desde(meta);
         }
 
-        if (solicitud.cumplida()) {
-            meta.marcarCumplida(codigoUsuario, LocalDate.now());
-            ContextoAuditoria.agregar("accion", "marcada");
-        } else {
-            meta.reabrir(codigoUsuario);
-            ContextoAuditoria.agregar("accion", "desmarcada");
-        }
+        meta.marcarCumplida(codigoUsuario, LocalDate.now());
         return MetaResponse.desde(metaRepository.save(meta));
-    }
-
-    private void validar(CambiarEstadoRequest s) {
-        if (s == null || s.cumplida() == null) {
-            throw new ValidacionException(List.of("El campo cumplida es obligatorio"));
-        }
     }
 
     private void validar(CrearMetaRequest s) {

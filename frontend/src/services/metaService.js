@@ -111,20 +111,19 @@ export async function editarMeta(codigoMeta, solicitud) {
 }
 
 /**
- * HU6: marca la meta como cumplida (true) o la devuelve a activa (false). Devuelve la meta
- * actualizada. Lanza Error con `mensaje` y `estado` (código HTTP); sin `estado` = sin conexión.
+ * HU6: marca la meta como cumplida (no se puede deshacer). Devuelve la meta actualizada.
+ * Lanza Error con `mensaje` y `estado` (código HTTP); sin `estado` = sin conexión.
  */
-export async function cambiarEstado(codigoMeta, cumplida) {
-  const encabezados = cabeceras({ 'Content-Type': 'application/json' });
+export async function marcarCumplida(codigoMeta) {
+  const encabezados = cabeceras();
   let respuesta;
   try {
     respuesta = await fetch(`${API_URL}/api/metas/${codigoMeta}/cumplida`, {
       method: 'PATCH',
       headers: encabezados,
-      body: JSON.stringify({ cumplida }),
     });
   } catch {
-    throw new Error('No se pudo actualizar la meta. Revisa tu conexión e inténtalo de nuevo');
+    throw new Error('No se pudo marcar la meta. Revisa tu conexión e inténtalo de nuevo');
   }
 
   if (respuesta.status === 401) throw errorSesionExpirada();

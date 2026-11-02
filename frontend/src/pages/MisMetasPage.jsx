@@ -7,15 +7,15 @@ import MetaTarjetaEsqueleto from '../components/MetaTarjetaEsqueleto';
 import EstadoVacio from '../components/EstadoVacio';
 import EstadoError from '../components/EstadoError';
 import ConfirmarEliminarModal from '../components/ConfirmarEliminarModal';
-import { cambiarEstado, eliminarMeta, listarMetas } from '../services/metaService';
+import ConfirmarCumplidaModal from '../components/ConfirmarCumplidaModal';
+import { eliminarMeta, listarMetas, marcarCumplida } from '../services/metaService';
 
 const AVISOS = {
   creada: '¡Meta creada! Ya aparece en tus metas activas.',
   actualizada: '¡Meta actualizada!',
   eliminada: 'Meta eliminada.',
   sesion: '¡Sesión iniciada!',
-  cumplida: '¡Meta cumplida! Si fue un error, vuelve a pulsar el círculo.',
-  reactivada: 'La meta volvió a estar activa.',
+  cumplida: '¡Meta cumplida!',
 };
 
 /** Qué aviso mostrar al llegar a la lista (viene en el estado de navegación). */
@@ -35,9 +35,12 @@ export default function MisMetasPage() {
   const [metaAEliminar, setMetaAEliminar] = useState(null);
   const [eliminando, setEliminando] = useState(false);
   const [errorEliminar, setErrorEliminar] = useState('');
-  // HU6: meta cuyo estado se está guardando y mensaje de error del círculo.
-  const [guardandoCodigo, setGuardandoCodigo] = useState(null);
-  const [errorEstado, setErrorEstado] = useState('');
+  // HU6: marcar como cumplida, con confirmación porque no se puede deshacer.
+  const [metaAMarcar, setMetaAMarcar] = useState(null);
+  const [marcando, setMarcando] = useState(false);
+  const [errorMarcar, setErrorMarcar] = useState('');
+  // Aviso de error fuera del diálogo (por ejemplo, la meta ya no existe).
+  const [errorLista, setErrorLista] = useState('');
 
 
   // Carga de metas (se repite al reintentar).
@@ -71,12 +74,12 @@ export default function MisMetasPage() {
     return () => clearTimeout(temporizador);
   }, [aviso, navigate, location.pathname]);
 
-  // HU6: el error del círculo se oculta solo a los 5 s.
+  // El aviso de error de la lista se oculta solo a los 5 s.
   useEffect(() => {
-    if (!errorEstado) return undefined;
-    const temporizador = setTimeout(() => setErrorEstado(''), 5000);
+    if (!errorLista) return undefined;
+    const temporizador = setTimeout(() => setErrorLista(''), 5000);
     return () => clearTimeout(temporizador);
-  }, [errorEstado]);
+  }, [errorLista]);
 
   const reintentar = () => {
     setEstado({ fase: 'cargando' });
@@ -126,29 +129,35 @@ export default function MisMetasPage() {
       : actual));
   };
 
-  // HU6: el círculo cambia la meta entre ACTIVA y CUMPLIDA. La tarjeta cambia de una vez
-  // y, si el servidor falla, vuelve a como estaba.
-  const cambiarEstadoMeta = async (meta, cumplida) => {
-    if (guardandoCodigo !== null) return;
-    setGuardandoCodigo(meta.codigoMeta);
-    setErrorEstado('');
-    actualizarMeta(meta.codigoMeta, { ...meta, estado: cumplida ? 'CUMPLIDA' : 'ACTIVA' });
+  // HU6: el círculo abre la confirmación; la meta solo cambia cuando el servidor responde.
+  const abrirMarcarCumplida = (meta) => {
+    setErrorMarcar('');
+    setMetaAMarcar(meta);
+  };
+
+  const cancelarMarcarCumplida = useCallback(() => setMetaAMarcar(null), []);
+
+  const confirmarMarcarCumplida = async () => {
+    const { codigoMeta } = metaAMarcar;
+    setMarcando(true);
+    setErrorMarcar('');
     try {
-      const actualizada = await cambiarEstado(meta.codigoMeta, cumplida);
-      actualizarMeta(meta.codigoMeta, actualizada);
-      setAviso(cumplida ? 'cumplida' : 'reactivada');
+      const actualizada = await marcarCumplida(codigoMeta);
+      actualizarMeta(codigoMeta, actualizada);
+      setMetaAMarcar(null);
+      setAviso('cumplida');
     } catch (error) {
       if (error.estado === 401) {
         navigate('/login', { replace: true });
       } else if (error.estado === 404) {
-        actualizarMeta(meta.codigoMeta, null);
-        setErrorEstado('Esta meta ya no existe');
+        actualizarMeta(codigoMeta, null);
+        setMetaAMarcar(null);
+        setErrorLista('Esta meta ya no existe');
       } else {
-        actualizarMeta(meta.codigoMeta, meta);
-        setErrorEstado(error.message);
+        setErrorMarcar(error.message);
       }
     } finally {
-      setGuardandoCodigo(null);
+      setMarcando(false);
     }
   };
 
@@ -161,7 +170,7 @@ export default function MisMetasPage() {
           <div>
             <h1 className="text-2xl font-bold sm:text-3xl">Mis metas</h1>
             <p className="mt-1 text-sm text-gray-500 sm:text-base">
-              Marca el círculo cuando logres una meta. Si te equivocas, vuelve a pulsarlo.
+              Marca el círculo cuando logres una meta.
             </p>
           </div>
           <Link
@@ -190,8 +199,7 @@ export default function MisMetasPage() {
               <MetaTarjeta
                 key={meta.codigoMeta}
                 meta={meta}
-                guardando={guardandoCodigo === meta.codigoMeta}
-                onCambiarEstado={cambiarEstadoMeta}
+                onMarcarCumplida={abrirMarcarCumplida}
                 onEditar={abrirEdicion}
                 onEliminar={abrirConfirmacion}
               />
@@ -219,6 +227,16 @@ export default function MisMetasPage() {
         />
       )}
 
+      {metaAMarcar && (
+        <ConfirmarCumplidaModal
+          meta={metaAMarcar}
+          guardando={marcando}
+          error={errorMarcar}
+          onConfirmar={confirmarMarcarCumplida}
+          onCancelar={cancelarMarcarCumplida}
+        />
+      )}
+
       {aviso && (
         <div
           role="status"
@@ -229,12 +247,12 @@ export default function MisMetasPage() {
         </div>
       )}
 
-      {errorEstado && (
+      {errorLista && (
         <div
           role="alert"
           className="fixed bottom-24 left-1/2 flex w-[calc(100%-2rem)] max-w-[640px] -translate-x-1/2 items-center gap-3 rounded-xl bg-red-50 p-4 text-sm font-semibold leading-5 text-red-700 shadow-[0_4px_16px_rgba(30,27,46,0.07)] sm:bottom-8"
         >
-          {errorEstado}
+          {errorLista}
         </div>
       )}
     </div>

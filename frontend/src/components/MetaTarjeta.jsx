@@ -1,4 +1,4 @@
-import { Check, Clock, LoaderCircle } from 'lucide-react';
+import { Check, Clock } from 'lucide-react';
 import MenuTarjeta from './MenuTarjeta';
 import { PLAZOS, TIPOS } from '../constants/opcionesMeta';
 
@@ -23,32 +23,39 @@ function Chip({ Icono, texto }) {
   );
 }
 
-/** HU6: círculo que marca la meta como cumplida o la devuelve a activa. */
-function BotonCumplida({ nombreMeta, cumplida, guardando, onClick }) {
-  const base = 'flex size-10 shrink-0 items-center justify-center rounded-full border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300 disabled:cursor-not-allowed';
-  const estado = cumplida
-    ? 'border-emerald-500 bg-emerald-500 text-white hover:bg-emerald-600'
-    : 'border-zinc-300 bg-white text-transparent hover:border-violet-400';
-
+/**
+ * HU6: círculo de la tarjeta. Con la meta activa es un botón que abre la confirmación;
+ * con la meta cumplida solo muestra el check, porque no se puede desmarcar.
+ */
+function CirculoCumplida({ nombreMeta, cumplida, onClick }) {
+  const base = 'flex size-10 shrink-0 items-center justify-center rounded-full border';
+  if (cumplida) {
+    return (
+      <span
+        role="img"
+        aria-label={`${nombreMeta} está cumplida`}
+        title="Meta cumplida"
+        className={`${base} border-emerald-500 bg-emerald-500 text-white`}
+      >
+        <Check className="size-5" aria-hidden="true" />
+      </span>
+    );
+  }
   return (
     <button
       type="button"
       onClick={onClick}
-      disabled={guardando}
-      aria-pressed={cumplida}
-      aria-label={cumplida ? `Desmarcar ${nombreMeta} como cumplida` : `Marcar ${nombreMeta} como cumplida`}
-      title={cumplida ? 'Desmarcar como cumplida' : 'Marcar como cumplida'}
-      className={`${base} ${estado}`}
+      aria-label={`Marcar ${nombreMeta} como cumplida`}
+      title="Marcar como cumplida"
+      className={`${base} border-zinc-300 bg-white text-transparent transition hover:border-emerald-400 hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300`}
     >
-      {guardando
-        ? <LoaderCircle className="size-4 animate-spin text-gray-400" aria-hidden="true" />
-        : <Check className="size-5" aria-hidden="true" />}
+      <Check className="size-5" aria-hidden="true" />
     </button>
   );
 }
 
 export default function MetaTarjeta({
-  meta, guardando = false, onCambiarEstado, onEditar, onEliminar,
+  meta, onMarcarCumplida, onEditar, onEliminar,
 }) {
   const tipo = TIPO_POR_VALOR[meta.tipo] ?? TIPO_POR_VALOR.OTRO;
   const plazo = PLAZO_POR_VALOR[meta.plazo];
@@ -72,12 +79,11 @@ export default function MetaTarjeta({
               Activa
             </span>
           )}
-          {onCambiarEstado && (
-            <BotonCumplida
+          {onMarcarCumplida && (
+            <CirculoCumplida
               nombreMeta={meta.nombre}
               cumplida={cumplida}
-              guardando={guardando}
-              onClick={() => onCambiarEstado(meta, !cumplida)}
+              onClick={() => onMarcarCumplida(meta)}
             />
           )}
           {(onEditar || onEliminar) && (

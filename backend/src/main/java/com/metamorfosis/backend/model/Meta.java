@@ -71,16 +71,10 @@ public class Meta {
         this.tipo = tipo;
     }
 
-    /** HU6: la meta queda CUMPLIDA y la fecha se guarda en la participación del usuario. */
+    /** HU6: la meta queda CUMPLIDA (no se puede deshacer) y la fecha se guarda en la participación del usuario. */
     public void marcarCumplida(Integer codigoUsuario, LocalDate fecha) {
         this.estado = EstadoMeta.CUMPLIDA;
         participacionDe(codigoUsuario).ifPresent(p -> p.marcarCumplida(fecha));
-    }
-
-    /** HU6: la meta vuelve a ACTIVA y se borra la fecha de cumplimiento. */
-    public void reabrir(Integer codigoUsuario) {
-        this.estado = EstadoMeta.ACTIVA;
-        participacionDe(codigoUsuario).ifPresent(Participacion::reabrir);
     }
 
     /** HU6: fecha en que el usuario cumplió la meta, o null si no la ha cumplido. */

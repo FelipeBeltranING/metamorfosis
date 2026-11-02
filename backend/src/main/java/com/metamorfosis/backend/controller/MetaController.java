@@ -1,6 +1,5 @@
 package com.metamorfosis.backend.controller;
 
-import com.metamorfosis.backend.dto.CambiarEstadoRequest;
 import com.metamorfosis.backend.dto.CrearMetaRequest;
 import com.metamorfosis.backend.dto.MetaResponse;
 import com.metamorfosis.backend.service.MetaService;
@@ -57,11 +56,10 @@ public class MetaController {
         return ResponseEntity.noContent().build();
     }
 
-    /** HU6: marca la meta como cumplida o la devuelve a activa (solo su creador). */
+    /** HU6: marca la meta como cumplida (solo su creador). No lleva cuerpo y no se puede deshacer. */
     @PatchMapping("/{codigoMeta}/cumplida")
-    public ResponseEntity<MetaResponse> cambiarEstado(@PathVariable Integer codigoMeta,
-                                                      @RequestBody CambiarEstadoRequest solicitud,
-                                                      @AuthenticationPrincipal Integer codigoUsuario) {
-        return ResponseEntity.ok(metaService.cambiarEstado(codigoMeta, solicitud, codigoUsuario));
+    public ResponseEntity<MetaResponse> marcarCumplida(@PathVariable Integer codigoMeta,
+                                                       @AuthenticationPrincipal Integer codigoUsuario) {
+        return ResponseEntity.ok(metaService.marcarCumplida(codigoMeta, codigoUsuario));
     }
 }
