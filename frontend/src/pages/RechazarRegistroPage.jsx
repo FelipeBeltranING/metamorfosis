@@ -82,7 +82,7 @@ export default function RechazarRegistroPage() {
           {enviando ? 'Anulando...' : 'Confirmar que no fui yo'}
         </button>
         <Link
-          to={`/registro/completar?token=${encodeURIComponent(token)}`}
+          to={`/registro/autorizar?token=${encodeURIComponent(token)}`}
           className="mt-3 text-sm font-bold text-violet-600 hover:underline"
         >
           Sí fui yo, quiero registrarme
