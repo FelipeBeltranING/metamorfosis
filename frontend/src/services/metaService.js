@@ -5,7 +5,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 const MENSAJE_SESION_EXPIRADA = 'Tu sesión expiró. Inicia sesión de nuevo.';
 
 /** Error 401 de sesión: borra la sesión local para que las rutas protegidas manden al login. */
-function errorSesionExpirada() {
+export function errorSesionExpirada() {
   cerrarSesion();
   const error = new Error(MENSAJE_SESION_EXPIRADA);
   error.estado = 401;
@@ -13,7 +13,7 @@ function errorSesionExpirada() {
 }
 
 /** Cabeceras con el token de la sesión vigente (el servidor saca de ahí al usuario). */
-function cabeceras(extra = {}) {
+export function cabeceras(extra = {}) {
   const sesion = obtenerSesion();
   if (!sesion) throw errorSesionExpirada();
   return { ...extra, Authorization: `Bearer ${sesion.token}` };
