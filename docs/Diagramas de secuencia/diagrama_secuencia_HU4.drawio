@@ -16,19 +16,19 @@
         <mxCell id="ceFXcWJ7qJvKtalHLCdb-4" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="«Aspect»&lt;br&gt;AuditoriaAspect" vertex="1">
           <mxGeometry height="1760" width="150" x="929.3614457831327" y="115.78313253012061" as="geometry" />
         </mxCell>
-        <mxCell id="ceFXcWJ7qJvKtalHLCdb-5" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="«utility»&lt;br&gt;ContextoAuditoria" vertex="1">
+        <mxCell id="ceFXcWJ7qJvKtalHLCdb-5" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="«Utility»&lt;br&gt;ContextoAuditoria" vertex="1">
           <mxGeometry height="1760" width="150" x="1189.3614457831327" y="115.78313253012061" as="geometry" />
         </mxCell>
         <mxCell id="ceFXcWJ7qJvKtalHLCdb-6" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="«Service»&lt;br&gt;LogService" vertex="1">
           <mxGeometry height="1760" width="150" x="1449.3614457831327" y="115.78313253012061" as="geometry" />
         </mxCell>
-        <mxCell id="ceFXcWJ7qJvKtalHLCdb-7" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="«interface»&lt;br&gt;LogActividadRepository" vertex="1">
+        <mxCell id="ceFXcWJ7qJvKtalHLCdb-7" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="«Repository»&lt;br&gt;LogActividadRepository" vertex="1">
           <mxGeometry height="1760" width="150" x="1709.3614457831327" y="115.78313253012061" as="geometry" />
         </mxCell>
         <mxCell id="ceFXcWJ7qJvKtalHLCdb-8" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Service»&lt;br&gt;MetaService" vertex="1">
           <mxGeometry height="1760" width="150" x="1989.3614457831327" y="115.78313253012061" as="geometry" />
         </mxCell>
-        <mxCell id="ceFXcWJ7qJvKtalHLCdb-9" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«interface»&lt;br&gt;MetaRepository" vertex="1">
+        <mxCell id="ceFXcWJ7qJvKtalHLCdb-9" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Repository»&lt;br&gt;MetaRepository" vertex="1">
           <mxGeometry height="1760" width="150" x="2249.3614457831327" y="115.78313253012061" as="geometry" />
         </mxCell>
         <mxCell id="ceFXcWJ7qJvKtalHLCdb-10" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Entity»&lt;br&gt;Meta" vertex="1">
@@ -37,7 +37,7 @@
         <mxCell id="ceFXcWJ7qJvKtalHLCdb-11" parent="1" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=0;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;size=50;fontSize=12;fillColor=#fff2cc;strokeColor=#d6b656;" value="«Entity»&lt;br&gt;Usuario" vertex="1">
           <mxGeometry height="1760" width="150" x="2769.3614457831327" y="115.78313253012061" as="geometry" />
         </mxCell>
-        <mxCell id="ceFXcWJ7qJvKtalHLCdb-12" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="abrirConfirmacionEliminar(meta)">
+        <mxCell id="ceFXcWJ7qJvKtalHLCdb-12" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="abrirConfirmacion(meta)">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="209.3614457831327" y="225.7831325301206" as="sourcePoint" />
             <mxPoint x="439.3614457831327" y="225.7831325301206" as="targetPoint" />
@@ -218,7 +218,7 @@
             <mxPoint x="459.3614457831327" y="1659.7831325301206" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="ceFXcWJ7qJvKtalHLCdb-41" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="setEstado({ fase: &#39;lista&#39;, metas })" vertex="1">
+        <mxCell id="ceFXcWJ7qJvKtalHLCdb-41" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="setEstado({ fase: 'lista', metas })" vertex="1">
           <mxGeometry height="11" width="209.64" x="500.36" y="1636.78" as="geometry" />
         </mxCell>
         <mxCell id="ceFXcWJ7qJvKtalHLCdb-42" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="MisMetasPage()">
