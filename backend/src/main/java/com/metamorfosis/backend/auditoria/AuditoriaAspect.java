@@ -2,6 +2,7 @@ package com.metamorfosis.backend.auditoria;
 
 import com.metamorfosis.backend.dto.LogroCompartidoResponse;
 import com.metamorfosis.backend.dto.MetaResponse;
+import com.metamorfosis.backend.dto.SubMetaResponse;
 import com.metamorfosis.backend.exception.ValidacionException;
 import com.metamorfosis.backend.model.EntidadLog;
 import com.metamorfosis.backend.model.ResultadoLog;
@@ -96,6 +97,10 @@ public Object auditar(ProceedingJoinPoint pjp) throws Throwable {
         if (entidad == EntidadLog.META) {
             if (retorno instanceof MetaResponse m) return m.codigoMeta();
             return parametroEntero(pjp, "codigoMeta");
+        }
+        if (entidad == EntidadLog.SUB_META) {
+            if (retorno instanceof SubMetaResponse s) return s.codigoSubMeta();
+            return parametroEntero(pjp, "codigoSubMeta");
         }
         return null;
     }

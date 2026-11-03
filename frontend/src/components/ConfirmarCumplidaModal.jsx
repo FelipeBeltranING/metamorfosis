@@ -53,8 +53,9 @@ export default function ConfirmarCumplidaModal({
           ¿Marcar esta meta como cumplida?
         </h2>
         <p id="descripcion-confirmar-cumplida" className="mt-3 text-sm leading-6 text-gray-600">
-          <strong>{meta.nombre}</strong> quedará como cumplida con la fecha de hoy.
-          Esta acción no se puede deshacer.
+          <strong>{meta.nombre}</strong> quedará como cumplida con la fecha de hoy y pasará a tus logros.
+          Ya no podrás editarla ni agregarle sub-metas, y sus sub-metas dejarán de registrarse; su
+          historial y estadísticas se conservan. Esta acción no se puede deshacer.
         </p>
 
         {error && (

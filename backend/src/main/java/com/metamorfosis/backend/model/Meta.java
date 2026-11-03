@@ -43,9 +43,6 @@ public class Meta {
     @OneToMany(mappedBy = "meta", cascade = CascadeType.ALL)
     private List<Participacion> participaciones = new ArrayList<>();
 
-    @OneToMany(mappedBy = "meta", cascade = CascadeType.ALL)
-    private List<Registro> registros = new ArrayList<>();
-
     protected Meta() { }
 
     public Meta(String nombre, Plazo plazo, TipoMeta tipo) {
@@ -54,17 +51,16 @@ public class Meta {
         this.tipo = tipo;
     }
 
-    /** Inicializa la meta: estado ACTIVA, fecha de hoy, creador como participante y primer registro. */
+    /** Inicializa la meta: estado ACTIVA, fecha de hoy y el creador como participante. */
     public void crear(Usuario creador) {
         this.creador = creador;
         this.estado = EstadoMeta.ACTIVA;
         this.oculta = false;
         this.fechaCreacion = LocalDate.now();
         this.participaciones.add(new Participacion(creador, this, EstadoInvitacion.ACEPTADA));
-        this.registros.add(new Registro(this, creador));
     }
 
-        /** HU2: actualiza los datos editables. No cambia estado, visibilidad ni creador. */
+    /** HU2: actualiza los datos editables. No cambia estado, visibilidad ni creador. */
     public void editar(String nombre, Plazo plazo, TipoMeta tipo) {
         this.nombre = nombre;
         this.plazo = plazo;

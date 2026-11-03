@@ -1,5 +1,8 @@
 import { Check, Clock, Share2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import MenuTarjeta from './MenuTarjeta';
+import AnilloConstancia from './AnilloConstancia';
+import { formatearNumero } from '../utils/subMetas';
 import { PLAZOS, TIPOS } from '../constants/opcionesMeta';
 
 const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((t) => [t.valor, t]));
@@ -54,8 +57,15 @@ function CirculoCumplida({ nombreMeta, cumplida, onClick }) {
   );
 }
 
+/** Sub-metas: valor de hoy de una sub-meta en la tarjeta ("20 / 15 págs", "Hecho", "Pendiente"). */
+function valorHoy({ subMeta, dia }) {
+  if (dia.valor === null || dia.valor === undefined) return 'Pendiente';
+  if (subMeta.tipo === 'SI_NO') return Number(dia.valor) >= 1 ? 'Hecho' : 'No hecho';
+  return `${formatearNumero(dia.valor)} / ${formatearNumero(subMeta.objetivo)} ${subMeta.unidad}`;
+}
+
 export default function MetaTarjeta({
-  meta, onMarcarCumplida, onEditar, onEliminar, onCompartir,
+  meta, resumen, onMarcarCumplida, onEditar, onEliminar, onCompartir,
 }) {
   const tipo = TIPO_POR_VALOR[meta.tipo] ?? TIPO_POR_VALOR.OTRO;
   const plazo = PLAZO_POR_VALOR[meta.plazo];
@@ -99,10 +109,61 @@ export default function MetaTarjeta({
       <h2 className="line-clamp-2 break-words text-xl font-bold text-gray-900 sm:text-2xl">
         {meta.nombre}
       </h2>
-      <div className="flex flex-wrap gap-2">
-        <Chip Icono={tipo.Icono} texto={tipo.etiqueta} />
-        {plazo && <Chip Icono={Clock} texto={plazo.etiqueta} />}
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-wrap gap-2">
+          <Chip Icono={tipo.Icono} texto={tipo.etiqueta} />
+          {plazo && <Chip Icono={Clock} texto={plazo.etiqueta} />}
+        </div>
+        {resumen?.totalSubMetas > 0 && <AnilloConstancia porcentaje={resumen.constancia7} />}
       </div>
+
+      {/* Sub-metas: lo que toca hoy y el acceso a "Tu camino". */}
+      {resumen && !cumplida && (
+        resumen.totalSubMetas > 0 ? (
+          <div className="flex flex-col gap-2.5 border-t border-zinc-100 pt-4">
+            <p className="text-sm font-bold text-gray-600">
+              {resumen.tocanHoy > 0
+                ? `Hoy · ${resumen.cumplidasHoy} de ${resumen.tocanHoy} sub-metas`
+                : 'Hoy no toca ninguna sub-meta'}
+            </p>
+            <ul className="flex flex-col gap-2">
+              {resumen.hoy.map((item) => (
+                <li key={item.subMeta.codigoSubMeta} className="flex items-center gap-2.5 text-[15px]">
+                  {item.dia.cumplido ? (
+                    <span aria-hidden="true" className="flex size-[22px] shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white">
+                      <Check className="size-3.5" strokeWidth={3} />
+                    </span>
+                  ) : (
+                    <span aria-hidden="true" className="block size-[22px] shrink-0 rounded-full border-2 border-zinc-300" />
+                  )}
+                  <span className="min-w-0 flex-1 truncate">{item.subMeta.nombre}</span>
+                  <span className={`text-sm font-bold ${item.dia.cumplido ? 'text-emerald-700' : 'text-gray-600'}`}>
+                    {valorHoy(item)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <Link
+              to={`/metas/${meta.codigoMeta}`}
+              className="mt-1 flex h-11 items-center justify-center rounded-xl border border-violet-300 bg-violet-50 font-bold text-violet-800 hover:bg-violet-100"
+            >
+              Ver mi camino
+            </Link>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-3 border-t border-zinc-100 pt-4">
+            <p className="text-[15px] leading-6 text-gray-600">
+              Esta meta aún no tiene un camino. Divídela en sub-metas diarias para saber qué hacer cada día.
+            </p>
+            <Link
+              to={`/metas/${meta.codigoMeta}`}
+              className="flex h-11 items-center justify-center rounded-xl bg-violet-600 font-bold text-white hover:bg-violet-700"
+            >
+              + Agregar la primera sub-meta
+            </Link>
+          </div>
+        )
+      )}
       <div className="flex flex-wrap items-center justify-between gap-2 border-t border-zinc-100 pt-4 text-sm text-gray-500">
         {meta.fechaCreacion && <span>Creada el {formatearFecha(meta.fechaCreacion)}</span>}
         {cumplida && meta.fechaCumplida ? (
@@ -114,6 +175,15 @@ export default function MetaTarjeta({
           <span>Pendiente</span>
         )}
       </div>
+      {/* HU6 + sub-metas: el camino de una meta cumplida queda para consultar. */}
+      {cumplida && onCompartir && (
+        <Link
+          to={`/metas/${meta.codigoMeta}`}
+          className="flex h-11 items-center justify-center rounded-xl border border-zinc-200 bg-white font-semibold text-gray-700 hover:bg-gray-50"
+        >
+          Ver cómo recorriste el camino
+        </Link>
+      )}
       {/* HU21: una meta cumplida se puede compartir como logro. */}
       {cumplida && onCompartir && (
         <button

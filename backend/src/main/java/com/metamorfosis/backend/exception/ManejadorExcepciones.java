@@ -58,6 +58,12 @@ public class ManejadorExcepciones {
         return responder(HttpStatus.NOT_FOUND, e.getMessage(), List.of());
     }
 
+    /** Sub-metas: la sub-meta no existe. */
+    @ExceptionHandler(SubMetaNoEncontradaException.class)
+    public ResponseEntity<ErrorResponse> subMetaNoEncontrada(SubMetaNoEncontradaException e) {
+        return responder(HttpStatus.NOT_FOUND, e.getMessage(), List.of());
+    }
+
     /** HU21: enlace de logro que no existe. */
     /** HU8: enlace de autorización vencido, usado o inexistente. */
     @ExceptionHandler(SolicitudInvalidaException.class)

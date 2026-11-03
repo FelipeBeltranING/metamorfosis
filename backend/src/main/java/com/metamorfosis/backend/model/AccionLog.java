@@ -17,5 +17,10 @@ public enum AccionLog {
     SOLICITAR_REGISTRO, // HU8: se envió el correo de autorización
     RECHAZAR_REGISTRO,  // HU8: el dueño del correo respondió "No fui yo"
     INICIAR_SESION,     // HU9
-    CERRAR_SESION       // HU10
+    CERRAR_SESION,      // HU10
+    CREAR_SUB_META,     // sub-metas: crear
+    EDITAR_SUB_META,    // sub-metas: editar
+    ELIMINAR_SUB_META,  // sub-metas: eliminar
+    REGISTRAR_DIA,      // sub-metas: registrar o corregir el día
+    QUITAR_REGISTRO     // sub-metas: quitar el registro de un día
 }
