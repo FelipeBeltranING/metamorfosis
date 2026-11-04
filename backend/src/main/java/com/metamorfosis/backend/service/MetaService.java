@@ -4,6 +4,8 @@ import com.metamorfosis.backend.auditoria.Auditar;
 import com.metamorfosis.backend.auditoria.ContextoAuditoria;
 import com.metamorfosis.backend.dto.CrearMetaRequest;
 import com.metamorfosis.backend.dto.FiltroEstado;
+import com.metamorfosis.backend.dto.InsigniaResponse;
+import com.metamorfosis.backend.dto.MetaCumplidaResponse;
 import com.metamorfosis.backend.dto.MetaResponse;
 import com.metamorfosis.backend.exception.UsuarioNoEncontradoException;
 import com.metamorfosis.backend.exception.ValidacionException;
@@ -33,10 +35,13 @@ public class MetaService {
 
     private final MetaRepository metaRepository;
     private final UsuarioRepository usuarioRepository;
+    private final InsigniaService insigniaService;
 
-    public MetaService(MetaRepository metaRepository, UsuarioRepository usuarioRepository) {
+    public MetaService(MetaRepository metaRepository, UsuarioRepository usuarioRepository,
+                       InsigniaService insigniaService) {
         this.metaRepository = metaRepository;
         this.usuarioRepository = usuarioRepository;
+        this.insigniaService = insigniaService;
     }
 
     /** Crea la meta, la participación del creador y su primer registro en una sola transacción. */
@@ -133,10 +138,12 @@ public class MetaService {
      * HU6: marca la meta como CUMPLIDA. Solo el creador puede hacerlo, la fecha la pone el
      * servidor y no se puede deshacer. Si ya estaba cumplida no cambia nada y conserva la
      * fecha original (doble clic, dos pestañas abiertas).
+     * HU11: al cumplirla se revisan las insignias del usuario, en la misma transacción; las que
+     * gane vienen en la respuesta y quedan en el detalle del log.
      */
     @Auditar(accion = AccionLog.MARCAR_CUMPLIDA, entidad = EntidadLog.META)
     @Transactional
-    public MetaResponse marcarCumplida(Integer codigoMeta, Integer codigoUsuario) {
+    public MetaCumplidaResponse marcarCumplida(Integer codigoMeta, Integer codigoUsuario) {
         Meta meta = metaRepository.findById(codigoMeta)
                 .orElseThrow(() -> new MetaNoEncontradaException(codigoMeta));
 
@@ -144,11 +151,18 @@ public class MetaService {
             throw new PermisoDenegadoException("Solo el creador puede marcar la meta como cumplida");
         }
         if (meta.getEstado() == EstadoMeta.CUMPLIDA) {
-            return MetaResponse.desde(meta);
+            return new MetaCumplidaResponse(MetaResponse.desde(meta), List.of());
         }
 
-        meta.marcarCumplida(codigoUsuario, LocalDate.now());
-        return MetaResponse.desde(metaRepository.save(meta));
+        LocalDate hoy = LocalDate.now();
+        meta.marcarCumplida(codigoUsuario, hoy);
+        MetaResponse respuesta = MetaResponse.desde(metaRepository.save(meta));
+
+        List<InsigniaResponse> nuevas = insigniaService.otorgarNuevas(codigoUsuario, hoy);
+        if (!nuevas.isEmpty()) {
+            ContextoAuditoria.agregar("insigniasNuevas", nuevas.stream().map(InsigniaResponse::nombre).toList());
+        }
+        return new MetaCumplidaResponse(respuesta, nuevas);
     }
 
     private void validar(CrearMetaRequest s) {

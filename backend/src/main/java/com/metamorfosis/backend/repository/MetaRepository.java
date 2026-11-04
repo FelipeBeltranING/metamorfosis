@@ -46,4 +46,17 @@ public interface MetaRepository extends JpaRepository<Meta, Integer> {
             """)
     boolean esParticipanteAceptado(@Param("codigoMeta") Integer codigoMeta,
                                     @Param("codigoUsuario") Integer codigoUsuario);
+
+    /**
+     * HU11: plazo y tipo de cada meta CUMPLIDA en la que el usuario participa con invitación
+     * ACEPTADA. Una fila por meta: [Plazo, TipoMeta]. Con esto se revisan las insignias.
+     */
+    @Query("""
+            select m.plazo, m.tipo from Meta m
+            join m.participaciones p
+            where p.usuario.codigoUsuario = :codigoUsuario
+              and p.estadoInvitacion = com.metamorfosis.backend.model.EstadoInvitacion.ACEPTADA
+              and m.estado = com.metamorfosis.backend.model.EstadoMeta.CUMPLIDA
+            """)
+    List<Object[]> plazosYTiposCumplidos(@Param("codigoUsuario") Integer codigoUsuario);
 }

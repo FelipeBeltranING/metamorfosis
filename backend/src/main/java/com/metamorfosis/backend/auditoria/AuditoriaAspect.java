@@ -1,6 +1,7 @@
 package com.metamorfosis.backend.auditoria;
 
 import com.metamorfosis.backend.dto.LogroCompartidoResponse;
+import com.metamorfosis.backend.dto.MetaCumplidaResponse;
 import com.metamorfosis.backend.dto.MetaResponse;
 import com.metamorfosis.backend.dto.SubMetaResponse;
 import com.metamorfosis.backend.exception.ValidacionException;
@@ -63,6 +64,8 @@ public Object auditar(ProceedingJoinPoint pjp) throws Throwable {
     private void guardar(ProceedingJoinPoint pjp, Auditar auditar, ResultadoLog resultado,
                          Object retorno, Throwable error) {
         try {
+            // HU11: marcar una meta como cumplida responde la meta junto con las insignias nuevas
+            if (retorno instanceof MetaCumplidaResponse mc) retorno = mc.meta();
             Map<String, Object> detalle = new LinkedHashMap<>();
             if (error != null) {
                 detalle.put("error", error.getClass().getSimpleName());

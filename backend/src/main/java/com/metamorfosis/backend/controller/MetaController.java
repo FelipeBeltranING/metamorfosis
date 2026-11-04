@@ -2,6 +2,7 @@ package com.metamorfosis.backend.controller;
 
 import com.metamorfosis.backend.dto.CrearMetaRequest;
 import com.metamorfosis.backend.dto.FiltroEstado;
+import com.metamorfosis.backend.dto.MetaCumplidaResponse;
 import com.metamorfosis.backend.dto.MetaResponse;
 import com.metamorfosis.backend.model.Plazo;
 import com.metamorfosis.backend.model.TipoMeta;
@@ -67,9 +68,12 @@ public class MetaController {
         return ResponseEntity.noContent().build();
     }
 
-    /** HU6: marca la meta como cumplida (solo su creador). No lleva cuerpo y no se puede deshacer. */
+    /**
+     * HU6: marca la meta como cumplida (solo su creador). No lleva cuerpo y no se puede deshacer.
+     * HU11: la respuesta trae también las insignias que el usuario ganó.
+     */
     @PatchMapping("/{codigoMeta}/cumplida")
-    public ResponseEntity<MetaResponse> marcarCumplida(@PathVariable Integer codigoMeta,
+    public ResponseEntity<MetaCumplidaResponse> marcarCumplida(@PathVariable Integer codigoMeta,
                                                        @AuthenticationPrincipal Integer codigoUsuario) {
         return ResponseEntity.ok(metaService.marcarCumplida(codigoMeta, codigoUsuario));
     }
