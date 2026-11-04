@@ -17,9 +17,10 @@ export default function Encabezado() {
         <span className="hidden text-xl font-bold text-gray-900 sm:inline sm:text-2xl">Metamorfosis</span>
       </div>
       <div className="flex items-center gap-1 sm:gap-4">
-        {/* Navegación: las metas cumplidas están en el filtro de Mis metas (HU27). */}
+        {/* Navegación: las metas cumplidas están en el filtro de Mis metas (HU27). HU7: reporte general. */}
         <nav aria-label="Secciones" className="flex items-center gap-1">
           <NavLink to="/metas" end className={claseEnlace}>Mis metas</NavLink>
+          <NavLink to="/reporte" className={claseEnlace}>Reporte</NavLink>
         </nav>
         <BotonCerrarSesion />
         <MenuPerfil />

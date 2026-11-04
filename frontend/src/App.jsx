@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import MisMetasPage from './pages/MisMetasPage';
 import CaminoMetaPage from './pages/CaminoMetaPage';
@@ -12,6 +13,15 @@ import AutorizarRegistroPage from './pages/AutorizarRegistroPage';
 import LoginPage from './pages/LoginPage';
 import LogroPublicoPage from './pages/LogroPublicoPage';
 import RutaProtegida from './components/RutaProtegida';
+
+// HU7: el reporte (y Chart.js) se descarga solo cuando el usuario entra a /reporte,
+// así el resto de la app no carga las librerías de gráficas.
+const ReportePage = lazy(() => import('./pages/ReportePage'));
+
+/** Fondo vacío mientras llega el código del reporte (suele tardar menos de un segundo). */
+function CargandoPagina() {
+  return <div className="min-h-screen bg-slate-50" aria-busy="true" />;
+}
 
 export default function App() {
   return (
@@ -31,6 +41,14 @@ export default function App() {
           <Route path="/metas/:codigoMeta/editar" element={<EditarMetaPage />} />
           {/* Mis logros se retiró: las cumplidas están en el filtro de Mis metas. */}
           <Route path="/mis-logros" element={<Navigate to="/metas?estado=CUMPLIDA" replace />} />
+          <Route
+            path="/reporte"
+            element={(
+              <Suspense fallback={<CargandoPagina />}>
+                <ReportePage />
+              </Suspense>
+            )}
+          />
           {/* Sub-metas: el camino de cada meta. */}
           <Route path="/metas/:codigoMeta" element={<CaminoMetaPage />} />
           <Route path="/metas/:codigoMeta/submetas/nueva" element={<SubMetaFormPage />} />
