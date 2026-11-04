@@ -7,7 +7,7 @@ package com.metamorfosis.backend.model;
 public enum AccionLog {
     CREAR_META,         // HU1
     EDITAR_META,        // HU2
-    LISTAR_METAS,       // HU3
+    LISTAR_METAS,       // HU3 y HU27 (con filtros)
     ELIMINAR_META,      // HU4
     REGISTRAR_CUMPLIMIENTO, // HU5 (retirada; se conserva porque hay filas en log_actividad con este valor)
     MARCAR_CUMPLIDA,    // HU6

@@ -1,7 +1,10 @@
 package com.metamorfosis.backend.controller;
 
 import com.metamorfosis.backend.dto.CrearMetaRequest;
+import com.metamorfosis.backend.dto.FiltroEstado;
 import com.metamorfosis.backend.dto.MetaResponse;
+import com.metamorfosis.backend.model.Plazo;
+import com.metamorfosis.backend.model.TipoMeta;
 import com.metamorfosis.backend.service.MetaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,10 +34,18 @@ public class MetaController {
         return ResponseEntity.created(ubicacion).body(creada);
     }
 
-    /** HU3: metas activas del usuario autenticado. */
+    /**
+     * HU3 + HU27: metas del usuario autenticado, filtradas por ?estado=ACTIVA|CUMPLIDA|TODAS,
+     * ?tipo= y ?plazo= (todos opcionales). Sin estado devuelve las activas.
+     * Un valor que no existe responde 400 "Solicitud mal formada".
+     */
     @GetMapping
-    public ResponseEntity<List<MetaResponse>> listarMetasActivas(@AuthenticationPrincipal Integer codigoUsuario) {
-        return ResponseEntity.ok(metaService.listarMetasActivas(codigoUsuario));
+    public ResponseEntity<List<MetaResponse>> listarMetas(
+            @RequestParam(required = false) FiltroEstado estado,
+            @RequestParam(required = false) TipoMeta tipo,
+            @RequestParam(required = false) Plazo plazo,
+            @AuthenticationPrincipal Integer codigoUsuario) {
+        return ResponseEntity.ok(metaService.listarMetas(codigoUsuario, estado, tipo, plazo));
     }
 
     /** HU21 (Mis logros): metas cumplidas del usuario autenticado. */

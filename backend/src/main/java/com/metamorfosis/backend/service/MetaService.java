@@ -3,6 +3,7 @@ package com.metamorfosis.backend.service;
 import com.metamorfosis.backend.auditoria.Auditar;
 import com.metamorfosis.backend.auditoria.ContextoAuditoria;
 import com.metamorfosis.backend.dto.CrearMetaRequest;
+import com.metamorfosis.backend.dto.FiltroEstado;
 import com.metamorfosis.backend.dto.MetaResponse;
 import com.metamorfosis.backend.exception.UsuarioNoEncontradoException;
 import com.metamorfosis.backend.exception.ValidacionException;
@@ -17,6 +18,8 @@ import com.metamorfosis.backend.exception.PermisoDenegadoException;
 import com.metamorfosis.backend.model.AccionLog;
 import com.metamorfosis.backend.model.EntidadLog;
 import com.metamorfosis.backend.model.EstadoMeta;
+import com.metamorfosis.backend.model.Plazo;
+import com.metamorfosis.backend.model.TipoMeta;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -49,14 +52,29 @@ public class MetaService {
         return MetaResponse.desde(metaRepository.save(meta));
     }
 
-    /** Lista las metas activas del usuario (HU3). Devuelve lista vacía si no tiene ninguna. */
+    /**
+     * HU3 + HU27: lista las metas del usuario filtradas por estado, tipo y plazo.
+     * Sin estado devuelve las ACTIVAS (como la HU3); tipo y plazo nulos no filtran.
+     * Devuelve lista vacía si ninguna meta coincide.
+     */
     @Auditar(accion = AccionLog.LISTAR_METAS, entidad = EntidadLog.META)
     @Transactional(readOnly = true)
-    public List<MetaResponse> listarMetasActivas(Integer codigoUsuario) {
+    public List<MetaResponse> listarMetas(Integer codigoUsuario, FiltroEstado estado,
+                                          TipoMeta tipo, Plazo plazo) {
         if (!usuarioRepository.existsById(codigoUsuario)) {
             throw new UsuarioNoEncontradoException(codigoUsuario);
         }
-        return metaRepository.findActivasByParticipante(codigoUsuario).stream()
+        FiltroEstado filtroEstado = estado == null ? FiltroEstado.ACTIVA : estado;
+
+        // Para el log: con qué filtros se consultó.
+        ContextoAuditoria.agregar("filtroEstado", filtroEstado);
+        if (tipo != null) ContextoAuditoria.agregar("filtroTipo", tipo);
+        if (plazo != null) ContextoAuditoria.agregar("filtroPlazo", plazo);
+
+        return metaRepository.findByParticipante(codigoUsuario).stream()
+                .filter(m -> filtroEstado.incluye(m.getEstado()))
+                .filter(m -> tipo == null || m.getTipo() == tipo)
+                .filter(m -> plazo == null || m.getPlazo() == plazo)
                 .map(MetaResponse::desde)
                 .toList();
     }
