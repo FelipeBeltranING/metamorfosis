@@ -1,6 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CircleCheck, Plus } from 'lucide-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Link, useLocation, useNavigate, useSearchParams,
+} from 'react-router-dom';
 import Encabezado from '../components/Encabezado';
 import MetaTarjeta from '../components/MetaTarjeta';
 import MetaTarjetaEsqueleto from '../components/MetaTarjetaEsqueleto';
@@ -9,8 +11,13 @@ import EstadoError from '../components/EstadoError';
 import ConfirmarEliminarModal from '../components/ConfirmarEliminarModal';
 import ConfirmarCumplidaModal from '../components/ConfirmarCumplidaModal';
 import CompartirLogroModal from '../components/CompartirLogroModal';
+import FiltrosMetas from '../components/FiltrosMetas';
+import SinResultadosFiltro from '../components/SinResultadosFiltro';
 import { eliminarMeta, listarMetas, marcarCumplida } from '../services/metaService';
 import { obtenerResumenes } from '../services/subMetaService';
+import {
+  FILTROS_POR_DEFECTO, filtrosAUrl, filtrosDesdeUrl, hayFiltros,
+} from '../utils/filtrosMetas';
 
 const AVISOS = {
   creada: '¡Meta creada! Ya aparece en tus metas activas.',
@@ -31,6 +38,9 @@ function avisoInicial(estadoNavegacion) {
 export default function MisMetasPage() {
   const location = useLocation();
   const navigate = useNavigate();
+  // HU27: los filtros viven en la URL (?estado=&tipo=&plazo=) para mantenerse al recargar.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filtros = useMemo(() => filtrosDesdeUrl(searchParams), [searchParams]);
   const [estado, setEstado] = useState({ fase: 'cargando' });
   const [intento, setIntento] = useState(0);
   const [aviso, setAviso] = useState(() => avisoInicial(location.state));
@@ -49,10 +59,10 @@ export default function MisMetasPage() {
   const [resumenes, setResumenes] = useState({});
 
 
-  // Carga de metas (se repite al reintentar).
+  // Carga de metas (se repite al reintentar y al cambiar un filtro).
   useEffect(() => {
     let activo = true;
-    listarMetas()
+    listarMetas({ estado: filtros.estado, tipo: filtros.tipo, plazo: filtros.plazo })
       .then((metas) => {
         if (!activo) return;
         setEstado({ fase: 'lista', metas });
@@ -62,6 +72,14 @@ export default function MisMetasPage() {
         mensaje: error.message,
         sesionExpirada: error.estado === 401,
       }));
+    return () => {
+      activo = false;
+    };
+  }, [intento, filtros.estado, filtros.tipo, filtros.plazo]);
+
+  // Sub-metas: resumen del camino de cada meta (no depende de los filtros).
+  useEffect(() => {
+    let activo = true;
     // Si el resumen falla, las tarjetas se ven igual pero sin la parte del camino.
     obtenerResumenes()
       .then((lista) => activo && setResumenes(Object.fromEntries(lista.map((r) => [r.codigoMeta, r]))))
@@ -79,10 +97,11 @@ export default function MisMetasPage() {
   // Aviso de éxito: se limpia el estado de navegación y se oculta a los 4 s.
   useEffect(() => {
     if (!aviso) return undefined;
-    navigate(location.pathname, { replace: true, state: null });
+    // Conserva ?estado=&tipo=&plazo= (HU27) al limpiar el estado de navegación.
+    navigate({ pathname: location.pathname, search: location.search }, { replace: true, state: null });
     const temporizador = setTimeout(() => setAviso(null), 4000);
     return () => clearTimeout(temporizador);
-  }, [aviso, navigate, location.pathname]);
+  }, [aviso, navigate, location.pathname, location.search]);
 
   // El aviso de error de la lista se oculta solo a los 5 s.
   useEffect(() => {
@@ -95,6 +114,15 @@ export default function MisMetasPage() {
     setEstado({ fase: 'cargando' });
     setIntento((n) => n + 1);
   };
+
+  // HU27: cambiar o limpiar filtros. replace evita llenar el historial con cada cambio.
+  const cambiarFiltros = (nuevos) => {
+    // Si no cambia nada (p. ej. volver a pulsar el filtro elegido), no se recarga.
+    if (JSON.stringify(filtrosAUrl(nuevos)) === JSON.stringify(filtrosAUrl(filtros))) return;
+    setEstado({ fase: 'cargando' });
+    setSearchParams(filtrosAUrl(nuevos), { replace: true });
+  };
+  const limpiarFiltros = () => cambiarFiltros(FILTROS_POR_DEFECTO);
 
   // HU2: la pantalla de edición recibe la meta para precargar el formulario.
   const abrirEdicion = (meta) => {
@@ -191,6 +219,14 @@ export default function MisMetasPage() {
           </Link>
         </div>
 
+        <FiltrosMetas
+          filtros={filtros}
+          cantidad={estado.fase === 'lista' ? estado.metas.length : 0}
+          cargando={estado.fase === 'cargando'}
+          onCambiar={cambiarFiltros}
+          onLimpiar={limpiarFiltros}
+        />
+
         {estado.fase === 'cargando' && (
           <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2" aria-busy="true">
             {Array.from({ length: 4 }, (_, i) => <MetaTarjetaEsqueleto key={i} />)}
@@ -201,7 +237,9 @@ export default function MisMetasPage() {
           <EstadoError mensaje={estado.mensaje} onReintentar={reintentar} />
         )}
 
-        {estado.fase === 'lista' && estado.metas.length === 0 && <EstadoVacio />}
+        {estado.fase === 'lista' && estado.metas.length === 0 && (
+          hayFiltros(filtros) ? <SinResultadosFiltro onLimpiar={limpiarFiltros} /> : <EstadoVacio />
+        )}
 
         {estado.fase === 'lista' && estado.metas.length > 0 && (
           <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
