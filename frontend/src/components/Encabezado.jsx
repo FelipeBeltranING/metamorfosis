@@ -16,7 +16,7 @@ export default function Encabezado() {
         <span className="hidden text-xl font-bold text-gray-900 sm:inline sm:text-2xl">Metamorfosis</span>
       </div>
       <div className="flex items-center gap-1 sm:gap-4">
-        {/* HU21: navegación entre metas activas y logros. */}
+        {/* Navegación: las metas cumplidas están en el filtro de Mis metas (HU27). */}
         <nav aria-label="Secciones" className="flex items-center gap-1">
           <NavLink to="/metas" end className={claseEnlace}>Mis metas</NavLink>
         </nav>
