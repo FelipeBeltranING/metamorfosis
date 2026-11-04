@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { Sprout } from 'lucide-react';
 import MenuPerfil from './MenuPerfil';
+import BotonCerrarSesion from './BotonCerrarSesion';
 
 const claseEnlace = ({ isActive }) => `rounded-lg px-2.5 py-2 text-sm font-semibold sm:px-3 sm:text-base ${
   isActive ? 'bg-violet-50 text-violet-700' : 'text-gray-600 hover:bg-gray-100'
@@ -16,11 +17,11 @@ export default function Encabezado() {
         <span className="hidden text-xl font-bold text-gray-900 sm:inline sm:text-2xl">Metamorfosis</span>
       </div>
       <div className="flex items-center gap-1 sm:gap-4">
-        {/* HU21: navegación entre metas activas y logros. */}
+        {/* Navegación: las metas cumplidas están en el filtro de Mis metas (HU27). */}
         <nav aria-label="Secciones" className="flex items-center gap-1">
           <NavLink to="/metas" end className={claseEnlace}>Mis metas</NavLink>
-          <NavLink to="/mis-logros" className={claseEnlace}>Mis logros</NavLink>
         </nav>
+        <BotonCerrarSesion />
         <MenuPerfil />
       </div>
     </header>

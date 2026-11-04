@@ -67,23 +67,6 @@ export async function listarMetas(filtros = {}) {
   return datos;
 }
 
-/** HU21 (Mis logros): metas cumplidas del usuario. Lanza Error con mensaje legible si falla. */
-export async function listarCumplidas() {
-  const encabezados = cabeceras();
-  let respuesta;
-  try {
-    respuesta = await fetch(`${API_URL}/api/metas/cumplidas`, { headers: encabezados });
-  } catch {
-    throw new Error('No se pudo conectar con el servidor');
-  }
-
-  if (respuesta.status === 401) throw errorSesionExpirada();
-  const datos = await respuesta.json().catch(() => null);
-  if (!respuesta.ok) throw new Error(datos?.mensaje ?? 'Error inesperado');
-  if (!Array.isArray(datos)) throw new Error('Respuesta inesperada del servidor');
-  return datos;
-}
-
 /** Elimina una meta (solo su creador puede). Lanza Error con mensaje legible si falla. */
 export async function eliminarMeta(codigoMeta) {
   const encabezados = cabeceras();

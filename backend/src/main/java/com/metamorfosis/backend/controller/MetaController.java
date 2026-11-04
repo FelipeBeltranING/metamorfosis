@@ -48,12 +48,6 @@ public class MetaController {
         return ResponseEntity.ok(metaService.listarMetas(codigoUsuario, estado, tipo, plazo));
     }
 
-    /** HU21 (Mis logros): metas cumplidas del usuario autenticado. */
-    @GetMapping("/cumplidas")
-    public ResponseEntity<List<MetaResponse>> listarCumplidas(@AuthenticationPrincipal Integer codigoUsuario) {
-        return ResponseEntity.ok(metaService.listarCumplidas(codigoUsuario));
-    }
-
     /** HU2: edita una meta (solo su creador). */
     @PutMapping("/{codigoMeta}")
     public ResponseEntity<MetaResponse> editarMeta(@PathVariable Integer codigoMeta,

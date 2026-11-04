@@ -23,6 +23,7 @@ import com.metamorfosis.backend.model.TipoMeta;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -55,7 +56,7 @@ public class MetaService {
     /**
      * HU3 + HU27: lista las metas del usuario filtradas por estado, tipo y plazo.
      * Sin estado devuelve las ACTIVAS (como la HU3); tipo y plazo nulos no filtran.
-     * Devuelve lista vacía si ninguna meta coincide.
+     * Devuelve lista vacía si ninguna meta coincide. Las CUMPLIDA salen por fecha de cumplimiento.
      */
     @Auditar(accion = AccionLog.LISTAR_METAS, entidad = EntidadLog.META)
     @Transactional(readOnly = true)
@@ -71,24 +72,21 @@ public class MetaService {
         if (tipo != null) ContextoAuditoria.agregar("filtroTipo", tipo);
         if (plazo != null) ContextoAuditoria.agregar("filtroPlazo", plazo);
 
-        return metaRepository.findByParticipante(codigoUsuario).stream()
+        List<MetaResponse> metas = metaRepository.findByParticipante(codigoUsuario).stream()
                 .filter(m -> filtroEstado.incluye(m.getEstado()))
                 .filter(m -> tipo == null || m.getTipo() == tipo)
                 .filter(m -> plazo == null || m.getPlazo() == plazo)
                 .map(MetaResponse::desde)
                 .toList();
-    }
-
-    /** HU21 (Mis logros): metas cumplidas del usuario, con la fecha en que se cumplieron. */
-    @Auditar(accion = AccionLog.LISTAR_LOGROS, entidad = EntidadLog.META)
-    @Transactional(readOnly = true)
-    public List<MetaResponse> listarCumplidas(Integer codigoUsuario) {
-        if (!usuarioRepository.existsById(codigoUsuario)) {
-            throw new UsuarioNoEncontradoException(codigoUsuario);
+        // Las cumplidas (antes en Mis logros) van de la cumplida más recientemente a la más antigua.
+        // El orden es estable, así a igual fecha se mantiene el de creación.
+        if (filtroEstado == FiltroEstado.CUMPLIDA) {
+            return metas.stream()
+                    .sorted(Comparator.comparing(MetaResponse::fechaCumplida,
+                            Comparator.nullsLast(Comparator.reverseOrder())))
+                    .toList();
         }
-        return metaRepository.findCumplidasByParticipante(codigoUsuario).stream()
-                .map(MetaResponse::desde)
-                .toList();
+        return metas;
     }
 
     /** HU2: edita nombre, plazo y tipo. Solo el creador edita y una meta CUMPLIDA no se edita. */
