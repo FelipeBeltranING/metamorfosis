@@ -43,12 +43,18 @@ export async function crearMeta(solicitud) {
   return datos;
 }
 
-/** Lista las metas activas del usuario. Lanza Error con mensaje legible si falla. */
-export async function listarMetas() {
+/**
+ * Lista las metas del usuario (HU3). HU27: `filtros` opcionales { estado, tipo, plazo };
+ * sin estado el servidor devuelve las activas. Lanza Error con mensaje legible si falla.
+ */
+export async function listarMetas(filtros = {}) {
   const encabezados = cabeceras();
+  const params = new URLSearchParams(
+    Object.entries(filtros).filter(([, valor]) => valor),
+  ).toString();
   let respuesta;
   try {
-    respuesta = await fetch(`${API_URL}/api/metas`, { headers: encabezados });
+    respuesta = await fetch(`${API_URL}/api/metas${params ? `?${params}` : ''}`, { headers: encabezados });
   } catch {
     throw new Error('No se pudo conectar con el servidor');
   }
