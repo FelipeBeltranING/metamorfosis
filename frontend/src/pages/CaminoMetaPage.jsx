@@ -147,7 +147,7 @@ export default function CaminoMetaPage() {
       await marcarCumplida(camino.codigoMeta);
       await recargar();
       setConfirmarCumplida(false);
-      setAviso('¡Meta cumplida! Ya está en tus logros.');
+      setAviso('¡Meta cumplida! La encuentras en Mis metas, en el filtro Cumplidas.');
     } catch (error) {
       manejarError(error, setErrorCumplida);
     } finally {
@@ -210,9 +210,9 @@ export default function CaminoMetaPage() {
     <div className="min-h-screen bg-slate-50 text-gray-900">
       <Encabezado />
       <main className="mx-auto flex w-full max-w-[1040px] flex-col gap-5 px-4 pb-16 pt-6 sm:pt-8">
-        <Link to={camino.soloLectura ? '/mis-logros' : '/metas'} className="inline-flex items-center gap-1 self-start text-[15px] font-bold text-violet-700 hover:underline">
+        <Link to={camino.soloLectura ? '/metas?estado=CUMPLIDA' : '/metas'} className="inline-flex items-center gap-1 self-start text-[15px] font-bold text-violet-700 hover:underline">
           <ChevronLeft className="size-[18px]" aria-hidden="true" />
-          {camino.soloLectura ? 'Mis logros' : 'Mis metas'}
+          {camino.soloLectura ? 'Metas cumplidas' : 'Mis metas'}
         </Link>
 
         <section className={`flex flex-wrap items-center gap-5 rounded-2xl border bg-white p-5 sm:p-7 ${camino.soloLectura ? 'border-violet-300' : 'border-zinc-200'}`}>
@@ -324,7 +324,7 @@ export default function CaminoMetaPage() {
         {!camino.soloLectura && camino.puedeEditar && (
           <section className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-dashed border-violet-300 bg-violet-50/60 p-5">
             <p className="flex-[1_1_320px] text-[15px] leading-6 text-gray-600">
-              ¿Ya llegaste al destino? Márcala como cumplida: pasará a tus logros y podrás compartirla.
+              ¿Ya llegaste al destino? Márcala como cumplida: pasará a tus metas cumplidas y podrás compartirla.
             </p>
             <button
               type="button"

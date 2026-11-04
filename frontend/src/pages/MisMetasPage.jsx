@@ -24,7 +24,7 @@ const AVISOS = {
   actualizada: '¡Meta actualizada!',
   eliminada: 'Meta eliminada.',
   sesion: '¡Sesión iniciada!',
-  cumplida: '¡Meta cumplida!',
+  cumplida: '¡Meta cumplida! Ya está en tus metas cumplidas.',
 };
 
 /** Qué aviso mostrar al llegar a la lista (viene en el estado de navegación). */
@@ -298,7 +298,17 @@ export default function MisMetasPage() {
           className="fixed bottom-24 left-1/2 flex w-[calc(100%-2rem)] max-w-[640px] -translate-x-1/2 items-center gap-3 rounded-xl bg-emerald-400 p-4 text-sm font-semibold leading-5 text-gray-900 shadow-[0_4px_16px_rgba(30,27,46,0.07)] sm:bottom-8"
         >
           <CircleCheck className="size-6 shrink-0" aria-hidden="true" />
-          {AVISOS[aviso]}
+          <span className="flex-1">{AVISOS[aviso]}</span>
+          {/* Con el filtro Activas la meta cumplida sale de la lista: el aviso dice dónde quedó. */}
+          {aviso === 'cumplida' && filtros.estado === 'ACTIVA' && (
+            <button
+              type="button"
+              onClick={() => { setAviso(null); cambiarFiltros({ ...filtros, estado: 'CUMPLIDA' }); }}
+              className="shrink-0 rounded-lg bg-white/70 px-3 py-1.5 font-bold text-gray-900 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900"
+            >
+              Ver cumplidas
+            </button>
+          )}
         </div>
       )}
 

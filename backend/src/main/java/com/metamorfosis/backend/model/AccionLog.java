@@ -12,7 +12,7 @@ public enum AccionLog {
     REGISTRAR_CUMPLIMIENTO, // HU5 (retirada; se conserva porque hay filas en log_actividad con este valor)
     MARCAR_CUMPLIDA,    // HU6
     COMPARTIR_LOGRO,    // HU21
-    LISTAR_LOGROS,      // HU21 (Mis logros)
+    LISTAR_LOGROS,      // HU21 (Mis logros, ya retirada): se conserva para leer las filas viejas del log
     VER_REPORTE,        // HU7
     REGISTRAR_USUARIO,  // HU8
     SOLICITAR_REGISTRO, // HU8: se envió el correo de autorización
