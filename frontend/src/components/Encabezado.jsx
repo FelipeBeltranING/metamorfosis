@@ -19,7 +19,6 @@ export default function Encabezado() {
         {/* HU21: navegación entre metas activas y logros. */}
         <nav aria-label="Secciones" className="flex items-center gap-1">
           <NavLink to="/metas" end className={claseEnlace}>Mis metas</NavLink>
-          <NavLink to="/mis-logros" className={claseEnlace}>Mis logros</NavLink>
         </nav>
         <MenuPerfil />
       </div>

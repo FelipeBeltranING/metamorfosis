@@ -1,6 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import MisMetasPage from './pages/MisMetasPage';
-import MisLogrosPage from './pages/MisLogrosPage';
 import CaminoMetaPage from './pages/CaminoMetaPage';
 import SubMetaFormPage from './pages/SubMetaFormPage';
 import EstadisticasSubMetaPage from './pages/EstadisticasSubMetaPage';
@@ -30,7 +29,8 @@ export default function App() {
           <Route path="/metas" element={<MisMetasPage />} />
           <Route path="/metas/nueva" element={<CrearMetaPage />} />
           <Route path="/metas/:codigoMeta/editar" element={<EditarMetaPage />} />
-          <Route path="/mis-logros" element={<MisLogrosPage />} />
+          {/* Mis logros se retiró: las cumplidas están en el filtro de Mis metas. */}
+          <Route path="/mis-logros" element={<Navigate to="/metas?estado=CUMPLIDA" replace />} />
           {/* Sub-metas: el camino de cada meta. */}
           <Route path="/metas/:codigoMeta" element={<CaminoMetaPage />} />
           <Route path="/metas/:codigoMeta/submetas/nueva" element={<SubMetaFormPage />} />
