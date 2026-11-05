@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
-  Award, CalendarDays, ChartColumn, CircleCheck, Mail, Target, TrendingUp,
+  Award, CalendarDays, ChartColumn, CircleCheck, Mail, PencilLine, Target, TrendingUp,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import Encabezado from '../components/Encabezado';
@@ -10,6 +10,7 @@ import { TIPOS } from '../constants/opcionesMeta';
 import { obtenerPerfil } from '../services/perfilService';
 import { formatearFecha } from '../utils/fechas';
 import { iniciales, mesYAnio } from '../utils/perfil';
+import { EVENTO_CUENTA, datosPerfil, obtenerSesion } from '../services/sesionService';
 
 const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((t) => [t.valor, t]));
 const TARJETA = 'rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6';
@@ -117,17 +118,28 @@ export default function PerfilPage() {
 function ContenidoPerfil({ perfil }) {
   const { resumen, insignias, ultimasCumplidas } = perfil;
   const nombreCompleto = [perfil.nombre, perfil.apellido].filter(Boolean).join(' ');
+  // HU-23: la foto viene de la cuenta (la sincroniza el encabezado) y se actualiza al editarla.
+  const [foto, setFoto] = useState(() => datosPerfil(obtenerSesion())?.foto ?? null);
+  useEffect(() => {
+    const alCambiarCuenta = () => setFoto(datosPerfil(obtenerSesion())?.foto ?? null);
+    window.addEventListener(EVENTO_CUENTA, alCambiarCuenta);
+    return () => window.removeEventListener(EVENTO_CUENTA, alCambiarCuenta);
+  }, []);
 
   return (
     <div className="flex flex-col gap-4">
       {/* 1. Datos personales */}
       <section aria-label="Datos personales" className={`${TARJETA} flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left`}>
-        <div
-          className="flex size-16 shrink-0 items-center justify-center rounded-full bg-violet-600 text-2xl font-bold text-white sm:size-20 sm:text-3xl"
-          aria-hidden="true"
-        >
-          {iniciales(perfil.nombre, perfil.apellido)}
-        </div>
+        {foto ? (
+          <img src={foto} alt="" className="size-16 shrink-0 rounded-full object-cover sm:size-20" />
+        ) : (
+          <div
+            className="flex size-16 shrink-0 items-center justify-center rounded-full bg-violet-600 text-2xl font-bold text-white sm:size-20 sm:text-3xl"
+            aria-hidden="true"
+          >
+            {iniciales(perfil.nombre, perfil.apellido)}
+          </div>
+        )}
         <div className="flex min-w-0 flex-col gap-1">
           <p className="truncate text-xl font-bold text-gray-900 sm:text-2xl">{nombreCompleto}</p>
           <p className="flex items-center justify-center gap-2 text-sm text-gray-600 sm:justify-start">
@@ -141,6 +153,14 @@ function ContenidoPerfil({ perfil }) {
             </p>
           )}
         </div>
+        {/* HU-23 */}
+        <Link
+          to="/perfil/editar"
+          className="flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-violet-300 bg-violet-50 px-4 text-[15px] font-bold text-violet-700 hover:bg-violet-100 sm:ml-auto"
+        >
+          <PencilLine className="size-[18px]" aria-hidden="true" />
+          Editar perfil
+        </Link>
       </section>
 
       {/* 2. Resumen de metas */}
