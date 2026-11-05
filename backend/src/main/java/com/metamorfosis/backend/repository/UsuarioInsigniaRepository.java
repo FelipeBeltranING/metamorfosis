@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/** HU11: insignias que ya ganó cada usuario. */
+/** HU11: insignias que ya ganó cada usuario. HU22: las muestra en Mi perfil. */
 public interface UsuarioInsigniaRepository extends JpaRepository<UsuarioInsignia, UsuarioInsigniaId> {
 
     /** Códigos de las insignias que el usuario ya tiene. */
@@ -17,4 +17,13 @@ public interface UsuarioInsigniaRepository extends JpaRepository<UsuarioInsignia
             where ui.id.codigoUsuario = :codigoUsuario
             """)
     List<Integer> codigosObtenidos(@Param("codigoUsuario") Integer codigoUsuario);
+
+    /** HU22: insignias que ganó el usuario, con su fecha, de la más reciente a la más antigua. */
+    @Query("""
+            select ui from UsuarioInsignia ui
+            join fetch ui.insignia
+            where ui.id.codigoUsuario = :codigoUsuario
+            order by ui.fechaObtenida desc, ui.id.codigoInsignia desc
+            """)
+    List<UsuarioInsignia> insigniasDelUsuario(@Param("codigoUsuario") Integer codigoUsuario);
 }

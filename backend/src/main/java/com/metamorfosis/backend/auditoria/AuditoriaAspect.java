@@ -95,7 +95,7 @@ public Object auditar(ProceedingJoinPoint pjp) throws Throwable {
         }
     }
 
-    /** Cuál registro se tocó: el id de la respuesta (crear) o el parámetro codigoMeta (editar). */
+    /** Cuál registro se tocó: el id de la respuesta (crear), el parámetro codigoMeta (editar) o el usuario (perfil). */
     private Integer codigoEntidad(ProceedingJoinPoint pjp, EntidadLog entidad, Object retorno) {
         if (entidad == EntidadLog.META) {
             if (retorno instanceof MetaResponse m) return m.codigoMeta();
@@ -104,6 +104,9 @@ public Object auditar(ProceedingJoinPoint pjp) throws Throwable {
         if (entidad == EntidadLog.SUB_META) {
             if (retorno instanceof SubMetaResponse s) return s.codigoSubMeta();
             return parametroEntero(pjp, "codigoSubMeta");
+        }
+        if (entidad == EntidadLog.USUARIO) {
+            return parametroEntero(pjp, "codigoUsuario");   // HU22: el perfil consultado es el del usuario
         }
         return null;
     }
