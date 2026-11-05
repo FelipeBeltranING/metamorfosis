@@ -1,0 +1,41 @@
+import { cabeceras, errorSesionExpirada } from './metaService';
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+/**
+ * HU-23: petición a /api/usuarios/me con el token de la sesión. Devuelve la cuenta
+ * { codigoUsuario, nombre, apellido, email, foto }. Lanza Error con `estado` y `errores`
+ * si el servidor la rechaza; sin `estado` = sin conexión.
+ */
+async function pedir(ruta, { method = 'GET', body } = {}) {
+  const encabezados = cabeceras(body ? { 'Content-Type': 'application/json' } : {});
+  let respuesta;
+  try {
+    respuesta = await fetch(`${API_URL}/api/usuarios/me${ruta}`, {
+      method,
+      headers: encabezados,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  } catch {
+    throw new Error('No se pudo conectar con el servidor');
+  }
+  if (respuesta.status === 401) throw errorSesionExpirada();
+  const datos = await respuesta.json().catch(() => null);
+  if (!respuesta.ok) {
+    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    error.estado = respuesta.status;
+    error.errores = datos?.errores ?? [];
+    throw error;
+  }
+  if (!datos || typeof datos.nombre !== 'string') throw new Error('Respuesta inesperada del servidor');
+  return datos;
+}
+
+export const obtenerCuenta = () => pedir('');
+
+export const editarDatos = ({ nombre, apellido }) => pedir('', { method: 'PUT', body: { nombre, apellido } });
+
+/** `foto`: data URL ya recortada ("data:image/jpeg;base64,..."). */
+export const cambiarFoto = (foto) => pedir('/foto', { method: 'PUT', body: { foto } });
+
+export const quitarFoto = () => pedir('/foto', { method: 'DELETE' });

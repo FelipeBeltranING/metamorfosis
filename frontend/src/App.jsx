@@ -6,6 +6,7 @@ import SubMetaFormPage from './pages/SubMetaFormPage';
 import EstadisticasSubMetaPage from './pages/EstadisticasSubMetaPage';
 import CrearMetaPage from './pages/CrearMetaPage';
 import EditarMetaPage from './pages/EditarMetaPage';
+import EditarPerfilPage from './pages/EditarPerfilPage';
 import RegistroPage from './pages/RegistroPage';
 import SolicitarRegistroPage from './pages/SolicitarRegistroPage';
 import RechazarRegistroPage from './pages/RechazarRegistroPage';
@@ -60,6 +61,8 @@ export default function App() {
             <Route path="/metas/:codigoMeta/submetas/nueva" element={<SubMetaFormPage />} />
             <Route path="/submetas/:codigoSubMeta" element={<EstadisticasSubMetaPage />} />
             <Route path="/submetas/:codigoSubMeta/editar" element={<SubMetaFormPage />} />
+            {/* HU-23: editar nombre, apellido y foto, desde el menú de la cuenta. */}
+            <Route path="/perfil/editar" element={<EditarPerfilPage />} />
           </Route>
           <Route path="*" element={<Navigate to="/metas" replace />} />
         </Routes>

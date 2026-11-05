@@ -24,7 +24,8 @@ public class Usuario {
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
 
-    @Column(name = "foto_perfil", length = 255)
+    /** HU-23: foto de perfil como data URL (data:image/jpeg;base64,...), o null si no tiene. */
+    @Column(name = "foto_perfil", columnDefinition = "text")
     private String fotoPerfil;
 
     @Column(name = "perfil_privado", nullable = false)

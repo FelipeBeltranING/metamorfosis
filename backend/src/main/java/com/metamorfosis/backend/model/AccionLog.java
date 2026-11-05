@@ -24,5 +24,8 @@ public enum AccionLog {
     EDITAR_SUB_META,    // sub-metas: editar
     ELIMINAR_SUB_META,  // sub-metas: eliminar
     REGISTRAR_DIA,      // sub-metas: registrar o corregir el día
-    QUITAR_REGISTRO     // sub-metas: quitar el registro de un día
+    QUITAR_REGISTRO,    // sub-metas: quitar el registro de un día
+    EDITAR_PERFIL,      // HU23: nombre y apellido
+    CAMBIAR_FOTO_PERFIL, // HU23
+    QUITAR_FOTO_PERFIL  // HU23
 }
