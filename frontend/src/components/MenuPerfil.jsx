@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { PencilLine } from 'lucide-react';
+import { ChevronRight, PencilLine, UserRound } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import AvatarUsuario from './AvatarUsuario';
 import { obtenerCuenta } from '../services/cuentaService';
@@ -9,7 +9,8 @@ import {
 
 /**
  * Avatar del encabezado (foto o iniciales, HU-23): muestra el nombre y el correo de la cuenta
- * y la opción "Editar perfil". "Cerrar sesión" está en el encabezado (BotonCerrarSesion).
+ * y las opciones "Ver mi perfil" (HU22) y "Editar perfil" (HU-23).
+ * "Cerrar sesión" está en el encabezado (BotonCerrarSesion).
  * Se cierra al tocar fuera o con Esc.
  */
 export default function MenuPerfil() {
@@ -86,17 +87,27 @@ export default function MenuPerfil() {
               {perfil.email && <p className="truncate text-[13px] text-gray-500">{perfil.email}</p>}
             </div>
           </div>
+          <div className="my-1 border-t border-zinc-100" />
+          {/* HU22 */}
+          <Link
+            to="/perfil"
+            onClick={() => setAbierto(false)}
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[15px] font-semibold text-gray-700 hover:bg-violet-50 hover:text-violet-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
+          >
+            <UserRound className="size-5 text-violet-600" aria-hidden="true" />
+            <span className="flex-1">Ver mi perfil</span>
+            <ChevronRight className="size-4 text-gray-400" aria-hidden="true" />
+          </Link>
           {/* HU-23 */}
-          <div className="mt-1 border-t border-zinc-100 pt-1">
-            <Link
-              to="/perfil/editar"
-              onClick={() => setAbierto(false)}
-              className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-[15px] font-bold text-violet-700 hover:bg-violet-50 focus-visible:bg-violet-50 focus-visible:outline-none"
-            >
-              <PencilLine className="size-[18px]" aria-hidden="true" />
-              Editar perfil
-            </Link>
-          </div>
+          <Link
+            to="/perfil/editar"
+            onClick={() => setAbierto(false)}
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[15px] font-semibold text-gray-700 hover:bg-violet-50 hover:text-violet-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
+          >
+            <PencilLine className="size-5 text-violet-600" aria-hidden="true" />
+            <span className="flex-1">Editar perfil</span>
+            <ChevronRight className="size-4 text-gray-400" aria-hidden="true" />
+          </Link>
         </div>
       )}
     </div>

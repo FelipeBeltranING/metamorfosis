@@ -295,7 +295,12 @@ export default function ReportePage() {
                 {TIPOS_REPORTE.map((t) => <option key={t.valor} value={t.valor}>{t.etiqueta}</option>)}
               </select>
             </div>
-            {grafica()}
+            {/*
+              La key fuerza a montar una gráfica nueva al cambiar de tipo de reporte. Sin ella,
+              react-chartjs-2 reutiliza el mismo Chart entre "por tipo" (barras horizontales,
+              indexAxis 'y') y "por plazo" (barras verticales) y se queda con los ejes del anterior.
+            */}
+            <div key={tipoReporte}>{grafica()}</div>
           </div>
         )}
       </main>

@@ -13,6 +13,7 @@ import RechazarRegistroPage from './pages/RechazarRegistroPage';
 import AutorizarRegistroPage from './pages/AutorizarRegistroPage';
 import LoginPage from './pages/LoginPage';
 import LogroPublicoPage from './pages/LogroPublicoPage';
+import PerfilPage from './pages/PerfilPage';
 import RutaProtegida from './components/RutaProtegida';
 import AvisosInsigniaProvider from './components/AvisosInsignia';
 
@@ -53,6 +54,8 @@ export default function App() {
                 </Suspense>
               )}
             />
+            {/* HU22: Mi perfil, desde el menú del avatar. */}
+            <Route path="/perfil" element={<PerfilPage />} />
             {/* Sub-metas: el camino de cada meta. */}
             <Route path="/metas/:codigoMeta" element={<CaminoMetaPage />} />
             <Route path="/metas/:codigoMeta/submetas/nueva" element={<SubMetaFormPage />} />
