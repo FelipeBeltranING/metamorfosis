@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { User } from 'lucide-react';
+import { ChevronRight, User, UserRound } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { datosPerfil, obtenerSesion } from '../services/sesionService';
 
 /**
- * Avatar del encabezado: muestra el nombre y el correo de la cuenta.
- * "Cerrar sesión" pasó al encabezado (BotonCerrarSesion); aquí irá "Editar perfil".
+ * Avatar del encabezado: muestra el nombre y el correo de la cuenta y la opción "Ver mi perfil" (HU22).
+ * "Cerrar sesión" está en el encabezado (BotonCerrarSesion).
  * Se cierra al tocar fuera o con Esc.
  */
 export default function MenuPerfil() {
@@ -68,6 +69,16 @@ export default function MenuPerfil() {
             )}
             {perfil.email && <p className="truncate text-[13px] text-gray-500">{perfil.email}</p>}
           </div>
+          <div className="my-1 border-t border-zinc-100" />
+          <Link
+            to="/perfil"
+            onClick={() => setAbierto(false)}
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[15px] font-semibold text-gray-700 hover:bg-violet-50 hover:text-violet-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
+          >
+            <UserRound className="size-5 text-violet-600" aria-hidden="true" />
+            <span className="flex-1">Ver mi perfil</span>
+            <ChevronRight className="size-4 text-gray-400" aria-hidden="true" />
+          </Link>
         </div>
       )}
     </div>
