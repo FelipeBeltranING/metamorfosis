@@ -25,6 +25,24 @@ export function guardarSesion({ token, codigoUsuario, nombre, apellido, email })
   );
 }
 
+/** HU-23: aviso para que el encabezado se actualice cuando cambian el nombre o la foto. */
+export const EVENTO_CUENTA = 'metamorfosis:cuenta';
+
+/**
+ * HU-23: guarda en la sesión los datos de la cuenta que cambiaron ({ nombre, apellido, email, foto })
+ * y avisa al encabezado. La foto es una imagen pequeña (unos KB), cabe en el almacenamiento.
+ */
+export function actualizarSesion(cambios) {
+  const sesion = obtenerSesion();
+  if (!sesion) return;
+  try {
+    localStorage.setItem(CLAVE_SESION, JSON.stringify({ ...sesion, ...cambios }));
+  } catch {
+    // Almacenamiento lleno o bloqueado: el encabezado se actualiza igual con el aviso.
+  }
+  window.dispatchEvent(new CustomEvent(EVENTO_CUENTA, { detail: cambios }));
+}
+
 /** Borra la sesión de este navegador. No avisa al servidor (para eso, ver `cerrarSesionRemota`). */
 export function cerrarSesion() {
   try {
@@ -54,13 +72,27 @@ export function obtenerSesion() {
   }
 }
 
+/** HU-23: "Daniel" + "Santos" → "DS". Sin datos, cadena vacía. */
+export function inicialesDe(nombre, apellido) {
+  return [nombre, apellido]
+    .map((parte) => (parte ?? '').trim().charAt(0))
+    .join('')
+    .toLocaleUpperCase('es-CO');
+}
+
 /**
- * Datos para mostrar en el menú de perfil: { nombre, email }. El nombre viene de la respuesta
- * del login (puede faltar); el correo, de la respuesta o del claim `email` del token.
+ * Datos para mostrar en el menú de perfil: { nombre, email, iniciales, foto }. El nombre viene del
+ * login o de Editar perfil (puede faltar); el correo, de ahí o del claim `email` del token;
+ * la foto (HU-23), de la cuenta, o null.
  */
 export function datosPerfil(sesion) {
   if (!sesion) return null;
   const nombre = [sesion.nombre, sesion.apellido].filter(Boolean).join(' ');
   const email = sesion.email || leerCarga(sesion.token)?.email || '';
-  return { nombre, email };
+  return {
+    nombre,
+    email,
+    iniciales: inicialesDe(sesion.nombre, sesion.apellido),
+    foto: sesion.foto ?? null,
+  };
 }
