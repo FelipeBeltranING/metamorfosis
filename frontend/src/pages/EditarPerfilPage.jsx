@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import {
   ArrowLeft, Camera, CircleAlert, CircleCheck, LoaderCircle, Lock, Trash2,
 } from 'lucide-react';
@@ -143,6 +145,11 @@ export default function EditarPerfilPage() {
     }
     setArchivoElegido(archivo);
   };
+
+  const alFallarFoto = useCallback((mensaje) => {
+    setArchivoElegido(null);
+    setErrores((actuales) => ({ ...actuales, foto: mensaje }));
+  }, []);
 
   const usarFoto = (foto) => {
     setArchivoElegido(null);
@@ -361,7 +368,7 @@ export default function EditarPerfilPage() {
           onUsar={usarFoto}
           onElegirOtra={() => { setArchivoElegido(null); elegirArchivo(); }}
           onCancelar={() => setArchivoElegido(null)}
-          onError={(mensaje) => { setArchivoElegido(null); setErrores((actuales) => ({ ...actuales, foto: mensaje })); }}
+          onError={alFallarFoto}
         />
       )}
 

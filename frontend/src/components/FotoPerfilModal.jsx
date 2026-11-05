@@ -42,15 +42,26 @@ function estiloImagen(imagen, zoom, desplazamiento, lado) {
  * un JPEG cuadrado de 320 px (unos KB) como data URL.
  */
 export default function FotoPerfilModal({ archivo, onUsar, onElegirOtra, onCancelar, onError }) {
-  // El modal se abre una vez por archivo, así que la dirección temporal se crea al montarlo.
-  const [url] = useState(() => URL.createObjectURL(archivo));
+  const [url, setUrl] = useState(null);
   const [imagen, setImagen] = useState(null);
   const [zoom, setZoom] = useState(1);
   const [desplazamiento, setDesplazamiento] = useState({ x: 0, y: 0 });
   const arrastre = useRef(null);
   const cerrar = useRef(null);
 
-  useEffect(() => () => URL.revokeObjectURL(url), [url]);
+  // Se lee el archivo como data URL (no una dirección temporal que haya que liberar: en modo
+  // desarrollo React monta el componente dos veces y una dirección liberada ya no abre).
+  useEffect(() => {
+    const lector = new FileReader();
+    lector.onload = () => setUrl(lector.result);
+    lector.onerror = () => onError(`${archivo.name} no se pudo abrir como imagen. Usa JPG, PNG o WebP de máximo 2 MB.`);
+    lector.readAsDataURL(archivo);
+    return () => {
+      lector.onload = null;
+      lector.onerror = null;
+      lector.abort();
+    };
+  }, [archivo, onError]);
 
   useEffect(() => {
     cerrar.current?.focus();
