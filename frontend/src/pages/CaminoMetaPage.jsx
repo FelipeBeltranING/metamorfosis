@@ -10,6 +10,7 @@ import EliminarSubMetaModal from '../components/EliminarSubMetaModal';
 import ConfirmarCumplidaModal from '../components/ConfirmarCumplidaModal';
 import { PLAZOS, TIPOS } from '../constants/opcionesMeta';
 import { marcarCumplida } from '../services/metaService';
+import { useAvisosInsignia } from '../hooks/useAvisosInsignia';
 import {
   eliminarSubMeta, obtenerCamino, quitarRegistro, registrarDia,
 } from '../services/subMetaService';
@@ -29,6 +30,7 @@ const OCULTA_EN_MOVIL = (i) => (i >= 5 ? 'hidden sm:flex' : 'flex');
 export default function CaminoMetaPage() {
   const { codigoMeta } = useParams();
   const navigate = useNavigate();
+  const mostrarInsignias = useAvisosInsignia();
   const [estado, setEstado] = useState({ fase: 'cargando' });
   const [intento, setIntento] = useState(0);
   const [aviso, setAviso] = useState('');
@@ -144,10 +146,11 @@ export default function CaminoMetaPage() {
     setMarcando(true);
     setErrorCumplida('');
     try {
-      await marcarCumplida(camino.codigoMeta);
+      const { insigniasNuevas } = await marcarCumplida(camino.codigoMeta);
       await recargar();
       setConfirmarCumplida(false);
       setAviso('¡Meta cumplida! La encuentras en Mis metas, en el filtro Cumplidas.');
+      mostrarInsignias(insigniasNuevas); // HU11
     } catch (error) {
       manejarError(error, setErrorCumplida);
     } finally {

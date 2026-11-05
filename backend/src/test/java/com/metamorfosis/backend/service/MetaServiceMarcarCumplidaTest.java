@@ -1,5 +1,8 @@
 package com.metamorfosis.backend.service;
 
+import com.metamorfosis.backend.auditoria.ContextoAuditoria;
+import com.metamorfosis.backend.dto.InsigniaResponse;
+import com.metamorfosis.backend.dto.MetaCumplidaResponse;
 import com.metamorfosis.backend.dto.MetaResponse;
 import com.metamorfosis.backend.exception.MetaNoEncontradaException;
 import com.metamorfosis.backend.exception.PermisoDenegadoException;
@@ -15,17 +18,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
-/** HU6: caja blanca de MetaService.marcarCumplida (marcar una meta, sin poder deshacerlo). */
+/** HU6 y HU11: caja blanca de MetaService.marcarCumplida (marcar una meta y revisar insignias). */
 @ExtendWith(MockitoExtension.class)
 class MetaServiceMarcarCumplidaTest {
 
@@ -35,6 +41,7 @@ class MetaServiceMarcarCumplidaTest {
 
     @Mock private MetaRepository metaRepository;
     @Mock private UsuarioRepository usuarioRepository;
+    @Mock private InsigniaService insigniaService;
 
     @InjectMocks
     private MetaService metaService;
@@ -88,11 +95,13 @@ class MetaServiceMarcarCumplidaTest {
         meta.marcarCumplida(CREADOR, original);
         when(metaRepository.findById(CODIGO_META)).thenReturn(Optional.of(meta));
 
-        MetaResponse r = metaService.marcarCumplida(CODIGO_META, CREADOR);
+        MetaCumplidaResponse r = metaService.marcarCumplida(CODIGO_META, CREADOR);
 
-        assertEquals(EstadoMeta.CUMPLIDA, r.estado());
-        assertEquals(original, r.fechaCumplida());
+        assertEquals(EstadoMeta.CUMPLIDA, r.meta().estado());
+        assertEquals(original, r.meta().fechaCumplida());
+        assertTrue(r.insigniasNuevas().isEmpty());
         verify(metaRepository, never()).save(any());
+        verify(insigniaService, never()).otorgarNuevas(anyInt(), any()); // HU11: no se revisan insignias
     }
 
     @Test
@@ -100,12 +109,40 @@ class MetaServiceMarcarCumplidaTest {
         when(metaRepository.findById(CODIGO_META)).thenReturn(Optional.of(meta));
         when(metaRepository.save(meta)).thenReturn(meta);
 
-        MetaResponse r = metaService.marcarCumplida(CODIGO_META, CREADOR);
+        when(insigniaService.otorgarNuevas(CREADOR, LocalDate.now())).thenReturn(List.of());
 
-        assertEquals(EstadoMeta.CUMPLIDA, r.estado());
-        assertEquals(LocalDate.now(), r.fechaCumplida());
+        MetaCumplidaResponse r = metaService.marcarCumplida(CODIGO_META, CREADOR);
+
+        assertEquals(EstadoMeta.CUMPLIDA, r.meta().estado());
+        assertEquals(LocalDate.now(), r.meta().fechaCumplida());
         assertEquals(LocalDate.now(), meta.getFechaCumplida(CREADOR));
+        assertTrue(r.insigniasNuevas().isEmpty());
         verify(metaRepository, times(1)).save(meta);
+    }
+
+    @Test
+    void alMarcarSeRevisanLasInsigniasYQuedanEnElLog() {
+        InsigniaResponse primerPaso = new InsigniaResponse(1, "Primer paso", "Cumpliste tu primera meta", "Footprints");
+        when(metaRepository.findById(CODIGO_META)).thenReturn(Optional.of(meta));
+        when(metaRepository.save(meta)).thenReturn(meta);
+        when(insigniaService.otorgarNuevas(CREADOR, LocalDate.now())).thenReturn(List.of(primerPaso));
+
+        try (MockedStatic<ContextoAuditoria> contexto = mockStatic(ContextoAuditoria.class)) {
+            MetaCumplidaResponse r = metaService.marcarCumplida(CODIGO_META, CREADOR);
+
+            assertEquals(List.of(primerPaso), r.insigniasNuevas());
+            contexto.verify(() -> ContextoAuditoria.agregar("insigniasNuevas", List.of("Primer paso")));
+        }
+        verify(insigniaService, times(1)).otorgarNuevas(CREADOR, LocalDate.now());
+    }
+
+    @Test
+    void conMetaAjenaNoSeRevisanInsignias() {
+        when(metaRepository.findById(CODIGO_META)).thenReturn(Optional.of(meta));
+
+        assertThrows(PermisoDenegadoException.class,
+                () -> metaService.marcarCumplida(CODIGO_META, OTRO));
+        verifyNoInteractions(insigniaService);
     }
 
     @Test

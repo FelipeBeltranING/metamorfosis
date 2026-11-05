@@ -117,7 +117,8 @@ export async function editarMeta(codigoMeta, solicitud) {
 }
 
 /**
- * HU6: marca la meta como cumplida (no se puede deshacer). Devuelve la meta actualizada.
+ * HU6: marca la meta como cumplida (no se puede deshacer). Devuelve { meta, insigniasNuevas }:
+ * la meta actualizada y las insignias que el usuario ganó al cumplirla (HU11; puede venir vacía).
  * Lanza Error con `mensaje` y `estado` (código HTTP); sin `estado` = sin conexión.
  */
 export async function marcarCumplida(codigoMeta) {
@@ -139,5 +140,6 @@ export async function marcarCumplida(codigoMeta) {
     error.estado = respuesta.status;
     throw error;
   }
-  return datos;
+  if (!datos?.meta) throw new Error('Respuesta inesperada del servidor');
+  return { meta: datos.meta, insigniasNuevas: datos.insigniasNuevas ?? [] };
 }

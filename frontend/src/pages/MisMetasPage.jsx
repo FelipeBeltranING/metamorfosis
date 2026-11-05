@@ -15,6 +15,7 @@ import FiltrosMetas from '../components/FiltrosMetas';
 import SinResultadosFiltro from '../components/SinResultadosFiltro';
 import { eliminarMeta, listarMetas, marcarCumplida } from '../services/metaService';
 import { obtenerResumenes } from '../services/subMetaService';
+import { useAvisosInsignia } from '../hooks/useAvisosInsignia';
 import {
   FILTROS_POR_DEFECTO, filtrosAUrl, filtrosDesdeUrl, hayFiltros,
 } from '../utils/filtrosMetas';
@@ -38,6 +39,7 @@ function avisoInicial(estadoNavegacion) {
 export default function MisMetasPage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const mostrarInsignias = useAvisosInsignia();
   // HU27: los filtros viven en la URL (?estado=&tipo=&plazo=) para mantenerse al recargar.
   const [searchParams, setSearchParams] = useSearchParams();
   const filtros = useMemo(() => filtrosDesdeUrl(searchParams), [searchParams]);
@@ -180,10 +182,11 @@ export default function MisMetasPage() {
     setMarcando(true);
     setErrorMarcar('');
     try {
-      const actualizada = await marcarCumplida(codigoMeta);
+      const { meta: actualizada, insigniasNuevas } = await marcarCumplida(codigoMeta);
       actualizarMeta(codigoMeta, actualizada);
       setMetaAMarcar(null);
       setAviso('cumplida');
+      mostrarInsignias(insigniasNuevas); // HU11
     } catch (error) {
       if (error.estado === 401) {
         navigate('/login', { replace: true });
