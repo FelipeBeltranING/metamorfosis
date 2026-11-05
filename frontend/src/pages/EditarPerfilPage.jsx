@@ -1,17 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
-  ArrowLeft, CircleAlert, CircleCheck, LoaderCircle, Lock,
+  ArrowLeft, Camera, CircleAlert, CircleCheck, LoaderCircle, Lock, Trash2,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import Encabezado from '../components/Encabezado';
 import MensajeError from '../components/MensajeError';
-import { editarDatos, obtenerCuenta } from '../services/cuentaService';
-import { actualizarSesion } from '../services/sesionService';
+import AvatarUsuario from '../components/AvatarUsuario';
+import FotoPerfilModal from '../components/FotoPerfilModal';
+import {
+  cambiarFoto, editarDatos, obtenerCuenta, quitarFoto,
+} from '../services/cuentaService';
+import { actualizarSesion, inicialesDe } from '../services/sesionService';
 
 /** Igual que el servidor (CuentaService.TEXTO_MAXIMO). */
-export const TEXTO_MAX = 50;
+const TEXTO_MAX = 50;
 
 const limpiar = (texto) => texto.trim().replace(/\s+/g, ' ');
+
+/** Foto que se puede elegir (se revisa antes de abrir la vista previa). */
+const TIPOS_FOTO = ['image/jpeg', 'image/png', 'image/webp'];
+const FOTO_MAX_MB = 2;
+
+/** Mensaje de error si el archivo no sirve como foto, o null. */
+function problemaConArchivo(archivo) {
+  const ayuda = `Usa JPG, PNG o WebP de máximo ${FOTO_MAX_MB} MB.`;
+  if (!TIPOS_FOTO.includes(archivo.type)) return `${archivo.name} no es una imagen válida. ${ayuda}`;
+  if (archivo.size > FOTO_MAX_MB * 1024 * 1024) {
+    const megas = (archivo.size / (1024 * 1024)).toLocaleString('es-CO', { maximumFractionDigits: 1 });
+    return `La imagen pesa ${megas} MB. ${ayuda}`;
+  }
+  return null;
+}
 
 /** Validación del cliente (la del servidor se mantiene siempre). */
 function validar({ nombre, apellido }) {
@@ -70,6 +89,10 @@ export default function EditarPerfilPage() {
   const [errorGeneral, setErrorGeneral] = useState('');
   const [guardando, setGuardando] = useState(false);
   const [guardado, setGuardado] = useState(false);
+  // Foto pendiente de guardar: null (sin cambios), { tipo: 'nueva', foto } o { tipo: 'quitar' }.
+  const [fotoPendiente, setFotoPendiente] = useState(null);
+  const [archivoElegido, setArchivoElegido] = useState(null);
+  const selectorArchivo = useRef(null);
 
   useEffect(() => {
     let activo = true;
@@ -100,7 +123,39 @@ export default function EditarPerfilPage() {
   const datosCambiaron = Boolean(cuenta) && (
     limpiar(formulario.nombre) !== cuenta.nombre || limpiar(formulario.apellido) !== cuenta.apellido
   );
-  const hayCambios = datosCambiaron;
+  const hayCambios = datosCambiaron || fotoPendiente !== null;
+  const fotoMostrada = fotoPendiente?.tipo === 'nueva' ? fotoPendiente.foto
+    : fotoPendiente?.tipo === 'quitar' ? null : cuenta?.foto ?? null;
+
+  const elegirArchivo = () => {
+    setErrores((actuales) => ({ ...actuales, foto: undefined }));
+    selectorArchivo.current?.click();
+  };
+
+  const alElegirArchivo = (evento) => {
+    const archivo = evento.target.files?.[0];
+    evento.target.value = ''; // así se puede volver a elegir el mismo archivo
+    if (!archivo) return;
+    const problema = problemaConArchivo(archivo);
+    if (problema) {
+      setErrores((actuales) => ({ ...actuales, foto: problema }));
+      return;
+    }
+    setArchivoElegido(archivo);
+  };
+
+  const usarFoto = (foto) => {
+    setArchivoElegido(null);
+    setFotoPendiente({ tipo: 'nueva', foto });
+    setGuardado(false);
+  };
+
+  const quitarLaFoto = () => {
+    setErrores((actuales) => ({ ...actuales, foto: undefined }));
+    // Si la foto era solo una elegida sin guardar, quitarla es volver a como estaba.
+    setFotoPendiente(cuenta?.foto ? { tipo: 'quitar' } : null);
+    setGuardado(false);
+  };
 
   const cambiar = (campo) => (valor) => {
     setFormulario((actual) => ({ ...actual, [campo]: valor }));
@@ -111,7 +166,7 @@ export default function EditarPerfilPage() {
   const guardar = async (evento) => {
     evento.preventDefault();
     const encontrados = validar(formulario);
-    setErrores(encontrados);
+    setErrores((actuales) => ({ ...encontrados, foto: actuales.foto }));
     setErrorGeneral(Object.keys(encontrados).length ? 'No se guardaron los cambios. Revisa los campos marcados.' : '');
     if (Object.keys(encontrados).length || !hayCambios) return;
 
@@ -121,6 +176,9 @@ export default function EditarPerfilPage() {
       if (datosCambiaron) {
         actualizada = await editarDatos({ nombre: limpiar(formulario.nombre), apellido: limpiar(formulario.apellido) });
       }
+      if (fotoPendiente?.tipo === 'nueva') actualizada = await cambiarFoto(fotoPendiente.foto);
+      if (fotoPendiente?.tipo === 'quitar') actualizada = await quitarFoto();
+      setFotoPendiente(null);
       setCarga({ fase: 'lista', cuenta: actualizada });
       setFormulario({ nombre: actualizada.nombre, apellido: actualizada.apellido });
       actualizarSesion({
@@ -186,6 +244,61 @@ export default function EditarPerfilPage() {
               </p>
             )}
 
+            <section aria-labelledby="titulo-foto-perfil" className="flex flex-col items-center gap-4 rounded-2xl border border-zinc-200 bg-white p-5 text-center sm:flex-row sm:gap-6 sm:p-7 sm:text-left">
+              {fotoMostrada ? (
+                <img src={fotoMostrada} alt="Tu foto de perfil" className="size-28 shrink-0 rounded-full object-cover" />
+              ) : (
+                <AvatarUsuario iniciales={inicialesDe(formulario.nombre, formulario.apellido) || inicialesDe(cuenta.nombre, cuenta.apellido)} clase="size-28 text-4xl" />
+              )}
+              <div className="flex w-full flex-col gap-2.5">
+                <h2 id="titulo-foto-perfil" className="text-lg font-extrabold">Foto de perfil</h2>
+                {errores.foto ? (
+                  <MensajeError id="error-foto" texto={errores.foto} />
+                ) : (
+                  <p className="text-sm text-gray-600">
+                    {fotoPendiente?.tipo === 'nueva' && 'Foto nueva lista: se guarda al pulsar Guardar cambios. '}
+                    {fotoPendiente?.tipo === 'quitar' && 'Se quitará al pulsar Guardar cambios. '}
+                    {!fotoMostrada && !fotoPendiente && 'Aún no tienes foto: se muestran tus iniciales. '}
+                    JPG, PNG o WebP, máximo {FOTO_MAX_MB} MB.
+                  </p>
+                )}
+                <input
+                  ref={selectorArchivo}
+                  type="file"
+                  accept={TIPOS_FOTO.join(',')}
+                  onChange={alElegirArchivo}
+                  className="hidden"
+                  tabIndex={-1}
+                  aria-hidden="true"
+                />
+                <div className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap">
+                  <button
+                    type="button"
+                    onClick={elegirArchivo}
+                    aria-describedby={errores.foto ? 'error-foto' : undefined}
+                    className={`flex h-11 items-center justify-center gap-2 rounded-xl px-4 font-bold ${
+                      fotoMostrada
+                        ? 'border border-violet-300 bg-violet-50 text-violet-700 hover:bg-violet-100'
+                        : 'bg-violet-600 text-white hover:bg-violet-700'
+                    }`}
+                  >
+                    <Camera className="size-[18px]" aria-hidden="true" />
+                    {fotoMostrada ? 'Cambiar foto' : errores.foto ? 'Elegir otra foto' : 'Subir foto'}
+                  </button>
+                  {fotoMostrada && (
+                    <button
+                      type="button"
+                      onClick={quitarLaFoto}
+                      className="flex h-11 items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 font-bold text-red-700 hover:bg-red-50"
+                    >
+                      <Trash2 className="size-[18px]" aria-hidden="true" />
+                      Quitar foto
+                    </button>
+                  )}
+                </div>
+              </div>
+            </section>
+
             <section aria-labelledby="titulo-datos" className="flex flex-col gap-4 rounded-2xl border border-zinc-200 bg-white p-5 sm:p-7">
               <h2 id="titulo-datos" className="text-lg font-extrabold">Tus datos</h2>
               <div className="grid gap-4 sm:grid-cols-2">
@@ -241,6 +354,16 @@ export default function EditarPerfilPage() {
           </form>
         )}
       </main>
+
+      {archivoElegido && (
+        <FotoPerfilModal
+          archivo={archivoElegido}
+          onUsar={usarFoto}
+          onElegirOtra={() => { setArchivoElegido(null); elegirArchivo(); }}
+          onCancelar={() => setArchivoElegido(null)}
+          onError={(mensaje) => { setArchivoElegido(null); setErrores((actuales) => ({ ...actuales, foto: mensaje })); }}
+        />
+      )}
 
       {guardado && (
         <p
