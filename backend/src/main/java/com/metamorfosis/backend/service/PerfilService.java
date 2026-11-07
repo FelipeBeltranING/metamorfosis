@@ -5,6 +5,8 @@ import com.metamorfosis.backend.auditoria.ContextoAuditoria;
 import com.metamorfosis.backend.dto.MetaResponse;
 import com.metamorfosis.backend.dto.PerfilPublicoResponse;
 import com.metamorfosis.backend.dto.PerfilResponse;
+import com.metamorfosis.backend.dto.PrivacidadRequest;
+import com.metamorfosis.backend.dto.PrivacidadResponse;
 import com.metamorfosis.backend.dto.PerfilResponse.InsigniaObtenida;
 import com.metamorfosis.backend.dto.PerfilResponse.ResumenMetas;
 import com.metamorfosis.backend.dto.UsuarioResumenResponse;
@@ -32,6 +34,7 @@ import java.util.Locale;
 /**
  * HU22: arma Mi perfil con los datos del usuario, el resumen de metas, las insignias y las últimas cumplidas.
  * HU24: busca personas y arma el perfil público de otra persona con los mismos bloques.
+ * HU26: perfil privado.
  */
 @Service
 public class PerfilService {
@@ -77,7 +80,8 @@ public class PerfilService {
         ContextoAuditoria.agregar("insignias", insignias.size());
 
         return new PerfilResponse(usuario.getNombre(), usuario.getApellido(), usuario.getEmail(),
-                usuario.getFechaRegistro(), resumen, insignias, insigniaRepository.count(), ultimasCumplidas);
+                usuario.getFechaRegistro(), resumen, insignias, insigniaRepository.count(), ultimasCumplidas,
+                usuario.isPerfilPrivado());
     }
 
     /**
@@ -105,6 +109,14 @@ public class PerfilService {
         Usuario dueno = usuarioRepository.findById(codigoPerfil)
                 .orElseThrow(() -> new UsuarioNoEncontradoException(codigoPerfil));
 
+        // HU26: de un perfil privado solo sale la cabecera; ni se consultan sus metas ni sus insignias.
+        if (dueno.isPerfilPrivado()) {
+            ContextoAuditoria.agregar("privado", true);
+            return new PerfilPublicoResponse(dueno.getCodigoUsuario(), dueno.getNombre(), dueno.getApellido(),
+                    dueno.getFotoPerfil(), dueno.getFechaRegistro(), null, List.of(),
+                    insigniaRepository.count(), List.of(), true);
+        }
+
         List<Meta> visibles = metaRepository.findByParticipante(codigoPerfil).stream()
                 .filter(m -> !m.isOcultaPara(codigoPerfil))
                 .toList();
@@ -115,7 +127,27 @@ public class PerfilService {
 
         return new PerfilPublicoResponse(dueno.getCodigoUsuario(), dueno.getNombre(), dueno.getApellido(),
                 dueno.getFotoPerfil(), dueno.getFechaRegistro(), resumen, insignias,
-                insigniaRepository.count(), ultimasCumplidas(visibles, codigoPerfil));
+                insigniaRepository.count(), ultimasCumplidas(visibles, codigoPerfil), false);
+    }
+
+    /**
+     * HU26: hace privado (true) o público (false) el perfil del usuario. Con el perfil privado, las
+     * demás personas solo ven su foto, su nombre y su fecha de registro (verPerfilPublico).
+     */
+    @Auditar(accion = AccionLog.CAMBIAR_PRIVACIDAD, entidad = EntidadLog.USUARIO)
+    @Transactional
+    public PrivacidadResponse cambiarPrivacidad(PrivacidadRequest solicitud, Integer codigoUsuario) {
+        if (solicitud == null || solicitud.privado() == null) {
+            throw new ValidacionException(List.of("Indica si el perfil queda privado"));
+        }
+        Usuario usuario = usuarioRepository.findById(codigoUsuario)
+                .orElseThrow(() -> new UsuarioNoEncontradoException(codigoUsuario));
+
+        boolean privado = solicitud.privado();
+        ContextoAuditoria.agregar("privado", privado);
+        usuario.setPerfilPrivado(privado);
+        usuarioRepository.save(usuario);
+        return new PrivacidadResponse(privado);
     }
 
     /**

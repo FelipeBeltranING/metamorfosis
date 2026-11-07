@@ -9,8 +9,9 @@ import java.util.List;
 /**
  * HU24: perfil de otra persona. Los mismos bloques de Mi perfil (HU22) sin el correo; el resumen
  * y las últimas cumplidas cuentan solo las metas que el dueño no ocultó (HU25).
+ * HU26: con privado true solo van los datos de la cabecera; el resumen es null y las listas vienen vacías.
  */
 public record PerfilPublicoResponse(Integer codigoUsuario, String nombre, String apellido, String foto,
                                     LocalDate fechaRegistro, ResumenMetas resumen,
                                     List<InsigniaObtenida> insignias, long totalInsignias,
-                                    List<MetaResponse> ultimasCumplidas) { }
+                                    List<MetaResponse> ultimasCumplidas, boolean privado) { }

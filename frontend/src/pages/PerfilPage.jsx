@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import {
-  Award, CalendarDays, ChartColumn, CircleCheck, Mail, PencilLine, Target, TrendingUp,
+  Award, CalendarDays, ChartColumn, CircleCheck, Lock, Mail, PencilLine, Target, TrendingUp,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import Encabezado from '../components/Encabezado';
 import EstadoError from '../components/EstadoError';
 import IconoInsignia from '../components/IconoInsignia';
 import { EtiquetaOculta } from '../components/MetaTarjeta';
+import TarjetaPrivacidad from '../components/TarjetaPrivacidad';
 import { TIPOS } from '../constants/opcionesMeta';
 import { obtenerPerfil } from '../services/perfilService';
 import { formatearFecha } from '../utils/fechas';
@@ -132,6 +133,8 @@ export function ContenidoPerfil({ perfil, publico = false }) {
     return () => window.removeEventListener(EVENTO_CUENTA, alCambiarCuenta);
   }, [publico]);
   const foto = publico ? perfil.foto : fotoCuenta;
+  // HU26: de un perfil privado ajeno solo llega la cabecera.
+  const privadoAjeno = publico && perfil.privado;
 
   return (
     <div className="flex flex-col gap-4">
@@ -174,6 +177,21 @@ export function ContenidoPerfil({ perfil, publico = false }) {
         )}
       </section>
 
+      {/* HU26: interruptor Perfil privado (solo en Mi perfil) */}
+      {!publico && <TarjetaPrivacidad inicial={perfil.perfilPrivado} />}
+
+      {privadoAjeno && (
+        <section aria-label="Perfil privado" className={`${TARJETA} flex flex-col items-center gap-3 text-center`}>
+          <div className="flex size-14 items-center justify-center rounded-2xl bg-violet-50">
+            <Lock className="size-7 text-violet-600" aria-hidden="true" />
+          </div>
+          <p className="text-lg font-bold text-gray-900">Este perfil es privado</p>
+          <p className="text-sm text-gray-600">{`${perfil.nombre} decidió no mostrar sus metas ni sus insignias.`}</p>
+        </section>
+      )}
+
+      {!privadoAjeno && (
+      <>
       {/* 2. Resumen de metas */}
       <section aria-labelledby="perfil-resumen" className={TARJETA}>
         <TituloBloque
@@ -292,6 +310,8 @@ export function ContenidoPerfil({ perfil, publico = false }) {
           </div>
         )}
       </section>
+      </>
+      )}
     </div>
   );
 }
