@@ -1,0 +1,45 @@
+sequenceDiagram
+    autonumber
+    actor U as Usuario
+    participant T as MetaTarjeta (React)
+    participant P as MisMetasPage
+    participant C as ConfirmarCumplidaModal
+    participant MS as metaService.js
+    participant J as JwtAuthFilter
+    participant MC as MetaController
+    participant AA as AuditoriaAspect
+    participant S as MetaService
+    participant I as InsigniaService
+    participant R as MetaRepository
+    participant M as Meta
+    participant DB as PostgreSQL
+    U->>T: Pulsa el círculo de una meta activa
+    T->>P: onMarcarCumplida(meta)
+    P->>C: Abre el diálogo de confirmación
+    U->>C: Confirma "Marcar como cumplida"
+    C->>P: onConfirmar()
+    P->>C: Deshabilita los botones (Marcando...)
+    P->>MS: marcarCumplida(codigoMeta)
+    MS->>J: PATCH /api/metas/{codigoMeta}/cumplida (sin cuerpo)
+    J->>J: Valida token y obtiene codigoUsuario
+    J->>MC: marcarCumplida(codigoMeta, codigoUsuario)
+    MC->>AA: (intercepta @Auditar MARCAR_CUMPLIDA)
+    AA->>S: marcarCumplida(codigoMeta, codigoUsuario)
+    S->>R: findById(codigoMeta)
+    R->>DB: SELECT meta
+    DB-->>R: fila
+    R-->>S: Optional<Meta>
+    S->>S: Comprueba que es el creador y que la meta está ACTIVA
+    S->>M: marcarCumplida(codigoUsuario, hoy)
+    M->>M: estado = CUMPLIDA, participación.fechaCumplida = hoy
+    S->>R: save(meta)
+    R->>DB: UPDATE meta, participacion
+    S->>I: otorgarNuevas(codigoUsuario, hoy)
+    I-->>S: insigniasNuevas (detalle en la HU11)
+    S-->>AA: MetaCumplidaResponse(meta, insigniasNuevas)
+    AA->>DB: INSERT log_actividad (MARCAR_CUMPLIDA, EXITO)
+    AA-->>MC: resultado
+    MC-->>MS: 200 MetaCumplidaResponse
+    MS-->>P: { meta, insigniasNuevas }
+    P->>C: Cierra el diálogo
+    P->>T: Tarjeta "Cumplida" con la fecha y aviso "¡Meta cumplida!"

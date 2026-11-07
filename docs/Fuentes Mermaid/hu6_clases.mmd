@@ -1,0 +1,95 @@
+classDiagram
+    direction TB
+    class MetaController {
+        -MetaService metaService
+        +marcarCumplida(codigoMeta: Integer, codigoUsuario: Integer) ResponseEntity~MetaCumplidaResponse~
+    }
+    class MetaService {
+        -MetaRepository metaRepository
+        -InsigniaService insigniaService
+        +marcarCumplida(codigoMeta: Integer, codigoUsuario: Integer) MetaCumplidaResponse
+    }
+    class InsigniaService {
+        +otorgarNuevas(codigoUsuario: Integer, hoy: LocalDate) List~InsigniaResponse~
+    }
+    class AuditoriaAspect {
+        +auditar(pjp: ProceedingJoinPoint) Object
+    }
+    class AccionLog {
+        <<enumeration>>
+        MARCAR_CUMPLIDA
+    }
+    class MetaRepository {
+        <<interface>>
+        +findById(codigoMeta: Integer) Optional~Meta~
+        +save(meta: Meta) Meta
+    }
+    class ManejadorExcepciones {
+        +validacion(e: ValidacionException) ResponseEntity
+        +metaNoEncontrada(e: MetaNoEncontradaException) ResponseEntity
+        +permisoDenegado(e: PermisoDenegadoException) ResponseEntity
+    }
+    class MetaCumplidaResponse {
+        <<record>>
+        +MetaResponse meta
+        +List~InsigniaResponse~ insigniasNuevas
+    }
+    class MetaResponse {
+        <<record>>
+        +Integer codigoMeta
+        +String nombre
+        +EstadoMeta estado
+        +LocalDate fechaCumplida
+        +desde(meta: Meta)$ MetaResponse
+    }
+    class InsigniaResponse {
+        <<record>>
+        +Integer codigoInsignia
+        +String nombre
+        +String descripcion
+        +String icono
+    }
+    class Meta {
+        -Integer codigoMeta
+        -Usuario creador
+        -String nombre
+        -EstadoMeta estado
+        -List~Participacion~ participaciones
+        +marcarCumplida(codigoUsuario: Integer, fecha: LocalDate) void
+        +getFechaCumplida(codigoUsuario: Integer) LocalDate
+        +getEstado() EstadoMeta
+        +getCreador() Usuario
+    }
+    class Participacion {
+        -ParticipacionId id
+        -EstadoInvitacion estadoInvitacion
+        -LocalDate fechaCumplida
+        +marcarCumplida(fecha: LocalDate) void
+        +getFechaCumplida() LocalDate
+    }
+    class EstadoMeta {
+        <<enumeration>>
+        ACTIVA
+        CUMPLIDA
+    }
+    class Usuario {
+        -Integer codigoUsuario
+        -String nombre
+        -String email
+    }
+    MetaController --> MetaService
+    MetaController ..> MetaCumplidaResponse
+    AuditoriaAspect ..> MetaService : intercepta @Auditar
+    AuditoriaAspect ..> AccionLog
+    MetaService --> MetaRepository
+    MetaService --> InsigniaService
+    MetaService ..> ManejadorExcepciones : lanza excepciones
+    MetaService ..> Meta
+    MetaCumplidaResponse --> MetaResponse
+    MetaCumplidaResponse --> InsigniaResponse
+    MetaResponse ..> Meta
+    MetaRepository ..> Meta
+    Meta "1" *-- "1..*" Participacion
+    Meta "*" --> "1" Usuario : creador
+    Meta --> EstadoMeta
+    Participacion "*" --> "1" Usuario

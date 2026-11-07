@@ -1,0 +1,36 @@
+sequenceDiagram
+    autonumber
+    actor U as Usuario
+    participant F as FiltrosMetas (React)
+    participant P as MisMetasPage
+    participant MS as metaService.js
+    participant J as JwtAuthFilter
+    participant MC as MetaController
+    participant AA as AuditoriaAspect
+    participant S as MetaService
+    participant UR as UsuarioRepository
+    participant R as MetaRepository
+    participant DB as PostgreSQL
+    U->>F: Elige estado, tipo o plazo
+    F->>P: onCambiar(filtros)
+    P->>P: setSearchParams(?estado=&tipo=&plazo=), lista en "cargando"
+    P->>MS: listarMetas({estado, tipo, plazo})
+    MS->>J: GET /api/metas?estado=TODAS&tipo=ACADEMICA&plazo=CORTO
+    J->>J: Valida token y obtiene codigoUsuario
+    J->>MC: listarMetas(estado, tipo, plazo, codigoUsuario)
+    MC->>AA: (intercepta @Auditar LISTAR_METAS)
+    AA->>S: listarMetas(codigoUsuario, estado, tipo, plazo)
+    S->>UR: existsById(codigoUsuario)
+    UR-->>S: true
+    S->>S: estado nulo = ACTIVA, guarda filtros en ContextoAuditoria
+    S->>R: findByParticipante(codigoUsuario)
+    R->>DB: SELECT metas con participación ACEPTADA
+    DB-->>R: filas
+    R-->>S: List<Meta>
+    S->>S: Filtra por estado, tipo y plazo y mapea a MetaResponse (las cumplidas, por fecha de cumplimiento)
+    S-->>AA: List<MetaResponse>
+    AA->>DB: INSERT log_actividad (filtros y cantidad)
+    AA-->>MC: resultado
+    MC-->>MS: 200 [metas]
+    MS-->>P: metas
+    P->>F: "N metas" y tarjetas

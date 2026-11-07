@@ -1,0 +1,45 @@
+DIAGRAMAS CORREGIDOS - Metamorfosis
+La estructura de carpetas es la misma de docs/: copia cada archivo encima del original.
+
+DIAGRAMAS DE CLASES (draw.io)
+- diagrama_clases_HU1: se quita la entidad Registro (tabla eliminada en la V13) y su relación con Meta.
+  MetaResponse: cumplidaHoy -> fechaCumplida. Meta: + getFechaCumplida(codigoUsuario).
+- diagrama_clases_HU2: MetaResponse (cumplidaHoy -> fechaCumplida) y Meta (+ getFechaCumplida).
+- diagrama_clases_HU3: listarMetasActivas -> listarMetas(estado, tipo, plazo, codigoUsuario) con el
+  enum FiltroEstado (HU27); findActivasByParticipante -> findByParticipante; se quita RegistroRepository;
+  MetaResponse sin cumplidaHoy ni desde(m, cumplidaHoy).
+- diagrama_clases_HU4: Registro se reemplaza por SubMeta, que es lo que hoy se borra en cascada
+  con la meta (FK ON DELETE CASCADE).
+- diagrama_clases_HU8: registro autorizado por correo. AuthController con los 6 endpoints,
+  RegistroRequest con token (sin email), SolicitudRegistroService, SolicitudRegistro,
+  SolicitudRegistroRepository, CorreoService / BrevoCorreoService, PlantillaAutorizacion,
+  DTOs (SolicitudRegistroRequest/Response, TokenRequest, EstadoSolicitudResponse + Estado),
+  excepciones (SolicitudInvalida, SolicitudBloqueada, CorreoNoEnviado) y AccionLog
+  (+ SOLICITAR_REGISTRO, RECHAZAR_REGISTRO).
+
+DIAGRAMAS DE SECUENCIA (draw.io, solo caso positivo)
+- diagrama_secuencia_HU1: se quita la línea de vida Registro y el «create» Registro(meta, usuario).
+- diagrama_secuencia_HU3: listarMetas con filtros, findByParticipante, filtro en el servicio,
+  ContextoAuditoria.agregar("filtroEstado"); se quitan RegistroRepository y setMarcadasHoy.
+- diagrama_secuencia_HU8: rehecho con el flujo actual en 3 pasos (pedir con el correo,
+  autorizar desde el enlace, completar los datos y crear la cuenta).
+- diagrama_secuencia_HU10: el cierre empieza en BotonCerrarSesion con confirmación.
+- Diagrama_secuenciaHU21: el modal genera la imagen de la tarjeta y la comparte con
+  navigator.share (antes: texto por WhatsApp).
+
+DIAGRAMAS EN PNG (Mockups por HU)
+- hu6_clases: marcarCumplida devuelve MetaCumplidaResponse; se agregan InsigniaService,
+  MetaCumplidaResponse e InsigniaResponse.
+- hu6, hu7, hu11, hu22 y hu27 _secuencia: quedan solo con el caso positivo (sin alt/opt de errores).
+  hu6 además devuelve MetaCumplidaResponse y llama a InsigniaService; hu27 ordena las cumplidas
+  por fecha de cumplimiento.
+- Las fuentes .mmd están en "Fuentes Mermaid" por si hay que regenerarlos:
+  mmdc -i archivo.mmd -o archivo.png -c config.json -b white -s 2 -w 1600
+
+SE PUEDEN BORRAR DEL REPO
+- diagrama_clases_HU5.drawio, diagrama_clases_HU5(2).drawio, diagrama_secuencia_HU5.drawio,
+  diagrama_secuencia_HU5(2).drawio (la HU5 se retiró).
+- Duplicados viejos con D mayúscula: Diagrama_clasesHU8, Diagrama_clasesHU9, Diagrama_clasesHU10,
+  Diagrama_secuenciaHU8, Diagrama_secuenciaHU9, Diagrama_secuenciaHU10 (las versiones en minúscula
+  son las vigentes).
+- Archivos temporales de draw.io: .$diagrama_clases_HU1.drawio.dtmp y .$...HU3/HU4/HU9.drawio.bkp.
