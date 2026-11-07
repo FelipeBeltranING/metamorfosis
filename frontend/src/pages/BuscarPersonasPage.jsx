@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { ChevronRight, Search, UsersRound } from 'lucide-react';
+import {
+  ChevronRight, Lock, Search, UsersRound,
+} from 'lucide-react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Encabezado from '../components/Encabezado';
 import EstadoError from '../components/EstadoError';
@@ -139,6 +141,13 @@ export default function BuscarPersonasPage() {
                       >
                         <AvatarUsuario foto={persona.foto} iniciales={iniciales(persona.nombre, persona.apellido)} clase="size-12 text-base" />
                         <span className="min-w-0 flex-1 truncate text-base font-semibold text-gray-900">{nombreCompleto}</span>
+                        {/* HU26 */}
+                        {persona.privado && (
+                          <span className="flex shrink-0 items-center gap-1.5 rounded-lg bg-slate-100 px-2.5 py-1 text-sm font-semibold text-gray-700">
+                            <Lock className="size-4" aria-hidden="true" />
+                            Perfil privado
+                          </span>
+                        )}
                         <span className="sr-only">Ver perfil</span>
                         <ChevronRight className="size-5 shrink-0 text-gray-400" aria-hidden="true" />
                       </Link>
