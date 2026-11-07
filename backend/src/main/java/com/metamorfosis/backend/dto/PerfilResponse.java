@@ -9,10 +9,12 @@ import java.util.List;
  * HU22: lo que muestra Mi perfil. Los datos personales, el resumen de metas (el mismo cálculo
  * del reporte, HU7), las insignias ganadas (HU11) y las últimas metas cumplidas (máximo tres).
  * totalInsignias es el tamaño del catálogo, para mostrar "N de 6 insignias".
+ * HU26: perfilPrivado es el valor del interruptor Perfil privado.
  */
 public record PerfilResponse(String nombre, String apellido, String email, LocalDate fechaRegistro,
                              ResumenMetas resumen, List<InsigniaObtenida> insignias,
-                             long totalInsignias, List<MetaResponse> ultimasCumplidas) {
+                             long totalInsignias, List<MetaResponse> ultimasCumplidas,
+                             boolean perfilPrivado) {
 
     /** Conteo de las metas en las que el usuario participa con invitación aceptada. */
     public record ResumenMetas(long totalMetas, long metasActivas, long metasCumplidas,

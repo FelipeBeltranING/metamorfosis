@@ -64,6 +64,8 @@ public class Usuario {
     public String getFotoPerfil() { return fotoPerfil; }
     public void setFotoPerfil(String fotoPerfil) { this.fotoPerfil = fotoPerfil; }
     public Boolean getPerfilPrivado() { return perfilPrivado; }
+    /** HU26: el perfil es privado (null cuenta como público). */
+    public boolean isPerfilPrivado() { return Boolean.TRUE.equals(perfilPrivado); }
     public void setPerfilPrivado(Boolean perfilPrivado) { this.perfilPrivado = perfilPrivado; }
     public LocalDate getFechaRegistro() { return fechaRegistro; }
     public void setFechaRegistro(LocalDate fechaRegistro) { this.fechaRegistro = fechaRegistro; }
