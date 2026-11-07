@@ -7,6 +7,7 @@ import com.metamorfosis.backend.dto.FiltroEstado;
 import com.metamorfosis.backend.dto.InsigniaResponse;
 import com.metamorfosis.backend.dto.MetaCumplidaResponse;
 import com.metamorfosis.backend.dto.MetaResponse;
+import com.metamorfosis.backend.dto.VisibilidadRequest;
 import com.metamorfosis.backend.exception.UsuarioNoEncontradoException;
 import com.metamorfosis.backend.exception.ValidacionException;
 import com.metamorfosis.backend.model.Meta;
@@ -81,7 +82,7 @@ public class MetaService {
                 .filter(m -> filtroEstado.incluye(m.getEstado()))
                 .filter(m -> tipo == null || m.getTipo() == tipo)
                 .filter(m -> plazo == null || m.getPlazo() == plazo)
-                .map(MetaResponse::desde)
+                .map(m -> MetaResponse.desde(m, codigoUsuario)) // HU25: con su marca de oculta
                 .toList();
         // Las cumplidas (antes en Mis logros) van de la cumplida más recientemente a la más antigua.
         // El orden es estable, así a igual fecha se mantiene el de creación.
@@ -163,6 +164,31 @@ public class MetaService {
             ContextoAuditoria.agregar("insigniasNuevas", nuevas.stream().map(InsigniaResponse::nombre).toList());
         }
         return new MetaCumplidaResponse(respuesta, nuevas);
+    }
+
+    /**
+     * HU25: oculta o vuelve a mostrar la meta en el perfil del usuario. Puede hacerlo cualquier
+     * participante con la invitación aceptada, y solo cambia su propia participación. No toca el
+     * estado, las fechas ni las insignias; ocultar una meta ya oculta la deja igual.
+     */
+    @Auditar(accion = AccionLog.CAMBIAR_VISIBILIDAD, entidad = EntidadLog.META)
+    @Transactional
+    public MetaResponse cambiarVisibilidad(Integer codigoMeta, VisibilidadRequest solicitud,
+                                           Integer codigoUsuario) {
+        if (solicitud == null || solicitud.oculta() == null) {
+            throw new ValidacionException(List.of("Indica si la meta queda oculta"));
+        }
+        Meta meta = metaRepository.findById(codigoMeta)
+                .orElseThrow(() -> new MetaNoEncontradaException(codigoMeta));
+
+        if (!meta.participaAceptado(codigoUsuario)) {
+            throw new PermisoDenegadoException("Solo los participantes de la meta pueden ocultarla");
+        }
+
+        boolean oculta = solicitud.oculta();
+        ContextoAuditoria.agregar("oculta", oculta);
+        meta.cambiarVisibilidad(codigoUsuario, oculta);
+        return MetaResponse.desde(metaRepository.save(meta), codigoUsuario);
     }
 
     private void validar(CrearMetaRequest s) {

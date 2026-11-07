@@ -65,7 +65,7 @@ public class PerfilService {
         // 2. Últimas cumplidas: máximo tres, de la más reciente a la más antigua.
         List<MetaResponse> ultimasCumplidas = metas.stream()
                 .filter(m -> m.getEstado() == EstadoMeta.CUMPLIDA)
-                .map(MetaResponse::desde)
+                .map(m -> MetaResponse.desde(m, codigoUsuario)) // HU25: con su marca de oculta
                 .sorted(MAS_RECIENTE_PRIMERO)
                 .limit(ULTIMAS_CUMPLIDAS)
                 .toList();
