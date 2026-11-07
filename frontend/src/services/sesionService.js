@@ -1,3 +1,5 @@
+import { reiniciarApariencia } from '../tema/apariencia';
+
 const CLAVE_SESION = 'metamorfosis.sesion';
 
 /** Contenido (claims) del JWT, o null si no se puede leer. No verifica la firma: eso lo hace el servidor. */
@@ -50,6 +52,7 @@ export function cerrarSesion() {
   } catch {
     // Sin acceso al almacenamiento: no hay nada que borrar.
   }
+  reiniciarApariencia(); // HU19
 }
 
 /** Sesión vigente o null. Si el token ya expiró, la borra. */

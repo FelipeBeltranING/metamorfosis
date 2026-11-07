@@ -35,6 +35,34 @@ export function aplicarApariencia({ modo, acento }, guardar = false) {
   window.dispatchEvent(new Event('metamorfosis:apariencia'));
 }
 
+/** Apariencia que llega del servidor ({ modo: 'OSCURO', acento: 'AZUL' }), o la de siempre. */
+export function desdeServidor(apariencia) {
+  if (!apariencia?.modo || !apariencia?.acento) return POR_DEFECTO;
+  return { modo: apariencia.modo.toLowerCase(), acento: apariencia.acento.toLowerCase() };
+}
+
+export function haciaServidor({ modo, acento }) {
+  return { modo: modo.toUpperCase(), acento: acento.toUpperCase() };
+}
+
+export function mismaApariencia(a, b) {
+  return a.modo === b.modo && a.acento === b.acento;
+}
+
+/** Al cerrar sesión: quien entre después en este navegador empieza con la apariencia de siempre. */
+export function reiniciarApariencia() {
+  try { localStorage.removeItem(CLAVE); } catch { /* sin almacenamiento */ }
+  aplicarApariencia(POR_DEFECTO);
+}
+
+/** En modo automático, sigue al dispositivo si cambia de claro a oscuro mientras la app está abierta. */
+export function seguirAlDispositivo() {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    const actual = leerApariencia();
+    if (actual.modo === 'automatico') aplicarApariencia(actual);
+  });
+}
+
 export function temaDe({ modo, acento }) {
   return TEMAS.find((t) => t.modo === modo && t.acento === acento)?.valor ?? null;
 }
