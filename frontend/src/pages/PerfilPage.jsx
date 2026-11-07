@@ -48,7 +48,7 @@ function Cifra({
   );
 }
 
-function Esqueleto() {
+export function EsqueletoPerfil() {
   return (
     <div className="flex animate-pulse flex-col gap-4" aria-hidden="true">
       <div className={`${TARJETA} flex items-center gap-4`}>
@@ -97,7 +97,7 @@ export default function PerfilPage() {
       <main className="mx-auto w-full max-w-[860px] px-4 pb-16 pt-6 sm:pt-12" aria-busy={estado.fase === 'cargando'}>
         <h1 className="mb-6 text-2xl font-bold sm:text-3xl">Mi perfil</h1>
 
-        {estado.fase === 'cargando' && <Esqueleto />}
+        {estado.fase === 'cargando' && <EsqueletoPerfil />}
 
         {estado.fase === 'error' && (
           <EstadoError
@@ -116,16 +116,22 @@ export default function PerfilPage() {
   );
 }
 
-function ContenidoPerfil({ perfil }) {
+/**
+ * Bloques del perfil. HU24: con `publico` es el perfil de otra persona: sin correo, sin Editar
+ * perfil, sin enlaces a pantallas propias y con los textos en tercera persona.
+ */
+export function ContenidoPerfil({ perfil, publico = false }) {
   const { resumen, insignias, ultimasCumplidas } = perfil;
   const nombreCompleto = [perfil.nombre, perfil.apellido].filter(Boolean).join(' ');
-  // HU-23: la foto viene de la cuenta (la sincroniza el encabezado) y se actualiza al editarla.
-  const [foto, setFoto] = useState(() => datosPerfil(obtenerSesion())?.foto ?? null);
+  // HU-23: la foto propia viene de la cuenta (la sincroniza el encabezado) y se actualiza al editarla.
+  const [fotoCuenta, setFotoCuenta] = useState(() => datosPerfil(obtenerSesion())?.foto ?? null);
   useEffect(() => {
-    const alCambiarCuenta = () => setFoto(datosPerfil(obtenerSesion())?.foto ?? null);
+    if (publico) return undefined;
+    const alCambiarCuenta = () => setFotoCuenta(datosPerfil(obtenerSesion())?.foto ?? null);
     window.addEventListener(EVENTO_CUENTA, alCambiarCuenta);
     return () => window.removeEventListener(EVENTO_CUENTA, alCambiarCuenta);
-  }, []);
+  }, [publico]);
+  const foto = publico ? perfil.foto : fotoCuenta;
 
   return (
     <div className="flex flex-col gap-4">
@@ -143,10 +149,12 @@ function ContenidoPerfil({ perfil }) {
         )}
         <div className="flex min-w-0 flex-col gap-1">
           <p className="truncate text-xl font-bold text-gray-900 sm:text-2xl">{nombreCompleto}</p>
-          <p className="flex items-center justify-center gap-2 text-sm text-gray-600 sm:justify-start">
-            <Mail className="size-4 shrink-0 text-gray-400" aria-hidden="true" />
-            <span className="truncate">{perfil.email}</span>
-          </p>
+          {!publico && (
+            <p className="flex items-center justify-center gap-2 text-sm text-gray-600 sm:justify-start">
+              <Mail className="size-4 shrink-0 text-gray-400" aria-hidden="true" />
+              <span className="truncate">{perfil.email}</span>
+            </p>
+          )}
           {perfil.fechaRegistro && (
             <p className="flex items-center justify-center gap-2 text-sm text-gray-600 sm:justify-start">
               <CalendarDays className="size-4 shrink-0 text-gray-400" aria-hidden="true" />
@@ -155,13 +163,15 @@ function ContenidoPerfil({ perfil }) {
           )}
         </div>
         {/* HU-23 */}
-        <Link
-          to="/perfil/editar"
-          className="flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-violet-300 bg-violet-50 px-4 text-[15px] font-bold text-violet-700 hover:bg-violet-100 sm:ml-auto"
-        >
-          <PencilLine className="size-[18px]" aria-hidden="true" />
-          Editar perfil
-        </Link>
+        {!publico && (
+          <Link
+            to="/perfil/editar"
+            className="flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-violet-300 bg-violet-50 px-4 text-[15px] font-bold text-violet-700 hover:bg-violet-100 sm:ml-auto"
+          >
+            <PencilLine className="size-[18px]" aria-hidden="true" />
+            Editar perfil
+          </Link>
+        )}
       </section>
 
       {/* 2. Resumen de metas */}
@@ -169,7 +179,7 @@ function ContenidoPerfil({ perfil }) {
         <TituloBloque
           id="perfil-resumen"
           titulo="Resumen de metas"
-          enlace={<Link to="/reporte" className={ENLACE}>Ver mi reporte</Link>}
+          enlace={publico ? null : <Link to="/reporte" className={ENLACE}>Ver mi reporte</Link>}
         />
         <div className="grid gap-3 sm:grid-cols-3">
           <Cifra Icono={Target} valor={resumen.metasActivas} etiqueta="Metas activas" />
@@ -182,19 +192,23 @@ function ContenidoPerfil({ perfil }) {
       <section aria-labelledby="perfil-insignias" className={TARJETA}>
         <TituloBloque
           id="perfil-insignias"
-          titulo="Mis insignias"
+          titulo={publico ? 'Insignias' : 'Mis insignias'}
           detalle={`${insignias.length} de ${perfil.totalInsignias} insignias`}
-          enlace={<Link to="/insignias" className={ENLACE}>Ver galería</Link>}
+          enlace={publico ? null : <Link to="/insignias" className={ENLACE}>Ver galería</Link>}
         />
         {insignias.length === 0 ? (
           <div className="flex items-center gap-4 rounded-xl bg-slate-50 p-4">
             <Award className="size-8 shrink-0 text-gray-300" aria-hidden="true" />
-            <p className="text-sm text-gray-600">
-              Aún no tienes insignias. Cumple tu primera meta para ganar
-              {' '}
-              <strong className="font-semibold text-gray-800">Primer paso</strong>
-              .
-            </p>
+            {publico ? (
+              <p className="text-sm text-gray-600">Aún no tiene insignias.</p>
+            ) : (
+              <p className="text-sm text-gray-600">
+                Aún no tienes insignias. Cumple tu primera meta para ganar
+                {' '}
+                <strong className="font-semibold text-gray-800">Primer paso</strong>
+                .
+              </p>
+            )}
           </div>
         ) : (
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -220,7 +234,7 @@ function ContenidoPerfil({ perfil }) {
         <TituloBloque
           id="perfil-cumplidas"
           titulo="Últimas metas cumplidas"
-          enlace={resumen.metasCumplidas > 0
+          enlace={!publico && resumen.metasCumplidas > 0
             ? <Link to="/metas?estado=CUMPLIDA" className={ENLACE}>Ver todas</Link>
             : null}
         />
@@ -234,12 +248,17 @@ function ContenidoPerfil({ perfil }) {
                     <tipo.Icono className="size-5 text-emerald-600" aria-hidden="true" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <Link
-                      to={`/metas/${meta.codigoMeta}`}
-                      className="block truncate rounded-md text-[15px] font-semibold text-gray-900 hover:text-violet-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
-                    >
-                      {meta.nombre}
-                    </Link>
+                    {/* HU24: el camino de una meta ajena no se puede abrir, así que no es enlace. */}
+                    {publico ? (
+                      <p className="truncate text-[15px] font-semibold text-gray-900">{meta.nombre}</p>
+                    ) : (
+                      <Link
+                        to={`/metas/${meta.codigoMeta}`}
+                        className="block truncate rounded-md text-[15px] font-semibold text-gray-900 hover:text-violet-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
+                      >
+                        {meta.nombre}
+                      </Link>
+                    )}
                     <p className="text-sm text-gray-500">
                       {`${tipo.etiqueta} · Cumplida el ${formatearFecha(meta.fechaCumplida)}`}
                     </p>
@@ -252,10 +271,13 @@ function ContenidoPerfil({ perfil }) {
             })}
           </ul>
         )}
-        {ultimasCumplidas.length === 0 && resumen.totalMetas > 0 && (
+        {publico && ultimasCumplidas.length === 0 && (
+          <p className="text-sm text-gray-600">Todavía no tiene metas cumplidas para mostrar.</p>
+        )}
+        {!publico && ultimasCumplidas.length === 0 && resumen.totalMetas > 0 && (
           <p className="text-sm text-gray-600">Aún no has cumplido metas. ¡La primera está cerca!</p>
         )}
-        {resumen.totalMetas === 0 && (
+        {!publico && resumen.totalMetas === 0 && (
           <div className="flex flex-col items-center gap-4 py-4 text-center">
             <div className="flex size-14 items-center justify-center rounded-2xl bg-violet-50">
               <ChartColumn className="size-7 text-violet-600" aria-hidden="true" />

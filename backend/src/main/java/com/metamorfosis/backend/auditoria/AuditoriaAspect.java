@@ -106,7 +106,9 @@ public Object auditar(ProceedingJoinPoint pjp) throws Throwable {
             return parametroEntero(pjp, "codigoSubMeta");
         }
         if (entidad == EntidadLog.USUARIO) {
-            return parametroEntero(pjp, "codigoUsuario");   // HU22: el perfil consultado es el del usuario
+            // HU24: el perfil de otra persona llega como codigoPerfil; si no, es el del propio usuario (HU22)
+            Integer perfil = parametroEntero(pjp, "codigoPerfil");
+            return perfil != null ? perfil : parametroEntero(pjp, "codigoUsuario");
         }
         return null;
     }

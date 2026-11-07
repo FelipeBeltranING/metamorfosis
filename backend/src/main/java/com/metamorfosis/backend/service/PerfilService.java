@@ -3,10 +3,13 @@ package com.metamorfosis.backend.service;
 import com.metamorfosis.backend.auditoria.Auditar;
 import com.metamorfosis.backend.auditoria.ContextoAuditoria;
 import com.metamorfosis.backend.dto.MetaResponse;
+import com.metamorfosis.backend.dto.PerfilPublicoResponse;
 import com.metamorfosis.backend.dto.PerfilResponse;
 import com.metamorfosis.backend.dto.PerfilResponse.InsigniaObtenida;
 import com.metamorfosis.backend.dto.PerfilResponse.ResumenMetas;
+import com.metamorfosis.backend.dto.UsuarioResumenResponse;
 import com.metamorfosis.backend.exception.UsuarioNoEncontradoException;
+import com.metamorfosis.backend.exception.ValidacionException;
 import com.metamorfosis.backend.model.AccionLog;
 import com.metamorfosis.backend.model.EntidadLog;
 import com.metamorfosis.backend.model.EstadoMeta;
@@ -16,18 +19,26 @@ import com.metamorfosis.backend.repository.InsigniaRepository;
 import com.metamorfosis.backend.repository.MetaRepository;
 import com.metamorfosis.backend.repository.UsuarioInsigniaRepository;
 import com.metamorfosis.backend.repository.UsuarioRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
-/** HU22: arma Mi perfil con los datos del usuario, el resumen de metas, las insignias y las últimas cumplidas. */
+/**
+ * HU22: arma Mi perfil con los datos del usuario, el resumen de metas, las insignias y las últimas cumplidas.
+ * HU24: busca personas y arma el perfil público de otra persona con los mismos bloques.
+ */
 @Service
 public class PerfilService {
 
     static final int ULTIMAS_CUMPLIDAS = 3;
+    static final int MAXIMO_RESULTADOS = 20;   // HU24
+    static final int MINIMO_LETRAS = 2;        // HU24
 
     /** De la cumplida más reciente a la más antigua; si dos tienen la misma fecha, la de código mayor primero. */
     private static final Comparator<MetaResponse> MAS_RECIENTE_PRIMERO = Comparator
@@ -55,31 +66,96 @@ public class PerfilService {
         Usuario usuario = usuarioRepository.findById(codigoUsuario)
                 .orElseThrow(() -> new UsuarioNoEncontradoException(codigoUsuario));
 
-        // 1. Resumen: las metas en las que participa con invitación aceptada (igual que el reporte, HU7).
+        // Las metas en las que participa con invitación aceptada (igual que el reporte, HU7).
         List<Meta> metas = metaRepository.findByParticipante(codigoUsuario);
-        long total = metas.size();
-        long cumplidas = metas.stream().filter(m -> m.getEstado() == EstadoMeta.CUMPLIDA).count();
-        ResumenMetas resumen = new ResumenMetas(total, total - cumplidas, cumplidas,
-                ReporteService.porcentaje(cumplidas, total));
+        ResumenMetas resumen = resumen(metas);
+        List<MetaResponse> ultimasCumplidas = ultimasCumplidas(metas, codigoUsuario);
+        List<InsigniaObtenida> insignias = insignias(codigoUsuario);
 
-        // 2. Últimas cumplidas: máximo tres, de la más reciente a la más antigua.
-        List<MetaResponse> ultimasCumplidas = metas.stream()
-                .filter(m -> m.getEstado() == EstadoMeta.CUMPLIDA)
-                .map(m -> MetaResponse.desde(m, codigoUsuario)) // HU25: con su marca de oculta
-                .sorted(MAS_RECIENTE_PRIMERO)
-                .limit(ULTIMAS_CUMPLIDAS)
-                .toList();
-
-        // 3. Insignias ganadas (HU11), en el orden de la consulta: la más reciente primero.
-        List<InsigniaObtenida> insignias = usuarioInsigniaRepository.insigniasDelUsuario(codigoUsuario).stream()
-                .map(InsigniaObtenida::desde)
-                .toList();
-
-        ContextoAuditoria.agregar("totalMetas", total);
-        ContextoAuditoria.agregar("metasCumplidas", cumplidas);
+        ContextoAuditoria.agregar("totalMetas", resumen.totalMetas());
+        ContextoAuditoria.agregar("metasCumplidas", resumen.metasCumplidas());
         ContextoAuditoria.agregar("insignias", insignias.size());
 
         return new PerfilResponse(usuario.getNombre(), usuario.getApellido(), usuario.getEmail(),
                 usuario.getFechaRegistro(), resumen, insignias, insigniaRepository.count(), ultimasCumplidas);
+    }
+
+    /**
+     * HU24: busca personas por nombre o apellido, sin distinguir mayúsculas ni tildes. Pide al
+     * menos dos letras, no incluye a quien busca y devuelve máximo 20 personas ordenadas por nombre.
+     */
+    @Auditar(accion = AccionLog.BUSCAR_USUARIOS, entidad = EntidadLog.USUARIO)
+    @Transactional(readOnly = true)
+    public List<UsuarioResumenResponse> buscarUsuarios(String nombre, Integer codigoUsuario) {
+        String patron = patronDeBusqueda(nombre);
+        ContextoAuditoria.agregar("busqueda", patron.substring(1, patron.length() - 1));
+        return usuarioRepository.buscarPorNombre(codigoUsuario, patron, PageRequest.of(0, MAXIMO_RESULTADOS))
+                .stream()
+                .map(UsuarioResumenResponse::desde)
+                .toList();
+    }
+
+    /**
+     * HU24: perfil público de otra persona. Los mismos bloques de Mi perfil, sin el correo y
+     * contando solo las metas que el dueño no ocultó (HU25). El perfil privado es la HU26.
+     */
+    @Auditar(accion = AccionLog.VER_PERFIL_PUBLICO, entidad = EntidadLog.USUARIO)
+    @Transactional(readOnly = true)
+    public PerfilPublicoResponse verPerfilPublico(Integer codigoPerfil, Integer codigoUsuario) {
+        Usuario dueno = usuarioRepository.findById(codigoPerfil)
+                .orElseThrow(() -> new UsuarioNoEncontradoException(codigoPerfil));
+
+        List<Meta> visibles = metaRepository.findByParticipante(codigoPerfil).stream()
+                .filter(m -> !m.isOcultaPara(codigoPerfil))
+                .toList();
+        ResumenMetas resumen = resumen(visibles);
+        List<InsigniaObtenida> insignias = insignias(codigoPerfil);
+
+        ContextoAuditoria.agregar("metasVisibles", resumen.totalMetas());
+
+        return new PerfilPublicoResponse(dueno.getCodigoUsuario(), dueno.getNombre(), dueno.getApellido(),
+                dueno.getFotoPerfil(), dueno.getFechaRegistro(), resumen, insignias,
+                insigniaRepository.count(), ultimasCumplidas(visibles, codigoPerfil));
+    }
+
+    /**
+     * HU24: arma el patrón LIKE de la búsqueda: sin espacios de más, en minúsculas, sin tildes
+     * (la consulta quita las tildes del nombre con translate) y sin los comodines % y _.
+     */
+    static String patronDeBusqueda(String nombre) {
+        String texto = nombre == null ? "" : Normalizer.normalize(nombre, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .replaceAll("[%_\\\\]", "")
+                .trim()
+                .replaceAll("\\s+", " ")
+                .toLowerCase(Locale.ROOT);
+        if (texto.length() < MINIMO_LETRAS) {
+            throw new ValidacionException(List.of("Escribe al menos 2 letras para buscar"));
+        }
+        return "%" + texto + "%";
+    }
+
+    /** Activas, cumplidas y porcentaje (el mismo cálculo del reporte, HU7). */
+    private static ResumenMetas resumen(List<Meta> metas) {
+        long total = metas.size();
+        long cumplidas = metas.stream().filter(m -> m.getEstado() == EstadoMeta.CUMPLIDA).count();
+        return new ResumenMetas(total, total - cumplidas, cumplidas, ReporteService.porcentaje(cumplidas, total));
+    }
+
+    /** Las tres cumplidas más recientes, vistas por ese usuario (HU25: con su marca de oculta). */
+    private static List<MetaResponse> ultimasCumplidas(List<Meta> metas, Integer codigoUsuario) {
+        return metas.stream()
+                .filter(m -> m.getEstado() == EstadoMeta.CUMPLIDA)
+                .map(m -> MetaResponse.desde(m, codigoUsuario))
+                .sorted(MAS_RECIENTE_PRIMERO)
+                .limit(ULTIMAS_CUMPLIDAS)
+                .toList();
+    }
+
+    /** Insignias ganadas (HU11), en el orden de la consulta: la más reciente primero. */
+    private List<InsigniaObtenida> insignias(Integer codigoUsuario) {
+        return usuarioInsigniaRepository.insigniasDelUsuario(codigoUsuario).stream()
+                .map(InsigniaObtenida::desde)
+                .toList();
     }
 }

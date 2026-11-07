@@ -26,3 +26,28 @@ export async function obtenerPerfil() {
   }
   return datos;
 }
+
+/**
+ * HU24: perfil público de otra persona (sin correo; solo sus metas visibles). Lanza Error con
+ * `estado` (404 si no existe); sin `estado` = sin conexión.
+ */
+export async function obtenerPerfilPublico(codigoUsuario) {
+  const encabezados = cabeceras();
+  let respuesta;
+  try {
+    respuesta = await fetch(`${API_URL}/api/usuarios/${codigoUsuario}/perfil`, { headers: encabezados });
+  } catch {
+    throw new Error('No se pudo conectar con el servidor');
+  }
+  if (respuesta.status === 401) throw errorSesionExpirada();
+  const datos = await respuesta.json().catch(() => null);
+  if (!respuesta.ok) {
+    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    error.estado = respuesta.status;
+    throw error;
+  }
+  if (!datos || !datos.resumen || !Array.isArray(datos.insignias)) {
+    throw new Error('Respuesta inesperada del servidor');
+  }
+  return datos;
+}
