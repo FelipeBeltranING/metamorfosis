@@ -4,6 +4,7 @@ import com.metamorfosis.backend.dto.CrearMetaRequest;
 import com.metamorfosis.backend.dto.FiltroEstado;
 import com.metamorfosis.backend.dto.MetaCumplidaResponse;
 import com.metamorfosis.backend.dto.MetaResponse;
+import com.metamorfosis.backend.dto.VisibilidadRequest;
 import com.metamorfosis.backend.model.Plazo;
 import com.metamorfosis.backend.model.TipoMeta;
 import com.metamorfosis.backend.service.MetaService;
@@ -76,5 +77,16 @@ public class MetaController {
     public ResponseEntity<MetaCumplidaResponse> marcarCumplida(@PathVariable Integer codigoMeta,
                                                        @AuthenticationPrincipal Integer codigoUsuario) {
         return ResponseEntity.ok(metaService.marcarCumplida(codigoMeta, codigoUsuario));
+    }
+
+    /**
+     * HU25: oculta ({"oculta": true}) o vuelve a mostrar ({"oculta": false}) la meta en el perfil
+     * del usuario. Cada participante decide en su propio perfil.
+     */
+    @PatchMapping("/{codigoMeta}/visibilidad")
+    public ResponseEntity<MetaResponse> cambiarVisibilidad(@PathVariable Integer codigoMeta,
+                                                           @RequestBody VisibilidadRequest solicitud,
+                                                           @AuthenticationPrincipal Integer codigoUsuario) {
+        return ResponseEntity.ok(metaService.cambiarVisibilidad(codigoMeta, solicitud, codigoUsuario));
     }
 }

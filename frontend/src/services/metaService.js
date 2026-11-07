@@ -143,3 +143,31 @@ export async function marcarCumplida(codigoMeta) {
   if (!datos?.meta) throw new Error('Respuesta inesperada del servidor');
   return { meta: datos.meta, insigniasNuevas: datos.insigniasNuevas ?? [] };
 }
+
+/**
+ * HU25: oculta (true) o vuelve a mostrar (false) la meta en el perfil del usuario. Devuelve la
+ * meta actualizada. Lanza Error con `mensaje` y `estado` (código HTTP); sin `estado` = sin conexión.
+ */
+export async function cambiarVisibilidad(codigoMeta, oculta) {
+  const encabezados = cabeceras({ 'Content-Type': 'application/json' });
+  let respuesta;
+  try {
+    respuesta = await fetch(`${API_URL}/api/metas/${codigoMeta}/visibilidad`, {
+      method: 'PATCH',
+      headers: encabezados,
+      body: JSON.stringify({ oculta }),
+    });
+  } catch {
+    throw new Error('No pudimos cambiar la visibilidad de la meta. Inténtalo de nuevo.');
+  }
+
+  if (respuesta.status === 401) throw errorSesionExpirada();
+  const datos = await respuesta.json().catch(() => null);
+  if (!respuesta.ok) {
+    const error = new Error(datos?.errores?.[0] ?? datos?.mensaje ?? 'Error inesperado');
+    error.estado = respuesta.status;
+    throw error;
+  }
+  if (!datos?.codigoMeta) throw new Error('Respuesta inesperada del servidor');
+  return datos;
+}

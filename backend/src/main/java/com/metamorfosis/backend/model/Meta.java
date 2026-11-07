@@ -34,9 +34,6 @@ public class Meta {
     @Column(nullable = false, length = 10)
     private EstadoMeta estado = EstadoMeta.ACTIVA;
 
-    @Column(nullable = false)
-    private boolean oculta = false;
-
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDate fechaCreacion;
 
@@ -55,12 +52,11 @@ public class Meta {
     public void crear(Usuario creador) {
         this.creador = creador;
         this.estado = EstadoMeta.ACTIVA;
-        this.oculta = false;
         this.fechaCreacion = LocalDate.now();
         this.participaciones.add(new Participacion(creador, this, EstadoInvitacion.ACEPTADA));
     }
 
-    /** HU2: actualiza los datos editables. No cambia estado, visibilidad ni creador. */
+    /** HU2: actualiza los datos editables. No cambia estado, visibilidad (HU25) ni creador. */
     public void editar(String nombre, Plazo plazo, TipoMeta tipo) {
         this.nombre = nombre;
         this.plazo = plazo;
@@ -78,6 +74,26 @@ public class Meta {
         return participacionDe(codigoUsuario).map(Participacion::getFechaCumplida).orElse(null);
     }
 
+    /** HU25: el usuario participa en la meta con la invitación aceptada (el creador siempre). */
+    public boolean participaAceptado(Integer codigoUsuario) {
+        return participacionDe(codigoUsuario)
+                .filter(p -> p.getEstadoInvitacion() == EstadoInvitacion.ACEPTADA)
+                .isPresent();
+    }
+
+    /**
+     * HU25: oculta o muestra la meta en el perfil del usuario. La marca vive en su participación,
+     * así que en una meta compartida no cambia lo que ven los demás participantes.
+     */
+    public void cambiarVisibilidad(Integer codigoUsuario, boolean oculta) {
+        participacionDe(codigoUsuario).ifPresent(p -> p.cambiarVisibilidad(oculta));
+    }
+
+    /** HU25: la meta está oculta en el perfil de ese usuario. */
+    public boolean isOcultaPara(Integer codigoUsuario) {
+        return participacionDe(codigoUsuario).map(Participacion::isOculta).orElse(false);
+    }
+
     private Optional<Participacion> participacionDe(Integer codigoUsuario) {
         return participaciones.stream()
                 .filter(p -> p.getUsuario().getCodigoUsuario().equals(codigoUsuario))
@@ -90,6 +106,5 @@ public class Meta {
     public Plazo getPlazo() { return plazo; }
     public TipoMeta getTipo() { return tipo; }
     public EstadoMeta getEstado() { return estado; }
-    public boolean isOculta() { return oculta; }
     public LocalDate getFechaCreacion() { return fechaCreacion; }
 }

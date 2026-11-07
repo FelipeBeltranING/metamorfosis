@@ -1,4 +1,6 @@
-import { Check, Clock, Share2 } from 'lucide-react';
+import {
+  Check, Clock, EyeOff, Share2,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MenuTarjeta from './MenuTarjeta';
 import AnilloConstancia from './AnilloConstancia';
@@ -64,8 +66,21 @@ function valorHoy({ subMeta, dia }) {
   return `${formatearNumero(dia.valor)} / ${formatearNumero(subMeta.objetivo)} ${subMeta.unidad}`;
 }
 
+/** HU25: la meta no se muestra en el perfil público del usuario. El texto lo lee el lector de pantalla. */
+export function EtiquetaOculta({ className = '' }) {
+  return (
+    <span
+      title="No se muestra en tu perfil público"
+      className={`flex items-center gap-1.5 rounded-xl bg-slate-100 px-3 py-2 text-sm font-bold text-gray-700 ${className}`}
+    >
+      <EyeOff className="size-4" aria-hidden="true" />
+      Oculta
+    </span>
+  );
+}
+
 export default function MetaTarjeta({
-  meta, resumen, onMarcarCumplida, onEditar, onEliminar, onCompartir,
+  meta, resumen, onMarcarCumplida, onEditar, onCambiarVisibilidad, onEliminar, onCompartir,
 }) {
   const tipo = TIPO_POR_VALOR[meta.tipo] ?? TIPO_POR_VALOR.OTRO;
   const plazo = PLAZO_POR_VALOR[meta.plazo];
@@ -80,7 +95,8 @@ export default function MetaTarjeta({
         <div className="flex size-12 items-center justify-center rounded-xl bg-violet-50">
           <tipo.Icono className="size-6 text-violet-600" aria-hidden="true" />
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          {meta.oculta && <EtiquetaOculta />}
           {cumplida ? (
             <span className="rounded-xl bg-violet-600 px-3 py-2 text-sm font-bold text-white">Cumplida</span>
           ) : (
@@ -96,11 +112,13 @@ export default function MetaTarjeta({
               onClick={() => onMarcarCumplida(meta)}
             />
           )}
-          {(onEditar || onEliminar) && (
+          {(onEditar || onCambiarVisibilidad || onEliminar) && (
             <MenuTarjeta
               nombre={meta.nombre}
               onEditar={onEditar && (() => onEditar(meta))}
               editarBloqueado={cumplida}
+              oculta={meta.oculta}
+              onCambiarVisibilidad={onCambiarVisibilidad && (() => onCambiarVisibilidad(meta))}
               onEliminar={onEliminar && (() => onEliminar(meta))}
             />
           )}

@@ -27,6 +27,10 @@ public class Participacion {
     @Column(name = "fecha_cumplida")
     private LocalDate fechaCumplida;
 
+    /** HU25: el participante ocultó la meta de su perfil. */
+    @Column(nullable = false)
+    private boolean oculta = false;
+
     protected Participacion() { }
 
     public Participacion(Usuario usuario, Meta meta, EstadoInvitacion estadoInvitacion) {
@@ -40,7 +44,13 @@ public class Participacion {
         this.fechaCumplida = fecha;
     }
 
+    /** HU25: oculta (true) o vuelve a mostrar (false) la meta en el perfil de este participante. */
+    public void cambiarVisibilidad(boolean oculta) {
+        this.oculta = oculta;
+    }
+
     public Usuario getUsuario() { return usuario; }
     public EstadoInvitacion getEstadoInvitacion() { return estadoInvitacion; }
     public LocalDate getFechaCumplida() { return fechaCumplida; }
+    public boolean isOculta() { return oculta; }
 }

@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Encabezado from '../components/Encabezado';
 import EstadoError from '../components/EstadoError';
 import IconoInsignia from '../components/IconoInsignia';
+import { EtiquetaOculta } from '../components/MetaTarjeta';
 import { TIPOS } from '../constants/opcionesMeta';
 import { obtenerPerfil } from '../services/perfilService';
 import { formatearFecha } from '../utils/fechas';
@@ -243,6 +244,8 @@ function ContenidoPerfil({ perfil }) {
                       {`${tipo.etiqueta} · Cumplida el ${formatearFecha(meta.fechaCumplida)}`}
                     </p>
                   </div>
+                  {/* HU25: sigue en su perfil, pero no se muestra a otros usuarios. */}
+                  {meta.oculta && <EtiquetaOculta className="shrink-0 py-1" />}
                   <CircleCheck className="size-5 shrink-0 text-emerald-600" aria-hidden="true" />
                 </li>
               );
