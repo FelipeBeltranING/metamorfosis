@@ -22,7 +22,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query("""
             select u from Usuario u
             where u.codigoUsuario <> :codigoUsuario
-              and function('translate', lower(concat(u.nombre, ' ', u.apellido)), 'áéíóúüñ', 'aeiouun') like :patron
+                               and cast(function('translate', lower(concat(u.nombre, ' ', u.apellido)), 'áéíóúüñ', 'aeiouun') as String) like :patron
             order by u.nombre, u.apellido, u.codigoUsuario
             """)
     List<Usuario> buscarPorNombre(@Param("codigoUsuario") Integer codigoUsuario,
