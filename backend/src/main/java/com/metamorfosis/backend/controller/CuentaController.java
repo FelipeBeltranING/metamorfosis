@@ -1,5 +1,6 @@
 package com.metamorfosis.backend.controller;
 
+import com.metamorfosis.backend.dto.AparienciaRequest;
 import com.metamorfosis.backend.dto.CuentaResponse;
 import com.metamorfosis.backend.dto.EditarCuentaRequest;
 import com.metamorfosis.backend.dto.FotoPerfilRequest;
@@ -24,7 +25,7 @@ public class CuentaController {
         this.cuentaService = cuentaService;
     }
 
-    /** Nombre, apellido, correo y foto, para el encabezado y la página Editar perfil. */
+    /** Nombre, apellido, correo, foto y apariencia (HU19), para el encabezado y Editar perfil. */
     @GetMapping
     public ResponseEntity<CuentaResponse> verCuenta(@AuthenticationPrincipal Integer codigoUsuario) {
         return ResponseEntity.ok(cuentaService.verCuenta(codigoUsuario));
@@ -34,6 +35,13 @@ public class CuentaController {
     public ResponseEntity<CuentaResponse> editarDatos(@RequestBody EditarCuentaRequest pedido,
                                                       @AuthenticationPrincipal Integer codigoUsuario) {
         return ResponseEntity.ok(cuentaService.editarDatos(codigoUsuario, pedido));
+    }
+
+    /** HU19: modo y color de acento de la app. */
+    @PutMapping("/apariencia")
+    public ResponseEntity<CuentaResponse> cambiarApariencia(@RequestBody AparienciaRequest pedido,
+                                                            @AuthenticationPrincipal Integer codigoUsuario) {
+        return ResponseEntity.ok(cuentaService.cambiarApariencia(codigoUsuario, pedido));
     }
 
     @PutMapping("/foto")

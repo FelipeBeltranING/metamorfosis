@@ -1,13 +1,16 @@
 package com.metamorfosis.backend.service;
 
 import com.metamorfosis.backend.auditoria.Auditar;
+import com.metamorfosis.backend.dto.AparienciaRequest;
 import com.metamorfosis.backend.dto.CuentaResponse;
 import com.metamorfosis.backend.dto.EditarCuentaRequest;
 import com.metamorfosis.backend.dto.FotoPerfilRequest;
 import com.metamorfosis.backend.exception.UsuarioNoEncontradoException;
 import com.metamorfosis.backend.exception.ValidacionException;
 import com.metamorfosis.backend.model.AccionLog;
+import com.metamorfosis.backend.model.ColorAcento;
 import com.metamorfosis.backend.model.EntidadLog;
+import com.metamorfosis.backend.model.ModoTema;
 import com.metamorfosis.backend.model.Usuario;
 import com.metamorfosis.backend.repository.UsuarioRepository;
 import java.util.ArrayList;
@@ -80,6 +83,31 @@ public class CuentaService {
             usuario = usuarioRepository.save(usuario);
         }
         return CuentaResponse.desde(usuario);
+    }
+
+    /** HU19: guarda la apariencia (modo y color de acento). Los dos son obligatorios. */
+    @Auditar(accion = AccionLog.CAMBIAR_APARIENCIA, entidad = EntidadLog.USUARIO)
+    @Transactional
+    public CuentaResponse cambiarApariencia(Integer codigoUsuario, AparienciaRequest pedido) {
+        Usuario usuario = buscar(codigoUsuario);
+        List<String> errores = new ArrayList<>();
+        ModoTema modo = valorDe(ModoTema.class, pedido == null ? null : pedido.modo(), "Elige un modo válido", errores);
+        ColorAcento acento = valorDe(ColorAcento.class, pedido == null ? null : pedido.acento(), "Elige un color de acento válido", errores);
+        if (!errores.isEmpty()) throw new ValidacionException(errores);
+
+        usuario.setModoTema(modo);
+        usuario.setColorAcento(acento);
+        return CuentaResponse.desde(usuarioRepository.save(usuario));
+    }
+
+    private static <E extends Enum<E>> E valorDe(Class<E> tipo, String valor, String mensaje, List<String> errores) {
+        if (valor != null) {
+            for (E e : tipo.getEnumConstants()) {
+                if (e.name().equalsIgnoreCase(valor.strip())) return e;
+            }
+        }
+        errores.add(mensaje);
+        return null;
     }
 
     private Usuario buscar(Integer codigoUsuario) {

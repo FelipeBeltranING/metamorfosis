@@ -31,6 +31,15 @@ public class Usuario {
     @Column(name = "perfil_privado", nullable = false)
     private Boolean perfilPrivado = false;
 
+    /** HU19: apariencia elegida (modo y color de acento). */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "modo_tema", nullable = false, length = 10)
+    private ModoTema modoTema = ModoTema.CLARO;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "color_acento", nullable = false, length = 10)
+    private ColorAcento colorAcento = ColorAcento.VIOLETA;
+
     @Column(name = "fecha_registro", nullable = false, updatable = false)
     private LocalDate fechaRegistro;
 
@@ -65,6 +74,10 @@ public class Usuario {
     public void setFotoPerfil(String fotoPerfil) { this.fotoPerfil = fotoPerfil; }
     public Boolean getPerfilPrivado() { return perfilPrivado; }
     public void setPerfilPrivado(Boolean perfilPrivado) { this.perfilPrivado = perfilPrivado; }
+    public ModoTema getModoTema() { return modoTema; }
+    public void setModoTema(ModoTema modoTema) { this.modoTema = modoTema; }
+    public ColorAcento getColorAcento() { return colorAcento; }
+    public void setColorAcento(ColorAcento colorAcento) { this.colorAcento = colorAcento; }
     public LocalDate getFechaRegistro() { return fechaRegistro; }
     public void setFechaRegistro(LocalDate fechaRegistro) { this.fechaRegistro = fechaRegistro; }
 }

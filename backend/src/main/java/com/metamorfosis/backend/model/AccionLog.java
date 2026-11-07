@@ -31,5 +31,6 @@ public enum AccionLog {
     QUITAR_REGISTRO,    // sub-metas: quitar el registro de un día
     EDITAR_PERFIL,      // HU23: nombre y apellido
     CAMBIAR_FOTO_PERFIL, // HU23
-    QUITAR_FOTO_PERFIL  // HU23
+    QUITAR_FOTO_PERFIL, // HU23
+    CAMBIAR_APARIENCIA  // HU19: tema, modo o color de acento
 }
