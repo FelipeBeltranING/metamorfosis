@@ -3,3 +3,71 @@
 @theme {
   --font-sans: 'Nunito', ui-sans-serif, system-ui, sans-serif;
 }
+/* ===== HU19 (prototipo): apariencia =====
+   La app usa la escala violet como color de acento y gray/slate/zinc como neutros.
+   Un tema solo reasigna esas variables, así que ningún componente cambia. */
+:root { --acento: #7f22fe; }
+:root[data-acento="azul"] { --acento: #2f6bff; }
+:root[data-acento="esmeralda"] { --acento: #10b981; }
+:root[data-acento="coral"] { --acento: #f0603c; }
+
+/* Acento en modo claro (el violeta original no se toca) */
+:root[data-modo="claro"][data-acento]:not([data-acento="violeta"]) {
+  --color-violet-50: color-mix(in oklab, var(--acento) 7%, white);
+  --color-violet-100: color-mix(in oklab, var(--acento) 14%, white);
+  --color-violet-200: color-mix(in oklab, var(--acento) 26%, white);
+  --color-violet-300: color-mix(in oklab, var(--acento) 45%, white);
+  --color-violet-400: color-mix(in oklab, var(--acento) 72%, white);
+  --color-violet-500: var(--acento);
+  --color-violet-600: color-mix(in oklab, var(--acento) 92%, black);
+  --color-violet-700: color-mix(in oklab, var(--acento) 76%, black);
+  --color-violet-800: color-mix(in oklab, var(--acento) 60%, black);
+}
+
+/* Modo oscuro: fondo casi negro, tarjetas gris azulado, texto claro */
+:root[data-modo="oscuro"] {
+  color-scheme: dark;
+  --fondo: #070b14;
+  --tarjeta: #0e1524;
+  --color-slate-50: var(--fondo);
+  --color-gray-50: #131b2c;
+  --color-slate-100: #141d30;
+  --color-gray-100: #141d30;
+  --color-zinc-100: #141d30;
+  --color-slate-200: #1e2940;
+  --color-zinc-200: #1e2940;
+  --color-gray-200: #1e2940;
+  --color-zinc-300: #2c3a55;
+  --color-gray-300: #2c3a55;
+  --color-zinc-400: #66758d;
+  --color-gray-400: #66758d;
+  --color-slate-400: #66758d;
+  --color-zinc-500: #8794a8;
+  --color-gray-500: #8794a8;
+  --color-slate-500: #8794a8;
+  --color-gray-600: #a7b2c3;
+  --color-gray-700: #c4cdd9;
+  --color-gray-800: #dce3ec;
+  --color-gray-900: #eef2f7;
+
+  --color-violet-50: color-mix(in oklab, var(--acento) 13%, var(--tarjeta));
+  --color-violet-100: color-mix(in oklab, var(--acento) 20%, var(--tarjeta));
+  --color-violet-200: color-mix(in oklab, var(--acento) 32%, var(--tarjeta));
+  --color-violet-300: color-mix(in oklab, var(--acento) 55%, var(--tarjeta));
+  --color-violet-400: color-mix(in oklab, var(--acento) 80%, var(--tarjeta));
+  --color-violet-500: var(--acento);
+  --color-violet-600: var(--acento);
+  --color-violet-700: color-mix(in oklab, var(--acento) 62%, white);
+  --color-violet-800: color-mix(in oklab, var(--acento) 45%, white);
+
+  --color-red-50: #2a1216; --color-red-100: #3a171c; --color-red-200: #5a2027;
+  --color-red-500: #f05252; --color-red-600: #f87171; --color-red-700: #fca5a5; --color-red-800: #fecaca;
+  --color-emerald-50: #0b2620; --color-emerald-100: #0f3429; --color-emerald-200: #134a3a;
+  --color-emerald-600: #34d399; --color-emerald-700: #6ee7b7; --color-emerald-800: #a7f3d0;
+  --color-amber-50: #2a2110; --color-amber-700: #fcd34d; --color-amber-900: #fde68a;
+  --color-orange-50: #2c190d; --color-orange-100: #3b2111; --color-orange-300: #8a4a1c; --color-orange-700: #fdba74;
+}
+:root[data-modo="oscuro"] body { background: var(--fondo); }
+:root[data-modo="oscuro"] .bg-white,
+:root[data-modo="oscuro"] [class*="bg-white/"] { background-color: var(--tarjeta); }
+:root[data-modo="oscuro"] .hover\:bg-white:hover { background-color: var(--color-slate-100); }

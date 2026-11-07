@@ -17,6 +17,8 @@ HU8  Registro           · pedir correo, revisa tu correo, autorizado, completar
 HU9  Iniciar sesión     · vacío, errores, credenciales incorrectas
 HU10 Cerrar sesión      · confirmación
 HU11 Insignias          · aviso de insignia ganada
+HU19 Personalizar perfil · tema Noche en las pantallas principales (escritorio y celular),
+                          los 4 temas comparados y la sección Apariencia de Editar perfil
 HU21 Compartir logro    · botón en cumplidas, imagen para compartir, página pública
 HU22 Mi perfil          · menú de la cuenta, perfil
 HU23 Editar perfil      · formulario, errores, recorte de foto, guardado, perfil con foto

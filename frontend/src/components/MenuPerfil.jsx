@@ -3,6 +3,7 @@ import { ChevronRight, PencilLine, UserRound } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import AvatarUsuario from './AvatarUsuario';
 import { obtenerCuenta } from '../services/cuentaService';
+import { aplicarApariencia, desdeServidor } from '../tema/apariencia';
 import {
   EVENTO_CUENTA, actualizarSesion, datosPerfil, obtenerSesion,
 } from '../services/sesionService';
@@ -27,13 +28,17 @@ export default function MenuPerfil() {
   }, []);
 
   // HU-23: el login no trae la foto; se pide la cuenta una vez por sesión, sin bloquear nada.
+  // HU19: de paso se aplica la apariencia guardada en la cuenta.
   useEffect(() => {
     const sesion = obtenerSesion();
     if (!sesion || sesion.cuentaSincronizada) return;
     obtenerCuenta()
-      .then(({ nombre, apellido, email, foto }) => actualizarSesion({
-        nombre, apellido, email, foto: foto ?? null, cuentaSincronizada: true,
-      }))
+      .then(({ nombre, apellido, email, foto, apariencia }) => {
+        aplicarApariencia(desdeServidor(apariencia), true);
+        actualizarSesion({
+          nombre, apellido, email, foto: foto ?? null, cuentaSincronizada: true,
+        });
+      })
       .catch(() => {
         // Sin conexión o error: se quedan las iniciales; se reintenta en la próxima página.
       });

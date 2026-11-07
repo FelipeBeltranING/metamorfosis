@@ -2,10 +2,12 @@ import { PLAZOS, TIPOS } from '../constants/opcionesMeta';
 import { NOMBRES_MESES } from './fechas';
 
 /** HU7: colores de las gráficas (contraste suficiente sobre blanco y entre sí). */
+// HU19 (prototipo): se leen de la paleta activa para que las gráficas sigan el tema.
+const css = (v, r) => getComputedStyle(document.documentElement).getPropertyValue(v).trim() || r;
 export const COLORES = {
-  cumplidas: '#7C3AED',   // violeta 600
-  activas: '#94A3B8',     // gris pizarra 400
-  linea: '#059669',       // esmeralda 600
+  get cumplidas() { return css('--color-violet-600', '#7C3AED'); },
+  get activas() { return css('--color-slate-400', '#94A3B8'); },
+  get linea() { return css('--color-emerald-600', '#059669'); },
 };
 
 const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((t) => [t.valor, t.etiqueta]));
