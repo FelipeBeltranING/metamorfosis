@@ -18,7 +18,7 @@ public interface UsuarioInsigniaRepository extends JpaRepository<UsuarioInsignia
             """)
     List<Integer> codigosObtenidos(@Param("codigoUsuario") Integer codigoUsuario);
 
-    /** HU22: insignias que ganó el usuario, con su fecha, de la más reciente a la más antigua. */
+    /** HU22 y HU12: insignias que ganó el usuario, con su fecha, de la más reciente a la más antigua. */
     @Query("""
             select ui from UsuarioInsignia ui
             join fetch ui.insignia

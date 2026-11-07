@@ -15,6 +15,7 @@ public enum AccionLog {
     LISTAR_LOGROS,      // HU21 (Mis logros, ya retirada): se conserva para leer las filas viejas del log
     VER_REPORTE,        // HU7
     VER_PERFIL,         // HU22
+    VER_INSIGNIAS,      // HU12
     REGISTRAR_USUARIO,  // HU8
     SOLICITAR_REGISTRO, // HU8: se envió el correo de autorización
     RECHAZAR_REGISTRO,  // HU8: el dueño del correo respondió "No fui yo"

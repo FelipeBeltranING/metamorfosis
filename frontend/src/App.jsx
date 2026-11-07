@@ -14,6 +14,7 @@ import AutorizarRegistroPage from './pages/AutorizarRegistroPage';
 import LoginPage from './pages/LoginPage';
 import LogroPublicoPage from './pages/LogroPublicoPage';
 import PerfilPage from './pages/PerfilPage';
+import InsigniasPage from './pages/InsigniasPage';
 import RutaProtegida from './components/RutaProtegida';
 import AvisosInsigniaProvider from './components/AvisosInsignia';
 
@@ -56,6 +57,8 @@ export default function App() {
             />
             {/* HU22: Mi perfil, desde el menú del avatar. */}
             <Route path="/perfil" element={<PerfilPage />} />
+            {/* HU12: galería de insignias, desde Mi perfil. */}
+            <Route path="/insignias" element={<InsigniasPage />} />
             {/* Sub-metas: el camino de cada meta. */}
             <Route path="/metas/:codigoMeta" element={<CaminoMetaPage />} />
             <Route path="/metas/:codigoMeta/submetas/nueva" element={<SubMetaFormPage />} />

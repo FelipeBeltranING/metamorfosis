@@ -177,12 +177,13 @@ function ContenidoPerfil({ perfil }) {
         </div>
       </section>
 
-      {/* 3. Insignias ganadas (HU11). La galería completa es la HU12. */}
+      {/* 3. Insignias ganadas (HU11). La galería completa, con las pendientes, es la HU12. */}
       <section aria-labelledby="perfil-insignias" className={TARJETA}>
         <TituloBloque
           id="perfil-insignias"
           titulo="Mis insignias"
           detalle={`${insignias.length} de ${perfil.totalInsignias} insignias`}
+          enlace={<Link to="/insignias" className={ENLACE}>Ver galería</Link>}
         />
         {insignias.length === 0 ? (
           <div className="flex items-center gap-4 rounded-xl bg-slate-50 p-4">
