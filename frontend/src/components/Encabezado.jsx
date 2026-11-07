@@ -21,6 +21,8 @@ export default function Encabezado() {
         <nav aria-label="Secciones" className="flex items-center gap-1">
           <NavLink to="/metas" end className={claseEnlace}>Mis metas</NavLink>
           <NavLink to="/reporte" className={claseEnlace}>Reporte</NavLink>
+          {/* HU24: buscar personas y ver su perfil */}
+          <NavLink to="/usuarios" className={claseEnlace}>Personas</NavLink>
         </nav>
         <BotonCerrarSesion />
         <MenuPerfil />
