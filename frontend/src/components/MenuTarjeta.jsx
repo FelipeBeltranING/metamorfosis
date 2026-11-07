@@ -1,12 +1,17 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { Ellipsis, Pencil, Trash2 } from 'lucide-react';
+import {
+  Ellipsis, Eye, EyeOff, Pencil, Trash2,
+} from 'lucide-react';
 
 /**
  * Menú "⋯" de una tarjeta de meta. Muestra solo las acciones que reciba
  * (Editar / Eliminar). Se cierra al elegir una opción, al tocar fuera o con Esc.
  * HU6: si la meta está cumplida, Editar aparece deshabilitado (regla de la HU2).
+ * HU25: "Ocultar del perfil" o, si ya está oculta, "Mostrar en el perfil".
  */
-export default function MenuTarjeta({ nombre, onEditar, editarBloqueado = false, onEliminar }) {
+export default function MenuTarjeta({
+  nombre, onEditar, editarBloqueado = false, oculta = false, onCambiarVisibilidad, onEliminar,
+}) {
   const [abierto, setAbierto] = useState(false);
   const contenedor = useRef(null);
   const boton = useRef(null);
@@ -82,6 +87,19 @@ export default function MenuTarjeta({ nombre, onEditar, editarBloqueado = false,
             >
               <Pencil className="size-5" aria-hidden="true" />
               Editar
+            </button>
+          )}
+          {onCambiarVisibilidad && (
+            <button
+              type="button"
+              role="menuitem"
+              onClick={() => elegir(onCambiarVisibilidad)}
+              className="flex h-12 items-center gap-3 rounded-xl px-3 text-left text-base font-semibold text-gray-900 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
+            >
+              {oculta
+                ? <Eye className="size-5" aria-hidden="true" />
+                : <EyeOff className="size-5" aria-hidden="true" />}
+              {oculta ? 'Mostrar en el perfil' : 'Ocultar del perfil'}
             </button>
           )}
           {onEliminar && (

@@ -13,7 +13,9 @@ import ConfirmarCumplidaModal from '../components/ConfirmarCumplidaModal';
 import CompartirLogroModal from '../components/CompartirLogroModal';
 import FiltrosMetas from '../components/FiltrosMetas';
 import SinResultadosFiltro from '../components/SinResultadosFiltro';
-import { eliminarMeta, listarMetas, marcarCumplida } from '../services/metaService';
+import {
+  cambiarVisibilidad, eliminarMeta, listarMetas, marcarCumplida,
+} from '../services/metaService';
 import { obtenerResumenes } from '../services/subMetaService';
 import { useAvisosInsignia } from '../hooks/useAvisosInsignia';
 import {
@@ -26,6 +28,8 @@ const AVISOS = {
   eliminada: 'Meta eliminada.',
   sesion: '¡Sesión iniciada!',
   cumplida: '¡Meta cumplida! Ya está en tus metas cumplidas.',
+  oculta: 'Meta oculta: ya no se mostrará en tu perfil público.', // HU25
+  visible: 'La meta vuelve a mostrarse en tu perfil público.', // HU25
 };
 
 /** Qué aviso mostrar al llegar a la lista (viene en el estado de navegación). */
@@ -57,6 +61,8 @@ export default function MisMetasPage() {
   const [metaACompartir, setMetaACompartir] = useState(null);
   // Aviso de error fuera del diálogo (por ejemplo, la meta ya no existe).
   const [errorLista, setErrorLista] = useState('');
+  // HU25: metas cuya visibilidad se está cambiando (evita el doble clic).
+  const [cambiandoVisibilidad, setCambiandoVisibilidad] = useState(() => new Set());
   // Sub-metas: constancia y sub-metas de hoy de cada meta, por código de meta.
   const [resumenes, setResumenes] = useState({});
 
@@ -202,6 +208,35 @@ export default function MisMetasPage() {
     }
   };
 
+  // HU25: ocultar o mostrar en el perfil. La tarjeta cambia cuando el servidor responde.
+  const alternarVisibilidad = async (meta) => {
+    const { codigoMeta } = meta;
+    if (cambiandoVisibilidad.has(codigoMeta)) return;
+    setCambiandoVisibilidad((actual) => new Set(actual).add(codigoMeta));
+    try {
+      const actualizada = await cambiarVisibilidad(codigoMeta, !meta.oculta);
+      actualizarMeta(codigoMeta, actualizada);
+      setErrorLista('');
+      setAviso(actualizada.oculta ? 'oculta' : 'visible');
+    } catch (error) {
+      setAviso(null);
+      if (error.estado === 401) {
+        navigate('/login', { replace: true });
+      } else if (error.estado === 404) {
+        actualizarMeta(codigoMeta, null);
+        setErrorLista('Esta meta ya no existe');
+      } else {
+        setErrorLista(error.message);
+      }
+    } finally {
+      setCambiandoVisibilidad((actual) => {
+        const siguiente = new Set(actual);
+        siguiente.delete(codigoMeta);
+        return siguiente;
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 text-gray-900">
       <Encabezado />
@@ -253,6 +288,7 @@ export default function MisMetasPage() {
                 resumen={resumenes[meta.codigoMeta]}
                 onMarcarCumplida={abrirMarcarCumplida}
                 onEditar={abrirEdicion}
+                onCambiarVisibilidad={alternarVisibilidad}
                 onEliminar={abrirConfirmacion}
                 onCompartir={setMetaACompartir}
               />
