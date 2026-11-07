@@ -17,6 +17,8 @@ public enum AccionLog {
     VER_REPORTE,        // HU7
     VER_PERFIL,         // HU22
     VER_INSIGNIAS,      // HU12
+    BUSCAR_USUARIOS,    // HU24: búsqueda de personas por nombre
+    VER_PERFIL_PUBLICO, // HU24: perfil de otra persona
     REGISTRAR_USUARIO,  // HU8
     SOLICITAR_REGISTRO, // HU8: se envió el correo de autorización
     RECHAZAR_REGISTRO,  // HU8: el dueño del correo respondió "No fui yo"
