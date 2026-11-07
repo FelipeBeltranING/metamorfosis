@@ -51,3 +51,30 @@ export async function obtenerPerfilPublico(codigoUsuario) {
   }
   return datos;
 }
+
+/**
+ * HU26: hace privado (true) o público (false) el perfil. Devuelve { privado }. Lanza Error con
+ * `estado` (código HTTP); sin `estado` = sin conexión.
+ */
+export async function cambiarPrivacidad(privado) {
+  const encabezados = cabeceras({ 'Content-Type': 'application/json' });
+  let respuesta;
+  try {
+    respuesta = await fetch(`${API_URL}/api/usuarios/me/privacidad`, {
+      method: 'PATCH',
+      headers: encabezados,
+      body: JSON.stringify({ privado }),
+    });
+  } catch {
+    throw new Error('No pudimos cambiar la privacidad. Inténtalo de nuevo.');
+  }
+  if (respuesta.status === 401) throw errorSesionExpirada();
+  const datos = await respuesta.json().catch(() => null);
+  if (!respuesta.ok) {
+    const error = new Error(datos?.errores?.[0] ?? datos?.mensaje ?? 'No pudimos cambiar la privacidad. Inténtalo de nuevo.');
+    error.estado = respuesta.status;
+    throw error;
+  }
+  if (typeof datos?.privado !== 'boolean') throw new Error('Respuesta inesperada del servidor');
+  return datos;
+}
