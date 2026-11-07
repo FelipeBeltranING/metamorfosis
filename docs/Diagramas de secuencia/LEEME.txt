@@ -1,0 +1,26 @@
+Mockups actuales de Metamorfosis
+================================
+Capturas de la versión actual del frontend (main, commit 8794481) con datos de prueba.
+Fecha simulada: lunes 2 de noviembre de 2026.
+
+- Escritorio: 1280 px de ancho, página completa.
+- Celular: archivos terminados en _movil (390 px, a doble resolución).
+- Las carpetas van por HU. "Sub-metas" reúne el camino, las sub-metas y sus estadísticas.
+
+HU1  Crear meta         · formulario, errores, meta creada
+HU2  Editar meta
+HU3  Mis metas          · con metas, sin metas, cargando
+HU4  Eliminar meta      · menú de la meta, confirmación
+HU6  Marcar cumplida    · confirmación, meta cumplida
+HU7  Reporte            · general, por tipo, por plazo, por mes, sin datos
+HU8  Registro           · pedir correo, revisa tu correo, autorizado, completar datos, no fui yo
+HU9  Iniciar sesión     · vacío, errores, credenciales incorrectas
+HU10 Cerrar sesión      · confirmación
+HU11 Insignias          · aviso de insignia ganada
+HU21 Compartir logro    · botón en cumplidas, imagen para compartir, página pública
+HU22 Mi perfil          · menú de la cuenta, perfil
+HU23 Editar perfil      · formulario, errores, recorte de foto, guardado, perfil con foto
+HU27 Filtrar metas      · cumplidas, todas, sin resultados
+Sub-metas               · tu camino, registrar valor, menú, eliminar, camino vacío,
+                          elegir tipo, nueva medible, nueva Sí/No, errores, editar,
+                          estadísticas medible y Sí/No, camino de una meta cumplida

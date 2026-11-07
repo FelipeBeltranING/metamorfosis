@@ -1,0 +1,41 @@
+sequenceDiagram
+    autonumber
+    actor U as Usuario
+    participant P as MisMetasPage / CaminoMetaPage
+    participant AV as AvisosInsigniaProvider
+    participant MS as metaService.js
+    participant MC as MetaController
+    participant S as MetaService
+    participant I as InsigniaService
+    participant R as Repositorios
+    participant DB as PostgreSQL
+    U->>P: Pulsa "Marcar como cumplida" en el diálogo
+    P->>MS: marcarCumplida(codigoMeta)
+    MS->>MC: PATCH /api/metas/{codigoMeta}/cumplida (JWT)
+    MC->>S: marcarCumplida(codigoMeta, codigoUsuario)
+    S->>R: findById(codigoMeta)
+    S->>S: meta.marcarCumplida(codigoUsuario, hoy)
+    S->>R: save(meta)
+    S->>I: otorgarNuevas(codigoUsuario, hoy)
+    I->>R: plazosYTiposCumplidos(codigoUsuario)
+    R->>DB: SELECT plazo, tipo de las metas CUMPLIDAS del usuario
+    DB-->>I: filas
+    I->>I: Conteo: total, por plazo y tipos distintos
+    I->>R: codigosObtenidos(codigoUsuario)
+    I->>R: findAllByOrderByCodigoInsigniaAsc()
+    loop Cada insignia del catálogo que no tiene y alcanza
+        I->>R: save(UsuarioInsignia(usuario, insignia, hoy))
+        R->>DB: INSERT usuario_insignia
+    end
+    I-->>S: insignias nuevas
+    S->>S: ContextoAuditoria.agregar("insigniasNuevas", nombres)
+    S-->>MC: MetaCumplidaResponse(meta, insigniasNuevas)
+    Note over S,DB: Meta e insignias se guardan en la misma transacción (log MARCAR_CUMPLIDA aparte)
+    MC-->>MS: 200 { meta, insigniasNuevas }
+    MS-->>P: { meta, insigniasNuevas }
+    P->>U: Tarjeta "Cumplida" y aviso "¡Meta cumplida!"
+    P->>AV: mostrarInsignias(insigniasNuevas)
+    loop Cada insignia nueva
+        AV->>U: Aviso "¡Ganaste una insignia!" con ícono, nombre y condición
+    end
+    AV->>AV: Cierra cada aviso a los 6 s o al pulsar la X

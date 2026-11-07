@@ -133,7 +133,7 @@
         <mxCell id="b27" parent="1" style="html=1;points=[];perimeter=orthogonalPerimeter;targetShapes=umlLifeline;fillColor=#FFFFFF;strokeColor=#000000;" value="" vertex="1">
           <mxGeometry height="40" width="10" x="3935" y="1950" as="geometry" />
         </mxCell>
-        <mxCell id="m28" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="confirmarRegistroCumplimiento({fechaFinalizacion, cumplimiento})">
+        <mxCell id="m28" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="confirmarRegistroCumplimiento*({fechaFinalizacion, cumplimiento})">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="100" y="150" as="sourcePoint" />
             <mxPoint x="335" y="150" as="targetPoint" />
@@ -149,7 +149,7 @@
             <mxPoint x="350" y="224" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="t30" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="registrarCumplimiento(codigoMeta, solicitud)" vertex="1">
+        <mxCell id="t30" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="registrarCumplimiento*(codigoMeta, solicitud)" vertex="1">
           <mxGeometry height="20" width="330" x="391" y="197" as="geometry" />
         </mxCell>
         <mxCell id="m31" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="POST /api/metas/{codigoMeta}/registros {fechaFinalizacion, cumplimiento}">
@@ -158,7 +158,7 @@
             <mxPoint x="615" y="260" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="m32" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="registrarCumplimiento(codigoMeta, solicitud, codigoUsuario)">
+        <mxCell id="m32" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="registrarCumplimiento*(codigoMeta, solicitud, codigoUsuario)">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="625" y="310" as="sourcePoint" />
             <mxPoint x="885" y="310" as="targetPoint" />
@@ -183,7 +183,7 @@
             <mxPoint x="1485" y="410" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="m36" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="registrarCumplimiento(codigoMeta, solicitud, codigoUsuario)">
+        <mxCell id="m36" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="registrarCumplimiento*(codigoMeta, solicitud, codigoUsuario)">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="900" y="460" as="sourcePoint" />
             <mxPoint x="1225" y="460" as="targetPoint" />
@@ -202,7 +202,7 @@
         <mxCell id="t38" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="validar(solicitud): void" vertex="1">
           <mxGeometry height="20" width="200" x="1281" y="507" as="geometry" />
         </mxCell>
-        <mxCell id="m39" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="findById(codigoMeta)">
+        <mxCell id="m39" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="MetaRepository.findById(codigoMeta)">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1235" y="570" as="sourcePoint" />
             <mxPoint x="1735" y="570" as="targetPoint" />
@@ -214,7 +214,7 @@
             <mxPoint x="1235" y="610" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="m41" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="getEstado()">
+        <mxCell id="m41" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="Meta.getEstado()">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1235" y="660" as="sourcePoint" />
             <mxPoint x="2855" y="660" as="targetPoint" />
@@ -238,7 +238,7 @@
             <mxPoint x="1235" y="780" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="m45" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="findById(codigoUsuario)">
+        <mxCell id="m45" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="UsuarioRepository.findById(codigoUsuario)">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1235" y="830" as="sourcePoint" />
             <mxPoint x="1985" y="830" as="targetPoint" />
@@ -274,13 +274,13 @@
             <mxPoint x="2605" y="1030" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="m52" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="actualizarCumplimiento(cumplimiento)">
+        <mxCell id="m52" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="actualizarCumplimiento*(cumplimiento)">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1235" y="1100" as="sourcePoint" />
             <mxPoint x="2605" y="1100" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="m53" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="agregar(clave, valor) ×4: accion, fechaFinalizacion, cumplimiento, codigoMeta">
+        <mxCell id="m53" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="ContextoAuditoria,agregar(clave, valor) ×4: accion, fechaFinalizacion, cumplimiento, codigoMeta">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1235" y="1150" as="sourcePoint" />
             <mxPoint x="1485" y="1150" as="targetPoint" />
@@ -347,7 +347,7 @@
         <mxCell id="t63" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="guardar(pjp, auditar, resultado, retorno, error): void" vertex="1">
           <mxGeometry height="20" width="400" x="941" y="1567" as="geometry" />
         </mxCell>
-        <mxCell id="m64" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="obtener()">
+        <mxCell id="m64" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="ContextoAuditoria.obtener()">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="905" y="1620" as="sourcePoint" />
             <mxPoint x="1485" y="1620" as="targetPoint" />
@@ -398,7 +398,7 @@
         <mxCell id="t71" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="aJson(valor): String" vertex="1">
           <mxGeometry height="20" width="200" x="951" y="1797" as="geometry" />
         </mxCell>
-        <mxCell id="m72" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="registrar(codigoUsuario, accion, entidad, codigoEntidad, resultado, detalle): void">
+        <mxCell id="m72" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="LogService.registrar(codigoUsuario, accion, entidad, codigoEntidad, resultado, detalle): void">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="905" y="1850" as="sourcePoint" />
             <mxPoint x="3665" y="1850" as="targetPoint" />
@@ -410,7 +410,7 @@
             <mxPoint x="4185" y="1900" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="m74" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="save(entity)">
+        <mxCell id="m74" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="LogActividad.save(entity)">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="3675" y="1950" as="sourcePoint" />
             <mxPoint x="3935" y="1950" as="targetPoint" />
@@ -450,10 +450,10 @@
             <mxPoint x="350" y="2204" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="t80" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="setMarcadasHoy(...)&lt;br&gt;setMetaARegistrar(null)&lt;br&gt;setAviso('cumplimiento')" vertex="1">
+        <mxCell id="t80" parent="1" style="text;html=1;fillColor=#FFFFFF;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;spacingLeft=2;spacingRight=2;whiteSpace=nowrap;" value="setMarcadasHoy*(...)&lt;br&gt;setMetaARegistrar(null)&lt;br&gt;setAviso(&#39;cumplimiento&#39;)" vertex="1">
           <mxGeometry height="51" width="240" x="391" y="2177" as="geometry" />
         </mxCell>
-        <mxCell id="m81" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="MisMetasPage()">
+        <mxCell id="m81" edge="1" parent="1" style="html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;endSize=8;labelBackgroundColor=#FFFFFF;strokeColor=#000000;fontSize=11;" value="MisMetasPage()*">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="335" y="2290" as="sourcePoint" />
             <mxPoint x="100" y="2290" as="targetPoint" />

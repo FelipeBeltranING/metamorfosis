@@ -1,0 +1,34 @@
+sequenceDiagram
+    autonumber
+    actor U as Usuario
+    participant MP as MenuPerfil
+    participant PP as PerfilPage
+    participant PS as perfilService.js
+    participant UC as UsuarioController
+    participant S as PerfilService
+    participant R as Repositorios
+    participant DB as PostgreSQL
+    U->>MP: Pulsa el avatar y luego "Ver mi perfil"
+    MP->>PP: Navega a /perfil
+    PP->>PP: Muestra el esqueleto de carga
+    PP->>PS: obtenerPerfil()
+    PS->>UC: GET /api/usuarios/me/perfil (JWT)
+    UC->>S: verMiPerfil(codigoUsuario)
+    S->>R: findById(codigoUsuario)
+    R->>DB: SELECT usuario
+    DB-->>R: fila
+    R-->>S: usuario
+    S->>R: findByParticipante(codigoUsuario)
+    R->>DB: SELECT metas con participación ACEPTADA
+    R-->>S: metas
+    S->>S: Resumen: activas, cumplidas y porcentaje (igual que el reporte)
+    S->>S: Últimas cumplidas: ordenar por fecha y tomar 3
+    S->>R: insigniasDelUsuario(codigoUsuario)
+    R->>DB: SELECT usuario_insignia JOIN insignia ORDER BY fecha_obtenida DESC
+    R-->>S: insignias ganadas
+    S->>R: count() del catálogo de insignias
+    S-->>UC: PerfilResponse
+    Note over S: @Auditar: VER_PERFIL EXITO
+    UC-->>PS: 200 PerfilResponse
+    PS-->>PP: perfil
+    PP->>U: Datos personales, resumen, insignias y últimas cumplidas

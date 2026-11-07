@@ -1,0 +1,45 @@
+sequenceDiagram
+    autonumber
+    actor U as Usuario
+    participant P as ReportePage (React)
+    participant RS as reporteService.js
+    participant J as JwtAuthFilter
+    participant RC as ReporteController
+    participant AA as AuditoriaAspect
+    participant S as ReporteService
+    participant UR as UsuarioRepository
+    participant RR as ReporteRepository
+    participant DB as PostgreSQL
+    U->>P: Abre "Reporte" en el menú
+    P->>P: Muestra el esqueleto de carga
+    P->>RS: obtenerReporte()
+    RS->>J: GET /api/reportes/resumen
+    J->>J: Valida token y obtiene codigoUsuario
+    J->>RC: resumen(codigoUsuario)
+    RC->>AA: (intercepta @Auditar VER_REPORTE)
+    AA->>S: resumen(codigoUsuario)
+    S->>UR: existsById(codigoUsuario)
+    UR-->>S: true
+    S->>RR: contarPorTipoYEstado(codigoUsuario)
+    RR->>DB: SELECT tipo, estado, count(*) ... GROUP BY tipo, estado
+    RR-->>S: filas
+    S->>RR: contarPorPlazoYEstado(codigoUsuario)
+    RR->>DB: SELECT plazo, estado, count(*) ... GROUP BY plazo, estado
+    RR-->>S: filas
+    S->>S: hoy = CalendarioUsuario.hoy(), desde = primer día de hace 5 meses
+    S->>RR: fechasCumplidasDesde(codigoUsuario, desde)
+    RR->>DB: SELECT fecha_cumplida de las metas cumplidas
+    RR-->>S: fechas
+    S->>S: Totales, porcentajes, 3 plazos y 6 meses (los vacíos en cero)
+    S-->>AA: ReporteResponse
+    AA->>DB: INSERT log_actividad (VER_REPORTE, totalMetas, metasCumplidas)
+    AA-->>RC: resultado
+    RC-->>RS: 200 ReporteResponse
+    RS-->>P: reporte
+    P->>P: tipo = ?reporte de la URL (si falta o no existe: "general")
+    P->>U: Selector "Tipo de reporte" + gráfica de Cumplimiento general (dona) con su tabla
+    loop Cada vez que cambia el selector
+        U->>P: Elige otro tipo de reporte
+        P->>P: Guarda ?reporte=por-tipo | por-plazo | por-mes en la URL
+        P->>U: Muestra solo esa gráfica (Chart.js) con su tabla, sin volver a llamar a la API
+    end

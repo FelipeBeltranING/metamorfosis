@@ -134,7 +134,7 @@
           <mxGeometry height="20" width="380" y="82" as="geometry" />
         </mxCell>
         <mxCell id="f9-r5z_plY-zgPrUG5sy-44" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Entity»&lt;br&gt;&lt;b&gt;Meta&lt;/b&gt;" vertex="1">
-          <mxGeometry height="372" width="440" x="1520.002068965517" y="900.0013793103451" as="geometry" />
+          <mxGeometry height="392" width="440" x="1520.002068965517" y="900.0013793103451" as="geometry" />
         </mxCell>
         <mxCell id="f9-r5z_plY-zgPrUG5sy-45" parent="f9-r5z_plY-zgPrUG5sy-44" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- codigoMeta: Integer" vertex="1">
           <mxGeometry height="20" width="440" y="44" as="geometry" />
@@ -186,6 +186,9 @@
         </mxCell>
         <mxCell id="f9-r5z_plY-zgPrUG5sy-61" parent="f9-r5z_plY-zgPrUG5sy-44" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ getFechaCreacion(): LocalDate" vertex="1">
           <mxGeometry height="20" width="440" y="352" as="geometry" />
+        </mxCell>
+        <mxCell id="f9-r5z_plY-zgPrUG5sy-44-fix1" parent="f9-r5z_plY-zgPrUG5sy-44" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ getFechaCumplida(codigoUsuario: Integer): LocalDate" vertex="1">
+          <mxGeometry height="20" width="440" y="372" as="geometry" />
         </mxCell>
         <mxCell id="f9-r5z_plY-zgPrUG5sy-62" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=44;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;swimlaneFillColor=#ffffff;rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;fontColor=#000000;align=center;verticalAlign=middle;fontSize=13;" value="«Entity»&lt;br&gt;&lt;b&gt;Usuario&lt;/b&gt;" vertex="1">
           <mxGeometry height="232.0" width="340" x="1570.002068965517" y="1400.001379310345" as="geometry" />
@@ -590,10 +593,10 @@
         <mxCell id="f9-r5z_plY-zgPrUG5sy-183" edge="1" parent="1" source="f9-r5z_plY-zgPrUG5sy-102" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#000000;fontColor=#000000;fontSize=11;labelBackgroundColor=#FFFFFF;dashed=1;endArrow=open;endFill=0;endSize=8;exitX=0.9107;exitY=1;entryX=0.0588;entryY=0;" target="f9-r5z_plY-zgPrUG5sy-138" value="«use»">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="row-1" parent="f9-r5z_plY-zgPrUG5sy-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- cumplidaHoy: boolean" vertex="1">
+        <mxCell id="row-1" parent="f9-r5z_plY-zgPrUG5sy-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="- fechaCumplida: LocalDate" vertex="1">
           <mxGeometry height="20.0" width="400" y="184.0" as="geometry" />
         </mxCell>
-        <mxCell id="row-2" parent="f9-r5z_plY-zgPrUG5sy-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ cumplidaHoy(): boolean" vertex="1">
+        <mxCell id="row-2" parent="f9-r5z_plY-zgPrUG5sy-13" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=nowrap;html=0;fontColor=#000000;" value="+ fechaCumplida(): LocalDate" vertex="1">
           <mxGeometry height="20.0" width="400" y="352.0" as="geometry" />
         </mxCell>
       </root>
