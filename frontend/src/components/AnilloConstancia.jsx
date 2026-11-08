@@ -18,13 +18,13 @@ export default function AnilloConstancia({ porcentaje, tamano = 64, grosor = 8, 
           ? 'Aún no hay días para calcular la constancia'
           : `${porcentaje}% de constancia en los últimos 7 días`)}
       >
-        <circle cx={tamano / 2} cy={tamano / 2} r={radio} fill="none" stroke="#ede9fe" strokeWidth={grosor} />
+        <circle cx={tamano / 2} cy={tamano / 2} r={radio} fill="none" style={{ stroke: 'var(--color-violet-100)' }} strokeWidth={grosor} />
         <circle
           cx={tamano / 2}
           cy={tamano / 2}
           r={radio}
           fill="none"
-          stroke="#7f22fe"
+          style={{ stroke: 'var(--color-violet-600)' }}
           strokeWidth={grosor}
           strokeLinecap="round"
           strokeDasharray={`${(circunferencia * valor) / 100} ${circunferencia}`}

@@ -6,8 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MetaRepository extends JpaRepository<Meta, Integer> {
+
+    /** Meta con ese código para unirse (vigente o no; el servicio revisa el vencimiento). */
+    Optional<Meta> findByCodigoUnion(String codigoUnion);
 
     /**
      * Metas ACTIVAS en las que el usuario participa con invitación ACEPTADA

@@ -29,6 +29,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 /** HU6 y HU11: caja blanca de MetaService.marcarCumplida (marcar una meta y revisar insignias). */
@@ -162,5 +163,28 @@ class MetaServiceMarcarCumplidaTest {
 
         assertEquals(EstadoMeta.ACTIVA, r.estado());
         assertNull(r.fechaCumplida());
+    }
+
+    /** Meta compartida: se cumple para todos los aceptados, con la misma fecha, y cada uno puede ganar insignias. */
+    @Test
+    void enUnaMetaCompartidaSeCumpleParaTodosLosQueAceptaron() {
+        Usuario laura = new Usuario("Laura", "Gómez", "laura@test.com", "hash");
+        laura.setCodigoUsuario(2);
+        Usuario andres = new Usuario("Andrés", "Rojas", "andres@test.com", "hash");
+        andres.setCodigoUsuario(3);
+        meta.invitar(laura, CREADOR, "h1", java.time.LocalDateTime.now(), java.time.LocalDateTime.now().plusDays(7))
+                .responder(true);
+        meta.invitar(andres, CREADOR, "h2", java.time.LocalDateTime.now(), java.time.LocalDateTime.now().plusDays(7));
+        when(metaRepository.findById(CODIGO_META)).thenReturn(Optional.of(meta));
+        when(metaRepository.save(meta)).thenReturn(meta);
+        when(insigniaService.otorgarNuevas(anyInt(), any())).thenReturn(List.of());
+
+        metaService.marcarCumplida(CODIGO_META, CREADOR);
+
+        assertEquals(LocalDate.now(), meta.getFechaCumplida(2));
+        assertNull(meta.getFechaCumplida(3)); // la invitación pendiente no cuenta
+        verify(insigniaService).otorgarNuevas(CREADOR, LocalDate.now());
+        verify(insigniaService).otorgarNuevas(2, LocalDate.now());
+        verify(insigniaService, never()).otorgarNuevas(eq(3), any());
     }
 }

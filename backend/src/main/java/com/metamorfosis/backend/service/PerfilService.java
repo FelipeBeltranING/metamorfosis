@@ -178,7 +178,7 @@ public class PerfilService {
     private static List<MetaResponse> ultimasCumplidas(List<Meta> metas, Integer codigoUsuario) {
         return metas.stream()
                 .filter(m -> m.getEstado() == EstadoMeta.CUMPLIDA)
-                .map(m -> MetaResponse.desde(m, codigoUsuario))
+                .map(m -> MetaResponse.desde(m, codigoUsuario).sinParticipantes()) // HU13: el perfil no lista personas
                 .sorted(MAS_RECIENTE_PRIMERO)
                 .limit(ULTIMAS_CUMPLIDAS)
                 .toList();

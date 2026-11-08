@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 /**
  * HU-23: petición a /api/usuarios/me con el token de la sesión. Devuelve la cuenta
- * { codigoUsuario, nombre, apellido, email, foto }. Lanza Error con `estado` y `errores`
+ * { codigoUsuario, nombre, apellido, email, foto, apariencia }. Lanza Error con `estado` y `errores`
  * si el servidor la rechaza; sin `estado` = sin conexión.
  */
 async function pedir(ruta, { method = 'GET', body } = {}) {
@@ -39,3 +39,6 @@ export const editarDatos = ({ nombre, apellido }) => pedir('', { method: 'PUT', 
 export const cambiarFoto = (foto) => pedir('/foto', { method: 'PUT', body: { foto } });
 
 export const quitarFoto = () => pedir('/foto', { method: 'DELETE' });
+
+/** HU19: `apariencia` como la manda el servidor: { modo: 'OSCURO', acento: 'AZUL' }. */
+export const cambiarApariencia = (apariencia) => pedir('/apariencia', { method: 'PUT', body: apariencia });

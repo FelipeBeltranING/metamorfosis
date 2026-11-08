@@ -1,0 +1,35 @@
+sequenceDiagram
+    autonumber
+    actor U as Creador de la meta
+    participant IM as InvitarPersonasModal
+    participant CI as CodigoInvitacion
+    participant FS as invitacionService.js
+    participant IC as InvitacionController
+    participant S as CodigoUnionService
+    participant R as MetaRepository
+    participant DB as PostgreSQL
+    U->>IM: Abre "Invitar personas"
+    IM->>CI: Muestra la sección "Invitar con un código"
+    CI->>FS: verCodigoMeta(codigoMeta)
+    FS->>IC: GET /api/metas/{codigoMeta}/codigo (JWT)
+    IC->>S: verCodigo(codigoMeta, codigoUsuario)
+    S-->>IC: CodigoUnionResponse(codigo = null)
+    IC-->>CI: 200 sin código activo
+    U->>CI: Pulsa "Crear código"
+    CI->>FS: generarCodigoMeta(codigoMeta)
+    FS->>IC: POST /api/metas/{codigoMeta}/codigo (JWT)
+    IC->>S: generar(codigoMeta, codigoUsuario)
+    S->>R: findById(codigoMeta)
+    R-->>S: meta (es el creador y está ACTIVA)
+    S->>S: nuevoCodigo(): 8 caracteres sin O/0 ni I/1
+    S->>R: findByCodigoUnion(codigo)
+    R-->>S: vacío (no se repite)
+    S->>S: meta.activarCodigoUnion(codigo, ahora + 7 días)
+    S->>R: save(meta)
+    R->>DB: UPDATE meta SET codigo_union, codigo_union_expira
+    S-->>IC: CodigoUnionResponse(codigo, expira)
+    Note over S: @Auditar: GENERAR_CODIGO_META EXITO (sin el código)
+    IC-->>FS: 201
+    FS-->>CI: código
+    CI->>U: Muestra "ABCD-EFGH", hasta cuándo sirve y "Copiar"
+    U->>CI: Pulsa "Copiar" y lo comparte por mensaje

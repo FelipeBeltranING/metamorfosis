@@ -9,9 +9,13 @@ import Encabezado from '../components/Encabezado';
 import MensajeError from '../components/MensajeError';
 import AvatarUsuario from '../components/AvatarUsuario';
 import FotoPerfilModal from '../components/FotoPerfilModal';
+import SeccionApariencia from '../components/SeccionApariencia';
 import {
-  cambiarFoto, editarDatos, obtenerCuenta, quitarFoto,
+  cambiarApariencia, cambiarFoto, editarDatos, obtenerCuenta, quitarFoto,
 } from '../services/cuentaService';
+import {
+  aplicarApariencia, desdeServidor, haciaServidor, leerApariencia, mismaApariencia,
+} from '../tema/apariencia';
 import { actualizarSesion, inicialesDe } from '../services/sesionService';
 
 /** Igual que el servidor (CuentaService.TEXTO_MAXIMO). */
@@ -53,6 +57,7 @@ function erroresDelServidor(error) {
     if (/apellido/i.test(mensaje)) campos.apellido = mensaje;
     else if (/nombre/i.test(mensaje)) campos.nombre = mensaje;
     else if (/foto/i.test(mensaje)) campos.foto = mensaje;
+    else if (/modo|acento/i.test(mensaje)) campos.apariencia = mensaje;
     else generales.push(mensaje);
   }
   return { campos, general: generales[0] ?? (Object.keys(campos).length ? '' : error.message) };
@@ -81,7 +86,7 @@ function CampoPerfil({
   );
 }
 
-/** HU-23: editar nombre, apellido y foto de la cuenta. El correo se muestra, no se edita. */
+/** HU-23: editar nombre, apellido y foto de la cuenta. El correo se muestra, no se edita. HU19: apariencia. */
 export default function EditarPerfilPage() {
   const navigate = useNavigate();
   const [carga, setCarga] = useState({ fase: 'cargando' });
@@ -94,6 +99,8 @@ export default function EditarPerfilPage() {
   // Foto pendiente de guardar: null (sin cambios), { tipo: 'nueva', foto } o { tipo: 'quitar' }.
   const [fotoPendiente, setFotoPendiente] = useState(null);
   const [archivoElegido, setArchivoElegido] = useState(null);
+  // HU19: apariencia elegida en la página (se ve al instante; se guarda con el formulario).
+  const [apariencia, setApariencia] = useState(leerApariencia);
   const selectorArchivo = useRef(null);
 
   useEffect(() => {
@@ -103,6 +110,9 @@ export default function EditarPerfilPage() {
         if (!activo) return;
         setCarga({ fase: 'lista', cuenta });
         setFormulario({ nombre: cuenta.nombre, apellido: cuenta.apellido });
+        const guardada = desdeServidor(cuenta.apariencia);
+        setApariencia(guardada);
+        aplicarApariencia(guardada, true);
       })
       .catch((error) => {
         if (!activo) return;
@@ -113,6 +123,9 @@ export default function EditarPerfilPage() {
       activo = false;
     };
   }, [intento, navigate]);
+
+  // HU19: al salir sin guardar, vuelve la apariencia guardada (la vista previa no se queda).
+  useEffect(() => () => aplicarApariencia(leerApariencia()), []);
 
   // El aviso de "Perfil actualizado" se oculta solo.
   useEffect(() => {
@@ -125,7 +138,8 @@ export default function EditarPerfilPage() {
   const datosCambiaron = Boolean(cuenta) && (
     limpiar(formulario.nombre) !== cuenta.nombre || limpiar(formulario.apellido) !== cuenta.apellido
   );
-  const hayCambios = datosCambiaron || fotoPendiente !== null;
+  const aparienciaCambio = Boolean(cuenta) && !mismaApariencia(apariencia, desdeServidor(cuenta.apariencia));
+  const hayCambios = datosCambiaron || fotoPendiente !== null || aparienciaCambio;
   const fotoMostrada = fotoPendiente?.tipo === 'nueva' ? fotoPendiente.foto
     : fotoPendiente?.tipo === 'quitar' ? null : cuenta?.foto ?? null;
 
@@ -164,6 +178,13 @@ export default function EditarPerfilPage() {
     setGuardado(false);
   };
 
+  const elegirApariencia = (nueva) => {
+    setApariencia(nueva);
+    aplicarApariencia(nueva);
+    setErrores((actuales) => ({ ...actuales, apariencia: undefined }));
+    setGuardado(false);
+  };
+
   const cambiar = (campo) => (valor) => {
     setFormulario((actual) => ({ ...actual, [campo]: valor }));
     setErrores((actuales) => ({ ...actuales, [campo]: undefined }));
@@ -173,7 +194,7 @@ export default function EditarPerfilPage() {
   const guardar = async (evento) => {
     evento.preventDefault();
     const encontrados = validar(formulario);
-    setErrores((actuales) => ({ ...encontrados, foto: actuales.foto }));
+    setErrores((actuales) => ({ ...encontrados, foto: actuales.foto, apariencia: actuales.apariencia }));
     setErrorGeneral(Object.keys(encontrados).length ? 'No se guardaron los cambios. Revisa los campos marcados.' : '');
     if (Object.keys(encontrados).length || !hayCambios) return;
 
@@ -185,6 +206,8 @@ export default function EditarPerfilPage() {
       }
       if (fotoPendiente?.tipo === 'nueva') actualizada = await cambiarFoto(fotoPendiente.foto);
       if (fotoPendiente?.tipo === 'quitar') actualizada = await quitarFoto();
+      if (aparienciaCambio) actualizada = await cambiarApariencia(haciaServidor(apariencia));
+      aplicarApariencia(desdeServidor(actualizada.apariencia), true);
       setFotoPendiente(null);
       setCarga({ fase: 'lista', cuenta: actualizada });
       setFormulario({ nombre: actualizada.nombre, apellido: actualizada.apellido });
@@ -341,6 +364,8 @@ export default function EditarPerfilPage() {
                 <p id="ayuda-correo" className="text-[13px] text-gray-600">Es el correo con el que inicias sesión, por eso no se cambia aquí.</p>
               </div>
             </section>
+
+            <SeccionApariencia apariencia={apariencia} onCambiar={elegirApariencia} error={errores.apariencia} />
 
             <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
               <Link

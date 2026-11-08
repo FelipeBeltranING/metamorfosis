@@ -16,6 +16,12 @@ public class ParticipacionId implements Serializable {
 
     protected ParticipacionId() { }
 
+    /** HU14: para buscar la participación de un usuario en una meta. */
+    public ParticipacionId(Integer codigoUsuario, Integer codigoMeta) {
+        this.codigoUsuario = codigoUsuario;
+        this.codigoMeta = codigoMeta;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { CircleCheck, LoaderCircle } from 'lucide-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Link, useLocation, useNavigate, useSearchParams,
+} from 'react-router-dom';
 import LayoutAuth from '../components/LayoutAuth';
 import CampoTexto from '../components/CampoTexto';
 import AlertaFormulario from '../components/AlertaFormulario';
@@ -33,6 +35,7 @@ function validar({ email, password }) {
 export default function LoginPage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [parametros] = useSearchParams();
   const [formulario, setFormulario] = useState({ email: '', password: '' });
   const [errores, setErrores] = useState({});
   const [errorServidor, setErrorServidor] = useState('');
@@ -42,10 +45,10 @@ export default function LoginPage() {
   // Aviso de éxito: se limpia el estado de navegación y se oculta a los 4 s.
   useEffect(() => {
     if (!aviso) return undefined;
-    navigate(location.pathname, { replace: true, state: null });
+    navigate(location.pathname + location.search, { replace: true, state: null });
     const temporizador = setTimeout(() => setAviso(null), 4000);
     return () => clearTimeout(temporizador);
-  }, [aviso, navigate, location.pathname]);
+  }, [aviso, navigate, location.pathname, location.search]);
 
   const actualizar = (campo, valor) => {
     setFormulario((anterior) => ({ ...anterior, [campo]: valor }));
@@ -72,7 +75,10 @@ export default function LoginPage() {
         password: formulario.password,
       });
       guardarSesion(sesion);
-      navigate('/metas', { replace: true, state: { sesionIniciada: true } });
+      // HU14: si se llegó desde un enlace (p. ej. aceptar una invitación), se vuelve ahí.
+      const volver = parametros.get('volver');
+      if (volver && volver.startsWith('/') && !volver.startsWith('//')) navigate(volver, { replace: true });
+      else navigate('/metas', { replace: true, state: { sesionIniciada: true } });
     } catch (error) {
       if (error.estado === 401) {
         setErrorServidor(MENSAJE_CREDENCIALES);

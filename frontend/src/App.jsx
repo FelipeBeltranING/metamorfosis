@@ -15,6 +15,8 @@ import LoginPage from './pages/LoginPage';
 import LogroPublicoPage from './pages/LogroPublicoPage';
 import PerfilPage from './pages/PerfilPage';
 import InsigniasPage from './pages/InsigniasPage';
+import InvitacionesPage from './pages/InvitacionesPage';
+import ResponderInvitacionPage from './pages/ResponderInvitacionPage';
 import BuscarPersonasPage from './pages/BuscarPersonasPage';
 import PerfilPublicoPage from './pages/PerfilPublicoPage';
 import RutaProtegida from './components/RutaProtegida';
@@ -43,6 +45,7 @@ export default function App() {
           <Route path="/registro/rechazar" element={<RechazarRegistroPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/logros/:token" element={<LogroPublicoPage />} />
+          <Route path="/invitaciones/responder" element={<ResponderInvitacionPage />} />
           <Route element={<RutaProtegida />}>
             <Route path="/metas" element={<MisMetasPage />} />
             <Route path="/metas/nueva" element={<CrearMetaPage />} />
@@ -61,6 +64,7 @@ export default function App() {
             <Route path="/perfil" element={<PerfilPage />} />
             {/* HU12: galería de insignias, desde Mi perfil. */}
             <Route path="/insignias" element={<InsigniasPage />} />
+            <Route path="/invitaciones" element={<InvitacionesPage />} />
             {/* HU24: buscar personas y perfil público de otra persona */}
             <Route path="/usuarios" element={<BuscarPersonasPage />} />
             <Route path="/usuarios/:codigoUsuario" element={<PerfilPublicoPage />} />
