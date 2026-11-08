@@ -2,6 +2,7 @@ package com.metamorfosis.backend.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -93,6 +94,26 @@ public class Meta {
     /** HU25: la meta está oculta en el perfil de ese usuario. */
     public boolean isOcultaPara(Integer codigoUsuario) {
         return participacionDe(codigoUsuario).map(Participacion::isOculta).orElse(false);
+    }
+
+    /** HU13: participación de esa persona (en cualquier estado), si la hay. */
+    public Optional<Participacion> participacionDeUsuario(Integer codigoUsuario) {
+        return participacionDe(codigoUsuario);
+    }
+
+    /**
+     * HU13: invita a la persona. Si ya había rechazado una invitación, se reutiliza su participación.
+     * Las reglas (quién invita, a quién, cuántos) las revisa InvitacionService.
+     */
+    public Participacion invitar(Usuario invitado, Integer codigoInvitador, String tokenHash,
+                                 LocalDateTime ahora, LocalDateTime expira) {
+        Participacion p = participacionDe(invitado.getCodigoUsuario()).orElseGet(() -> {
+            Participacion nueva = new Participacion(invitado, this, EstadoInvitacion.PENDIENTE);
+            participaciones.add(nueva);
+            return nueva;
+        });
+        p.invitar(codigoInvitador, tokenHash, ahora, expira);
+        return p;
     }
 
     /**

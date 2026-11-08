@@ -33,5 +33,6 @@ public enum AccionLog {
     EDITAR_PERFIL,      // HU23: nombre y apellido
     CAMBIAR_FOTO_PERFIL, // HU23
     QUITAR_FOTO_PERFIL, // HU23
-    CAMBIAR_APARIENCIA  // HU19: tema, modo o color de acento
+    CAMBIAR_APARIENCIA, // HU19: tema, modo o color de acento
+    INVITAR_META        // HU13: invitar a una persona a la meta
 }
