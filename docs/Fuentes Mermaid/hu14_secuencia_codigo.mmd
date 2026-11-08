@@ -1,0 +1,34 @@
+sequenceDiagram
+    autonumber
+    actor U as Persona con el código
+    participant MM as MisMetasPage
+    participant UM as UnirseConCodigoModal
+    participant FS as invitacionService.js
+    participant IC as InvitacionController
+    participant S as CodigoUnionService
+    participant R as Repositorios
+    participant DB as PostgreSQL
+    U->>MM: Pulsa "Unirme con código"
+    MM->>UM: Abre la ventana
+    U->>UM: Escribe "abcd efgh"
+    UM->>UM: Le da formato: "ABCD-EFGH"
+    U->>UM: Pulsa "Unirme a la meta"
+    UM->>FS: unirseConCodigo("ABCD-EFGH")
+    FS->>IC: POST /api/metas/unirse {codigo} (JWT)
+    IC->>S: unirse(pedido, codigoUsuario)
+    S->>S: normalizar: "ABCDEFGH"
+    S->>S: revisarIntentos: menos de 10 fallos en 15 minutos
+    S->>R: findByCodigoUnion("ABCDEFGH")
+    R->>DB: SELECT meta por codigo_union
+    R-->>S: meta con el código vigente
+    S->>S: Meta ACTIVA, no participa todavía, menos de 10 personas
+    S->>R: findById(codigoUsuario)
+    R-->>S: usuario
+    S->>S: meta.unirse(usuario): participación ACEPTADA
+    S->>R: save(meta)
+    R->>DB: INSERT participacion ACEPTADA
+    S-->>IC: MetaResponse con sus participantes
+    Note over S: @Auditar: UNIRSE_CON_CODIGO EXITO (el código no queda en el log)
+    IC-->>FS: 200
+    FS-->>UM: meta
+    UM->>U: Abre Tu camino de la meta

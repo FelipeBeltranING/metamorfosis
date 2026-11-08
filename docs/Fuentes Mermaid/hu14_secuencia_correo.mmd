@@ -1,0 +1,37 @@
+sequenceDiagram
+    autonumber
+    actor U as Persona invitada
+    participant RP as ResponderInvitacionPage
+    participant LP as LoginPage
+    participant FS as invitacionService.js
+    participant IC as InvitacionController
+    participant S as InvitacionService
+    participant R as ParticipacionRepository
+    participant DB as PostgreSQL
+    U->>RP: Pulsa "Aceptar invitación" en el correo (/invitaciones/responder?token=…&accion=aceptar)
+    RP->>FS: consultarInvitacionCorreo(token) (sin sesión)
+    FS->>IC: GET /api/invitaciones/correo?token=…
+    IC->>S: consultarPorToken(token)
+    S->>R: findByTokenHash(SHA-256 del token)
+    R->>DB: SELECT participacion por token_hash
+    R-->>S: participación PENDIENTE y vigente
+    S-->>IC: InvitacionCorreoResponse(meta, invitador, l***@gmail.com)
+    IC-->>RP: 200
+    RP->>U: "Daniel Santos te invitó a una meta" e "Inicia sesión para aceptar"
+    U->>LP: Pulsa "Inicia sesión para aceptar" (/login?volver=…)
+    U->>LP: Escribe su correo y contraseña
+    LP->>RP: Al entrar vuelve a la página de la invitación
+    U->>RP: Pulsa "Aceptar y ver la meta"
+    RP->>FS: aceptarInvitacionCorreo(token)
+    FS->>IC: POST /api/invitaciones/correo/aceptar {token} (JWT)
+    IC->>S: aceptarPorToken(token, codigoUsuario)
+    S->>R: findByTokenHash(SHA-256 del token)
+    R-->>S: participación PENDIENTE y vigente
+    S->>S: La invitación es para la cuenta que inició sesión
+    S->>S: participacion.responder(true)
+    S->>R: save(participacion)
+    R->>DB: UPDATE participacion SET estado_invitacion = ACEPTADA, token_hash = null
+    S-->>IC: InvitacionRespondidaResponse(aceptada = true)
+    Note over S: @Auditar: RESPONDER_INVITACION EXITO (desde: correo)
+    IC-->>RP: 200
+    RP->>U: Abre Tu camino de la meta
