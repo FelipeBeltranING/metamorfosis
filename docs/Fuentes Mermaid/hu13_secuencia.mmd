@@ -1,0 +1,39 @@
+sequenceDiagram
+    autonumber
+    actor U as Creador de la meta
+    participant MT as MetaTarjeta / MenuTarjeta
+    participant IM as InvitarPersonasModal
+    participant FS as usuarioService.js / metaService.js
+    participant IC as InvitacionController
+    participant S as InvitacionService
+    participant R as Repositorios
+    participant DB as PostgreSQL
+    participant C as CorreoService (Brevo)
+    actor I as Persona invitada
+    U->>MT: "⋯" de la meta y luego "Invitar personas"
+    MT->>IM: Abre la ventana con los participantes actuales
+    U->>IM: Escribe "lau"
+    IM->>FS: buscarUsuarios("lau") (HU24)
+    FS-->>IM: personas (sin correo)
+    U->>IM: Pulsa "Invitar" junto a Laura Gómez
+    IM->>FS: invitarAMeta(codigoMeta, codigoUsuario)
+    FS->>IC: POST /api/metas/{codigoMeta}/invitaciones {codigoUsuario} (JWT)
+    IC->>S: invitar(codigoMeta, pedido, codigoUsuario)
+    S->>R: findById(codigoMeta)
+    R->>DB: SELECT meta y participaciones
+    R-->>S: meta
+    S->>S: Es el creador, meta ACTIVA, no es él mismo
+    S->>R: findById(codigoUsuario invitado)
+    R-->>S: invitada
+    S->>S: No participa ni tiene invitación pendiente, menos de 10 personas
+    S->>S: TokensSeguros.generar() y hash SHA-256
+    S->>S: meta.invitar(invitada, creador, hash, ahora, ahora + 7 días)
+    S->>R: save(meta)
+    R->>DB: INSERT participacion PENDIENTE con token_hash y token_expira
+    S->>C: enviar(correo, asunto, html con Aceptar y Rechazar)
+    C-->>I: Correo "Daniel Santos te invitó a una meta"
+    S-->>IC: InvitacionEnviadaResponse(participante PENDIENTE, correoEnviado = true)
+    Note over S: @Auditar: INVITAR_META EXITO (detalle: invitado)
+    IC-->>FS: 201
+    FS-->>IM: participante y correoEnviado
+    IM->>U: "Le enviamos la invitación a Laura Gómez por correo" y la marca como Pendiente

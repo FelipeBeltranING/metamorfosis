@@ -4,6 +4,9 @@ import {
 import { Link } from 'react-router-dom';
 import MenuTarjeta from './MenuTarjeta';
 import AnilloConstancia from './AnilloConstancia';
+import { AvataresEncimados } from './Participantes';
+import { textoParticipantes } from '../utils/participantes';
+import { obtenerSesion } from '../services/sesionService';
 import { formatearNumero } from '../utils/subMetas';
 import { PLAZOS, TIPOS } from '../constants/opcionesMeta';
 
@@ -80,11 +83,16 @@ export function EtiquetaOculta({ className = '' }) {
 }
 
 export default function MetaTarjeta({
-  meta, resumen, onMarcarCumplida, onEditar, onCambiarVisibilidad, onEliminar, onCompartir,
+  meta, resumen, onMarcarCumplida, onEditar, onCambiarVisibilidad, onEliminar, onCompartir, onInvitar,
 }) {
   const tipo = TIPO_POR_VALOR[meta.tipo] ?? TIPO_POR_VALOR.OTRO;
   const plazo = PLAZO_POR_VALOR[meta.plazo];
   const cumplida = meta.estado === 'CUMPLIDA';
+  // HU13: es compartida si alguien más participa o está invitado. Solo quien la creó la edita,
+  // la elimina, la marca cumplida e invita; los demás participantes registran sus días.
+  const participantes = meta.participantes ?? [];
+  const compartida = participantes.length > 1;
+  const soyCreador = participantes.length === 0 || participantes.some((p) => p.creador && p.codigoUsuario === obtenerSesion()?.codigoUsuario);
 
   return (
     <li className={`flex flex-col gap-5 rounded-2xl border p-5 shadow-[0_4px_20px_rgba(30,27,46,0.03)] transition sm:p-8 ${
@@ -105,21 +113,22 @@ export default function MetaTarjeta({
               Activa
             </span>
           )}
-          {onMarcarCumplida && (
+          {onMarcarCumplida && (soyCreador || cumplida) && (
             <CirculoCumplida
               nombreMeta={meta.nombre}
               cumplida={cumplida}
               onClick={() => onMarcarCumplida(meta)}
             />
           )}
-          {(onEditar || onCambiarVisibilidad || onEliminar) && (
+          {(onEditar || onCambiarVisibilidad || onEliminar || onInvitar) && (
             <MenuTarjeta
               nombre={meta.nombre}
-              onEditar={onEditar && (() => onEditar(meta))}
+              onEditar={onEditar && soyCreador ? () => onEditar(meta) : undefined}
               editarBloqueado={cumplida}
               oculta={meta.oculta}
               onCambiarVisibilidad={onCambiarVisibilidad && (() => onCambiarVisibilidad(meta))}
-              onEliminar={onEliminar && (() => onEliminar(meta))}
+              onEliminar={onEliminar && soyCreador ? () => onEliminar(meta) : undefined}
+              onInvitar={onInvitar && soyCreador ? () => onInvitar(meta) : undefined}
             />
           )}
         </div>
@@ -134,6 +143,17 @@ export default function MetaTarjeta({
         </div>
         {resumen?.totalSubMetas > 0 && <AnilloConstancia porcentaje={resumen.constancia7} />}
       </div>
+      {compartida && (
+        <button
+          type="button"
+          onClick={onInvitar && soyCreador && !cumplida ? () => onInvitar(meta) : undefined}
+          disabled={!(onInvitar && soyCreador && !cumplida)}
+          className="-mt-1 flex items-center gap-3 self-start rounded-xl text-left text-sm font-semibold text-gray-600 enabled:hover:text-violet-700 disabled:cursor-default"
+        >
+          <AvataresEncimados personas={participantes} />
+          <span>Meta compartida · {textoParticipantes(participantes, obtenerSesion()?.codigoUsuario)}</span>
+        </button>
+      )}
 
       {/* Sub-metas: lo que toca hoy y el acceso a "Tu camino". */}
       {resumen && !cumplida && (
@@ -171,14 +191,18 @@ export default function MetaTarjeta({
         ) : (
           <div className="flex flex-col gap-3 border-t border-zinc-100 pt-4">
             <p className="text-[15px] leading-6 text-gray-600">
-              Esta meta aún no tiene un camino. Divídela en sub-metas diarias para saber qué hacer cada día.
+              {soyCreador
+                ? 'Esta meta aún no tiene un camino. Divídela en sub-metas diarias para saber qué hacer cada día.'
+                : 'Quien creó la meta aún no ha trazado el camino. Cuando agregue sub-metas, marcarás aquí tus días.'}
             </p>
-            <Link
-              to={`/metas/${meta.codigoMeta}`}
-              className="flex h-11 items-center justify-center rounded-xl bg-violet-600 font-bold text-white hover:bg-violet-700"
-            >
-              + Agregar la primera sub-meta
-            </Link>
+            {soyCreador && (
+              <Link
+                to={`/metas/${meta.codigoMeta}`}
+                className="flex h-11 items-center justify-center rounded-xl bg-violet-600 font-bold text-white hover:bg-violet-700"
+              >
+                + Agregar la primera sub-meta
+              </Link>
+            )}
           </div>
         )
       )}

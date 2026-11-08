@@ -48,6 +48,23 @@ public class ManejadorExcepciones {
     private ResponseEntity<ErrorResponse> responder(HttpStatus estado, String mensaje, List<String> errores) {
         return ResponseEntity.status(estado).body(new ErrorResponse(estado.value(), mensaje, errores));
     }
+    /** HU13: la persona ya participa o ya tiene una invitación pendiente. */
+    @ExceptionHandler(ConflictoException.class)
+    public ResponseEntity<ErrorResponse> conflicto(ConflictoException e) {
+        return responder(HttpStatus.CONFLICT, e.getMessage(), List.of());
+    }
+
+    /** HU14: enlace de invitación usado, cancelado o vencido. */
+    @ExceptionHandler(InvitacionNoValidaException.class)
+    public ResponseEntity<ErrorResponse> invitacionNoValida(InvitacionNoValidaException e) {
+        return responder(HttpStatus.GONE, e.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(InvitacionNoEncontradaException.class)
+    public ResponseEntity<ErrorResponse> invitacionNoEncontrada(InvitacionNoEncontradaException e) {
+        return responder(HttpStatus.NOT_FOUND, e.getMessage(), List.of());
+    }
+
     @ExceptionHandler(EmailYaRegistradoException.class)
     public ResponseEntity<ErrorResponse> emailYaRegistrado(EmailYaRegistradoException e) {
         return responder(HttpStatus.CONFLICT, e.getMessage(), List.of());

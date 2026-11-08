@@ -171,3 +171,32 @@ export async function cambiarVisibilidad(codigoMeta, oculta) {
   if (!datos?.codigoMeta) throw new Error('Respuesta inesperada del servidor');
   return datos;
 }
+
+/**
+ * HU13: invita a otra persona a la meta. Devuelve { participante, correoEnviado }: la persona
+ * invitada (estado 'PENDIENTE') y si salió el correo con Aceptar y Rechazar.
+ * Lanza Error con `mensaje` y `estado` (código HTTP); sin `estado` = sin conexión.
+ */
+export async function invitarAMeta(codigoMeta, codigoUsuario) {
+  const encabezados = cabeceras({ 'Content-Type': 'application/json' });
+  let respuesta;
+  try {
+    respuesta = await fetch(`${API_URL}/api/metas/${codigoMeta}/invitaciones`, {
+      method: 'POST',
+      headers: encabezados,
+      body: JSON.stringify({ codigoUsuario }),
+    });
+  } catch {
+    throw new Error('No se pudo enviar la invitación. Revisa tu conexión e inténtalo de nuevo.');
+  }
+
+  if (respuesta.status === 401) throw errorSesionExpirada();
+  const datos = await respuesta.json().catch(() => null);
+  if (!respuesta.ok) {
+    const error = new Error(datos?.errores?.[0] ?? datos?.mensaje ?? 'Error inesperado');
+    error.estado = respuesta.status;
+    throw error;
+  }
+  if (!datos?.participante?.codigoUsuario) throw new Error('Respuesta inesperada del servidor');
+  return datos;
+}

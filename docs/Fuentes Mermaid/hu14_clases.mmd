@@ -1,0 +1,117 @@
+classDiagram
+    direction TB
+    class InvitacionController {
+        +pendientes(codigoUsuario) ResponseEntity~List~InvitacionResponse~~
+        +responder(codigoMeta, pedido, codigoUsuario) ResponseEntity~InvitacionRespondidaResponse~
+        +consultarPorToken(token: String) ResponseEntity~InvitacionCorreoResponse~
+        +aceptarPorToken(pedido: TokenRequest, codigoUsuario) ResponseEntity~InvitacionRespondidaResponse~
+        +rechazarPorToken(pedido: TokenRequest) ResponseEntity~Void~
+        +unirse(pedido: UnirseRequest, codigoUsuario: Integer) ResponseEntity~MetaResponse~
+    }
+    class InvitacionService {
+        -ParticipacionRepository participacionRepository
+        -LogService logService
+        +pendientes(codigoUsuario) List~InvitacionResponse~
+        +responder(codigoMeta, pedido, codigoUsuario) InvitacionRespondidaResponse
+        +consultarPorToken(token) InvitacionCorreoResponse
+        +aceptarPorToken(token, codigoUsuario) InvitacionRespondidaResponse
+        +rechazarPorToken(token) void
+        -aplicarRespuesta(p, aceptar) InvitacionRespondidaResponse
+        -porToken(token: String) Participacion
+        ~enmascarar(email: String)$ String
+    }
+    class CodigoUnionService {
+        ~MAXIMO_FALLOS: int = 10$
+        ~VENTANA_FALLOS: Duration = 15 min$
+        -Map~Integer, Deque~Instant~~ fallos
+        +unirse(pedido: UnirseRequest, codigoUsuario: Integer) MetaResponse
+        ~normalizar(codigo: String)$ String
+        -revisarIntentos(codigoUsuario: Integer) void
+        -registrarFallo(codigoUsuario: Integer) void
+    }
+    class ParticipacionRepository {
+        <<interface>>
+        +findById(id: ParticipacionId) Optional~Participacion~
+        +findByTokenHash(tokenHash: String) Optional~Participacion~
+        +pendientesDe(codigoUsuario: Integer) List~Participacion~
+    }
+    class MetaRepository {
+        <<interface>>
+        +findByCodigoUnion(codigo: String) Optional~Meta~
+        +save(meta: Meta) Meta
+    }
+    class Participacion {
+        -EstadoInvitacion estadoInvitacion
+        -String tokenHash
+        -LocalDateTime tokenExpira
+        +responder(aceptar: boolean) void
+        +getMeta() Meta
+    }
+    class Meta {
+        +unirse(usuario: Usuario) Participacion
+        +codigoUnionVigente(ahora: LocalDateTime) boolean
+        +participantesVisibles() List~Participacion~
+    }
+    class SeguridadConfig {
+        GET /api/invitaciones/correo permitAll
+        POST /api/invitaciones/correo/rechazar permitAll
+    }
+    class InvitacionResponse {
+        <<record>>
+        +Integer codigoMeta
+        +String nombreMeta
+        +TipoMeta tipo
+        +Plazo plazo
+        +Persona invitador
+        +int participantes
+        +LocalDateTime fechaInvitacion
+    }
+    class ResponderInvitacionRequest {
+        <<record>>
+        +Boolean aceptar
+    }
+    class InvitacionRespondidaResponse {
+        <<record>>
+        +Integer codigoMeta
+        +String nombreMeta
+        +boolean aceptada
+    }
+    class InvitacionCorreoResponse {
+        <<record>>
+        +Integer codigoMeta
+        +String nombreMeta
+        +String nombreInvitador
+        +String paraEmail
+    }
+    class UnirseRequest {
+        <<record>>
+        +String codigo
+    }
+    class AccionLog {
+        <<enumeration>>
+        VER_INVITACIONES
+        RESPONDER_INVITACION
+        UNIRSE_CON_CODIGO
+    }
+    class InvitacionNoValidaException {
+        410 enlace usado o vencido
+    }
+    class InvitacionNoEncontradaException {
+        404 sin invitación pendiente
+    }
+    InvitacionController --> InvitacionService : usa
+    InvitacionController --> CodigoUnionService : usa
+    InvitacionService --> ParticipacionRepository : usa
+    CodigoUnionService --> MetaRepository : usa
+    ParticipacionRepository ..> Participacion
+    Participacion --> Meta : meta
+    InvitacionService ..> InvitacionResponse : crea
+    InvitacionService ..> InvitacionRespondidaResponse : crea
+    InvitacionService ..> InvitacionCorreoResponse : crea
+    InvitacionService ..> InvitacionNoValidaException : lanza
+    InvitacionService ..> InvitacionNoEncontradaException : lanza
+    InvitacionController ..> ResponderInvitacionRequest
+    InvitacionController ..> UnirseRequest
+    InvitacionService ..> AccionLog : @Auditar
+    CodigoUnionService ..> AccionLog : @Auditar
+    SeguridadConfig ..> InvitacionController : rutas públicas del correo

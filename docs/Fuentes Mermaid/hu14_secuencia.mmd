@@ -1,0 +1,40 @@
+sequenceDiagram
+    autonumber
+    actor U as Persona invitada
+    participant MM as MisMetasPage / AvisoInvitaciones
+    participant IP as InvitacionesPage
+    participant FS as invitacionService.js
+    participant IC as InvitacionController
+    participant S as InvitacionService
+    participant R as ParticipacionRepository
+    participant DB as PostgreSQL
+    U->>MM: Entra a Mis metas
+    MM->>FS: listarInvitaciones()
+    FS->>IC: GET /api/invitaciones (JWT)
+    IC->>S: pendientes(codigoUsuario)
+    S->>R: pendientesDe(codigoUsuario)
+    R->>DB: SELECT participacion PENDIENTE JOIN meta ACTIVA JOIN creador
+    R-->>S: invitaciones
+    S-->>IC: List InvitacionResponse
+    Note over S: @Auditar: VER_INVITACIONES EXITO
+    IC-->>MM: 200
+    MM->>U: "Tienes 1 invitación a una meta compartida"
+    U->>IP: Pulsa "Ver" (abre /invitaciones)
+    IP->>U: Quién invitó, la meta, cuántos participan, Aceptar y Rechazar
+    U->>IP: Pulsa "Aceptar invitación"
+    IP->>FS: responderInvitacion(codigoMeta, true)
+    FS->>IC: PATCH /api/invitaciones/{codigoMeta} {"aceptar": true} (JWT)
+    IC->>S: responder(codigoMeta, pedido, codigoUsuario)
+    S->>R: findById(ParticipacionId(codigoUsuario, codigoMeta))
+    R-->>S: participación PENDIENTE
+    S->>S: La meta sigue ACTIVA
+    S->>S: participacion.responder(true): ACEPTADA y el enlace del correo deja de servir
+    S->>R: save(participacion)
+    R->>DB: UPDATE participacion SET estado_invitacion = ACEPTADA, token_hash = null
+    S-->>IC: InvitacionRespondidaResponse(aceptada = true)
+    Note over S: @Auditar: RESPONDER_INVITACION EXITO (desde: app)
+    IC-->>FS: 200
+    FS-->>IP: respuesta
+    IP->>U: "¡Te uniste a «Leer 20 libros»!" con "Ver la meta"
+    U->>IP: Pulsa "Ver la meta"
+    IP->>U: Abre Tu camino: comparte las sub-metas y marca sus propios días

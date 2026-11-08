@@ -17,6 +17,11 @@ HU8  Registro           · pedir correo, revisa tu correo, autorizado, completar
 HU9  Iniciar sesión     · vacío, errores, credenciales incorrectas
 HU10 Cerrar sesión      · confirmación
 HU11 Insignias          · aviso de insignia ganada
+HU13 Invitar a una meta  · menú, ventana de invitar, buscar, invitación enviada, código, tarjetas y
+                          Tu camino compartidos, meta cumplida sin invitar, correo de invitación, celular
+HU14 Responder invitación · aviso en Mis metas, menú de la cuenta, Invitaciones, aceptada, sin invitaciones,
+                          enlace del correo (sin sesión, con sesión, rechazar, rechazada, vencido),
+                          unirse con código, código no válido, celular
 HU19 Personalizar perfil · tema Noche en las pantallas principales (escritorio y celular),
                           los 4 temas comparados y la sección Apariencia de Editar perfil
 HU21 Compartir logro    · botón en cumplidas, imagen para compartir, página pública

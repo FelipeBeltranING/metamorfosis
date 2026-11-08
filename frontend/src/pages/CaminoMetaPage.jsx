@@ -1,9 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Check, ChevronLeft, CircleAlert, CircleCheck, Lock, Route, Trophy } from 'lucide-react';
+import {
+  Check, ChevronLeft, CircleAlert, CircleCheck, Lock, Route, Trophy, UserPlus,
+} from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Encabezado from '../components/Encabezado';
 import EstadoError from '../components/EstadoError';
 import AnilloConstancia from '../components/AnilloConstancia';
+import InvitarPersonasModal from '../components/InvitarPersonasModal';
+import { AvataresEncimados } from '../components/Participantes';
+import { textoParticipantes } from '../utils/participantes';
+import { obtenerSesion } from '../services/sesionService';
 import MenuSubMeta from '../components/MenuSubMeta';
 import RegistrarValorModal from '../components/RegistrarValorModal';
 import EliminarSubMetaModal from '../components/EliminarSubMetaModal';
@@ -43,6 +49,7 @@ export default function CaminoMetaPage() {
   const [confirmarCumplida, setConfirmarCumplida] = useState(false);
   const [marcando, setMarcando] = useState(false);
   const [errorCumplida, setErrorCumplida] = useState('');
+  const [invitando, setInvitando] = useState(false); // HU13
 
   const manejarError = useCallback((error, poner) => {
     if (error.estado === 401) navigate('/login', { replace: true });
@@ -96,6 +103,9 @@ export default function CaminoMetaPage() {
 
   const { camino } = estado;
   const fechas = camino.subMetas[0]?.dias.map((d) => d.fecha) ?? [];
+  const yo = obtenerSesion()?.codigoUsuario;
+  const participantes = camino.participantes ?? [];
+  const puedeInvitar = !camino.soloLectura && camino.puedeEditar && (participantes.length === 0 || participantes.some((p) => p.creador && p.codigoUsuario === yo));
 
   // Sí/No: vacío → hecho → no hecho → vacío.
   const alternarSiNo = async (subMeta, dia) => {
@@ -233,6 +243,27 @@ export default function CaminoMetaPage() {
               {PLAZO_POR_VALOR[camino.plazo] && <span className="rounded-lg bg-slate-100 px-2.5 py-1.5">{PLAZO_POR_VALOR[camino.plazo]}</span>}
               <span className="rounded-lg bg-slate-100 px-2.5 py-1.5">Creada el {formatearFecha(camino.fechaCreacion)}</span>
             </div>
+            {/* HU13: quiénes recorren la meta y, para el creador, el acceso a invitar. */}
+            {(participantes.length > 1 || puedeInvitar) && (
+              <div className="mt-1 flex flex-wrap items-center gap-3">
+                {participantes.length > 1 && (
+                  <span className="flex items-center gap-2.5 text-sm font-semibold text-gray-600">
+                    <AvataresEncimados personas={participantes} clase="size-8 text-xs" maximo={4} />
+                    {textoParticipantes(participantes, yo)}
+                  </span>
+                )}
+                {puedeInvitar && (
+                  <button
+                    type="button"
+                    onClick={() => setInvitando(true)}
+                    className="flex h-9 items-center gap-1.5 rounded-xl border border-violet-300 bg-violet-50 px-3 text-sm font-bold text-violet-800 hover:bg-violet-100"
+                  >
+                    <UserPlus className="size-4" aria-hidden="true" />
+                    {participantes.length > 1 ? 'Invitar' : 'Invitar personas'}
+                  </button>
+                )}
+              </div>
+            )}
           </div>
           {camino.subMetas.length > 0 && (
             <dl className="grid flex-[1_1_320px] grid-cols-3 gap-2.5">
@@ -259,7 +290,9 @@ export default function CaminoMetaPage() {
             </div>
             <h2 className="text-xl font-extrabold">Traza el camino hacia esta meta</h2>
             <p className="max-w-lg text-[15px] leading-6 text-gray-600">
-              Divide la meta en pequeñas sub-metas diarias. Cada día marcas lo que hiciste y ves qué tan constante vas.
+              {camino.puedeEditar || camino.soloLectura
+                ? 'Divide la meta en pequeñas sub-metas diarias. Cada día marcas lo que hiciste y ves qué tan constante vas.'
+                : 'Quien creó la meta aún no ha trazado el camino. Cuando agregue sub-metas, aquí marcarás tus días.'}
             </p>
             {camino.puedeEditar && (
               <Link to={`/metas/${camino.codigoMeta}/submetas/nueva`} className="mt-2 flex h-12 items-center rounded-xl bg-violet-600 px-6 font-bold text-white hover:bg-violet-700">
@@ -380,6 +413,13 @@ export default function CaminoMetaPage() {
           {errorAccion ? <CircleAlert className="size-6 shrink-0" aria-hidden="true" /> : <CircleCheck className="size-6 shrink-0" aria-hidden="true" />}
           {errorAccion || aviso}
         </div>
+      )}
+      {invitando && (
+        <InvitarPersonasModal
+          meta={{ ...camino, participantes }}
+          onInvitado={(lista) => setEstado((actual) => ({ ...actual, camino: { ...actual.camino, participantes: lista } }))}
+          onCerrar={() => setInvitando(false)}
+        />
       )}
     </div>
   );
