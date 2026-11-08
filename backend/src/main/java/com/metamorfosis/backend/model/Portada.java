@@ -1,13 +1,19 @@
 package com.metamorfosis.backend.model;
 
-/** HU19: portada del perfil, de un catálogo fijo (el frontend dibuja cada una). NINGUNA = sin portada. */
+/**
+ * HU19: lienzo de la portada del perfil, de un catálogo fijo (el frontend dibuja cada uno en SVG).
+ * NINGUNA = sin portada.
+ */
 public enum Portada {
     NINGUNA,
-    CRISALIDA,
+    ESTRELLADA,
     AURORA,
+    NEBULOSA,
+    ATARDECER,
     OCEANO,
     BOSQUE,
-    ATARDECER,
-    NOCHE,
-    CONFETI
+    METAMORFOSIS,
+    LLUVIA,
+    TOPOGRAFIA,
+    FIESTA
 }

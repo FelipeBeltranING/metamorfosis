@@ -1,0 +1,39 @@
+sequenceDiagram
+    autonumber
+    actor U as Usuario
+    participant EP as EditarPerfilPage
+    participant SP as SeccionPerfilPublico
+    participant PS as perfilService.js
+    participant UC as UsuarioController
+    participant S as PerfilService
+    participant R as Repositorios
+    participant DB as PostgreSQL
+    actor O as Otra persona
+    U->>EP: Abre Editar perfil
+    EP->>PS: obtenerPerfil() y listarMetas(TODAS)
+    PS-->>EP: Mi perfil (insignias, personalización) y metas visibles
+    EP->>SP: Frase, lienzos, insignias y metas para elegir
+    U->>SP: Escribe "Un libro a la vez", elige Noche estrellada, Primer paso y 2 metas
+    SP->>U: La vista previa "Así te ven los demás" cambia al instante
+    U->>EP: Pulsa "Guardar cambios"
+    EP->>PS: editarPerfilPublico(frase, ESTRELLADA, insignia, [metas])
+    PS->>UC: PUT /api/usuarios/me/perfil-publico (JWT)
+    UC->>S: editarPerfilPublico(pedido, codigoUsuario)
+    S->>R: findById(codigoUsuario)
+    S->>S: limpiarFrase: sin espacios de más y máximo 100
+    S->>S: portadaDe: ESTRELLADA es una Portada válida
+    S->>R: codigosObtenidos(codigoUsuario): la insignia es suya
+    S->>R: findByParticipante(codigoUsuario): máximo 3 metas, suyas y no ocultas
+    S->>S: Marca destacada en la participación de cada meta elegida
+    S->>R: save(usuario) y saveAll(metas)
+    R->>DB: UPDATE usuario (frase, portada, insignia) y participacion (destacada)
+    S->>S: verMiPerfil(codigoUsuario)
+    S-->>UC: PerfilResponse con personalizacion
+    Note over S: @Auditar: EDITAR_PERFIL_PUBLICO EXITO
+    UC-->>PS: 200
+    PS-->>EP: perfil
+    EP->>U: "¡Perfil actualizado!"
+    O->>UC: GET /api/usuarios/{codigo}/perfil (abre el perfil)
+    UC->>S: verPerfilPublico(codigoPerfil, codigoUsuario)
+    S->>S: personalizacion(dueño, insignias, metas visibles)
+    S-->>O: Lienzo, foto, nombre, insignia, frase y metas destacadas (sin correo)

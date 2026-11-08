@@ -1,0 +1,123 @@
+classDiagram
+    direction TB
+    class SeccionPerfilPublico {
+        <<componente React>>
+        +valor: frase, portada, codigoInsigniaDestacada, metasDestacadas
+        +insignias, metas, errores
+        +onCambiar(nuevo)
+    }
+    class CabeceraPerfil {
+        <<componente React>>
+        portada, foto, nombre, insignia destacada, frase y fecha de registro
+    }
+    class MetasDestacadas {
+        <<componente React>>
+        hasta 3 metas fijadas
+    }
+    class portadas_js {
+        <<módulo frontend>>
+        +PORTADAS: Sin portada y 10 lienzos SVG
+        +PORTADA_POR_VALOR
+        +MAXIMO_FRASE = 100
+    }
+    class perfilService_js {
+        <<servicio frontend>>
+        +obtenerPerfil() PerfilResponse
+        +obtenerPerfilPublico(codigoUsuario) PerfilPublicoResponse
+        +editarPerfilPublico(datos) PerfilResponse
+    }
+    class UsuarioController {
+        +perfil(codigoUsuario) ResponseEntity~PerfilResponse~
+        +perfilPublico(codigoPerfil, codigoUsuario) ResponseEntity~PerfilPublicoResponse~
+        +editarPerfilPublico(pedido: PerfilPublicoRequest, codigoUsuario) ResponseEntity~PerfilResponse~
+    }
+    class PerfilService {
+        ~MAXIMO_FRASE: int = 100$
+        ~MAXIMO_DESTACADAS: int = 3$
+        +verMiPerfil(codigoUsuario) PerfilResponse
+        +verPerfilPublico(codigoPerfil, codigoUsuario) PerfilPublicoResponse
+        +editarPerfilPublico(pedido, codigoUsuario) PerfilResponse
+        ~limpiarFrase(frase)$ String
+        -portadaDe(valor, errores)$ Portada
+        -personalizacion(usuario, insignias, metas)$ PersonalizacionPerfil
+    }
+    class Usuario {
+        -String frase
+        -Portada portada
+        -Integer codigoInsigniaDestacada
+        -Boolean perfilPrivado
+    }
+    class Participacion {
+        -boolean oculta
+        -boolean destacada
+        +cambiarVisibilidad(oculta) void
+        +cambiarDestacada(destacada) void
+    }
+    class Meta {
+        +isDestacadaPara(codigoUsuario) boolean
+        +cambiarDestacada(codigoUsuario, destacada) void
+        +isOcultaPara(codigoUsuario) boolean
+    }
+    class Portada {
+        <<enumeration>>
+        NINGUNA
+        ESTRELLADA
+        AURORA
+        NEBULOSA
+        ATARDECER
+        OCEANO
+        BOSQUE
+        METAMORFOSIS
+        LLUVIA
+        TOPOGRAFIA
+        FIESTA
+    }
+    class PerfilPublicoRequest {
+        <<record>>
+        +String frase
+        +String portada
+        +Integer codigoInsigniaDestacada
+        +List~Integer~ metasDestacadas
+    }
+    class PersonalizacionPerfil {
+        <<record>>
+        +String frase
+        +Portada portada
+        +InsigniaObtenida insigniaDestacada
+        +List~MetaResponse~ metasDestacadas
+        +soloCabecera(frase, portada)$ PersonalizacionPerfil
+    }
+    class PerfilResponse {
+        <<record>>
+        +PersonalizacionPerfil personalizacion
+    }
+    class PerfilPublicoResponse {
+        <<record>>
+        +boolean privado
+        +PersonalizacionPerfil personalizacion
+    }
+    class Repositorios {
+        <<interface>>
+        UsuarioRepository.findById / save
+        MetaRepository.findByParticipante / saveAll
+        UsuarioInsigniaRepository.codigosObtenidos / insigniasDelUsuario
+    }
+    class AccionLog {
+        <<enumeration>>
+        EDITAR_PERFIL_PUBLICO
+    }
+    SeccionPerfilPublico --> CabeceraPerfil : vista previa
+    SeccionPerfilPublico --> MetasDestacadas : vista previa
+    SeccionPerfilPublico ..> portadas_js
+    CabeceraPerfil ..> portadas_js : dibuja el lienzo
+    perfilService_js ..> UsuarioController : PUT /api/usuarios/me/perfil-publico
+    UsuarioController --> PerfilService : usa
+    PerfilService --> Repositorios : usa
+    PerfilService ..> PerfilPublicoRequest
+    PerfilService ..> PersonalizacionPerfil : crea
+    PerfilResponse --> PersonalizacionPerfil
+    PerfilPublicoResponse --> PersonalizacionPerfil
+    Usuario --> Portada
+    Meta "1" *-- "1..10" Participacion
+    PerfilService ..> Meta : destacadas
+    PerfilService ..> AccionLog : @Auditar

@@ -22,12 +22,16 @@ HU13 Invitar a una meta  · menú, ventana de invitar, buscar, invitación envia
 HU14 Responder invitación · aviso en Mis metas, menú de la cuenta, Invitaciones, aceptada, sin invitaciones,
                           enlace del correo (sin sesión, con sesión, rechazar, rechazada, vencido),
                           unirse con código, código no válido, celular
-HU19 Personalizar perfil · tema Noche en las pantallas principales (escritorio y celular),
-                          los 4 temas comparados y la sección Apariencia de Editar perfil
+HU19 Personalizar perfil · lo que ven los demás: frase, lienzo de portada, insignia y metas
+                          destacadas; sección Tu perfil público con vista previa, Mi perfil, perfil
+                          de otra persona, perfil privado, catálogo de lienzos, celular y tema oscuro
 HU21 Compartir logro    · botón en cumplidas, imagen para compartir, página pública
 HU22 Mi perfil          · menú de la cuenta, perfil
 HU23 Editar perfil      · formulario, errores, recorte de foto, guardado, perfil con foto
 HU27 Filtrar metas      · cumplidas, todas, sin resultados
+HU sin número - Apariencia de la app · cómo se ve la app para uno mismo (modo claro, oscuro
+                          o automático y color de acento): tema Noche en las pantallas principales,
+                          los 4 temas comparados y la sección Apariencia de Editar perfil
 Sub-metas               · tu camino, registrar valor, menú, eliminar, camino vacío,
                           elegir tipo, nueva medible, nueva Sí/No, errores, editar,
                           estadísticas medible y Sí/No, camino de una meta cumplida
