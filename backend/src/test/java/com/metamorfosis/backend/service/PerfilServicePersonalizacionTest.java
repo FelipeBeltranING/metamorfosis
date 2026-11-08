@@ -174,4 +174,75 @@ class PerfilServicePersonalizacionTest {
         assertNull(daniel.getCodigoInsigniaDestacada());
         assertNull(r.personalizacion().insigniaDestacada());
     }
+
+    private com.metamorfosis.backend.model.Meta meta(int codigo, LocalDate creada) throws Exception {
+        com.metamorfosis.backend.model.Meta m = new com.metamorfosis.backend.model.Meta("Meta " + codigo,
+                com.metamorfosis.backend.model.Plazo.CORTO, com.metamorfosis.backend.model.TipoMeta.PERSONAL);
+        m.crear(daniel);
+        java.lang.reflect.Field f = com.metamorfosis.backend.model.Meta.class.getDeclaredField("codigoMeta");
+        f.setAccessible(true);
+        f.set(m, codigo);
+        java.lang.reflect.Field c = com.metamorfosis.backend.model.Meta.class.getDeclaredField("fechaCreacion");
+        c.setAccessible(true);
+        c.set(m, creada);
+        return m;
+    }
+
+    @Test
+    void destacaHastaTresMetasYSeMuestranLaMasRecientePrimero() throws Exception {
+        var m10 = meta(10, LocalDate.of(2026, 9, 1));
+        var m11 = meta(11, LocalDate.of(2026, 10, 1));
+        var m12 = meta(12, LocalDate.of(2026, 8, 1));
+        when(usuarioRepository.findById(DANIEL)).thenReturn(Optional.of(daniel));
+        when(metaRepository.findByParticipante(DANIEL)).thenReturn(List.of(m10, m11, m12));
+        when(usuarioInsigniaRepository.insigniasDelUsuario(DANIEL)).thenReturn(List.of());
+
+        PerfilResponse r = perfilService.editarPerfilPublico(
+                new PerfilPublicoRequest(null, null, null, List.of(10, 11, 11)), DANIEL);
+
+        assertTrue(m10.isDestacadaPara(DANIEL));
+        assertTrue(m11.isDestacadaPara(DANIEL));
+        assertFalse(m12.isDestacadaPara(DANIEL));
+        assertEquals(List.of(11, 10), r.personalizacion().metasDestacadas().stream()
+                .map(com.metamorfosis.backend.dto.MetaResponse::codigoMeta).toList());
+        assertTrue(r.personalizacion().metasDestacadas().get(0).participantes().isEmpty());
+        verify(metaRepository).saveAll(List.of(m10, m11, m12));
+    }
+
+    @Test
+    void masDeTresMetasNoSePueden() {
+        when(usuarioRepository.findById(DANIEL)).thenReturn(Optional.of(daniel));
+
+        ValidacionException e = assertThrows(ValidacionException.class, () -> perfilService.editarPerfilPublico(
+                new PerfilPublicoRequest(null, null, null, List.of(1, 2, 3, 4)), DANIEL));
+
+        assertEquals("Puedes destacar hasta 3 metas", e.getErrores().get(0));
+        verify(metaRepository, never()).saveAll(any());
+    }
+
+    @Test
+    void noSeDestacaUnaMetaAjenaNiUnaOculta() throws Exception {
+        var oculta = meta(10, LocalDate.of(2026, 9, 1));
+        oculta.cambiarVisibilidad(DANIEL, true);
+        when(usuarioRepository.findById(DANIEL)).thenReturn(Optional.of(daniel));
+        when(metaRepository.findByParticipante(DANIEL)).thenReturn(List.of(oculta));
+
+        ValidacionException e1 = assertThrows(ValidacionException.class, () -> perfilService.editarPerfilPublico(
+                new PerfilPublicoRequest(null, null, null, List.of(10)), DANIEL));
+        ValidacionException e2 = assertThrows(ValidacionException.class, () -> perfilService.editarPerfilPublico(
+                new PerfilPublicoRequest(null, null, null, List.of(99)), DANIEL));
+
+        assertEquals("Solo puedes destacar metas tuyas que se vean en tu perfil", e1.getErrores().get(0));
+        assertEquals("Solo puedes destacar metas tuyas que se vean en tu perfil", e2.getErrores().get(0));
+    }
+
+    @Test
+    void alOcultarUnaMetaDejaDeEstarDestacada() throws Exception {
+        var m = meta(10, LocalDate.of(2026, 9, 1));
+        m.cambiarDestacada(DANIEL, true);
+
+        m.cambiarVisibilidad(DANIEL, true);
+
+        assertFalse(m.isDestacadaPara(DANIEL));
+    }
 }

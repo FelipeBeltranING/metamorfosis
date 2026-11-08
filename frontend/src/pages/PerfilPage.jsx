@@ -7,6 +7,7 @@ import Encabezado from '../components/Encabezado';
 import CabeceraPerfil from '../components/CabeceraPerfil';
 import EstadoError from '../components/EstadoError';
 import InsigniaDestacada from '../components/InsigniaDestacada';
+import MetasDestacadas from '../components/MetasDestacadas';
 import IconoInsignia from '../components/IconoInsignia';
 import { EtiquetaOculta } from '../components/MetaTarjeta';
 import TarjetaPrivacidad from '../components/TarjetaPrivacidad';
@@ -176,6 +177,9 @@ export function ContenidoPerfil({ perfil, publico = false }) {
 
       {!privadoAjeno && (
       <>
+      {/* HU19: metas que fijó en su perfil */}
+      <MetasDestacadas metas={personalizacion?.metasDestacadas} publico={publico} />
+
       {/* 2. Resumen de metas */}
       <section aria-labelledby="perfil-resumen" className={TARJETA}>
         <TituloBloque

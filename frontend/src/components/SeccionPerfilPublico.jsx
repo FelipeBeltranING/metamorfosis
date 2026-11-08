@@ -1,7 +1,8 @@
-import { Check, Eye } from 'lucide-react';
+import { Check, Eye, Pin } from 'lucide-react';
 import CabeceraPerfil from './CabeceraPerfil';
 import IconoInsignia from './IconoInsignia';
 import InsigniaDestacada from './InsigniaDestacada';
+import MetasDestacadas from './MetasDestacadas';
 import MensajeError from './MensajeError';
 import { MAXIMO_FRASE, PORTADAS } from '../constants/portadas';
 
@@ -10,8 +11,14 @@ import { MAXIMO_FRASE, PORTADAS } from '../constants/portadas';
  * cambia mientras se elige. Se guarda con "Guardar cambios", junto con el resto de Editar perfil.
  */
 export default function SeccionPerfilPublico({
-  valor, onCambiar, vistaPrevia, insignias = [], errores = {},
+  valor, onCambiar, vistaPrevia, insignias = [], metas = [], errores = {},
 }) {
+  const MAXIMO = 3;
+  const elegidas = valor.metasDestacadas;
+  const alternar = (codigo) => cambiar('metasDestacadas')(
+    elegidas.includes(codigo) ? elegidas.filter((c) => c !== codigo) : [...elegidas, codigo],
+  );
+  const metasElegidas = metas.filter((m) => elegidas.includes(m.codigoMeta));
   const insigniaElegida = insignias.find((i) => i.codigoInsignia === valor.codigoInsigniaDestacada) ?? null;
   const cambiar = (campo) => (nuevo) => onCambiar({ ...valor, [campo]: nuevo });
   const largo = valor.frase.length;
@@ -103,6 +110,42 @@ export default function SeccionPerfilPublico({
         <MensajeError id="error-insignia-perfil" texto={errores.insigniaDestacada} />
       </fieldset>
 
+      <fieldset className="flex flex-col gap-2.5">
+        <legend className="mb-1 text-sm font-bold text-gray-700">Metas destacadas</legend>
+        <p className="text-[13px] text-gray-500">
+          Elige hasta {MAXIMO} metas para mostrar primero en tu perfil ({elegidas.length} de {MAXIMO}). Las metas ocultas no aparecen aquí.
+        </p>
+        {metas.length === 0 ? (
+          <p className="rounded-xl bg-slate-50 p-3 text-sm text-gray-600">Cuando tengas metas visibles en tu perfil podrás destacarlas.</p>
+        ) : (
+          <ul className="flex max-h-72 flex-col divide-y divide-zinc-100 overflow-y-auto rounded-xl border border-zinc-200">
+            {metas.map((m) => {
+              const marcada = elegidas.includes(m.codigoMeta);
+              const bloqueada = !marcada && elegidas.length >= MAXIMO;
+              return (
+                <li key={m.codigoMeta}>
+                  <label className={`flex items-center gap-3 px-4 py-3 ${bloqueada ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:bg-slate-50'}`}>
+                    <input
+                      type="checkbox"
+                      checked={marcada}
+                      disabled={bloqueada}
+                      onChange={() => alternar(m.codigoMeta)}
+                      className="size-5 shrink-0 accent-violet-600"
+                    />
+                    <span className="min-w-0 flex-1 truncate text-[15px] font-semibold text-gray-900">{m.nombre}</span>
+                    <span className={`shrink-0 rounded-lg px-2 py-0.5 text-xs font-bold ${m.estado === 'CUMPLIDA' ? 'bg-emerald-50 text-emerald-700' : 'bg-violet-50 text-violet-700'}`}>
+                      {m.estado === 'CUMPLIDA' ? 'Cumplida' : 'Activa'}
+                    </span>
+                    {marcada && <Pin className="size-4 shrink-0 text-violet-600" aria-label="Destacada" />}
+                  </label>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        <MensajeError id="error-metas-perfil" texto={errores.metasDestacadas} />
+      </fieldset>
+
       {/* Vista previa con lo elegido, antes de guardar */}
       <div className="flex flex-col gap-2.5 rounded-2xl bg-slate-50 p-4">
         <p className="flex items-center gap-2 text-sm font-bold text-gray-700">
@@ -119,7 +162,7 @@ export default function SeccionPerfilPublico({
           portada={valor.portada}
           extraNombre={<InsigniaDestacada insignia={insigniaElegida} />}
         />
-        {vistaPrevia.debajo}
+        <MetasDestacadas compacta metas={metasElegidas} />
       </div>
       <MensajeError id="error-perfil-publico" texto={errores.general} />
     </section>

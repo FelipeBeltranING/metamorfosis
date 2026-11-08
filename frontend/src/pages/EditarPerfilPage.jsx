@@ -12,6 +12,7 @@ import FotoPerfilModal from '../components/FotoPerfilModal';
 import SeccionApariencia from '../components/SeccionApariencia';
 import SeccionPerfilPublico from '../components/SeccionPerfilPublico';
 import { editarPerfilPublico, obtenerPerfil } from '../services/perfilService';
+import { listarMetas } from '../services/metaService';
 import { MAXIMO_FRASE } from '../constants/portadas';
 import {
   cambiarApariencia, cambiarFoto, editarDatos, obtenerCuenta, quitarFoto,
@@ -48,16 +49,23 @@ function publicoDesde(miPerfil) {
     frase: p.frase ?? '',
     portada: p.portada ?? 'NINGUNA',
     codigoInsigniaDestacada: p.insigniaDestacada?.codigoInsignia ?? null,
+    metasDestacadas: (p.metasDestacadas ?? []).map((m) => m.codigoMeta),
   };
 }
 
 function mismoPerfilPublico(a, b) {
   return limpiar(a.frase) === limpiar(b.frase) && a.portada === b.portada
-    && a.codigoInsigniaDestacada === b.codigoInsigniaDestacada;
+    && a.codigoInsigniaDestacada === b.codigoInsigniaDestacada
+    && [...a.metasDestacadas].sort().join() === [...b.metasDestacadas].sort().join();
 }
 
 function haciaServidorPerfil(p) {
-  return { frase: limpiar(p.frase), portada: p.portada, codigoInsigniaDestacada: p.codigoInsigniaDestacada };
+  return {
+    frase: limpiar(p.frase),
+    portada: p.portada,
+    codigoInsigniaDestacada: p.codigoInsigniaDestacada,
+    metasDestacadas: p.metasDestacadas,
+  };
 }
 
 /** Validación del cliente (la del servidor se mantiene siempre). */
@@ -79,6 +87,7 @@ function erroresDelServidor(error) {
     if (/frase/i.test(mensaje)) campos.frase = mensaje; // HU19: perfil público
     else if (/portada/i.test(mensaje)) campos.portada = mensaje;
     else if (/insignia/i.test(mensaje)) campos.insigniaDestacada = mensaje;
+    else if (/destacar/i.test(mensaje)) campos.metasDestacadas = mensaje;
     else if (/apellido/i.test(mensaje)) campos.apellido = mensaje;
     else if (/nombre/i.test(mensaje)) campos.nombre = mensaje;
     else if (/foto/i.test(mensaje)) campos.foto = mensaje;
@@ -128,15 +137,19 @@ export default function EditarPerfilPage() {
   const [apariencia, setApariencia] = useState(leerApariencia);
   // HU19: lo que los demás ven del perfil (se guarda con el formulario).
   const [perfil, setPerfil] = useState(null);
-  const [perfilPublico, setPerfilPublico] = useState({ frase: '', portada: 'NINGUNA', codigoInsigniaDestacada: null });
+  const [perfilPublico, setPerfilPublico] = useState({
+    frase: '', portada: 'NINGUNA', codigoInsigniaDestacada: null, metasDestacadas: [],
+  });
+  const [metasVisibles, setMetasVisibles] = useState([]);
   const selectorArchivo = useRef(null);
 
   useEffect(() => {
     let activo = true;
-    Promise.all([obtenerCuenta(), obtenerPerfil()])
-      .then(([cuenta, miPerfil]) => {
+    Promise.all([obtenerCuenta(), obtenerPerfil(), listarMetas({ estado: 'TODAS' })])
+      .then(([cuenta, miPerfil, metas]) => {
         if (!activo) return;
         setPerfil(miPerfil);
+        setMetasVisibles(metas.filter((m) => !m.oculta)); // HU25: las ocultas no se destacan
         setPerfilPublico(publicoDesde(miPerfil));
         setCarga({ fase: 'lista', cuenta });
         setFormulario({ nombre: cuenta.nombre, apellido: cuenta.apellido });
@@ -409,12 +422,18 @@ export default function EditarPerfilPage() {
               onCambiar={(nuevo) => {
                 setPerfilPublico(nuevo);
                 setErrores((actuales) => ({
-                  ...actuales, frase: undefined, portada: undefined, insigniaDestacada: undefined,
+                  ...actuales, frase: undefined, portada: undefined, insigniaDestacada: undefined, metasDestacadas: undefined,
                 }));
                 setGuardado(false);
               }}
-              errores={{ frase: errores.frase, portada: errores.portada, insigniaDestacada: errores.insigniaDestacada }}
+              errores={{
+                frase: errores.frase,
+                portada: errores.portada,
+                insigniaDestacada: errores.insigniaDestacada,
+                metasDestacadas: errores.metasDestacadas,
+              }}
               insignias={perfil?.insignias ?? []}
+              metas={metasVisibles}
               vistaPrevia={{
                 nombre: limpiar(formulario.nombre) || cuenta.nombre,
                 apellido: limpiar(formulario.apellido) || cuenta.apellido,
