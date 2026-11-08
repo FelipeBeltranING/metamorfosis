@@ -15,6 +15,7 @@ import LoginPage from './pages/LoginPage';
 import LogroPublicoPage from './pages/LogroPublicoPage';
 import PerfilPage from './pages/PerfilPage';
 import InsigniasPage from './pages/InsigniasPage';
+import InvitacionesPage from './pages/InvitacionesPage';
 import BuscarPersonasPage from './pages/BuscarPersonasPage';
 import PerfilPublicoPage from './pages/PerfilPublicoPage';
 import RutaProtegida from './components/RutaProtegida';
@@ -61,6 +62,7 @@ export default function App() {
             <Route path="/perfil" element={<PerfilPage />} />
             {/* HU12: galería de insignias, desde Mi perfil. */}
             <Route path="/insignias" element={<InsigniasPage />} />
+            <Route path="/invitaciones" element={<InvitacionesPage />} />
             {/* HU24: buscar personas y perfil público de otra persona */}
             <Route path="/usuarios" element={<BuscarPersonasPage />} />
             <Route path="/usuarios/:codigoUsuario" element={<PerfilPublicoPage />} />

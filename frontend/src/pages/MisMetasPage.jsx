@@ -12,6 +12,7 @@ import ConfirmarEliminarModal from '../components/ConfirmarEliminarModal';
 import ConfirmarCumplidaModal from '../components/ConfirmarCumplidaModal';
 import CompartirLogroModal from '../components/CompartirLogroModal';
 import InvitarPersonasModal from '../components/InvitarPersonasModal';
+import AvisoInvitaciones from '../components/AvisoInvitaciones';
 import FiltrosMetas from '../components/FiltrosMetas';
 import SinResultadosFiltro from '../components/SinResultadosFiltro';
 import {
@@ -258,6 +259,8 @@ export default function MisMetasPage() {
             + Nueva meta
           </Link>
         </div>
+
+        <AvisoInvitaciones />
 
         <FiltrosMetas
           filtros={filtros}
