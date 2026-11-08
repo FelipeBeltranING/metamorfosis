@@ -3,7 +3,9 @@ package com.metamorfosis.backend.service;
 import com.metamorfosis.backend.auditoria.Auditar;
 import com.metamorfosis.backend.auditoria.ContextoAuditoria;
 import com.metamorfosis.backend.dto.MetaResponse;
+import com.metamorfosis.backend.dto.PerfilPublicoRequest;
 import com.metamorfosis.backend.dto.PerfilPublicoResponse;
+import com.metamorfosis.backend.dto.PersonalizacionPerfil;
 import com.metamorfosis.backend.dto.PerfilResponse;
 import com.metamorfosis.backend.dto.PrivacidadRequest;
 import com.metamorfosis.backend.dto.PrivacidadResponse;
@@ -16,6 +18,7 @@ import com.metamorfosis.backend.model.AccionLog;
 import com.metamorfosis.backend.model.EntidadLog;
 import com.metamorfosis.backend.model.EstadoMeta;
 import com.metamorfosis.backend.model.Meta;
+import com.metamorfosis.backend.model.Portada;
 import com.metamorfosis.backend.model.Usuario;
 import com.metamorfosis.backend.repository.InsigniaRepository;
 import com.metamorfosis.backend.repository.MetaRepository;
@@ -27,9 +30,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.Normalizer;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * HU22: arma Mi perfil con los datos del usuario, el resumen de metas, las insignias y las últimas cumplidas.
@@ -42,6 +49,8 @@ public class PerfilService {
     static final int ULTIMAS_CUMPLIDAS = 3;
     static final int MAXIMO_RESULTADOS = 20;   // HU24
     static final int MINIMO_LETRAS = 2;        // HU24
+    static final int MAXIMO_FRASE = 100;       // HU19
+    static final int MAXIMO_DESTACADAS = 3;    // HU19
 
     /** De la cumplida más reciente a la más antigua; si dos tienen la misma fecha, la de código mayor primero. */
     private static final Comparator<MetaResponse> MAS_RECIENTE_PRIMERO = Comparator
@@ -81,7 +90,7 @@ public class PerfilService {
 
         return new PerfilResponse(usuario.getNombre(), usuario.getApellido(), usuario.getEmail(),
                 usuario.getFechaRegistro(), resumen, insignias, insigniaRepository.count(), ultimasCumplidas,
-                usuario.isPerfilPrivado());
+                usuario.isPerfilPrivado(), personalizacion(usuario, insignias, metas));
     }
 
     /**
@@ -114,7 +123,8 @@ public class PerfilService {
             ContextoAuditoria.agregar("privado", true);
             return new PerfilPublicoResponse(dueno.getCodigoUsuario(), dueno.getNombre(), dueno.getApellido(),
                     dueno.getFotoPerfil(), dueno.getFechaRegistro(), null, List.of(),
-                    insigniaRepository.count(), List.of(), true);
+                    insigniaRepository.count(), List.of(), true,
+                    PersonalizacionPerfil.soloCabecera(dueno.getFrase(), dueno.getPortada()));
         }
 
         List<Meta> visibles = metaRepository.findByParticipante(codigoPerfil).stream()
@@ -127,7 +137,8 @@ public class PerfilService {
 
         return new PerfilPublicoResponse(dueno.getCodigoUsuario(), dueno.getNombre(), dueno.getApellido(),
                 dueno.getFotoPerfil(), dueno.getFechaRegistro(), resumen, insignias,
-                insigniaRepository.count(), ultimasCumplidas(visibles, codigoPerfil), false);
+                insigniaRepository.count(), ultimasCumplidas(visibles, codigoPerfil), false,
+                personalizacion(dueno, insignias, visibles));
     }
 
     /**
@@ -148,6 +159,93 @@ public class PerfilService {
         usuario.setPerfilPrivado(privado);
         usuarioRepository.save(usuario);
         return new PrivacidadResponse(privado);
+    }
+
+    /**
+     * HU19: guarda lo que los demás ven del perfil: la frase (se quitan espacios de más; vacía se
+     * borra; máximo 100 caracteres), la portada, la insignia destacada (una que haya ganado, o
+     * ninguna) y hasta 3 metas destacadas (suyas y visibles en el perfil, HU25). Devuelve Mi
+     * perfil actualizado.
+     */
+    @Auditar(accion = AccionLog.EDITAR_PERFIL_PUBLICO, entidad = EntidadLog.USUARIO)
+    @Transactional
+    public PerfilResponse editarPerfilPublico(PerfilPublicoRequest pedido, Integer codigoUsuario) {
+        Usuario usuario = usuarioRepository.findById(codigoUsuario)
+                .orElseThrow(() -> new UsuarioNoEncontradoException(codigoUsuario));
+        if (pedido == null) throw new ValidacionException(List.of("Faltan los datos del perfil"));
+
+        List<String> errores = new ArrayList<>();
+        String frase = limpiarFrase(pedido.frase());
+        if (frase != null && frase.length() > MAXIMO_FRASE) {
+            errores.add("La frase puede tener hasta " + MAXIMO_FRASE + " caracteres");
+        }
+        Portada portada = portadaDe(pedido.portada(), errores);
+        Integer insignia = pedido.codigoInsigniaDestacada();
+        if (insignia != null && !usuarioInsigniaRepository.codigosObtenidos(codigoUsuario).contains(insignia)) {
+            errores.add("Elige una insignia que hayas ganado");
+        }
+        Set<Integer> destacadas = new LinkedHashSet<>(pedido.metasDestacadas() == null ? List.of() : pedido.metasDestacadas());
+        destacadas.remove(null);
+        List<Meta> metas = metaRepository.findByParticipante(codigoUsuario);
+        if (destacadas.size() > MAXIMO_DESTACADAS) {
+            errores.add("Puedes destacar hasta " + MAXIMO_DESTACADAS + " metas");
+        } else {
+            Set<Integer> visibles = metas.stream().filter(m -> !m.isOcultaPara(codigoUsuario))
+                    .map(Meta::getCodigoMeta).collect(Collectors.toSet());
+            if (!visibles.containsAll(destacadas)) {
+                errores.add("Solo puedes destacar metas tuyas que se vean en tu perfil");
+            }
+        }
+        if (!errores.isEmpty()) throw new ValidacionException(errores);
+
+        metas.forEach(m -> m.cambiarDestacada(codigoUsuario, destacadas.contains(m.getCodigoMeta())));
+        metaRepository.saveAll(metas);
+
+        usuario.setFrase(frase);
+        usuario.setPortada(portada);
+        usuario.setCodigoInsigniaDestacada(insignia);
+        usuarioRepository.save(usuario);
+        ContextoAuditoria.agregar("portada", portada.name());
+        ContextoAuditoria.agregar("metasDestacadas", destacadas.size());
+        return verMiPerfil(codigoUsuario);
+    }
+
+    /** "  Un   libro a la vez " → "Un libro a la vez"; vacía → null. */
+    static String limpiarFrase(String frase) {
+        if (frase == null) return null;
+        String limpia = frase.strip().replaceAll("\\s+", " ");
+        return limpia.isEmpty() ? null : limpia;
+    }
+
+    private static Portada portadaDe(String valor, List<String> errores) {
+        if (valor == null || valor.isBlank()) return Portada.NINGUNA;
+        for (Portada p : Portada.values()) {
+            if (p.name().equalsIgnoreCase(valor.strip())) return p;
+        }
+        errores.add("Elige una portada válida");
+        return Portada.NINGUNA;
+    }
+
+    /**
+     * HU19: lo que el usuario eligió mostrar. La insignia destacada sale de las que ganó; las metas
+     * destacadas, de las metas recibidas (en el perfil público ya vienen sin las ocultas), primero
+     * las más recientes y sin participantes.
+     */
+    private static PersonalizacionPerfil personalizacion(Usuario usuario, List<InsigniaObtenida> insignias,
+                                                         List<Meta> metas) {
+        Integer codigo = usuario.getCodigoUsuario();
+        InsigniaObtenida destacada = insignias.stream()
+                .filter(i -> i.codigoInsignia().equals(usuario.getCodigoInsigniaDestacada()))
+                .findFirst().orElse(null);
+        List<MetaResponse> metasDestacadas = metas.stream()
+                .filter(m -> m.isDestacadaPara(codigo) && !m.isOcultaPara(codigo))
+                .map(m -> MetaResponse.desde(m, codigo).sinParticipantes())
+                .sorted(Comparator.comparing(MetaResponse::fechaCreacion,
+                        Comparator.nullsLast(Comparator.<LocalDate>reverseOrder()))
+                        .thenComparing(MetaResponse::codigoMeta, Comparator.reverseOrder()))
+                .limit(MAXIMO_DESTACADAS)
+                .toList();
+        return new PersonalizacionPerfil(usuario.getFrase(), usuario.getPortada(), destacada, metasDestacadas);
     }
 
     /**

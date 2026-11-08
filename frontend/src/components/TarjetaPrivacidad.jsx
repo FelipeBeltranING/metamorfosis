@@ -46,7 +46,7 @@ export default function TarjetaPrivacidad({ inicial = false }) {
         <div className="min-w-0 flex-1">
           <h2 id="perfil-privacidad" className="text-lg font-bold text-gray-900">Perfil privado</h2>
           <p id="perfil-privacidad-ayuda" className="text-sm text-gray-600">
-            Si lo activas, las demás personas solo verán tu foto, tu nombre y desde cuándo eres miembro.
+            Si lo activas, las demás personas solo verán tu cabecera: foto, nombre, frase, portada y desde cuándo eres miembro.
           </p>
         </div>
         <button

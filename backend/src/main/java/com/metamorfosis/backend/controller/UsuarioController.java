@@ -1,6 +1,7 @@
 package com.metamorfosis.backend.controller;
 
 import com.metamorfosis.backend.dto.GaleriaInsigniasResponse;
+import com.metamorfosis.backend.dto.PerfilPublicoRequest;
 import com.metamorfosis.backend.dto.PerfilPublicoResponse;
 import com.metamorfosis.backend.dto.PerfilResponse;
 import com.metamorfosis.backend.dto.PrivacidadRequest;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,6 +60,13 @@ public class UsuarioController {
             @PathVariable("codigoUsuario") Integer codigoPerfil,
             @AuthenticationPrincipal Integer codigoUsuario) {
         return ResponseEntity.ok(perfilService.verPerfilPublico(codigoPerfil, codigoUsuario));
+    }
+
+    /** HU19: lo que los demás ven del perfil (frase, portada, insignia y metas destacadas). */
+    @PutMapping("/me/perfil-publico")
+    public ResponseEntity<PerfilResponse> editarPerfilPublico(@RequestBody PerfilPublicoRequest pedido,
+                                                              @AuthenticationPrincipal Integer codigoUsuario) {
+        return ResponseEntity.ok(perfilService.editarPerfilPublico(pedido, codigoUsuario));
     }
 
     /** HU26: hace privado ({"privado": true}) o público ({"privado": false}) el perfil. */

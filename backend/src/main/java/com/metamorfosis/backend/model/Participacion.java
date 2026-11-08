@@ -32,6 +32,10 @@ public class Participacion {
     @Column(nullable = false)
     private boolean oculta = false;
 
+    /** HU19: el participante fijó la meta en su perfil. */
+    @Column(nullable = false)
+    private boolean destacada = false;
+
     /** HU13: quién invitó, cuándo, y el SHA-256 del token del correo con su vencimiento. */
     @Column(name = "codigo_invitador")
     private Integer codigoInvitador;
@@ -61,7 +65,15 @@ public class Participacion {
     /** HU25: oculta (true) o vuelve a mostrar (false) la meta en el perfil de este participante. */
     public void cambiarVisibilidad(boolean oculta) {
         this.oculta = oculta;
+        if (oculta) this.destacada = false; // HU19: una meta oculta no se puede destacar
     }
+
+    /** HU19: fija (true) o quita (false) la meta de las destacadas de su perfil. */
+    public void cambiarDestacada(boolean destacada) {
+        this.destacada = destacada;
+    }
+
+    public boolean isDestacada() { return destacada; }
 
     /** HU13: queda invitada (PENDIENTE) con un token nuevo; también sirve para volver a invitar a quien rechazó. */
     public void invitar(Integer codigoInvitador, String tokenHash, LocalDateTime ahora, LocalDateTime expira) {

@@ -114,6 +114,16 @@ public class Meta {
         participacionDe(codigoUsuario).ifPresent(p -> p.cambiarVisibilidad(oculta));
     }
 
+    /** HU19: la meta está entre las destacadas del perfil de ese usuario. */
+    public boolean isDestacadaPara(Integer codigoUsuario) {
+        return participacionDe(codigoUsuario).map(Participacion::isDestacada).orElse(false);
+    }
+
+    /** HU19: fija o quita la meta de las destacadas del perfil de ese usuario. */
+    public void cambiarDestacada(Integer codigoUsuario, boolean destacada) {
+        participacionDe(codigoUsuario).ifPresent(p -> p.cambiarDestacada(destacada));
+    }
+
     /** HU25: la meta está oculta en el perfil de ese usuario. */
     public boolean isOcultaPara(Integer codigoUsuario) {
         return participacionDe(codigoUsuario).map(Participacion::isOculta).orElse(false);

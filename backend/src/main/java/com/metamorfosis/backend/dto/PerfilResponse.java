@@ -10,11 +10,12 @@ import java.util.List;
  * del reporte, HU7), las insignias ganadas (HU11) y las últimas metas cumplidas (máximo tres).
  * totalInsignias es el tamaño del catálogo, para mostrar "N de 6 insignias".
  * HU26: perfilPrivado es el valor del interruptor Perfil privado.
+ * HU19: personalizacion es lo que el usuario eligió mostrar a los demás.
  */
 public record PerfilResponse(String nombre, String apellido, String email, LocalDate fechaRegistro,
                              ResumenMetas resumen, List<InsigniaObtenida> insignias,
                              long totalInsignias, List<MetaResponse> ultimasCumplidas,
-                             boolean perfilPrivado) {
+                             boolean perfilPrivado, PersonalizacionPerfil personalizacion) {
 
     /** Conteo de las metas en las que el usuario participa con invitación aceptada. */
     public record ResumenMetas(long totalMetas, long metasActivas, long metasCumplidas,

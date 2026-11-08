@@ -40,6 +40,18 @@ public class Usuario {
     @Column(name = "color_acento", nullable = false, length = 10)
     private ColorAcento colorAcento = ColorAcento.VIOLETA;
 
+    /** HU19: frase bajo el nombre y portada del perfil (lo que ven los demás). */
+    @Column(length = 100)
+    private String frase;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 12)
+    private Portada portada = Portada.NINGUNA;
+
+    /** HU19: insignia que eligió mostrar junto a su nombre (una de las que ganó), o null. */
+    @Column(name = "codigo_insignia_destacada")
+    private Integer codigoInsigniaDestacada;
+
     @Column(name = "fecha_registro", nullable = false, updatable = false)
     private LocalDate fechaRegistro;
 
@@ -80,6 +92,12 @@ public class Usuario {
     public void setModoTema(ModoTema modoTema) { this.modoTema = modoTema; }
     public ColorAcento getColorAcento() { return colorAcento; }
     public void setColorAcento(ColorAcento colorAcento) { this.colorAcento = colorAcento; }
+    public String getFrase() { return frase; }
+    public void setFrase(String frase) { this.frase = frase; }
+    public Portada getPortada() { return portada == null ? Portada.NINGUNA : portada; }
+    public void setPortada(Portada portada) { this.portada = portada; }
+    public Integer getCodigoInsigniaDestacada() { return codigoInsigniaDestacada; }
+    public void setCodigoInsigniaDestacada(Integer codigo) { this.codigoInsigniaDestacada = codigo; }
     public LocalDate getFechaRegistro() { return fechaRegistro; }
     public void setFechaRegistro(LocalDate fechaRegistro) { this.fechaRegistro = fechaRegistro; }
 }
