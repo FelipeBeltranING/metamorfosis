@@ -141,6 +141,8 @@ public class MetaService {
      * fecha original (doble clic, dos pestañas abiertas).
      * HU11: al cumplirla se revisan las insignias del usuario, en la misma transacción; las que
      * gane vienen en la respuesta y quedan en el detalle del log.
+     * Meta compartida: se cumple para todos los participantes aceptados (misma fecha) y a cada
+     * uno se le revisan sus insignias.
      */
     @Auditar(accion = AccionLog.MARCAR_CUMPLIDA, entidad = EntidadLog.META)
     @Transactional
@@ -163,6 +165,10 @@ public class MetaService {
         if (!nuevas.isEmpty()) {
             ContextoAuditoria.agregar("insigniasNuevas", nuevas.stream().map(InsigniaResponse::nombre).toList());
         }
+        // Meta compartida: se cumple para todos, así que cada participante puede ganar insignias.
+        List<Integer> otros = meta.otrosParticipantesAceptados(codigoUsuario);
+        otros.forEach(codigo -> insigniaService.otorgarNuevas(codigo, hoy));
+        if (!otros.isEmpty()) ContextoAuditoria.agregar("participantes", otros.size() + 1);
         return new MetaCumplidaResponse(respuesta, nuevas);
     }
 

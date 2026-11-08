@@ -72,10 +72,26 @@ public class Meta {
         this.tipo = tipo;
     }
 
-    /** HU6: la meta queda CUMPLIDA (no se puede deshacer) y la fecha se guarda en la participación del usuario. */
+    /**
+     * HU6: la meta queda CUMPLIDA (no se puede deshacer) y la fecha se guarda en la participación
+     * del usuario. En una meta compartida se cumple para todos: cada participante con la invitación
+     * aceptada recibe la misma fecha (las invitaciones pendientes ya no se pueden aceptar).
+     */
     public void marcarCumplida(Integer codigoUsuario, LocalDate fecha) {
         this.estado = EstadoMeta.CUMPLIDA;
         participacionDe(codigoUsuario).ifPresent(p -> p.marcarCumplida(fecha));
+        participaciones.stream()
+                .filter(p -> p.getEstadoInvitacion() == EstadoInvitacion.ACEPTADA)
+                .forEach(p -> p.marcarCumplida(fecha));
+    }
+
+    /** Códigos de los otros participantes aceptados (sin el usuario indicado). */
+    public List<Integer> otrosParticipantesAceptados(Integer codigoUsuario) {
+        return participaciones.stream()
+                .filter(p -> p.getEstadoInvitacion() == EstadoInvitacion.ACEPTADA)
+                .map(p -> p.getUsuario().getCodigoUsuario())
+                .filter(c -> !c.equals(codigoUsuario))
+                .toList();
     }
 
     /** HU6: fecha en que el usuario cumplió la meta, o null si no la ha cumplido. */
