@@ -79,3 +79,31 @@ export async function cambiarPrivacidad(privado) {
   if (typeof datos?.privado !== 'boolean') throw new Error('Respuesta inesperada del servidor');
   return datos;
 }
+
+/**
+ * HU19: guarda lo que los demás ven del perfil { frase, portada, codigoInsigniaDestacada,
+ * metasDestacadas }. Devuelve Mi perfil actualizado. Lanza Error con `estado` y `errores`.
+ */
+export async function editarPerfilPublico(datosPerfil) {
+  const encabezados = cabeceras({ 'Content-Type': 'application/json' });
+  let respuesta;
+  try {
+    respuesta = await fetch(`${API_URL}/api/usuarios/me/perfil-publico`, {
+      method: 'PUT',
+      headers: encabezados,
+      body: JSON.stringify(datosPerfil),
+    });
+  } catch {
+    throw new Error('No se pudo conectar con el servidor');
+  }
+  if (respuesta.status === 401) throw errorSesionExpirada();
+  const datos = await respuesta.json().catch(() => null);
+  if (!respuesta.ok) {
+    const error = new Error(datos?.errores?.[0] ?? datos?.mensaje ?? 'Error inesperado');
+    error.estado = respuesta.status;
+    error.errores = datos?.errores ?? [];
+    throw error;
+  }
+  if (!datos?.personalizacion) throw new Error('Respuesta inesperada del servidor');
+  return datos;
+}

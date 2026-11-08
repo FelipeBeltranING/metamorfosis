@@ -39,5 +39,6 @@ public enum AccionLog {
     RESPONDER_INVITACION, // HU14: aceptar o rechazar (desde la app o el correo)
     GENERAR_CODIGO_META, // código para unirse a la meta
     DESACTIVAR_CODIGO_META,
-    UNIRSE_CON_CODIGO
+    UNIRSE_CON_CODIGO,
+    EDITAR_PERFIL_PUBLICO // HU19: frase, portada, insignia y metas destacadas
 }

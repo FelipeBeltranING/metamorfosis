@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import {
-  Award, CalendarDays, ChartColumn, CircleCheck, Lock, Mail, PencilLine, Target, TrendingUp,
+  Award, ChartColumn, CircleCheck, Lock, PencilLine, Target, TrendingUp,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import Encabezado from '../components/Encabezado';
+import CabeceraPerfil from '../components/CabeceraPerfil';
 import EstadoError from '../components/EstadoError';
 import IconoInsignia from '../components/IconoInsignia';
 import { EtiquetaOculta } from '../components/MetaTarjeta';
@@ -11,7 +12,6 @@ import TarjetaPrivacidad from '../components/TarjetaPrivacidad';
 import { TIPOS } from '../constants/opcionesMeta';
 import { obtenerPerfil } from '../services/perfilService';
 import { formatearFecha } from '../utils/fechas';
-import { iniciales, mesYAnio } from '../utils/perfil';
 import { EVENTO_CUENTA, datosPerfil, obtenerSesion } from '../services/sesionService';
 
 const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((t) => [t.valor, t]));
@@ -122,8 +122,9 @@ export default function PerfilPage() {
  * perfil, sin enlaces a pantallas propias y con los textos en tercera persona.
  */
 export function ContenidoPerfil({ perfil, publico = false }) {
-  const { resumen, insignias, ultimasCumplidas } = perfil;
-  const nombreCompleto = [perfil.nombre, perfil.apellido].filter(Boolean).join(' ');
+  const {
+    resumen, insignias, ultimasCumplidas, personalizacion,
+  } = perfil;
   // HU-23: la foto propia viene de la cuenta (la sincroniza el encabezado) y se actualiza al editarla.
   const [fotoCuenta, setFotoCuenta] = useState(() => datosPerfil(obtenerSesion())?.foto ?? null);
   useEffect(() => {
@@ -138,44 +139,25 @@ export function ContenidoPerfil({ perfil, publico = false }) {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* 1. Datos personales */}
-      <section aria-label="Datos personales" className={`${TARJETA} flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left`}>
-        {foto ? (
-          <img src={foto} alt="" className="size-16 shrink-0 rounded-full object-cover sm:size-20" />
-        ) : (
-          <div
-            className="flex size-16 shrink-0 items-center justify-center rounded-full bg-violet-600 text-2xl font-bold text-white sm:size-20 sm:text-3xl"
-            aria-hidden="true"
-          >
-            {iniciales(perfil.nombre, perfil.apellido)}
-          </div>
-        )}
-        <div className="flex min-w-0 flex-col gap-1">
-          <p className="truncate text-xl font-bold text-gray-900 sm:text-2xl">{nombreCompleto}</p>
-          {!publico && (
-            <p className="flex items-center justify-center gap-2 text-sm text-gray-600 sm:justify-start">
-              <Mail className="size-4 shrink-0 text-gray-400" aria-hidden="true" />
-              <span className="truncate">{perfil.email}</span>
-            </p>
-          )}
-          {perfil.fechaRegistro && (
-            <p className="flex items-center justify-center gap-2 text-sm text-gray-600 sm:justify-start">
-              <CalendarDays className="size-4 shrink-0 text-gray-400" aria-hidden="true" />
-              {`Miembro desde ${mesYAnio(perfil.fechaRegistro)}`}
-            </p>
-          )}
-        </div>
-        {/* HU-23 */}
-        {!publico && (
+      {/* 1. Datos personales (HU19: con la portada y la frase que eligió) */}
+      <CabeceraPerfil
+        nombre={perfil.nombre}
+        apellido={perfil.apellido}
+        foto={foto}
+        email={publico ? null : perfil.email}
+        fechaRegistro={perfil.fechaRegistro}
+        frase={personalizacion?.frase}
+        portada={personalizacion?.portada}
+        acciones={publico ? null : (
           <Link
             to="/perfil/editar"
-            className="flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-violet-300 bg-violet-50 px-4 text-[15px] font-bold text-violet-700 hover:bg-violet-100 sm:ml-auto"
+            className="flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-violet-300 bg-violet-50 px-4 text-[15px] font-bold text-violet-700 hover:bg-violet-100"
           >
             <PencilLine className="size-[18px]" aria-hidden="true" />
             Editar perfil
           </Link>
         )}
-      </section>
+      />
 
       {/* HU26: interruptor Perfil privado (solo en Mi perfil) */}
       {!publico && <TarjetaPrivacidad inicial={perfil.perfilPrivado} />}

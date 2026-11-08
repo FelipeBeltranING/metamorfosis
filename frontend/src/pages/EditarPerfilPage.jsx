@@ -10,6 +10,9 @@ import MensajeError from '../components/MensajeError';
 import AvatarUsuario from '../components/AvatarUsuario';
 import FotoPerfilModal from '../components/FotoPerfilModal';
 import SeccionApariencia from '../components/SeccionApariencia';
+import SeccionPerfilPublico from '../components/SeccionPerfilPublico';
+import { editarPerfilPublico, obtenerPerfil } from '../services/perfilService';
+import { MAXIMO_FRASE } from '../constants/portadas';
 import {
   cambiarApariencia, cambiarFoto, editarDatos, obtenerCuenta, quitarFoto,
 } from '../services/cuentaService';
@@ -38,6 +41,20 @@ function problemaConArchivo(archivo) {
   return null;
 }
 
+/** HU19: lo que se edita del perfil público, a partir de Mi perfil. */
+function publicoDesde(miPerfil) {
+  const p = miPerfil?.personalizacion ?? {};
+  return { frase: p.frase ?? '', portada: p.portada ?? 'NINGUNA' };
+}
+
+function mismoPerfilPublico(a, b) {
+  return limpiar(a.frase) === limpiar(b.frase) && a.portada === b.portada;
+}
+
+function haciaServidorPerfil(p) {
+  return { frase: limpiar(p.frase), portada: p.portada };
+}
+
 /** Validación del cliente (la del servidor se mantiene siempre). */
 function validar({ nombre, apellido }) {
   const errores = {};
@@ -54,7 +71,9 @@ function erroresDelServidor(error) {
   const campos = {};
   const generales = [];
   for (const mensaje of error.errores ?? []) {
-    if (/apellido/i.test(mensaje)) campos.apellido = mensaje;
+    if (/frase/i.test(mensaje)) campos.frase = mensaje; // HU19: perfil público
+    else if (/portada/i.test(mensaje)) campos.portada = mensaje;
+    else if (/apellido/i.test(mensaje)) campos.apellido = mensaje;
     else if (/nombre/i.test(mensaje)) campos.nombre = mensaje;
     else if (/foto/i.test(mensaje)) campos.foto = mensaje;
     else if (/modo|acento/i.test(mensaje)) campos.apariencia = mensaje;
@@ -101,13 +120,18 @@ export default function EditarPerfilPage() {
   const [archivoElegido, setArchivoElegido] = useState(null);
   // HU19: apariencia elegida en la página (se ve al instante; se guarda con el formulario).
   const [apariencia, setApariencia] = useState(leerApariencia);
+  // HU19: lo que los demás ven del perfil (se guarda con el formulario).
+  const [perfil, setPerfil] = useState(null);
+  const [perfilPublico, setPerfilPublico] = useState({ frase: '', portada: 'NINGUNA' });
   const selectorArchivo = useRef(null);
 
   useEffect(() => {
     let activo = true;
-    obtenerCuenta()
-      .then((cuenta) => {
+    Promise.all([obtenerCuenta(), obtenerPerfil()])
+      .then(([cuenta, miPerfil]) => {
         if (!activo) return;
+        setPerfil(miPerfil);
+        setPerfilPublico(publicoDesde(miPerfil));
         setCarga({ fase: 'lista', cuenta });
         setFormulario({ nombre: cuenta.nombre, apellido: cuenta.apellido });
         const guardada = desdeServidor(cuenta.apariencia);
@@ -139,7 +163,8 @@ export default function EditarPerfilPage() {
     limpiar(formulario.nombre) !== cuenta.nombre || limpiar(formulario.apellido) !== cuenta.apellido
   );
   const aparienciaCambio = Boolean(cuenta) && !mismaApariencia(apariencia, desdeServidor(cuenta.apariencia));
-  const hayCambios = datosCambiaron || fotoPendiente !== null || aparienciaCambio;
+  const perfilPublicoCambio = Boolean(perfil) && !mismoPerfilPublico(perfilPublico, publicoDesde(perfil));
+  const hayCambios = datosCambiaron || fotoPendiente !== null || aparienciaCambio || perfilPublicoCambio;
   const fotoMostrada = fotoPendiente?.tipo === 'nueva' ? fotoPendiente.foto
     : fotoPendiente?.tipo === 'quitar' ? null : cuenta?.foto ?? null;
 
@@ -194,6 +219,9 @@ export default function EditarPerfilPage() {
   const guardar = async (evento) => {
     evento.preventDefault();
     const encontrados = validar(formulario);
+    if (limpiar(perfilPublico.frase).length > MAXIMO_FRASE) {
+      encontrados.frase = `La frase puede tener hasta ${MAXIMO_FRASE} caracteres.`;
+    }
     setErrores((actuales) => ({ ...encontrados, foto: actuales.foto, apariencia: actuales.apariencia }));
     setErrorGeneral(Object.keys(encontrados).length ? 'No se guardaron los cambios. Revisa los campos marcados.' : '');
     if (Object.keys(encontrados).length || !hayCambios) return;
@@ -207,6 +235,11 @@ export default function EditarPerfilPage() {
       if (fotoPendiente?.tipo === 'nueva') actualizada = await cambiarFoto(fotoPendiente.foto);
       if (fotoPendiente?.tipo === 'quitar') actualizada = await quitarFoto();
       if (aparienciaCambio) actualizada = await cambiarApariencia(haciaServidor(apariencia));
+      if (perfilPublicoCambio) {
+        const nuevo = await editarPerfilPublico(haciaServidorPerfil(perfilPublico));
+        setPerfil(nuevo);
+        setPerfilPublico(publicoDesde(nuevo));
+      }
       aplicarApariencia(desdeServidor(actualizada.apariencia), true);
       setFotoPendiente(null);
       setCarga({ fase: 'lista', cuenta: actualizada });
@@ -364,6 +397,22 @@ export default function EditarPerfilPage() {
                 <p id="ayuda-correo" className="text-[13px] text-gray-600">Es el correo con el que inicias sesión, por eso no se cambia aquí.</p>
               </div>
             </section>
+
+            <SeccionPerfilPublico
+              valor={perfilPublico}
+              onCambiar={(nuevo) => {
+                setPerfilPublico(nuevo);
+                setErrores((actuales) => ({ ...actuales, frase: undefined, portada: undefined }));
+                setGuardado(false);
+              }}
+              errores={{ frase: errores.frase, portada: errores.portada }}
+              vistaPrevia={{
+                nombre: limpiar(formulario.nombre) || cuenta.nombre,
+                apellido: limpiar(formulario.apellido) || cuenta.apellido,
+                foto: fotoMostrada,
+                fechaRegistro: perfil?.fechaRegistro,
+              }}
+            />
 
             <SeccionApariencia apariencia={apariencia} onCambiar={elegirApariencia} error={errores.apariencia} />
 

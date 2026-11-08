@@ -3,7 +3,9 @@ package com.metamorfosis.backend.service;
 import com.metamorfosis.backend.auditoria.Auditar;
 import com.metamorfosis.backend.auditoria.ContextoAuditoria;
 import com.metamorfosis.backend.dto.MetaResponse;
+import com.metamorfosis.backend.dto.PerfilPublicoRequest;
 import com.metamorfosis.backend.dto.PerfilPublicoResponse;
+import com.metamorfosis.backend.dto.PersonalizacionPerfil;
 import com.metamorfosis.backend.dto.PerfilResponse;
 import com.metamorfosis.backend.dto.PrivacidadRequest;
 import com.metamorfosis.backend.dto.PrivacidadResponse;
@@ -16,6 +18,7 @@ import com.metamorfosis.backend.model.AccionLog;
 import com.metamorfosis.backend.model.EntidadLog;
 import com.metamorfosis.backend.model.EstadoMeta;
 import com.metamorfosis.backend.model.Meta;
+import com.metamorfosis.backend.model.Portada;
 import com.metamorfosis.backend.model.Usuario;
 import com.metamorfosis.backend.repository.InsigniaRepository;
 import com.metamorfosis.backend.repository.MetaRepository;
@@ -27,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.Normalizer;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -42,6 +46,7 @@ public class PerfilService {
     static final int ULTIMAS_CUMPLIDAS = 3;
     static final int MAXIMO_RESULTADOS = 20;   // HU24
     static final int MINIMO_LETRAS = 2;        // HU24
+    static final int MAXIMO_FRASE = 100;       // HU19
 
     /** De la cumplida más reciente a la más antigua; si dos tienen la misma fecha, la de código mayor primero. */
     private static final Comparator<MetaResponse> MAS_RECIENTE_PRIMERO = Comparator
@@ -81,7 +86,7 @@ public class PerfilService {
 
         return new PerfilResponse(usuario.getNombre(), usuario.getApellido(), usuario.getEmail(),
                 usuario.getFechaRegistro(), resumen, insignias, insigniaRepository.count(), ultimasCumplidas,
-                usuario.isPerfilPrivado());
+                usuario.isPerfilPrivado(), personalizacion(usuario));
     }
 
     /**
@@ -114,7 +119,8 @@ public class PerfilService {
             ContextoAuditoria.agregar("privado", true);
             return new PerfilPublicoResponse(dueno.getCodigoUsuario(), dueno.getNombre(), dueno.getApellido(),
                     dueno.getFotoPerfil(), dueno.getFechaRegistro(), null, List.of(),
-                    insigniaRepository.count(), List.of(), true);
+                    insigniaRepository.count(), List.of(), true,
+                    PersonalizacionPerfil.soloCabecera(dueno.getFrase(), dueno.getPortada()));
         }
 
         List<Meta> visibles = metaRepository.findByParticipante(codigoPerfil).stream()
@@ -127,7 +133,8 @@ public class PerfilService {
 
         return new PerfilPublicoResponse(dueno.getCodigoUsuario(), dueno.getNombre(), dueno.getApellido(),
                 dueno.getFotoPerfil(), dueno.getFechaRegistro(), resumen, insignias,
-                insigniaRepository.count(), ultimasCumplidas(visibles, codigoPerfil), false);
+                insigniaRepository.count(), ultimasCumplidas(visibles, codigoPerfil), false,
+                personalizacion(dueno));
     }
 
     /**
@@ -148,6 +155,53 @@ public class PerfilService {
         usuario.setPerfilPrivado(privado);
         usuarioRepository.save(usuario);
         return new PrivacidadResponse(privado);
+    }
+
+    /**
+     * HU19: guarda lo que los demás ven del perfil: la frase (se quitan espacios de más; vacía se
+     * borra; máximo 100 caracteres) y la portada. Devuelve Mi perfil actualizado.
+     */
+    @Auditar(accion = AccionLog.EDITAR_PERFIL_PUBLICO, entidad = EntidadLog.USUARIO)
+    @Transactional
+    public PerfilResponse editarPerfilPublico(PerfilPublicoRequest pedido, Integer codigoUsuario) {
+        Usuario usuario = usuarioRepository.findById(codigoUsuario)
+                .orElseThrow(() -> new UsuarioNoEncontradoException(codigoUsuario));
+        if (pedido == null) throw new ValidacionException(List.of("Faltan los datos del perfil"));
+
+        List<String> errores = new ArrayList<>();
+        String frase = limpiarFrase(pedido.frase());
+        if (frase != null && frase.length() > MAXIMO_FRASE) {
+            errores.add("La frase puede tener hasta " + MAXIMO_FRASE + " caracteres");
+        }
+        Portada portada = portadaDe(pedido.portada(), errores);
+        if (!errores.isEmpty()) throw new ValidacionException(errores);
+
+        usuario.setFrase(frase);
+        usuario.setPortada(portada);
+        usuarioRepository.save(usuario);
+        ContextoAuditoria.agregar("portada", portada.name());
+        return verMiPerfil(codigoUsuario);
+    }
+
+    /** "  Un   libro a la vez " → "Un libro a la vez"; vacía → null. */
+    static String limpiarFrase(String frase) {
+        if (frase == null) return null;
+        String limpia = frase.strip().replaceAll("\\s+", " ");
+        return limpia.isEmpty() ? null : limpia;
+    }
+
+    private static Portada portadaDe(String valor, List<String> errores) {
+        if (valor == null || valor.isBlank()) return Portada.NINGUNA;
+        for (Portada p : Portada.values()) {
+            if (p.name().equalsIgnoreCase(valor.strip())) return p;
+        }
+        errores.add("Elige una portada válida");
+        return Portada.NINGUNA;
+    }
+
+    /** HU19: lo que el usuario eligió mostrar. */
+    private PersonalizacionPerfil personalizacion(Usuario usuario) {
+        return new PersonalizacionPerfil(usuario.getFrase(), usuario.getPortada(), null, List.of());
     }
 
     /**
