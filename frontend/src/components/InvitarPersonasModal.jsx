@@ -3,6 +3,7 @@ import {
   Check, CircleAlert, CircleCheck, Clock, LoaderCircle, Lock, Search, UserPlus, X,
 } from 'lucide-react';
 import AvatarUsuario from './AvatarUsuario';
+import CodigoInvitacion from './CodigoInvitacion';
 import { buscarUsuarios, MINIMO_LETRAS } from '../services/usuarioService';
 import { invitarAMeta } from '../services/metaService';
 import { inicialesDe, obtenerSesion } from '../services/sesionService';
@@ -201,6 +202,8 @@ export default function InvitarPersonasModal({ meta, onInvitado, onCerrar }) {
               })}
             </ul>
           )}
+
+          <CodigoInvitacion codigoMeta={meta.codigoMeta} />
 
           <div className="flex flex-col gap-1 border-t border-zinc-100 pt-4">
             <h3 className="text-sm font-bold text-gray-700">En esta meta ({participantes.filter((p) => p.estado === 'ACEPTADA').length})</h3>

@@ -45,3 +45,17 @@ export const aceptarInvitacionCorreo = (token) => pedir('/api/invitaciones/corre
 
 /** HU14: rechazar desde el correo (sin sesión). */
 export const rechazarInvitacionCorreo = (token) => pedir('/api/invitaciones/correo/rechazar', { method: 'POST', body: { token }, conSesion: false });
+
+/** Código activo para unirse a la meta { codigo, expira } (codigo null = no hay). Solo el creador. */
+export const verCodigoMeta = (codigoMeta) => pedir(`/api/metas/${codigoMeta}/codigo`);
+
+/** Genera un código nuevo (el anterior deja de servir). */
+export const generarCodigoMeta = (codigoMeta) => pedir(`/api/metas/${codigoMeta}/codigo`, { method: 'POST' });
+
+export const desactivarCodigoMeta = (codigoMeta) => pedir(`/api/metas/${codigoMeta}/codigo`, { method: 'DELETE' });
+
+/** Se une a la meta del código. Devuelve la meta. */
+export const unirseConCodigo = (codigo) => pedir('/api/metas/unirse', { method: 'POST', body: { codigo } });
+
+/** "ABCDEFGH" → "ABCD-EFGH". */
+export const mostrarCodigo = (codigo) => (codigo ? `${codigo.slice(0, 4)}-${codigo.slice(4)}` : '');

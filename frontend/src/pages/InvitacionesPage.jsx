@@ -168,6 +168,7 @@ export default function InvitacionesPage() {
             <p className="max-w-md text-[15px] leading-6 text-gray-600">
               Cuando alguien te invite a una meta, aparecerá aquí y te llegará un correo.
             </p>
+            <p className="text-[15px] text-gray-600">¿Te compartieron un código? Úsalo en Mis metas, con «Unirme con código».</p>
             <Link to="/metas" className="mt-1 font-bold text-violet-700 hover:underline">Ir a mis metas</Link>
           </section>
         )}

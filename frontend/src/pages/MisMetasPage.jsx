@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { CircleCheck, Plus } from 'lucide-react';
+import {
+  CircleCheck, KeyRound, Plus,
+} from 'lucide-react';
 import {
   Link, useLocation, useNavigate, useSearchParams,
 } from 'react-router-dom';
@@ -13,6 +15,7 @@ import ConfirmarCumplidaModal from '../components/ConfirmarCumplidaModal';
 import CompartirLogroModal from '../components/CompartirLogroModal';
 import InvitarPersonasModal from '../components/InvitarPersonasModal';
 import AvisoInvitaciones from '../components/AvisoInvitaciones';
+import UnirseConCodigoModal from '../components/UnirseConCodigoModal';
 import FiltrosMetas from '../components/FiltrosMetas';
 import SinResultadosFiltro from '../components/SinResultadosFiltro';
 import {
@@ -62,6 +65,7 @@ export default function MisMetasPage() {
   // HU21: meta cumplida que se va a compartir.
   const [metaACompartir, setMetaACompartir] = useState(null);
   const [metaAInvitar, setMetaAInvitar] = useState(null); // HU13
+  const [uniendose, setUniendose] = useState(false); // unirse con código
   // Aviso de error fuera del diálogo (por ejemplo, la meta ya no existe).
   const [errorLista, setErrorLista] = useState('');
   // HU25: metas cuya visibilidad se está cambiando (evita el doble clic).
@@ -252,12 +256,22 @@ export default function MisMetasPage() {
               Marca el círculo cuando logres una meta.
             </p>
           </div>
-          <Link
-            to="/metas/nueva"
-            className="hidden h-14 items-center rounded-xl bg-violet-600 px-6 text-base font-bold text-white hover:bg-violet-700 sm:flex"
-          >
-            + Nueva meta
-          </Link>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setUniendose(true)}
+              className="flex h-11 items-center gap-2 rounded-xl border border-violet-300 bg-white px-3.5 text-sm font-bold text-violet-700 hover:bg-violet-50 sm:h-14 sm:px-5 sm:text-base"
+            >
+              <KeyRound className="size-4 sm:size-5" aria-hidden="true" />
+              <span>Unirme<span className="hidden sm:inline"> con código</span></span>
+            </button>
+            <Link
+              to="/metas/nueva"
+              className="hidden h-14 items-center rounded-xl bg-violet-600 px-6 text-base font-bold text-white hover:bg-violet-700 sm:flex"
+            >
+              + Nueva meta
+            </Link>
+          </div>
         </div>
 
         <AvisoInvitaciones />
@@ -336,6 +350,8 @@ export default function MisMetasPage() {
       {metaACompartir && (
         <CompartirLogroModal meta={metaACompartir} onCerrar={() => setMetaACompartir(null)} />
       )}
+
+      {uniendose && <UnirseConCodigoModal onCerrar={() => setUniendose(false)} />}
 
       {metaAInvitar && (
         <InvitarPersonasModal
