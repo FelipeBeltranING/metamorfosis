@@ -16,6 +16,7 @@ import LogroPublicoPage from './pages/LogroPublicoPage';
 import PerfilPage from './pages/PerfilPage';
 import InsigniasPage from './pages/InsigniasPage';
 import InvitacionesPage from './pages/InvitacionesPage';
+import ResponderInvitacionPage from './pages/ResponderInvitacionPage';
 import BuscarPersonasPage from './pages/BuscarPersonasPage';
 import PerfilPublicoPage from './pages/PerfilPublicoPage';
 import RutaProtegida from './components/RutaProtegida';
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="/registro/rechazar" element={<RechazarRegistroPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/logros/:token" element={<LogroPublicoPage />} />
+          <Route path="/invitaciones/responder" element={<ResponderInvitacionPage />} />
           <Route element={<RutaProtegida />}>
             <Route path="/metas" element={<MisMetasPage />} />
             <Route path="/metas/nueva" element={<CrearMetaPage />} />
