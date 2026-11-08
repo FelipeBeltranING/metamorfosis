@@ -46,7 +46,8 @@ export async function obtenerPerfilPublico(codigoUsuario) {
     error.estado = respuesta.status;
     throw error;
   }
-  if (!datos || !datos.resumen || !Array.isArray(datos.insignias)) {
+  // HU26: de un perfil privado el resumen llega en null (solo viene la cabecera).
+  if (!datos || (!datos.resumen && !datos.privado) || !Array.isArray(datos.insignias)) {
     throw new Error('Respuesta inesperada del servidor');
   }
   return datos;
