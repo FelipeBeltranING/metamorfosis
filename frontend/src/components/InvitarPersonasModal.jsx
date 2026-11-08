@@ -120,7 +120,7 @@ export default function InvitarPersonasModal({ meta, onInvitado, onCerrar }) {
 
         <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-6 pb-2">
           <p className="text-sm leading-6 text-gray-600">
-            Quien acepte recorrerá la meta contigo: cada uno lleva su propio camino y la marca como cumplida por su lado.
+            Quien acepte recorrerá la meta contigo: compartirán el camino y cada uno marcará sus propios días. Cuando la marques como cumplida, quedará cumplida para todos.
           </p>
 
           <div className="flex flex-col gap-2">
