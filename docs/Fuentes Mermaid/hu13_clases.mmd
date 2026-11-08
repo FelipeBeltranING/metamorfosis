@@ -1,0 +1,131 @@
+classDiagram
+    direction TB
+    class InvitacionController {
+        -InvitacionService invitacionService
+        -CodigoUnionService codigoUnionService
+        +invitar(codigoMeta, pedido, codigoUsuario) ResponseEntity~InvitacionEnviadaResponse~
+        +verCodigo(codigoMeta: Integer, codigoUsuario: Integer) ResponseEntity~CodigoUnionResponse~
+        +generarCodigo(codigoMeta: Integer, codigoUsuario: Integer) ResponseEntity~CodigoUnionResponse~
+        +desactivarCodigo(codigoMeta: Integer, codigoUsuario: Integer) ResponseEntity~Void~
+    }
+    class InvitacionService {
+        ~MAXIMO_PARTICIPANTES: int = 10$
+        ~DIAS_VIGENCIA: int = 7$
+        -CorreoService correoService
+        -String urlFrontend
+        +invitar(codigoMeta, pedido, codigoUsuario) InvitacionEnviadaResponse
+        -enviarCorreo(invitado, creador, meta, token) boolean
+    }
+    class CodigoUnionService {
+        ~ALFABETO: String$
+        ~LARGO: int = 8$
+        ~DIAS_VIGENCIA: int = 7$
+        +verCodigo(codigoMeta: Integer, codigoUsuario: Integer) CodigoUnionResponse
+        +generar(codigoMeta: Integer, codigoUsuario: Integer) CodigoUnionResponse
+        +desactivar(codigoMeta: Integer, codigoUsuario: Integer) void
+        -nuevoCodigo() String
+    }
+    class TokensSeguros {
+        <<utility>>
+        +generar()$ String
+        +hash(token: String)$ String
+    }
+    class CorreoService {
+        <<interface>>
+        +enviar(destino: String, asunto: String, html: String, textoPlano: String) void
+    }
+    class PlantillaInvitacion {
+        <<utility>>
+        +asunto(nombreInvitador: String)$ String
+        +html(nombreInvitador, nombreMeta, urlAceptar, urlRechazar, dias)$ String
+        +texto(nombreInvitador, nombreMeta, urlAceptar, urlRechazar, dias)$ String
+    }
+    class MetaRepository {
+        <<interface>>
+        +findById(codigoMeta: Integer) Optional~Meta~
+        +findByCodigoUnion(codigo: String) Optional~Meta~
+        +save(meta: Meta) Meta
+    }
+    class UsuarioRepository {
+        <<interface>>
+        +findById(codigoUsuario: Integer) Optional~Usuario~
+    }
+    class Meta {
+        -Usuario creador
+        -EstadoMeta estado
+        -String codigoUnion
+        -LocalDateTime codigoUnionExpira
+        -List~Participacion~ participaciones
+        +invitar(invitado, codigoInvitador, tokenHash, ahora, expira) Participacion
+        +participacionDeUsuario(codigoUsuario: Integer) Optional~Participacion~
+        +participantesVisibles() List~Participacion~
+        +activarCodigoUnion(codigo: String, expira: LocalDateTime) void
+        +desactivarCodigoUnion() void
+        +codigoUnionVigente(ahora: LocalDateTime) boolean
+    }
+    class Participacion {
+        -EstadoInvitacion estadoInvitacion
+        -Integer codigoInvitador
+        -LocalDateTime fechaInvitacion
+        -String tokenHash
+        -LocalDateTime tokenExpira
+        +invitar(codigoInvitador, tokenHash, ahora, expira) void
+    }
+    class EstadoInvitacion {
+        <<enumeration>>
+        PENDIENTE
+        ACEPTADA
+        RECHAZADA
+    }
+    class InvitarRequest {
+        <<record>>
+        +Integer codigoUsuario
+    }
+    class InvitacionEnviadaResponse {
+        <<record>>
+        +ParticipanteResponse participante
+        +boolean correoEnviado
+    }
+    class ParticipanteResponse {
+        <<record>>
+        +Integer codigoUsuario
+        +String nombre
+        +String apellido
+        +String foto
+        +EstadoInvitacion estado
+        +boolean creador
+        +desde(p: Participacion, creadorMeta: Usuario)$ ParticipanteResponse
+    }
+    class CodigoUnionResponse {
+        <<record>>
+        +String codigo
+        +LocalDateTime expira
+    }
+    class AccionLog {
+        <<enumeration>>
+        INVITAR_META
+        GENERAR_CODIGO_META
+        DESACTIVAR_CODIGO_META
+    }
+    class ConflictoException {
+        409 ya participa o ya está invitada
+    }
+    InvitacionController --> InvitacionService : usa
+    InvitacionController --> CodigoUnionService : usa
+    InvitacionService --> MetaRepository : usa
+    InvitacionService --> UsuarioRepository : usa
+    InvitacionService --> CorreoService : envía
+    InvitacionService ..> PlantillaInvitacion : arma el correo
+    InvitacionService ..> TokensSeguros : token y SHA-256
+    InvitacionService ..> ConflictoException : lanza
+    InvitacionService ..> InvitacionEnviadaResponse : crea
+    CodigoUnionService --> MetaRepository : usa
+    CodigoUnionService ..> CodigoUnionResponse : crea
+    InvitacionEnviadaResponse --> ParticipanteResponse
+    Meta "1" *-- "1..10" Participacion : participaciones
+    Participacion --> EstadoInvitacion
+    InvitacionService ..> AccionLog : @Auditar
+    CodigoUnionService ..> AccionLog : @Auditar
+    InvitacionService ..> Meta : invitar()
+    CodigoUnionService ..> Meta : activarCodigoUnion()
+    InvitacionController ..> InvitarRequest
