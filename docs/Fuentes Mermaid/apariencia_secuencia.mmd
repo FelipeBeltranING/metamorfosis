@@ -1,0 +1,37 @@
+sequenceDiagram
+    autonumber
+    actor U as Usuario
+    participant EP as EditarPerfilPage
+    participant SA as SeccionApariencia
+    participant AJ as apariencia.js
+    participant CS as cuentaService.js
+    participant CC as CuentaController
+    participant S as CuentaService
+    participant R as UsuarioRepository
+    participant DB as PostgreSQL
+    U->>EP: Abre Editar perfil
+    EP->>CS: obtenerCuenta()
+    CS->>CC: GET /api/usuarios/me (JWT)
+    CC-->>EP: CuentaResponse con apariencia (CLARO, VIOLETA)
+    EP->>SA: Muestra temas, modo y color de acento
+    U->>SA: Elige el tema "Noche"
+    SA->>EP: onCambiar(modo oscuro, acento azul)
+    EP->>AJ: aplicarApariencia(oscuro, azul)
+    AJ->>AJ: data-modo="oscuro" y data-acento="azul" en html
+    AJ-->>U: Toda la página cambia al instante (vista previa)
+    U->>EP: Pulsa "Guardar cambios"
+    EP->>CS: cambiarApariencia(OSCURO, AZUL)
+    CS->>CC: PUT /api/usuarios/me/apariencia {modo, acento} (JWT)
+    CC->>S: cambiarApariencia(codigoUsuario, pedido)
+    S->>R: findById(codigoUsuario)
+    R-->>S: usuario
+    S->>S: valorDe: OSCURO es un ModoTema y AZUL un ColorAcento
+    S->>R: save(usuario)
+    R->>DB: UPDATE usuario SET modo_tema = OSCURO, color_acento = AZUL
+    S-->>CC: CuentaResponse con la apariencia nueva
+    Note over S: @Auditar: CAMBIAR_APARIENCIA EXITO
+    CC-->>CS: 200
+    CS-->>EP: cuenta
+    EP->>AJ: aplicarApariencia(guardada, guardar = true) en localStorage
+    EP->>U: "¡Perfil actualizado!"
+    Note over U,AJ: En otro dispositivo, MenuPerfil pide la cuenta al entrar y aplica la misma apariencia

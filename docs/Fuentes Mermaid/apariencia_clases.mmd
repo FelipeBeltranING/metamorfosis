@@ -1,0 +1,102 @@
+classDiagram
+    direction TB
+    class SeccionApariencia {
+        <<componente React>>
+        +apariencia: modo, acento
+        +onCambiar(nueva)
+    }
+    class EditarPerfilPage {
+        <<página React>>
+        -apariencia: modo, acento
+        +elegirApariencia(nueva) vista previa
+        +guardar() Guardar cambios
+    }
+    class apariencia_js {
+        <<módulo frontend>>
+        +TEMAS: Crisálida, Noche, Bosque, Amanecer
+        +ACENTOS: violeta, azul, esmeralda, coral
+        +leerApariencia() modo, acento
+        +aplicarApariencia(apariencia, guardar) data-modo y data-acento en html
+        +desdeServidor(apariencia) modo, acento
+        +haciaServidor(apariencia) MODO, ACENTO
+        +reiniciarApariencia() al cerrar sesión
+        +seguirAlDispositivo() modo automático
+    }
+    class index_css {
+        <<estilos>>
+        data-modo oscuro: neutros oscuros
+        data-acento: escala violet reasignada
+    }
+    class cuentaService_js {
+        <<servicio frontend>>
+        +obtenerCuenta() CuentaResponse
+        +cambiarApariencia(apariencia) CuentaResponse
+    }
+    class MenuPerfil {
+        <<componente React>>
+        sincroniza la cuenta una vez por sesión y aplica la apariencia guardada
+    }
+    class CuentaController {
+        +verCuenta(codigoUsuario) ResponseEntity~CuentaResponse~
+        +cambiarApariencia(pedido: AparienciaRequest, codigoUsuario) ResponseEntity~CuentaResponse~
+    }
+    class CuentaService {
+        +verCuenta(codigoUsuario) CuentaResponse
+        +cambiarApariencia(codigoUsuario, pedido) CuentaResponse
+        -valorDe(tipo, valor, mensaje, errores)$ E
+    }
+    class Usuario {
+        -ModoTema modoTema
+        -ColorAcento colorAcento
+    }
+    class ModoTema {
+        <<enumeration>>
+        CLARO
+        OSCURO
+        AUTOMATICO
+    }
+    class ColorAcento {
+        <<enumeration>>
+        VIOLETA
+        AZUL
+        ESMERALDA
+        CORAL
+    }
+    class AparienciaRequest {
+        <<record>>
+        +String modo
+        +String acento
+    }
+    class CuentaResponse {
+        <<record>>
+        +Integer codigoUsuario
+        +String nombre
+        +String apellido
+        +String email
+        +String foto
+        +Apariencia apariencia
+    }
+    class UsuarioRepository {
+        <<interface>>
+        +findById(codigoUsuario) Optional~Usuario~
+        +save(usuario) Usuario
+    }
+    class AccionLog {
+        <<enumeration>>
+        CAMBIAR_APARIENCIA
+    }
+    EditarPerfilPage --> SeccionApariencia : muestra
+    EditarPerfilPage --> apariencia_js : vista previa
+    EditarPerfilPage --> cuentaService_js : guarda
+    MenuPerfil --> cuentaService_js : obtenerCuenta
+    MenuPerfil --> apariencia_js : aplica la guardada
+    apariencia_js ..> index_css : atributos en html
+    cuentaService_js ..> CuentaController : PUT /api/usuarios/me/apariencia
+    CuentaController --> CuentaService : usa
+    CuentaService --> UsuarioRepository : usa
+    CuentaService ..> AparienciaRequest
+    CuentaService ..> CuentaResponse : crea
+    UsuarioRepository ..> Usuario
+    Usuario --> ModoTema
+    Usuario --> ColorAcento
+    CuentaService ..> AccionLog : @Auditar
