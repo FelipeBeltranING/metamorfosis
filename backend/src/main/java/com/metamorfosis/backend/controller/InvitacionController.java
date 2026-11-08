@@ -1,16 +1,21 @@
 package com.metamorfosis.backend.controller;
 
+import com.metamorfosis.backend.dto.CodigoUnionResponse;
 import com.metamorfosis.backend.dto.InvitacionCorreoResponse;
 import com.metamorfosis.backend.dto.InvitacionEnviadaResponse;
 import com.metamorfosis.backend.dto.InvitacionRespondidaResponse;
 import com.metamorfosis.backend.dto.InvitacionResponse;
 import com.metamorfosis.backend.dto.InvitarRequest;
+import com.metamorfosis.backend.dto.MetaResponse;
 import com.metamorfosis.backend.dto.ResponderInvitacionRequest;
 import com.metamorfosis.backend.dto.TokenRequest;
+import com.metamorfosis.backend.dto.UnirseRequest;
+import com.metamorfosis.backend.service.CodigoUnionService;
 import com.metamorfosis.backend.service.InvitacionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,14 +26,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/** HU13 y HU14: invitaciones a metas compartidas. */
+/** HU13 y HU14: invitaciones a metas compartidas, y unirse con un código. */
 @RestController
 public class InvitacionController {
 
     private final InvitacionService invitacionService;
+    private final CodigoUnionService codigoUnionService;
 
-    public InvitacionController(InvitacionService invitacionService) {
+    public InvitacionController(InvitacionService invitacionService, CodigoUnionService codigoUnionService) {
         this.invitacionService = invitacionService;
+        this.codigoUnionService = codigoUnionService;
     }
 
     /** HU13: invita a otra persona a la meta (solo su creador). */
@@ -71,5 +78,34 @@ public class InvitacionController {
     public ResponseEntity<Void> rechazarPorToken(@RequestBody TokenRequest pedido) {
         invitacionService.rechazarPorToken(pedido == null ? null : pedido.token());
         return ResponseEntity.noContent().build();
+    }
+
+    /** Código activo para unirse a la meta (solo su creador); {codigo: null} si no hay. */
+    @GetMapping("/api/metas/{codigoMeta}/codigo")
+    public ResponseEntity<CodigoUnionResponse> verCodigo(@PathVariable Integer codigoMeta,
+                                                         @AuthenticationPrincipal Integer codigoUsuario) {
+        return ResponseEntity.ok(codigoUnionService.verCodigo(codigoMeta, codigoUsuario));
+    }
+
+    /** Genera un código nuevo para unirse (el anterior deja de servir). */
+    @PostMapping("/api/metas/{codigoMeta}/codigo")
+    public ResponseEntity<CodigoUnionResponse> generarCodigo(@PathVariable Integer codigoMeta,
+                                                             @AuthenticationPrincipal Integer codigoUsuario) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(codigoUnionService.generar(codigoMeta, codigoUsuario));
+    }
+
+    /** Desactiva el código de la meta. */
+    @DeleteMapping("/api/metas/{codigoMeta}/codigo")
+    public ResponseEntity<Void> desactivarCodigo(@PathVariable Integer codigoMeta,
+                                                 @AuthenticationPrincipal Integer codigoUsuario) {
+        codigoUnionService.desactivar(codigoMeta, codigoUsuario);
+        return ResponseEntity.noContent().build();
+    }
+
+    /** Se une a una meta con el código que le compartieron. */
+    @PostMapping("/api/metas/unirse")
+    public ResponseEntity<MetaResponse> unirse(@RequestBody UnirseRequest pedido,
+                                               @AuthenticationPrincipal Integer codigoUsuario) {
+        return ResponseEntity.ok(codigoUnionService.unirse(pedido, codigoUsuario));
     }
 }

@@ -39,6 +39,13 @@ public class Meta {
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDate fechaCreacion;
 
+    /** Código para unirse a la meta (null si no hay uno activo) y su vencimiento. */
+    @Column(name = "codigo_union", length = 8)
+    private String codigoUnion;
+
+    @Column(name = "codigo_union_expira")
+    private LocalDateTime codigoUnionExpira;
+
     @OneToMany(mappedBy = "meta", cascade = CascadeType.ALL)
     private List<Participacion> participaciones = new ArrayList<>();
 
@@ -115,6 +122,39 @@ public class Meta {
         p.invitar(codigoInvitador, tokenHash, ahora, expira);
         return p;
     }
+
+    /** Activa (o cambia) el código para unirse; el anterior deja de servir. */
+    public void activarCodigoUnion(String codigo, LocalDateTime expira) {
+        this.codigoUnion = codigo;
+        this.codigoUnionExpira = expira;
+    }
+
+    public void desactivarCodigoUnion() {
+        this.codigoUnion = null;
+        this.codigoUnionExpira = null;
+    }
+
+    /** El código existe y no ha vencido. */
+    public boolean codigoUnionVigente(LocalDateTime ahora) {
+        return codigoUnion != null && codigoUnionExpira != null && codigoUnionExpira.isAfter(ahora);
+    }
+
+    /**
+     * Se une con el código: entra como participante ACEPTADA. Si tenía una invitación pendiente
+     * (o la había rechazado), se reutiliza esa participación.
+     */
+    public Participacion unirse(Usuario usuario) {
+        Participacion p = participacionDe(usuario.getCodigoUsuario()).orElseGet(() -> {
+            Participacion nueva = new Participacion(usuario, this, EstadoInvitacion.ACEPTADA);
+            participaciones.add(nueva);
+            return nueva;
+        });
+        p.responder(true);
+        return p;
+    }
+
+    public String getCodigoUnion() { return codigoUnion; }
+    public LocalDateTime getCodigoUnionExpira() { return codigoUnionExpira; }
 
     /**
      * HU13: quienes participan o están invitados (sin los que rechazaron), el creador primero.

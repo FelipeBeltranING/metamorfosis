@@ -36,5 +36,8 @@ public enum AccionLog {
     CAMBIAR_APARIENCIA, // HU19: tema, modo o color de acento
     INVITAR_META,       // HU13: invitar a una persona a la meta
     VER_INVITACIONES,   // HU14: invitaciones pendientes
-    RESPONDER_INVITACION // HU14: aceptar o rechazar (desde la app o el correo)
+    RESPONDER_INVITACION, // HU14: aceptar o rechazar (desde la app o el correo)
+    GENERAR_CODIGO_META, // código para unirse a la meta
+    DESACTIVAR_CODIGO_META,
+    UNIRSE_CON_CODIGO
 }
