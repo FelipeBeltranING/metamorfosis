@@ -3,6 +3,7 @@ package com.metamorfosis.backend.model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,6 +93,17 @@ public class Meta {
     /** HU25: la meta está oculta en el perfil de ese usuario. */
     public boolean isOcultaPara(Integer codigoUsuario) {
         return participacionDe(codigoUsuario).map(Participacion::isOculta).orElse(false);
+    }
+
+    /**
+     * HU13: quienes participan o están invitados (sin los que rechazaron), el creador primero.
+     */
+    public List<Participacion> participantesVisibles() {
+        return participaciones.stream()
+                .filter(p -> p.getEstadoInvitacion() != EstadoInvitacion.RECHAZADA)
+                .sorted(Comparator.comparing((Participacion p) -> !p.getUsuario().getCodigoUsuario()
+                        .equals(creador.getCodigoUsuario())))
+                .toList();
     }
 
     private Optional<Participacion> participacionDe(Integer codigoUsuario) {

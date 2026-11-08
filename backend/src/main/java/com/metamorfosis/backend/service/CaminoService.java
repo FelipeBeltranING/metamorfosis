@@ -2,6 +2,7 @@ package com.metamorfosis.backend.service;
 
 import com.metamorfosis.backend.config.CalendarioUsuario;
 import com.metamorfosis.backend.dto.CaminoResponse;
+import com.metamorfosis.backend.dto.ParticipanteResponse;
 import com.metamorfosis.backend.dto.DiaResponse;
 import com.metamorfosis.backend.dto.EstadisticasResponse;
 import com.metamorfosis.backend.dto.EstadisticasResponse.Racha;
@@ -93,7 +94,8 @@ public class CaminoService {
                 cumplidasHoy, tocanHoy,
                 CalculoCamino.diasSeguidosCompletos(new ArrayList<>(dias.values()), hoy),
                 registroRepository.countBySubMetaMetaCodigoMeta(codigoMeta),
-                items);
+                items,
+                meta.participantesVisibles().stream().map(p -> ParticipanteResponse.desde(p, meta.getCreador())).toList());
     }
 
     /** Para cada meta activa del usuario: constancia de 7 días y sub-metas que tocan hoy (HU3). */

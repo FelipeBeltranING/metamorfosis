@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * "Tu camino" de una meta para el usuario que consulta. Constancias en % (null si aún no hay días
  * que contar). {@code soloLectura}: la meta está cumplida. {@code puedeEditar}: es su creador y está activa.
+ * HU13: {@code participantes} son quienes participan o están invitados (el creador primero).
  */
 public record CaminoResponse(
         Integer codigoMeta,
@@ -28,5 +29,6 @@ public record CaminoResponse(
         int tocanHoy,
         int diasSeguidosCompletos,
         long totalRegistros,
-        List<SubMetaCaminoResponse> subMetas
+        List<SubMetaCaminoResponse> subMetas,
+        List<ParticipanteResponse> participantes
 ) {}
