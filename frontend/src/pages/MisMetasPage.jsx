@@ -11,6 +11,7 @@ import EstadoError from '../components/EstadoError';
 import ConfirmarEliminarModal from '../components/ConfirmarEliminarModal';
 import ConfirmarCumplidaModal from '../components/ConfirmarCumplidaModal';
 import CompartirLogroModal from '../components/CompartirLogroModal';
+import InvitarPersonasModal from '../components/InvitarPersonasModal';
 import FiltrosMetas from '../components/FiltrosMetas';
 import SinResultadosFiltro from '../components/SinResultadosFiltro';
 import {
@@ -59,6 +60,7 @@ export default function MisMetasPage() {
   const [errorMarcar, setErrorMarcar] = useState('');
   // HU21: meta cumplida que se va a compartir.
   const [metaACompartir, setMetaACompartir] = useState(null);
+  const [metaAInvitar, setMetaAInvitar] = useState(null); // HU13
   // Aviso de error fuera del diálogo (por ejemplo, la meta ya no existe).
   const [errorLista, setErrorLista] = useState('');
   // HU25: metas cuya visibilidad se está cambiando (evita el doble clic).
@@ -290,6 +292,7 @@ export default function MisMetasPage() {
                 onEditar={abrirEdicion}
                 onCambiarVisibilidad={alternarVisibilidad}
                 onEliminar={abrirConfirmacion}
+                onInvitar={setMetaAInvitar}
                 onCompartir={setMetaACompartir}
               />
             ))}
@@ -329,6 +332,16 @@ export default function MisMetasPage() {
 
       {metaACompartir && (
         <CompartirLogroModal meta={metaACompartir} onCerrar={() => setMetaACompartir(null)} />
+      )}
+
+      {metaAInvitar && (
+        <InvitarPersonasModal
+          meta={metaAInvitar}
+          onInvitado={(participantes) => setEstado((actual) => (actual.fase === 'lista'
+            ? { ...actual, metas: actual.metas.map((m) => (m.codigoMeta === metaAInvitar.codigoMeta ? { ...m, participantes } : m)) }
+            : actual))}
+          onCerrar={() => setMetaAInvitar(null)}
+        />
       )}
 
       {aviso && (
