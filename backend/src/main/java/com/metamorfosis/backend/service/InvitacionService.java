@@ -2,11 +2,17 @@ package com.metamorfosis.backend.service;
 
 import com.metamorfosis.backend.auditoria.Auditar;
 import com.metamorfosis.backend.auditoria.ContextoAuditoria;
+import com.metamorfosis.backend.dto.InvitacionCorreoResponse;
 import com.metamorfosis.backend.dto.InvitacionEnviadaResponse;
+import com.metamorfosis.backend.dto.InvitacionRespondidaResponse;
+import com.metamorfosis.backend.dto.InvitacionResponse;
 import com.metamorfosis.backend.dto.InvitarRequest;
 import com.metamorfosis.backend.dto.ParticipanteResponse;
+import com.metamorfosis.backend.dto.ResponderInvitacionRequest;
 import com.metamorfosis.backend.exception.ConflictoException;
 import com.metamorfosis.backend.exception.CorreoNoEnviadoException;
+import com.metamorfosis.backend.exception.InvitacionNoEncontradaException;
+import com.metamorfosis.backend.exception.InvitacionNoValidaException;
 import com.metamorfosis.backend.exception.MetaNoEncontradaException;
 import com.metamorfosis.backend.exception.PermisoDenegadoException;
 import com.metamorfosis.backend.exception.UsuarioNoEncontradoException;
@@ -17,6 +23,8 @@ import com.metamorfosis.backend.model.EstadoInvitacion;
 import com.metamorfosis.backend.model.EstadoMeta;
 import com.metamorfosis.backend.model.Meta;
 import com.metamorfosis.backend.model.Participacion;
+import com.metamorfosis.backend.model.ParticipacionId;
+import com.metamorfosis.backend.model.ResultadoLog;
 import com.metamorfosis.backend.model.Usuario;
 import com.metamorfosis.backend.repository.MetaRepository;
 import com.metamorfosis.backend.repository.ParticipacionRepository;
@@ -37,7 +45,8 @@ import java.util.Optional;
 
 /**
  * HU13: invitar personas a una meta. La invitada queda PENDIENTE hasta que responda (HU14),
- * desde la app o desde los botones del correo.
+ * desde la app o desde los botones del correo. Al aceptar, la meta aparece en sus metas: comparte
+ * las sub-metas de la meta y registra sus propios días.
  */
 @Service
 public class InvitacionService {
@@ -53,23 +62,26 @@ public class InvitacionService {
     private final UsuarioRepository usuarioRepository;
     private final ParticipacionRepository participacionRepository;
     private final CorreoService correoService;
+    private final LogService logService;
     private final String urlFrontend;
     private final Clock reloj;
 
     @Autowired
     public InvitacionService(MetaRepository metaRepository, UsuarioRepository usuarioRepository,
                              ParticipacionRepository participacionRepository, CorreoService correoService,
-                             @Value("${app.frontend.url}") String urlFrontend) {
-        this(metaRepository, usuarioRepository, participacionRepository, correoService, urlFrontend, Clock.systemUTC());
+                             LogService logService, @Value("${app.frontend.url}") String urlFrontend) {
+        this(metaRepository, usuarioRepository, participacionRepository, correoService, logService, urlFrontend,
+                Clock.systemUTC());
     }
 
     InvitacionService(MetaRepository metaRepository, UsuarioRepository usuarioRepository,
                       ParticipacionRepository participacionRepository, CorreoService correoService,
-                      String urlFrontend, Clock reloj) {
+                      LogService logService, String urlFrontend, Clock reloj) {
         this.metaRepository = metaRepository;
         this.usuarioRepository = usuarioRepository;
         this.participacionRepository = participacionRepository;
         this.correoService = correoService;
+        this.logService = logService;
         this.urlFrontend = urlFrontend;
         this.reloj = reloj;
     }
@@ -123,6 +135,95 @@ public class InvitacionService {
         boolean correoEnviado = enviarCorreo(invitado, creador, meta, token);
         if (!correoEnviado) ContextoAuditoria.agregar("correoEnviado", false);
         return new InvitacionEnviadaResponse(ParticipanteResponse.desde(participacion, creador), correoEnviado);
+    }
+
+    /** HU14: invitaciones pendientes del usuario (solo de metas activas). */
+    @Auditar(accion = AccionLog.VER_INVITACIONES, entidad = EntidadLog.META)
+    @Transactional(readOnly = true)
+    public List<InvitacionResponse> pendientes(Integer codigoUsuario) {
+        return participacionRepository.pendientesDe(codigoUsuario).stream().map(InvitacionResponse::desde).toList();
+    }
+
+    /** HU14: acepta o rechaza, desde la app, la invitación del usuario a esa meta. */
+    @Auditar(accion = AccionLog.RESPONDER_INVITACION, entidad = EntidadLog.META)
+    @Transactional
+    public InvitacionRespondidaResponse responder(Integer codigoMeta, ResponderInvitacionRequest pedido,
+                                                  Integer codigoUsuario) {
+        if (pedido == null || pedido.aceptar() == null) {
+            throw new ValidacionException(List.of("Indica si aceptas o rechazas la invitación"));
+        }
+        Participacion p = participacionRepository.findById(new ParticipacionId(codigoUsuario, codigoMeta))
+                .filter(x -> x.getEstadoInvitacion() == EstadoInvitacion.PENDIENTE)
+                .orElseThrow(InvitacionNoEncontradaException::new);
+        return conContexto(aplicarRespuesta(p, pedido.aceptar()), "app");
+    }
+
+    /** HU14: datos de la invitación del enlace del correo, para la página que pregunta. Solo lee. */
+    @Transactional(readOnly = true)
+    public InvitacionCorreoResponse consultarPorToken(String token) {
+        Participacion p = porToken(token);
+        Meta meta = p.getMeta();
+        Usuario creador = meta.getCreador();
+        return new InvitacionCorreoResponse(meta.getCodigoMeta(), meta.getNombre(),
+                creador.getNombre() + " " + creador.getApellido(), enmascarar(p.getUsuario().getEmail()));
+    }
+
+    /**
+     * HU14: aceptar desde el correo. Hay que haber iniciado sesión con la cuenta invitada: si el
+     * correo se reenvió, otra persona no puede entrar a la meta con ese enlace.
+     */
+    @Auditar(accion = AccionLog.RESPONDER_INVITACION, entidad = EntidadLog.META)
+    @Transactional
+    public InvitacionRespondidaResponse aceptarPorToken(String token, Integer codigoUsuario) {
+        Participacion p = porToken(token);
+        if (!p.getUsuario().getCodigoUsuario().equals(codigoUsuario)) {
+            throw new PermisoDenegadoException("Esta invitación es para otra cuenta (" + enmascarar(p.getUsuario().getEmail())
+                    + "). Inicia sesión con esa cuenta para aceptarla.");
+        }
+        return conContexto(aplicarRespuesta(p, true), "correo");
+    }
+
+    /** HU14: rechazar desde el correo, sin iniciar sesión (como el "No fui yo" de HU8). */
+    @Transactional
+    public void rechazarPorToken(String token) {
+        Participacion p = porToken(token);
+        aplicarRespuesta(p, false); // sin sesión no pasa por @Auditar: se registra a mano
+        logService.registrar(p.getUsuario().getCodigoUsuario(), AccionLog.RESPONDER_INVITACION, EntidadLog.META,
+                p.getMeta().getCodigoMeta(), ResultadoLog.EXITO, "{\"aceptada\":false,\"desde\":\"correo\"}");
+    }
+
+    private InvitacionRespondidaResponse aplicarRespuesta(Participacion p, boolean aceptar) {
+        Meta meta = p.getMeta();
+        if (aceptar && meta.getEstado() != EstadoMeta.ACTIVA) {
+            throw new ValidacionException(List.of("Esta meta ya se cumplió: ya no se pueden unir más personas"));
+        }
+        p.responder(aceptar);
+        participacionRepository.save(p);
+        return new InvitacionRespondidaResponse(meta.getCodigoMeta(), meta.getNombre(), aceptar);
+    }
+
+    /** Para el log (@Auditar): qué meta, si aceptó y desde dónde respondió. */
+    private static InvitacionRespondidaResponse conContexto(InvitacionRespondidaResponse r, String desde) {
+        ContextoAuditoria.agregar("codigoMeta", r.codigoMeta());
+        ContextoAuditoria.agregar("aceptada", r.aceptada());
+        ContextoAuditoria.agregar("desde", desde);
+        return r;
+    }
+
+    /** Invitación pendiente y vigente de ese token, o 410. */
+    private Participacion porToken(String token) {
+        if (token == null || token.isBlank()) throw new InvitacionNoValidaException();
+        return participacionRepository.findByTokenHash(TokensSeguros.hash(token.trim()))
+                .filter(p -> p.getEstadoInvitacion() == EstadoInvitacion.PENDIENTE)
+                .filter(p -> p.getTokenExpira() != null && p.getTokenExpira().isAfter(LocalDateTime.now(reloj)))
+                .orElseThrow(InvitacionNoValidaException::new);
+    }
+
+    /** "laura.gomez@gmail.com" → "l***@gmail.com". */
+    static String enmascarar(String email) {
+        int arroba = email.indexOf('@');
+        if (arroba <= 0) return "***";
+        return email.charAt(0) + "***" + email.substring(arroba);
     }
 
     private boolean enviarCorreo(Usuario invitado, Usuario creador, Meta meta, String token) {

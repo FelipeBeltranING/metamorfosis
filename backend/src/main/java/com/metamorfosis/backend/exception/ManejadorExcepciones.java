@@ -54,6 +54,17 @@ public class ManejadorExcepciones {
         return responder(HttpStatus.CONFLICT, e.getMessage(), List.of());
     }
 
+    /** HU14: enlace de invitación usado, cancelado o vencido. */
+    @ExceptionHandler(InvitacionNoValidaException.class)
+    public ResponseEntity<ErrorResponse> invitacionNoValida(InvitacionNoValidaException e) {
+        return responder(HttpStatus.GONE, e.getMessage(), List.of());
+    }
+
+    @ExceptionHandler(InvitacionNoEncontradaException.class)
+    public ResponseEntity<ErrorResponse> invitacionNoEncontrada(InvitacionNoEncontradaException e) {
+        return responder(HttpStatus.NOT_FOUND, e.getMessage(), List.of());
+    }
+
     @ExceptionHandler(EmailYaRegistradoException.class)
     public ResponseEntity<ErrorResponse> emailYaRegistrado(EmailYaRegistradoException e) {
         return responder(HttpStatus.CONFLICT, e.getMessage(), List.of());

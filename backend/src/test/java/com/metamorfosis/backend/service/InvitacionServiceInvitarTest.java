@@ -48,6 +48,7 @@ class InvitacionServiceInvitarTest {
     @Mock private UsuarioRepository usuarioRepository;
     @Mock private ParticipacionRepository participacionRepository;
     @Mock private CorreoService correoService;
+    @Mock private LogService logService;
 
     private InvitacionService servicio;
     private Meta meta;
@@ -57,7 +58,7 @@ class InvitacionServiceInvitarTest {
     void preparar() throws Exception {
         Clock reloj = Clock.fixed(Instant.parse("2026-11-07T15:00:00Z"), ZoneOffset.UTC);
         servicio = new InvitacionService(metaRepository, usuarioRepository, participacionRepository, correoService,
-                "http://localhost:5173", reloj);
+                logService, "http://localhost:5173", reloj);
         meta = new Meta("Leer 20 libros", Plazo.MEDIANO, TipoMeta.PERSONAL);
         meta.crear(usuario(CREADOR, "Daniel", "Santos"));
         Field id = Meta.class.getDeclaredField("codigoMeta");

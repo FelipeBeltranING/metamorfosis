@@ -43,6 +43,9 @@ public class SeguridadConfig {
             .authorizeHttpRequests(a -> a
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/logros/**").permitAll()   // HU21: logro compartido
+                // HU14: la página del enlace del correo y "Rechazar" no piden iniciar sesión (aceptar sí)
+                .requestMatchers(HttpMethod.GET, "/api/invitaciones/correo").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/invitaciones/correo/rechazar").permitAll()
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().denyAll());
         return http.build();
