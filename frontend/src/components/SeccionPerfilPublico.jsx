@@ -1,5 +1,7 @@
 import { Check, Eye } from 'lucide-react';
 import CabeceraPerfil from './CabeceraPerfil';
+import IconoInsignia from './IconoInsignia';
+import InsigniaDestacada from './InsigniaDestacada';
 import MensajeError from './MensajeError';
 import { MAXIMO_FRASE, PORTADAS } from '../constants/portadas';
 
@@ -8,8 +10,9 @@ import { MAXIMO_FRASE, PORTADAS } from '../constants/portadas';
  * cambia mientras se elige. Se guarda con "Guardar cambios", junto con el resto de Editar perfil.
  */
 export default function SeccionPerfilPublico({
-  valor, onCambiar, vistaPrevia, errores = {},
+  valor, onCambiar, vistaPrevia, insignias = [], errores = {},
 }) {
+  const insigniaElegida = insignias.find((i) => i.codigoInsignia === valor.codigoInsigniaDestacada) ?? null;
   const cambiar = (campo) => (nuevo) => onCambiar({ ...valor, [campo]: nuevo });
   const largo = valor.frase.length;
 
@@ -73,6 +76,33 @@ export default function SeccionPerfilPublico({
         <MensajeError id="error-portada-perfil" texto={errores.portada} />
       </fieldset>
 
+      <fieldset className="flex flex-col gap-2.5">
+        <legend className="mb-1 text-sm font-bold text-gray-700">Insignia destacada</legend>
+        <p className="text-[13px] text-gray-500">Se muestra junto a tu nombre.</p>
+        {insignias.length === 0 ? (
+          <p className="rounded-xl bg-slate-50 p-3 text-sm text-gray-600">Cuando ganes tu primera insignia podrás destacarla aquí.</p>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            {[{ codigoInsignia: null, nombre: 'Ninguna' }, ...insignias].map((i) => {
+              const activa = valor.codigoInsigniaDestacada === i.codigoInsignia;
+              return (
+                <button
+                  key={i.codigoInsignia ?? 'ninguna'}
+                  type="button"
+                  aria-pressed={activa}
+                  onClick={() => cambiar('codigoInsigniaDestacada')(i.codigoInsignia)}
+                  className={`flex h-10 items-center gap-2 rounded-full border-2 px-3.5 text-sm font-bold ${activa ? 'border-violet-600 bg-violet-50 text-violet-800' : 'border-zinc-200 bg-white text-gray-700 hover:border-zinc-300'}`}
+                >
+                  {i.codigoInsignia !== null && <IconoInsignia nombre={i.icono} className="size-4 text-violet-600" aria-hidden="true" />}
+                  {i.nombre}
+                </button>
+              );
+            })}
+          </div>
+        )}
+        <MensajeError id="error-insignia-perfil" texto={errores.insigniaDestacada} />
+      </fieldset>
+
       {/* Vista previa con lo elegido, antes de guardar */}
       <div className="flex flex-col gap-2.5 rounded-2xl bg-slate-50 p-4">
         <p className="flex items-center gap-2 text-sm font-bold text-gray-700">
@@ -87,7 +117,7 @@ export default function SeccionPerfilPublico({
           fechaRegistro={vistaPrevia.fechaRegistro}
           frase={valor.frase.trim().replace(/\s+/g, ' ')}
           portada={valor.portada}
-          extraNombre={vistaPrevia.extraNombre}
+          extraNombre={<InsigniaDestacada insignia={insigniaElegida} />}
         />
         {vistaPrevia.debajo}
       </div>

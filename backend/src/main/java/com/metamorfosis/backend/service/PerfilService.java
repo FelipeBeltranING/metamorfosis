@@ -86,7 +86,7 @@ public class PerfilService {
 
         return new PerfilResponse(usuario.getNombre(), usuario.getApellido(), usuario.getEmail(),
                 usuario.getFechaRegistro(), resumen, insignias, insigniaRepository.count(), ultimasCumplidas,
-                usuario.isPerfilPrivado(), personalizacion(usuario));
+                usuario.isPerfilPrivado(), personalizacion(usuario, insignias));
     }
 
     /**
@@ -134,7 +134,7 @@ public class PerfilService {
         return new PerfilPublicoResponse(dueno.getCodigoUsuario(), dueno.getNombre(), dueno.getApellido(),
                 dueno.getFotoPerfil(), dueno.getFechaRegistro(), resumen, insignias,
                 insigniaRepository.count(), ultimasCumplidas(visibles, codigoPerfil), false,
-                personalizacion(dueno));
+                personalizacion(dueno, insignias));
     }
 
     /**
@@ -159,7 +159,8 @@ public class PerfilService {
 
     /**
      * HU19: guarda lo que los demás ven del perfil: la frase (se quitan espacios de más; vacía se
-     * borra; máximo 100 caracteres) y la portada. Devuelve Mi perfil actualizado.
+     * borra; máximo 100 caracteres), la portada y la insignia destacada (una que haya ganado, o
+     * ninguna). Devuelve Mi perfil actualizado.
      */
     @Auditar(accion = AccionLog.EDITAR_PERFIL_PUBLICO, entidad = EntidadLog.USUARIO)
     @Transactional
@@ -174,10 +175,15 @@ public class PerfilService {
             errores.add("La frase puede tener hasta " + MAXIMO_FRASE + " caracteres");
         }
         Portada portada = portadaDe(pedido.portada(), errores);
+        Integer insignia = pedido.codigoInsigniaDestacada();
+        if (insignia != null && !usuarioInsigniaRepository.codigosObtenidos(codigoUsuario).contains(insignia)) {
+            errores.add("Elige una insignia que hayas ganado");
+        }
         if (!errores.isEmpty()) throw new ValidacionException(errores);
 
         usuario.setFrase(frase);
         usuario.setPortada(portada);
+        usuario.setCodigoInsigniaDestacada(insignia);
         usuarioRepository.save(usuario);
         ContextoAuditoria.agregar("portada", portada.name());
         return verMiPerfil(codigoUsuario);
@@ -199,9 +205,12 @@ public class PerfilService {
         return Portada.NINGUNA;
     }
 
-    /** HU19: lo que el usuario eligió mostrar. */
-    private PersonalizacionPerfil personalizacion(Usuario usuario) {
-        return new PersonalizacionPerfil(usuario.getFrase(), usuario.getPortada(), null, List.of());
+    /** HU19: lo que el usuario eligió mostrar. La insignia destacada sale de las que ganó. */
+    private static PersonalizacionPerfil personalizacion(Usuario usuario, List<InsigniaObtenida> insignias) {
+        InsigniaObtenida destacada = insignias.stream()
+                .filter(i -> i.codigoInsignia().equals(usuario.getCodigoInsigniaDestacada()))
+                .findFirst().orElse(null);
+        return new PersonalizacionPerfil(usuario.getFrase(), usuario.getPortada(), destacada, List.of());
     }
 
     /**

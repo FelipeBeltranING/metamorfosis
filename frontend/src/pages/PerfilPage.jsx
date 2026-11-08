@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Encabezado from '../components/Encabezado';
 import CabeceraPerfil from '../components/CabeceraPerfil';
 import EstadoError from '../components/EstadoError';
+import InsigniaDestacada from '../components/InsigniaDestacada';
 import IconoInsignia from '../components/IconoInsignia';
 import { EtiquetaOculta } from '../components/MetaTarjeta';
 import TarjetaPrivacidad from '../components/TarjetaPrivacidad';
@@ -148,6 +149,7 @@ export function ContenidoPerfil({ perfil, publico = false }) {
         fechaRegistro={perfil.fechaRegistro}
         frase={personalizacion?.frase}
         portada={personalizacion?.portada}
+        extraNombre={<InsigniaDestacada insignia={personalizacion?.insigniaDestacada} />}
         acciones={publico ? null : (
           <Link
             to="/perfil/editar"

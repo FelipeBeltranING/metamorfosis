@@ -44,15 +44,20 @@ function problemaConArchivo(archivo) {
 /** HU19: lo que se edita del perfil público, a partir de Mi perfil. */
 function publicoDesde(miPerfil) {
   const p = miPerfil?.personalizacion ?? {};
-  return { frase: p.frase ?? '', portada: p.portada ?? 'NINGUNA' };
+  return {
+    frase: p.frase ?? '',
+    portada: p.portada ?? 'NINGUNA',
+    codigoInsigniaDestacada: p.insigniaDestacada?.codigoInsignia ?? null,
+  };
 }
 
 function mismoPerfilPublico(a, b) {
-  return limpiar(a.frase) === limpiar(b.frase) && a.portada === b.portada;
+  return limpiar(a.frase) === limpiar(b.frase) && a.portada === b.portada
+    && a.codigoInsigniaDestacada === b.codigoInsigniaDestacada;
 }
 
 function haciaServidorPerfil(p) {
-  return { frase: limpiar(p.frase), portada: p.portada };
+  return { frase: limpiar(p.frase), portada: p.portada, codigoInsigniaDestacada: p.codigoInsigniaDestacada };
 }
 
 /** Validación del cliente (la del servidor se mantiene siempre). */
@@ -73,6 +78,7 @@ function erroresDelServidor(error) {
   for (const mensaje of error.errores ?? []) {
     if (/frase/i.test(mensaje)) campos.frase = mensaje; // HU19: perfil público
     else if (/portada/i.test(mensaje)) campos.portada = mensaje;
+    else if (/insignia/i.test(mensaje)) campos.insigniaDestacada = mensaje;
     else if (/apellido/i.test(mensaje)) campos.apellido = mensaje;
     else if (/nombre/i.test(mensaje)) campos.nombre = mensaje;
     else if (/foto/i.test(mensaje)) campos.foto = mensaje;
@@ -122,7 +128,7 @@ export default function EditarPerfilPage() {
   const [apariencia, setApariencia] = useState(leerApariencia);
   // HU19: lo que los demás ven del perfil (se guarda con el formulario).
   const [perfil, setPerfil] = useState(null);
-  const [perfilPublico, setPerfilPublico] = useState({ frase: '', portada: 'NINGUNA' });
+  const [perfilPublico, setPerfilPublico] = useState({ frase: '', portada: 'NINGUNA', codigoInsigniaDestacada: null });
   const selectorArchivo = useRef(null);
 
   useEffect(() => {
@@ -402,10 +408,13 @@ export default function EditarPerfilPage() {
               valor={perfilPublico}
               onCambiar={(nuevo) => {
                 setPerfilPublico(nuevo);
-                setErrores((actuales) => ({ ...actuales, frase: undefined, portada: undefined }));
+                setErrores((actuales) => ({
+                  ...actuales, frase: undefined, portada: undefined, insigniaDestacada: undefined,
+                }));
                 setGuardado(false);
               }}
-              errores={{ frase: errores.frase, portada: errores.portada }}
+              errores={{ frase: errores.frase, portada: errores.portada, insigniaDestacada: errores.insigniaDestacada }}
+              insignias={perfil?.insignias ?? []}
               vistaPrevia={{
                 nombre: limpiar(formulario.nombre) || cuenta.nombre,
                 apellido: limpiar(formulario.apellido) || cuenta.apellido,

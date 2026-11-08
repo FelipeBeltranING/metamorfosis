@@ -124,4 +124,54 @@ class PerfilServicePersonalizacionTest {
         assertNull(PerfilService.limpiarFrase(null));
         assertNull(PerfilService.limpiarFrase("  "));
     }
+
+    private static com.metamorfosis.backend.model.Insignia insignia(int codigo, String nombre) throws Exception {
+        com.metamorfosis.backend.model.Insignia i = new com.metamorfosis.backend.model.Insignia(nombre, "descripción",
+                "Flame", com.metamorfosis.backend.model.CriterioInsignia.METAS_CUMPLIDAS, null, 1);
+        java.lang.reflect.Field f = com.metamorfosis.backend.model.Insignia.class.getDeclaredField("codigoInsignia");
+        f.setAccessible(true);
+        f.set(i, codigo);
+        return i;
+    }
+
+    @Test
+    void destacaUnaInsigniaQueGanoYSeMuestraEnLosPerfiles() throws Exception {
+        when(usuarioRepository.findById(DANIEL)).thenReturn(Optional.of(daniel));
+        when(metaRepository.findByParticipante(DANIEL)).thenReturn(List.of());
+        when(usuarioInsigniaRepository.codigosObtenidos(DANIEL)).thenReturn(List.of(1, 3));
+        when(usuarioInsigniaRepository.insigniasDelUsuario(DANIEL)).thenReturn(List.of(
+                new com.metamorfosis.backend.model.UsuarioInsignia(daniel, insignia(3, "En racha"), LocalDate.of(2026, 10, 30)),
+                new com.metamorfosis.backend.model.UsuarioInsignia(daniel, insignia(1, "Primer paso"), LocalDate.of(2026, 10, 10))));
+
+        PerfilResponse r = perfilService.editarPerfilPublico(new PerfilPublicoRequest(null, "NINGUNA", 3, null), DANIEL);
+
+        assertEquals(3, daniel.getCodigoInsigniaDestacada());
+        assertEquals("En racha", r.personalizacion().insigniaDestacada().nombre());
+
+        PerfilPublicoResponse publico = perfilService.verPerfilPublico(DANIEL, LAURA);
+        assertEquals("En racha", publico.personalizacion().insigniaDestacada().nombre());
+    }
+
+    @Test
+    void noSeDestacaUnaInsigniaQueNoGano() {
+        when(usuarioRepository.findById(DANIEL)).thenReturn(Optional.of(daniel));
+        when(usuarioInsigniaRepository.codigosObtenidos(DANIEL)).thenReturn(List.of(1));
+
+        ValidacionException e = assertThrows(ValidacionException.class, () -> perfilService.editarPerfilPublico(
+                new PerfilPublicoRequest(null, null, 5, null), DANIEL));
+
+        assertEquals("Elige una insignia que hayas ganado", e.getErrores().get(0));
+        verify(usuarioRepository, never()).save(any());
+    }
+
+    @Test
+    void sinInsigniaDestacadaSeQuita() {
+        daniel.setCodigoInsigniaDestacada(1);
+        perfilCompletoSeArma();
+
+        PerfilResponse r = perfilService.editarPerfilPublico(new PerfilPublicoRequest(null, null, null, null), DANIEL);
+
+        assertNull(daniel.getCodigoInsigniaDestacada());
+        assertNull(r.personalizacion().insigniaDestacada());
+    }
 }

@@ -48,6 +48,10 @@ public class Usuario {
     @Column(nullable = false, length = 12)
     private Portada portada = Portada.NINGUNA;
 
+    /** HU19: insignia que eligió mostrar junto a su nombre (una de las que ganó), o null. */
+    @Column(name = "codigo_insignia_destacada")
+    private Integer codigoInsigniaDestacada;
+
     @Column(name = "fecha_registro", nullable = false, updatable = false)
     private LocalDate fechaRegistro;
 
@@ -92,6 +96,8 @@ public class Usuario {
     public void setFrase(String frase) { this.frase = frase; }
     public Portada getPortada() { return portada == null ? Portada.NINGUNA : portada; }
     public void setPortada(Portada portada) { this.portada = portada; }
+    public Integer getCodigoInsigniaDestacada() { return codigoInsigniaDestacada; }
+    public void setCodigoInsigniaDestacada(Integer codigo) { this.codigoInsigniaDestacada = codigo; }
     public LocalDate getFechaRegistro() { return fechaRegistro; }
     public void setFechaRegistro(LocalDate fechaRegistro) { this.fechaRegistro = fechaRegistro; }
 }
