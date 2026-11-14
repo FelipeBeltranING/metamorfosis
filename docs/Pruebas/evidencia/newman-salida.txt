@@ -1,0 +1,476 @@
+(node:9684) [DEP0176] DeprecationWarning: fs.F_OK is deprecated, use fs.constants.F_OK instead
+(Use `node --trace-deprecation ...` to show where the warning was created)
+newman
+
+Metamorfosis API
+
+□ HU9 · Iniciar sesión
+└ Ana inicia sesión
+  POST http://localhost:8090/api/auth/login [200 OK, 764B, 386ms]
+  √  responde 200
+  √  trae token y usuario
+
+└ Beto inicia sesión
+  POST http://localhost:8090/api/auth/login [200 OK, 768B, 89ms]
+  √  responde 200
+
+└ Contraseña incorrecta
+  POST http://localhost:8090/api/auth/login [401 Unauthorized, 504B, 107ms]
+  √  responde 401
+  √  mensaje: Email o contraseña incorrectos
+
+└ Beto vuelve a entrar (limpia el intento fallido)
+  POST http://localhost:8090/api/auth/login [200 OK, 768B, 96ms]
+  √  responde 200
+
+└ Sin datos
+  POST http://localhost:8090/api/auth/login [400 Bad Request, 516B, 6ms]
+  √  responde 400
+
+□ Seguridad · rutas protegidas
+└ Mis metas sin token
+  GET http://localhost:8090/api/metas [401 Unauthorized, 503B, 6ms]
+  √  responde 401
+  √  mensaje: Autenticación requerida
+
+□ HU1 · Crear meta
+└ Crear meta
+  POST http://localhost:8090/api/metas [201 Created, 763B, 92ms]
+  √  responde 201
+  √  queda ACTIVA
+  √  cabecera Location
+
+└ Nombre vacío
+  POST http://localhost:8090/api/metas [400 Bad Request, 485B, 16ms]
+  √  responde 400
+  √  dice qué campo falla
+
+□ HU3 y HU27 · Ver y filtrar mis metas
+└ Mis metas (activas)
+  GET http://localhost:8090/api/metas [200 OK, 715B, 52ms]
+  √  responde 200
+  √  incluye la meta creada
+
+└ Filtro estado=TODAS&tipo=PERSONAL&plazo=MEDIANO
+  GET http://localhost:8090/api/metas?estado=TODAS&tipo=PERSONAL&plazo=MEDIANO [200 OK, 715B, 20ms]
+  √  responde 200
+  √  todas son PERSONAL y MEDIANO
+
+└ Filtro con valor inválido
+  GET http://localhost:8090/api/metas?estado=X [400 Bad Request, 464B, 9ms]
+  √  responde 400
+
+□ HU2 · Editar meta
+└ Editar
+  PUT http://localhost:8090/api/metas/1 [200 OK, 713B, 32ms]
+  √  responde 200
+  √  nombre nuevo
+
+└ Beto no puede editar la meta de Ana
+  PUT http://localhost:8090/api/metas/1 [403 Forbidden, 506B, 16ms]
+  √  responde 403
+
+└ Meta inexistente
+  PUT http://localhost:8090/api/metas/999999 [404 Not Found, 506B, 15ms]
+  √  responde 404
+
+□ HU28 · Trazar el camino (hitos y hábitos)
+└ Agregar hito 1
+  POST http://localhost:8090/api/metas/1/submetas [201 Created, 663B, 37ms]
+  √  responde 201
+  √  es hito y sin días
+
+└ Agregar hito 2
+  POST http://localhost:8090/api/metas/1/submetas [201 Created, 663B, 23ms]
+  √  responde 201
+
+└ Agregar hábito medible
+  POST http://localhost:8090/api/metas/1/submetas [201 Created, 686B, 24ms]
+  √  responde 201
+
+└ Sin tipo
+  POST http://localhost:8090/api/metas/1/submetas [400 Bad Request, 501B, 15ms]
+  √  responde 400
+  √  pide elegir
+
+└ Nombre repetido
+  POST http://localhost:8090/api/metas/1/submetas [400 Bad Request, 507B, 18ms]
+  √  responde 400
+
+└ Leer un paso
+  GET http://localhost:8090/api/submetas/1 [200 OK, 745B, 24ms]
+  √  responde 200
+  √  trae la meta
+
+└ Beto no puede agregar pasos
+  POST http://localhost:8090/api/metas/1/submetas [403 Forbidden, 524B, 15ms]
+  √  responde 403
+
+□ HU5 · Registrar mi avance
+└ Lograr el hito 1
+  PUT http://localhost:8090/api/submetas/1/logro [200 OK, 733B, 36ms]
+  √  responde 200
+  √  queda logrado hoy
+  √  avance 1 de 2 = 50 %
+
+└ Deshacer el hito 1
+  DELETE http://localhost:8090/api/submetas/1/logro [200 OK, 716B, 21ms]
+  √  responde 200
+  √  vuelve a pendiente
+
+└ Un hábito no se logra
+  PUT http://localhost:8090/api/submetas/3/logro [400 Bad Request, 535B, 17ms]
+  √  responde 400
+
+└ Registrar 20 páginas hoy
+  PUT http://localhost:8090/api/submetas/3/registros/2026-11-14 [200 OK, 484B, 34ms]
+  √  responde 200
+  √  cumple el objetivo
+
+└ Un hito no se registra por día
+  PUT http://localhost:8090/api/submetas/1/registros/2026-11-14 [400 Bad Request, 515B, 19ms]
+  √  responde 400
+
+└ Día futuro
+  PUT http://localhost:8090/api/submetas/3/registros/2099-01-01 [400 Bad Request, 505B, 18ms]
+  √  responde 400
+
+└ Lograr el hito 1 otra vez
+  PUT http://localhost:8090/api/submetas/1/logro [200 OK, 733B, 27ms]
+  √  responde 200
+
+□ HU29 · Avance y constancia
+└ Tu camino
+  GET http://localhost:8090/api/metas/1/camino [200 OK, 2.19kB, 42ms]
+  √  responde 200
+  √  2 hitos y 1 hábito
+  √  avance 50 %
+  √  constancia de hoy al 100 %
+
+└ Resumen para las tarjetas
+  GET http://localhost:8090/api/metas/camino-hoy [200 OK, 929B, 25ms]
+  √  responde 200
+  √  trae el avance
+
+└ Estadísticas del hábito
+  GET http://localhost:8090/api/submetas/3/estadisticas [200 OK, 1.11kB, 21ms]
+  √  responde 200
+  √  racha de 1 día
+
+└ Un hito no tiene estadísticas por día
+  GET http://localhost:8090/api/submetas/1/estadisticas [400 Bad Request, 500B, 12ms]
+  √  responde 400
+
+□ HU13 · Invitar a una meta
+└ Ana invita a Beto
+  POST http://localhost:8090/api/metas/1/invitaciones [201 Created, 570B, 40ms]
+  √  responde 201
+
+└ Invitarlo dos veces
+  POST http://localhost:8090/api/metas/1/invitaciones [409 Conflict, 527B, 19ms]
+  √  responde 409
+
+└ Generar código para unirse
+  POST http://localhost:8090/api/metas/1/codigo [201 Created, 488B, 22ms]
+  √  responde 201
+  √  trae un código
+
+└ Ver el código
+  GET http://localhost:8090/api/metas/1/codigo [200 OK, 482B, 9ms]
+  √  responde 200
+
+└ Desactivar el código
+  DELETE http://localhost:8090/api/metas/1/codigo [204 No Content, 371B, 19ms]
+  √  responde 204
+
+└ Unirse con un código que no existe
+  POST http://localhost:8090/api/metas/unirse [400 Bad Request, 527B, 13ms]
+  √  responde 400
+
+□ HU14 · Responder invitación
+└ Beto ve su invitación
+  GET http://localhost:8090/api/invitaciones [200 OK, 657B, 29ms]
+  √  responde 200
+  √  incluye la meta
+
+└ Beto acepta
+  PATCH http://localhost:8090/api/invitaciones/1 [200 OK, 494B, 21ms]
+  √  responde 200
+
+└ Beto ya la ve en Mis metas
+  GET http://localhost:8090/api/metas [200 OK, 819B, 27ms]
+  √  responde 200
+  √  está en su lista
+
+└ Beto logra el hito 2 (el hito es del equipo)
+  PUT http://localhost:8090/api/submetas/2/logro [200 OK, 735B, 32ms]
+  √  responde 200
+  √  queda quién lo logró
+  √  avance 100 %
+
+□ HU25 · Ocultar metas
+└ Ana oculta la meta de su perfil
+  PATCH http://localhost:8090/api/metas/1/visibilidad [200 OK, 816B, 35ms]
+  √  responde 200
+  √  oculta
+
+└ Ana la vuelve a mostrar
+  PATCH http://localhost:8090/api/metas/1/visibilidad [200 OK, 817B, 31ms]
+  √  responde 200
+
+└ Sin el campo oculta
+  PATCH http://localhost:8090/api/metas/1/visibilidad [400 Bad Request, 491B, 11ms]
+  √  responde 400
+
+□ HU6, HU11 y HU15 · Cumplir la meta
+└ Beto no es el creador
+  PATCH http://localhost:8090/api/metas/1/cumplida [403 Forbidden, 520B, 20ms]
+  √  responde 403
+
+└ Ana la marca como cumplida
+  PATCH http://localhost:8090/api/metas/1/cumplida [200 OK, 963B, 64ms]
+  √  responde 200
+  √  CUMPLIDA
+  √  lista de insignias nuevas (HU11)
+
+└ Marcarla otra vez no cambia nada (criterio 4)
+  PATCH http://localhost:8090/api/metas/1/cumplida [200 OK, 857B, 19ms]
+  √  responde 200
+  √  conserva la fecha original
+  √  no da insignias otra vez
+
+└ HU15: aparece en el perfil de Beto
+  GET http://localhost:8090/api/usuarios/me/perfil [200 OK, 1.15kB, 31ms]
+  √  responde 200
+  √  entre sus últimas cumplidas
+
+└ El camino queda en solo lectura
+  PUT http://localhost:8090/api/submetas/1/logro [400 Bad Request, 516B, 19ms]
+  √  responde 400
+
+□ HU21 · Compartir logro
+└ Compartir
+  POST http://localhost:8090/api/metas/1/compartir [201 Created, 566B, 33ms]
+  √  responde 201
+
+└ Página pública del logro (sin sesión)
+  GET http://localhost:8090/api/logros/z8smFZ5WPB [200 OK, 553B, 15ms]
+  √  responde 200
+  √  nombre de la meta
+
+└ Logro que no existe
+  GET http://localhost:8090/api/logros/no-existe [404 Not Found, 516B, 6ms]
+  √  responde 404
+
+□ HU7 · Reporte general
+└ Reporte
+  GET http://localhost:8090/api/reportes/resumen [200 OK, 936B, 34ms]
+  √  responde 200
+  √  al menos una cumplida
+  √  porcentaje de 0 a 100
+
+□ HU22 y HU12 · Mi perfil e insignias
+└ Mi perfil
+  GET http://localhost:8090/api/usuarios/me/perfil [200 OK, 1.15kB, 23ms]
+  √  responde 200
+  √  resumen de metas
+
+└ Galería de insignias
+  GET http://localhost:8090/api/usuarios/me/insignias [200 OK, 1.87kB, 29ms]
+  √  responde 200
+  √  catálogo de 6
+  √  ganó al menos una
+
+□ HU24 y HU26 · Perfil de otros y perfil privado
+└ Buscar «bet»
+  GET http://localhost:8090/api/usuarios?nombre=bet [200 OK, 508B, 23ms]
+  √  responde 200
+  √  encuentra a Beto
+
+└ Búsqueda de una letra
+  GET http://localhost:8090/api/usuarios?nombre=b [400 Bad Request, 498B, 11ms]
+  √  responde 400
+
+└ Perfil público de Beto
+  GET http://localhost:8090/api/usuarios/3/perfil [200 OK, 1.14kB, 25ms]
+  √  responde 200
+  √  sin correo
+
+└ Persona que no existe
+  GET http://localhost:8090/api/usuarios/999999/perfil [404 Not Found, 509B, 12ms]
+  √  responde 404
+
+└ Beto hace su perfil privado
+  PATCH http://localhost:8090/api/usuarios/me/privacidad [200 OK, 439B, 18ms]
+  √  responde 200
+  √  privado
+
+└ Ana ve el perfil privado de Beto
+  GET http://localhost:8090/api/usuarios/3/perfil [200 OK, 725B, 16ms]
+  √  responde 200
+  √  marcado privado y sin metas
+
+└ Beto lo vuelve público
+  PATCH http://localhost:8090/api/usuarios/me/privacidad [200 OK, 440B, 17ms]
+  √  responde 200
+
+□ HU19 · Perfil público
+└ Frase y portada
+  PUT http://localhost:8090/api/usuarios/me/perfil-publico [200 OK, 1.16kB, 34ms]
+  √  responde 200
+  √  frase guardada
+
+└ Frase de más de 100 caracteres
+  PUT http://localhost:8090/api/usuarios/me/perfil-publico [400 Bad Request, 502B, 16ms]
+  √  responde 400
+
+□ HU23, HU30 y HU20 · Mi cuenta
+└ Ver mi cuenta
+  GET http://localhost:8090/api/usuarios/me [200 OK, 598B, 13ms]
+  √  responde 200
+  √  mascota por defecto o elegida
+
+└ Editar nombre
+  PUT http://localhost:8090/api/usuarios/me [200 OK, 598B, 14ms]
+  √  responde 200
+
+└ Foto que no es imagen
+  PUT http://localhost:8090/api/usuarios/me/foto [400 Bad Request, 504B, 14ms]
+  √  responde 400
+
+└ Apariencia Noche
+  PUT http://localhost:8090/api/usuarios/me/apariencia [200 OK, 596B, 19ms]
+  √  responde 200
+  √  guardada
+
+└ Apariencia inválida
+  PUT http://localhost:8090/api/usuarios/me/apariencia [400 Bad Request, 517B, 13ms]
+  √  responde 400
+
+└ Elegir la luciérnaga
+  PUT http://localhost:8090/api/usuarios/me/mascota [200 OK, 598B, 20ms]
+  √  responde 200
+  √  guardada
+
+└ Mascota que no existe
+  PUT http://localhost:8090/api/usuarios/me/mascota [400 Bad Request, 486B, 13ms]
+  √  responde 400
+
+└ Volver a la apariencia clara
+  PUT http://localhost:8090/api/usuarios/me/apariencia [200 OK, 600B, 16ms]
+  √  responde 200
+
+□ HU4 · Eliminar meta
+└ Crear una meta para borrar
+  POST http://localhost:8090/api/metas [201 Created, 759B, 19ms]
+  √  responde 201
+
+└ Beto no puede borrarla
+  DELETE http://localhost:8090/api/metas/2 [403 Forbidden, 508B, 14ms]
+  √  responde 403
+
+└ Ana la borra
+  DELETE http://localhost:8090/api/metas/2 [204 No Content, 371B, 24ms]
+  √  responde 204
+
+└ Ya no existe
+  DELETE http://localhost:8090/api/metas/2 [404 Not Found, 501B, 12ms]
+  √  responde 404
+
+□ HU8 · Registrarse
+└ Pedir registro con un correo nuevo
+  POST http://localhost:8090/api/auth/registro/solicitar [202 Accepted, 576B, 26ms]
+  √  responde 202
+
+└ Estado de la solicitud
+  GET http://localhost:8090/api/auth/registro/estado/Ta-ljvNb4enATM2FBlbNPljLxixlfUdLsiLmkIl6R24 [200 OK, 445B, 12ms]
+  √  responde 200
+  √  pendiente de autorizar
+
+└ Correo que ya tiene cuenta
+  POST http://localhost:8090/api/auth/registro/solicitar [409 Conflict, 497B, 12ms]
+  √  responde 409
+
+└ Autorizar con un enlace falso
+  POST http://localhost:8090/api/auth/registro/autorizar [410 Gone, 527B, 8ms]
+  √  responde 410
+
+└ Registrarse con un enlace falso
+  POST http://localhost:8090/api/auth/registro [410 Gone, 527B, 9ms]
+  √  responde 410
+
+□ HU10 · Cerrar sesión (caja negra e integración)
+└ Sesión 1 de Ana
+  POST http://localhost:8090/api/auth/login [200 OK, 764B, 86ms]
+  √  responde 200
+
+└ Sesión 2 de Ana
+  POST http://localhost:8090/api/auth/login [200 OK, 764B, 85ms]
+  √  responde 200
+
+└ CN1 · Cierre con token válido
+  POST http://localhost:8090/api/auth/logout [204 No Content, 371B, 18ms]
+  √  responde 204
+  √  sin cuerpo
+
+└ CN2 · Usar el token después de cerrar sesión
+  GET http://localhost:8090/api/metas [401 Unauthorized, 503B, 6ms]
+  √  responde 401
+  √  mensaje: Autenticación requerida
+
+└ CN3 · Cerrar sesión dos veces
+  POST http://localhost:8090/api/auth/logout [401 Unauthorized, 498B, 13ms]
+  √  responde 401
+  √  mensaje: La sesión ya fue cerrada
+
+└ CN4 · Sin cabecera Authorization
+  POST http://localhost:8090/api/auth/logout [401 Unauthorized, 504B, 3ms]
+  √  responde 401
+  √  mensaje: Falta el token de autorización
+
+└ CN5 · Cabecera sin el prefijo Bearer
+  POST http://localhost:8090/api/auth/logout [401 Unauthorized, 504B, 2ms]
+  √  responde 401
+  √  mensaje: Falta el token de autorización
+
+└ CN6 · Token alterado
+  POST http://localhost:8090/api/auth/logout [401 Unauthorized, 499B, 8ms]
+  √  responde 401
+  √  mensaje: Token inválido o expirado
+
+└ CN7 · Token vencido
+  ┌
+  │ `Using "CryptoJS" is deprecated. Use "require('crypto-
+  │ js')" instead.`
+  └
+  POST http://localhost:8090/api/auth/logout [401 Unauthorized, 499B, 10ms]
+  √  responde 401
+  √  mensaje: Token inválido o expirado
+
+└ CN8 · Otra sesión del mismo usuario sigue activa
+  GET http://localhost:8090/api/metas [200 OK, 425B, 14ms]
+  √  responde 200
+
+└ Integración · la sesión 2 también se puede cerrar
+  POST http://localhost:8090/api/auth/logout [204 No Content, 371B, 15ms]
+  √  responde 204
+
+┌─────────────────────────┬───────────────────┬──────────────────┐
+│                         │          executed │           failed │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              iterations │                 1 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│                requests │                93 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│            test-scripts │                93 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│      prerequest-scripts │                 5 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              assertions │               147 │                0 │
+├─────────────────────────┴───────────────────┴──────────────────┤
+│ total run duration: 10.2s                                      │
+├────────────────────────────────────────────────────────────────┤
+│ total data received: 21.05kB (approx)                          │
+├────────────────────────────────────────────────────────────────┤
+│ average response time: 28ms [min: 2ms, max: 386ms, s.d.: 42ms] │
+└────────────────────────────────────────────────────────────────┘
