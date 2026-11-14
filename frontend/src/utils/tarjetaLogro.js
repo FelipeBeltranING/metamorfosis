@@ -3,6 +3,8 @@
  * Se dibuja en un canvas en el navegador; no necesita servidor.
  */
 
+import { localeActual, t } from '../i18n';
+
 const ANCHO = 1200;
 const ALTO = 630;
 const COLORES = {
@@ -28,13 +30,12 @@ const ICONO_BROTE = [
   'M5 21h14',
 ];
 
-const FORMATO_FECHA_LARGA = new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
-
-/** "2026-10-31" → "31 de octubre de 2026" (con la fecha local, sin correr el día). */
+/** "2026-10-31" → "31 de octubre de 2026" u "October 31, 2026" (con la fecha local, sin correr el día). */
 export function formatearFechaLarga(iso) {
   if (!iso) return '';
   const [anio, mes, dia] = iso.split('-').map(Number);
-  return FORMATO_FECHA_LARGA.format(new Date(anio, mes - 1, dia));
+  return new Intl.DateTimeFormat(localeActual(), { day: 'numeric', month: 'long', year: 'numeric' })
+    .format(new Date(anio, mes - 1, dia));
 }
 
 function dibujarIcono(ctx, trazos, x, y, tamano, color) {
@@ -125,7 +126,7 @@ export async function generarTarjetaLogro({ nombreMeta, nombreVisible, fechaCump
   ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
   ctx.font = `700 23px ${FUENTE}`;
   if ('letterSpacing' in ctx) ctx.letterSpacing = '3px';
-  ctx.fillText('LOGRO CUMPLIDO', 80, 246);
+  ctx.fillText(t('logro.tarjetaEtiqueta'), 80, 246);
   if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
 
   // Nombre de la meta: hasta 2 líneas; si es largo, la letra se reduce.
@@ -155,9 +156,9 @@ export async function generarTarjetaLogro({ nombreMeta, nombreVisible, fechaCump
   // Frase final.
   ctx.fillStyle = COLORES.blanco;
   ctx.font = `600 23px ${FUENTE}`;
-  ctx.fillText('La constancia se construye un día a la vez.', 80, 560);
+  ctx.fillText(t('logro.tarjetaFrase'), 80, 560);
 
   return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error('No se pudo crear la imagen'))), 'image/png');
+    canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error(t('logro.errorImagen')))), 'image/png');
   });
 }

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Check, CircleAlert, Copy, Download, Image as IconoImagen, LoaderCircle, Share2, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
 import { crearEnlace } from '../services/logroService';
 import { obtenerSesion } from '../services/sesionService';
 import { generarTarjetaLogro } from '../utils/tarjetaLogro';
@@ -18,7 +20,7 @@ function nombreArchivo(nombreMeta) {
     .normalize('NFD').replace(/[̀-ͯ]/g, '')
     .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
     .slice(0, 40);
-  return `logro-${base || 'metamorfosis'}.png`;
+  return `${i18n.t('logro.prefijoArchivo')}-${base || 'metamorfosis'}.png`;
 }
 
 /**
@@ -26,6 +28,7 @@ function nombreArchivo(nombreMeta) {
  * tarjeta del logro y la ofrece para compartir desde el celular, descargar o copiar.
  */
 export default function CompartirLogroModal({ meta, onCerrar }) {
+  const { t } = useTranslation();
   const [datos, setDatos] = useState(null); // { url, archivo, vistaPrevia }
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
@@ -72,7 +75,7 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
     setIntento((n) => n + 1);
   };
 
-  const texto = `¡Cumplí mi meta "${meta.nombre}" en Metamorfosis! 🦋`;
+  const texto = t('logro.textoCompartir', { meta: meta.nombre });
   const puedeCompartirImagen = Boolean(datos)
     && typeof navigator.canShare === 'function'
     && navigator.canShare({ files: [datos.archivo] });
@@ -83,25 +86,25 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
       await navigator.share({ files: [datos.archivo], title: 'Metamorfosis', text: `${texto} ${datos.url}` });
     } catch (e) {
       // Cancelar el menú del sistema no es un error.
-      if (e?.name !== 'AbortError') setError('No se pudo compartir. Descarga la imagen y envíala tú.');
+      if (e?.name !== 'AbortError') setError(t('logro.errorCompartir'));
     }
   };
 
   const copiarImagen = async () => {
     try {
       await navigator.clipboard.write([new window.ClipboardItem({ 'image/png': datos.archivo })]);
-      setAviso('Imagen copiada. Pégala en el chat o correo.');
+      setAviso(t('logro.imagenCopiada'));
     } catch {
-      setError('No se pudo copiar la imagen. Descárgala y adjúntala.');
+      setError(t('logro.errorCopiarImagen'));
     }
   };
 
   const copiarEnlace = async () => {
     try {
       await navigator.clipboard.writeText(datos.url);
-      setAviso('Enlace copiado');
+      setAviso(t('logro.enlaceCopiado'));
     } catch {
-      setError('No se pudo copiar. Selecciona el enlace y cópialo manualmente.');
+      setError(t('logro.errorCopiarEnlace'));
     }
   };
 
@@ -121,12 +124,12 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
         <div aria-hidden="true" className="mx-auto h-1 w-10 rounded-full bg-gray-300 sm:hidden" />
         <div className="mt-4 flex items-start justify-between sm:mt-0">
           <h2 id="titulo-compartir-logro" className="text-xl font-bold text-gray-900">
-            Compartir logro
+            {t('logro.titulo')}
           </h2>
           <button
             type="button"
             onClick={onCerrar}
-            aria-label="Cerrar ventana"
+            aria-label={t('logro.cerrarVentana')}
             className="rounded-lg p-2 text-gray-500 hover:bg-gray-100"
           >
             <X className="size-5" aria-hidden="true" />
@@ -136,7 +139,7 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
         {cargando && (
           <div role="status" className="mt-4 flex aspect-[1200/630] w-full flex-col items-center justify-center gap-2 rounded-xl bg-violet-50 text-sm text-violet-700">
             <LoaderCircle className="size-6 animate-spin" aria-hidden="true" />
-            Preparando tu imagen...
+            {t('logro.preparando')}
           </div>
         )}
 
@@ -151,7 +154,7 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
               onClick={reintentar}
               className="mt-4 h-11 w-full rounded-xl border border-gray-200 font-semibold text-gray-700 hover:bg-gray-50"
             >
-              Intentar de nuevo
+              {t('logro.reintentar')}
             </button>
           </div>
         )}
@@ -160,7 +163,7 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
           <>
             <img
               src={datos.vistaPrevia}
-              alt={`Tarjeta del logro: ${meta.nombre}, cumplida.`}
+              alt={t('logro.altTarjeta', { meta: meta.nombre })}
               width={1200}
               height={630}
               className="mt-4 w-full rounded-xl shadow-sm ring-1 ring-black/5"
@@ -173,7 +176,7 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
                 className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-violet-600 font-bold text-white hover:bg-violet-700"
               >
                 <Share2 className="size-5" aria-hidden="true" />
-                Compartir imagen
+                {t('logro.compartirImagen')}
               </button>
             )}
 
@@ -188,7 +191,7 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
                 }`}
               >
                 <Download className="size-5" aria-hidden="true" />
-                Descargar
+                {t('logro.descargar')}
               </a>
               {puedeCopiarImagen && (
                 <button
@@ -197,12 +200,12 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
                   className="flex h-12 items-center justify-center gap-2 rounded-xl border border-gray-200 font-bold text-gray-700 hover:bg-gray-50"
                 >
                   <IconoImagen className="size-5" aria-hidden="true" />
-                  Copiar imagen
+                  {t('logro.copiarImagen')}
                 </button>
               )}
             </div>
 
-            <p className="mt-5 text-sm font-semibold text-gray-700">O comparte el enlace</p>
+            <p className="mt-5 text-sm font-semibold text-gray-700">{t('logro.oEnlace')}</p>
             <div className="mt-1.5 flex items-center gap-2 rounded-xl bg-slate-50 p-2 pl-3">
               <span className="min-w-0 flex-1 truncate text-sm text-gray-600" title={datos.url}>
                 {datos.url}
@@ -212,8 +215,8 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
                 onClick={copiarEnlace}
                 className="flex h-9 shrink-0 items-center gap-1.5 rounded-lg bg-white px-3 text-sm font-semibold text-violet-700 shadow-sm hover:bg-violet-50"
               >
-                {aviso === 'Enlace copiado' ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
-                {aviso === 'Enlace copiado' ? 'Copiado' : 'Copiar'}
+                {aviso === t('logro.enlaceCopiado') ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
+                {aviso === t('logro.enlaceCopiado') ? t('logro.copiado') : t('logro.copiar')}
               </button>
             </div>
 
@@ -223,7 +226,7 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
             {error && <p role="alert" className="text-center text-sm text-red-700">{error}</p>}
 
             <p className="mt-2 text-center text-xs text-gray-500">
-              La imagen y el enlace solo muestran esta meta y tu nombre con la inicial del apellido.
+              {t('logro.privacidad')}
             </p>
           </>
         )}

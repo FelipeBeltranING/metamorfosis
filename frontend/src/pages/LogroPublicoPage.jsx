@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { CircleAlert, LoaderCircle, Trophy } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import EncabezadoAuth from '../components/EncabezadoAuth';
 import { PLAZOS, TIPOS } from '../constants/opcionesMeta';
 import { obtenerLogroPublico } from '../services/logroService';
 import { formatearFecha } from '../utils/fechas';
 
-const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((t) => [t.valor, t.etiqueta]));
-const PLAZO_POR_VALOR = Object.fromEntries(PLAZOS.map((p) => [p.valor, p.etiqueta]));
+const etiquetaTipo = (valor) => TIPOS.find((x) => x.valor === valor)?.etiqueta;
+const etiquetaPlazo = (valor) => PLAZOS.find((x) => x.valor === valor)?.etiqueta;
 
 /** HU21: lo que ve quien abre el enlace compartido. Ruta pública, no pide sesión. */
 export default function LogroPublicoPage() {
+  const { t } = useTranslation();
   const { token } = useParams();
   const [logro, setLogro] = useState(null);
   const [error, setError] = useState('');
@@ -21,13 +23,13 @@ export default function LogroPublicoPage() {
       .then((datos) => {
         if (!activo) return;
         setLogro(datos);
-        document.title = `${datos.nombreVisible} cumplió una meta · Metamorfosis`;
+        document.title = t('logro.tituloPagina', { nombre: datos.nombreVisible });
       })
-      .catch((e) => activo && setError(e.estado === 404 ? 'Este logro no existe o el enlace no es válido.' : e.message));
+      .catch((e) => activo && setError(e.estado === 404 ? t('logro.noExiste') : e.message));
     return () => {
       activo = false;
     };
-  }, [token]);
+  }, [token, t]);
 
   const fecha = logro ? formatearFecha(logro.fechaCumplida) : '';
 
@@ -38,7 +40,7 @@ export default function LogroPublicoPage() {
         {!logro && !error && (
           <p role="status" className="flex items-center gap-2 text-gray-600">
             <LoaderCircle className="size-5 animate-spin text-violet-600" aria-hidden="true" />
-            Cargando logro...
+            {t('logro.cargando')}
           </p>
         )}
 
@@ -47,10 +49,10 @@ export default function LogroPublicoPage() {
             <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-red-50 text-red-600">
               <CircleAlert className="size-7" aria-hidden="true" />
             </div>
-            <h1 className="mt-4 text-xl font-bold text-gray-900">No encontramos este logro</h1>
+            <h1 className="mt-4 text-xl font-bold text-gray-900">{t('logro.noEncontrado')}</h1>
             <p className="mt-2 text-sm text-gray-600">{error}</p>
             <Link to="/registro" className="mt-6 inline-flex h-11 items-center rounded-xl bg-violet-600 px-5 font-semibold text-white hover:bg-violet-700">
-              Conoce Metamorfosis
+              {t('logro.conoce')}
             </Link>
           </section>
         )}
@@ -61,26 +63,26 @@ export default function LogroPublicoPage() {
               <Trophy className="size-9" aria-hidden="true" />
             </div>
             <p className="mt-5 text-sm font-semibold uppercase tracking-wide text-violet-700">
-              {logro.nombreVisible} cumplió una meta
+              {t('logro.cumplio', { nombre: logro.nombreVisible })}
             </p>
             <h1 id="titulo-logro" className="mt-2 text-2xl font-extrabold text-gray-900">
               {logro.nombreMeta}
             </h1>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
-              {TIPO_POR_VALOR[logro.tipo] && (
-                <span className="rounded-xl bg-slate-100 px-3 py-1.5 text-[13px] font-semibold text-gray-600">{TIPO_POR_VALOR[logro.tipo]}</span>
+              {etiquetaTipo(logro.tipo) && (
+                <span className="rounded-xl bg-slate-100 px-3 py-1.5 text-[13px] font-semibold text-gray-600">{etiquetaTipo(logro.tipo)}</span>
               )}
-              {PLAZO_POR_VALOR[logro.plazo] && (
-                <span className="rounded-xl bg-slate-100 px-3 py-1.5 text-[13px] font-semibold text-gray-600">{PLAZO_POR_VALOR[logro.plazo]}</span>
+              {etiquetaPlazo(logro.plazo) && (
+                <span className="rounded-xl bg-slate-100 px-3 py-1.5 text-[13px] font-semibold text-gray-600">{etiquetaPlazo(logro.plazo)}</span>
               )}
               {fecha && (
-                <span className="rounded-xl bg-emerald-50 px-3 py-1.5 text-[13px] font-bold text-emerald-800">Cumplida el {fecha}</span>
+                <span className="rounded-xl bg-emerald-50 px-3 py-1.5 text-[13px] font-bold text-emerald-800">{t('logro.cumplidaEl', { fecha })}</span>
               )}
             </div>
             <div className="mt-8 border-t border-gray-100 pt-6">
-              <p className="text-[15px] text-gray-700">¿Tú también tienes una meta en mente?</p>
+              <p className="text-[15px] text-gray-700">{t('logro.tuTambien')}</p>
               <Link to="/registro" className="mt-4 inline-flex h-12 w-full items-center justify-center rounded-xl bg-violet-600 font-bold text-white hover:bg-violet-700">
-                Crear mi cuenta gratis
+                {t('logro.crearCuenta')}
               </Link>
             </div>
           </section>
