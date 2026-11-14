@@ -34,7 +34,7 @@
     "privado": "Tu perfil ahora es privado.",
     "publico": "Tu perfil vuelve a ser público.",
     "titulo": "Perfil privado",
-    "ayuda": "Si lo activas, las demás personas solo verán tu cabecera: foto, nombre, frase, portada y desde cuándo eres miembro."
+    "ayuda": "Si lo activas, las demás personas solo verán tu cabecera: foto, nombre, frase, portada, mascota y desde cuándo eres miembro."
   },
   "perfilPublico": {
     "buscarPersonas": "Buscar personas",
