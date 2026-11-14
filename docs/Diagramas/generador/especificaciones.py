@@ -1769,3 +1769,58 @@ HU['HU05'].setdefault('secuencias_extra', []).append(dict(
         ('nota', 'ui', 'Hábito Sí/No: un toque guarda 1 (hecho), otro 0 (no hecho) y otro quita el registro con DELETE …/registros/{fecha}'),
     ],
 ))
+
+HU['HU13'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='codigo',
+    nombre='Código para unirse',
+    participantes=[('u', 'Creador', 'actor'), ('ui', 'InvitarPersonasModal · CodigoInvitacion', 'boundary'),
+                   ('svc', 'invitacionService.js', 'module'), ('ctl', 'InvitacionController', 'RestController'), ASP,
+                   ('srv', 'CodigoUnionService', 'Service'), ('mr', 'MetaRepository', 'Repository'),
+                   ('meta', 'meta : Meta', 'Entity'), LOG, ('nav', 'navigator.clipboard', 'API del navegador')],
+    pasos=[
+        ('m', 'u', 'ui', 'menú ⋯ → «Invitar personas»'),
+        ('m', 'ui', 'svc', 'verCodigoMeta(codigoMeta)'),
+        ('m', 'svc', 'ctl', 'GET /api/metas/{codigoMeta}/codigo'),
+        NOTA_TOKEN,
+        ('m', 'ctl', 'srv', 'verCodigo(codigoMeta, codigoUsuario)'),
+        ('m', 'srv', 'mr', 'findById(codigoMeta)'),
+        ('r', 'mr', 'srv', 'meta (es el creador)'),
+        ('m', 'srv', 'meta', 'codigoUnionVigente(ahora)'),
+        ('r', 'meta', 'srv', 'false'),
+        ('r', 'srv', 'ctl', 'CodigoUnionResponse.NINGUNO'),
+        ('r', 'ctl', 'svc', '200 OK { codigo: null }'),
+        ('r', 'ui', 'u', 'sección «Código para unirse» con el botón «Crear código»'),
+        ('m', 'u', 'ui', 'pulsa «Crear código»'),
+        ('m', 'ui', 'svc', 'generarCodigoMeta(codigoMeta)'),
+        ('m', 'svc', 'ctl', 'POST /api/metas/{codigoMeta}/codigo'),
+        *auditado('generar(codigoMeta, codigoUsuario)', 'GENERAR_CODIGO_META', 'META', [
+            ('m', 'srv', 'mr', 'findById(codigoMeta)'),
+            ('r', 'mr', 'srv', 'meta'),
+            ('alt', [
+                ('[es el creador y la meta está ACTIVA]', [
+                    ('loop', [
+                        ('[mientras otra meta tenga ese código]', [
+                            ('m', 'srv', 'srv', 'nuevoCodigo()  [8 caracteres, sin 0, O, 1, I ni L]'),
+                            ('m', 'srv', 'mr', 'findByCodigoUnion(codigo)'),
+                            ('r', 'mr', 'srv', 'Optional.empty()'),
+                        ]),
+                    ]),
+                    ('m', 'srv', 'meta', 'activarCodigoUnion(codigo, ahora + 7 días)  [el anterior deja de servir]'),
+                    ('m', 'srv', 'mr', 'save(meta)'),
+                ]),
+                ('[no es el creador]', [
+                    ('r', 'srv', 'asp', 'PermisoDenegadoException("Solo el creador puede manejar el código de la meta")'),
+                    ('m', 'asp', 'log', 'registrar(…, GENERAR_CODIGO_META, …, ERROR, motivo)'),
+                    ('r', 'ctl', 'svc', '403 ErrorResponse'),
+                ]),
+            ]),
+        ], 'CodigoUnionResponse(codigo, expira)'),
+        ('r', 'ctl', 'svc', '201 Created'),
+        ('r', 'svc', 'ui', 'código'),
+        ('r', 'ui', 'u', 'muestra «ABCD-EFGH» y hasta cuándo sirve'),
+        ('m', 'u', 'ui', 'pulsa «Copiar»'),
+        ('m', 'ui', 'nav', 'writeText("ABCD-EFGH")'),
+        ('r', 'ui', 'u', 'aviso «Código copiado»: lo comparte por WhatsApp u otro medio (se usa en HU14)'),
+        ('nota', 'ui', '«Cambiar código» vuelve a llamar a generar; «Desactivar» → DELETE /api/metas/{codigoMeta}/codigo → desactivarCodigoUnion()'),
+    ],
+))
