@@ -986,7 +986,7 @@ HU['HU22'] = dict(
         [C('PerfilService', ['verMiPerfil']), C('PerfilResponse')],
         [C('UsuarioRepository', []), C('MetaRepository', ['findByParticipante']), C('UsuarioInsigniaRepository', ['insigniasDelUsuario']),
          C('InsigniaRepository', []), C('PersonalizacionPerfil', ['soloCabecera']), *AUDITORIA()],
-        [C('Usuario', [], ['codigoUsuario', 'nombre', 'apellido', 'email', 'fotoPerfil', 'perfilPrivado', 'frase', 'portada', 'mascota', 'fechaRegistro']),
+        [C('Usuario', [], ['codigoUsuario', 'nombre', 'apellido', 'email', 'fotoPerfil', 'perfilPrivado', 'frase', 'portada', 'avatar', 'fechaRegistro']),
          C('Meta', ['isOcultaPara'], ['codigoMeta', 'nombre', 'estado']), C('UsuarioInsignia', [])],
     ],
     relaciones=[
@@ -1246,7 +1246,7 @@ HU['HU26'] = dict(
         [C('UsuarioController', ['cambiarPrivacidad', 'perfilPublico'])],
         [C('PrivacidadRequest'), C('PerfilService', ['cambiarPrivacidad', 'verPerfilPublico']), C('PrivacidadResponse')],
         [C('UsuarioRepository', []), C('PerfilPublicoResponse'), C('PersonalizacionPerfil', ['soloCabecera']), *AUDITORIA()],
-        [C('Usuario', [], ['codigoUsuario', 'nombre', 'apellido', 'fotoPerfil', 'perfilPrivado', 'frase', 'portada', 'mascota', 'fechaRegistro'])],
+        [C('Usuario', [], ['codigoUsuario', 'nombre', 'apellido', 'fotoPerfil', 'perfilPrivado', 'frase', 'portada', 'avatar', 'fechaRegistro'])],
     ],
     relaciones=[
         ('UsuarioController', 'PerfilService', 'asoc', 'perfilService', None),
@@ -1274,12 +1274,12 @@ HU['HU26'] = dict(
         ], 'PrivacidadResponse(privado = true)'),
         ('r', 'ctl', 'svc', '200 OK'),
         ('alt', [
-            ('[guardado]', [('r', 'ui', 'u', '«Tu perfil ahora es privado» (frase, portada y mascota se siguen viendo)')]),
+            ('[guardado]', [('r', 'ui', 'u', '«Tu perfil ahora es privado» (frase, portada y avatar se siguen viendo)')]),
             ('[sin conexión]', [('r', 'ui', 'u', 'el interruptor vuelve a su estado y aparece el error')]),
         ]),
         ('m', 'u2', 'ctl', 'GET /api/usuarios/{codigo}/perfil'),
         ('m', 'ctl', 'srv', 'verPerfilPublico(codigoPerfil, codigoVisitante)'),
-        ('m', 'srv', 'srv', 'dueño privado → PersonalizacionPerfil.soloCabecera(frase, portada, mascota)'),
+        ('m', 'srv', 'srv', 'dueño privado → PersonalizacionPerfil.soloCabecera(frase, portada, avatar)'),
         ('r', 'srv', 'u2', 'cabecera + «Este perfil es privado» (sin resumen, insignias ni metas)'),
     ],
 )
@@ -1527,53 +1527,63 @@ HU['HU19'] = dict(
 )
 
 HU['HU20'] = dict(
-    nombre='Elegir mi mascota',
+    nombre='Personalizar mi avatar',
     filas=[
-        [C('CuentaController', ['cambiarMascota'])],
-        [C('MascotaRequest'), C('CuentaService', ['cambiarMascota', 'verCuenta']), C('CuentaResponse', ['desde'])],
-        [C('UsuarioRepository', []), JPA('findById', 'save'), C('PersonalizacionPerfil', []), *AUDITORIA()],
-        [C('Usuario', [], ['codigoUsuario', 'nombre', 'apellido', 'mascota']), C('Mascota'), C('ValidacionException', ['getErrores'])],
+        [C('CuentaController', ['cambiarAvatar'])],
+        [C('AvatarPerfil', ['desde']), C('CuentaService', ['cambiarAvatar', 'verCuenta']), C('CuentaResponse', ['desde'])],
+        [C('UsuarioRepository', []), JPA('findById', 'save'), C('PersonalizacionPerfil', ['soloCabecera']), *AUDITORIA()],
+        [C('Usuario', ['getAvatar', 'setAvatar'], ['codigoUsuario', 'nombre', 'apellido', 'avatar']),
+         C('Avatar', [], ['piel', 'peinado', 'colorPelo', 'ojos', 'boca', 'accesorio']),
+         C('CatalogoAvatar', [], ['PIELES', 'PEINADOS', 'COLORES_PELO', 'OJOS', 'BOCAS', 'ACCESORIOS']),
+         C('ValidacionException', ['getErrores'])],
     ],
     relaciones=[
         ('CuentaController', 'CuentaService', 'asoc', 'cuentaService', None),
-        ('CuentaController', 'MascotaRequest', 'usa', 'recibe', None),
+        ('CuentaController', 'AvatarPerfil', 'usa', 'recibe', None),
         ('CuentaService', 'CuentaResponse', 'usa', 'devuelve', None),
-        ('CuentaResponse', 'Mascota', 'asoc', 'mascota', '1'),
-        ('PersonalizacionPerfil', 'Mascota', 'asoc', 'mascota (Mi perfil y perfil público)', '1'),
+        ('CuentaResponse', 'AvatarPerfil', 'asoc', 'avatar', '1'),
+        ('PersonalizacionPerfil', 'AvatarPerfil', 'asoc', 'avatar (Mi perfil y perfil público)', '1'),
         ('CuentaService', 'UsuarioRepository', 'asoc', 'usuarioRepository', None),
         ('UsuarioRepository', 'JpaRepository<T, ID>', 'hereda', '', None),
+        ('CuentaService', 'CatalogoAvatar', 'usa', 'valida cada pieza con', None),
         ('CuentaService', 'ValidacionException', 'usa', 'lanza', None),
-        ('CuentaService', 'Auditar', 'usa', 'cambiarMascota anotado con', None),
+        ('CuentaService', 'Auditar', 'usa', 'cambiarAvatar anotado con', None),
         *REL_AUDITORIA,
-        ('Usuario', 'Mascota', 'asoc', 'mascota', '1'),
+        ('Usuario', 'Avatar', 'comp', 'avatar (@Embedded)', '1'),
+        ('AvatarPerfil', 'Avatar', 'usa', 'desde', None),
     ],
-    participantes=[U, ('ui', 'EditarPerfilPage · SeccionMascota', 'boundary'), ('svc', 'cuentaService.js', 'module'),
+    participantes=[U, ('ui', 'EditarPerfilPage · SeccionAvatar', 'boundary'), ('svc', 'cuentaService.js', 'module'),
                    ('ctl', 'CuentaController', 'RestController'), ASP, ('srv', 'CuentaService', 'Service'),
                    ('ur', 'UsuarioRepository', 'Repository'), LOG],
     pasos=[
-        ('m', 'u', 'ui', 'abre Editar perfil → «Tu mascota» y elige «Luciérnaga»'),
+        ('m', 'u', 'ui', 'abre Editar perfil → «Tu avatar»: elige peinado «Melena ondulada», ojos y boca'),
+        ('m', 'ui', 'ui', 'dibuja la vista previa con DiceBear (Big Smile) en el navegador'),
         ('m', 'u', 'ui', 'pulsa «Guardar cambios»'),
-        ('m', 'ui', 'svc', 'cambiarMascota("LUCIERNAGA")'),
-        ('m', 'svc', 'ctl', 'PUT /api/usuarios/me/mascota { mascota }'),
+        ('m', 'ui', 'svc', 'cambiarAvatar({ piel, peinado, colorPelo, ojos, boca, accesorio })'),
+        ('m', 'svc', 'ctl', 'PUT /api/usuarios/me/avatar { piel, peinado, … }'),
         NOTA_TOKEN,
-        *auditado('cambiarMascota(codigoUsuario, pedido)', 'CAMBIAR_MASCOTA', 'USUARIO', [
+        *auditado('cambiarAvatar(codigoUsuario, pedido)', 'CAMBIAR_AVATAR', 'USUARIO', [
             ('m', 'srv', 'ur', 'findById(codigoUsuario)'),
             ('r', 'ur', 'srv', 'usuario'),
-            ('m', 'srv', 'srv', 'valorDe(Mascota, "LUCIERNAGA")'),
-            ('alt', [
-                ('[mascota del catálogo (todas gratis)]', [
-                    ('m', 'srv', 'srv', 'usuario.setMascota(LUCIERNAGA)'),
-                    ('m', 'srv', 'ur', 'save(usuario)'),
-                ]),
-                ('[valor que no existe]', [
-                    ('r', 'srv', 'asp', 'ValidacionException("Elige una mascota válida")'),
-                    ('m', 'asp', 'log', 'registrar(…, CAMBIAR_MASCOTA, …, ERROR, motivo)'),
-                    ('r', 'ctl', 'svc', '400 → error en la sección Tu mascota'),
+            ('loop', [
+                ('[cada pieza: piel, peinado, color de pelo, ojos, boca, accesorio]', [
+                    ('m', 'srv', 'srv', 'pieza(CatalogoAvatar.X, valor, mensaje, errores)'),
                 ]),
             ]),
-        ], 'CuentaResponse(… mascota)'),
+            ('alt', [
+                ('[todas las piezas están en el catálogo (todo es gratis)]', [
+                    ('m', 'srv', 'srv', 'usuario.setAvatar(new Avatar(…))'),
+                    ('m', 'srv', 'ur', 'save(usuario)'),
+                ]),
+                ('[alguna pieza no existe]', [
+                    ('r', 'srv', 'asp', 'ValidacionException(["Elige un peinado válido", …])'),
+                    ('m', 'asp', 'log', 'registrar(…, CAMBIAR_AVATAR, …, ERROR, motivo)'),
+                    ('r', 'ctl', 'svc', '400 → error en la sección Tu avatar'),
+                ]),
+            ]),
+        ], 'CuentaResponse(… avatar)'),
         ('r', 'ctl', 'svc', '200 OK'),
-        ('r', 'ui', 'u', '«¡Perfil actualizado!»; Mi perfil muestra «Te acompaña Luciérnaga»'),
+        ('r', 'ui', 'u', '«¡Perfil actualizado!»; en Mi perfil el avatar se asoma sobre la portada'),
     ],
 )
 

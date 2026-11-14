@@ -1,7 +1,7 @@
 package com.metamorfosis.backend.controller;
 
 import com.metamorfosis.backend.dto.AparienciaRequest;
-import com.metamorfosis.backend.dto.MascotaRequest;
+import com.metamorfosis.backend.dto.AvatarPerfil;
 import com.metamorfosis.backend.dto.CuentaResponse;
 import com.metamorfosis.backend.dto.EditarCuentaRequest;
 import com.metamorfosis.backend.dto.FotoPerfilRequest;
@@ -45,11 +45,11 @@ public class CuentaController {
         return ResponseEntity.ok(cuentaService.cambiarApariencia(codigoUsuario, pedido));
     }
 
-    /** HU20: elige la mascota (gratis). */
-    @PutMapping("/mascota")
-    public ResponseEntity<CuentaResponse> cambiarMascota(@RequestBody MascotaRequest pedido,
-                                                         @AuthenticationPrincipal Integer codigoUsuario) {
-        return ResponseEntity.ok(cuentaService.cambiarMascota(codigoUsuario, pedido));
+    /** HU20: guarda el avatar (gratis; todas las piezas están disponibles). */
+    @PutMapping("/avatar")
+    public ResponseEntity<CuentaResponse> cambiarAvatar(@RequestBody AvatarPerfil pedido,
+                                                        @AuthenticationPrincipal Integer codigoUsuario) {
+        return ResponseEntity.ok(cuentaService.cambiarAvatar(codigoUsuario, pedido));
     }
 
     @PutMapping("/foto")

@@ -2,6 +2,7 @@ package com.metamorfosis.backend.service;
 
 import com.metamorfosis.backend.auditoria.Auditar;
 import com.metamorfosis.backend.auditoria.ContextoAuditoria;
+import com.metamorfosis.backend.dto.AvatarPerfil;
 import com.metamorfosis.backend.dto.MetaResponse;
 import com.metamorfosis.backend.dto.PerfilPublicoRequest;
 import com.metamorfosis.backend.dto.PerfilPublicoResponse;
@@ -124,7 +125,8 @@ public class PerfilService {
             return new PerfilPublicoResponse(dueno.getCodigoUsuario(), dueno.getNombre(), dueno.getApellido(),
                     dueno.getFotoPerfil(), dueno.getFechaRegistro(), null, List.of(),
                     insigniaRepository.count(), List.of(), true,
-                    PersonalizacionPerfil.soloCabecera(dueno.getFrase(), dueno.getPortada(), dueno.getMascota()));
+                    PersonalizacionPerfil.soloCabecera(dueno.getFrase(), dueno.getPortada(),
+                            AvatarPerfil.desde(dueno.getAvatar())));
         }
 
         List<Meta> visibles = metaRepository.findByParticipante(codigoPerfil).stream()
@@ -246,7 +248,7 @@ public class PerfilService {
                 .limit(MAXIMO_DESTACADAS)
                 .toList();
         return new PersonalizacionPerfil(usuario.getFrase(), usuario.getPortada(), destacada, metasDestacadas,
-                usuario.getMascota());
+                AvatarPerfil.desde(usuario.getAvatar()));
     }
 
     /**

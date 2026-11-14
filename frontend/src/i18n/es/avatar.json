@@ -1,0 +1,85 @@
+{
+  "avatar": {
+    "titulo": "Tu avatar",
+    "texto": "Arma un personaje que se parezca a ti. Así las demás personas te reconocen sin ver tu foto. Todo es gratis y lo puedes cambiar cuando quieras.",
+    "alt": "Avatar de {{nombre}}",
+    "vistaPrevia": "Vista previa de tu avatar",
+    "sorprendeme": "Sorpréndeme",
+    "categorias": "Partes del avatar",
+    "credito": "Ilustraciones «Big Smile» de Ashley Seo (CC BY 4.0), con DiceBear.",
+    "categoria": {
+      "piel": "Piel",
+      "peinado": "Peinado",
+      "colorPelo": "Color de pelo",
+      "ojos": "Ojos",
+      "boca": "Boca",
+      "accesorio": "Accesorio"
+    },
+    "piel": {
+      "ffe4c0": "Piel muy clara",
+      "f5d7b1": "Piel clara",
+      "efcc9f": "Piel clara media",
+      "e2ba87": "Piel media",
+      "c99c62": "Piel trigueña",
+      "a47539": "Piel morena",
+      "8c5a2b": "Piel morena oscura",
+      "643d19": "Piel oscura"
+    },
+    "peinado": {
+      "shortHair": "Corto",
+      "curlyShortHair": "Rizado corto",
+      "bowlCutHair": "Tazón",
+      "mohawk": "Cresta",
+      "halfShavedHead": "Medio rapado",
+      "shavedHead": "Rapado",
+      "bangs": "Flequillo",
+      "wavyBob": "Melena ondulada",
+      "curlyBob": "Melena rizada",
+      "straightHair": "Largo liso",
+      "braids": "Trenzas",
+      "bunHair": "Moño",
+      "froBun": "Moño afro"
+    },
+    "colorPelo": {
+      "220f00": "Pelo negro",
+      "3a1a00": "Pelo castaño oscuro",
+      "71472d": "Pelo castaño",
+      "e2ba87": "Pelo rubio oscuro",
+      "e9b729": "Pelo rubio",
+      "d56c0c": "Pelo cobrizo",
+      "605de4": "Pelo morado",
+      "238d80": "Pelo verde azulado"
+    },
+    "ojos": {
+      "cheery": "Alegres",
+      "normal": "Tranquilos",
+      "winking": "Guiño",
+      "starstruck": "Estrellas",
+      "sleepy": "Con sueño",
+      "confused": "Confundidos",
+      "sad": "Tristes",
+      "angry": "Bravos"
+    },
+    "boca": {
+      "openedSmile": "Sonrisa abierta",
+      "teethSmile": "Sonrisa grande",
+      "gapSmile": "Dientona",
+      "awkwardSmile": "Nerviosa",
+      "kawaii": "Tierna",
+      "braces": "Frenillos",
+      "unimpressed": "Seria",
+      "openSad": "Triste"
+    },
+    "accesorio": {
+      "ninguno": "Ninguno",
+      "glasses": "Gafas",
+      "sunglasses": "Gafas de sol",
+      "catEars": "Orejas de gato",
+      "sailormoonCrown": "Corona",
+      "mustache": "Bigote",
+      "clownNose": "Nariz de payaso",
+      "sleepMask": "Antifaz",
+      "faceMask": "Tapabocas"
+    }
+  }
+}
