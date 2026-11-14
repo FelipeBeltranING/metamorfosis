@@ -1340,15 +1340,15 @@ HU['HU13'] = dict(
                     ('m', 'srv', 'correo', 'enviar(PlantillaInvitacion con «Aceptar» y «Rechazar»)'),
                 ]),
                 ('[ya participa o ya está invitado]', [
-                    ('r', 'srv', 'asp', 'ValidacionException("Esa persona ya participa en la meta…")'),
+                    ('r', 'srv', 'asp', 'ConflictoException("Laura Gómez ya participa en esta meta")'),
                     ('m', 'asp', 'log', 'registrar(…, INVITAR_META, …, ERROR, motivo)'),
-                    ('r', 'ctl', 'svc', '400 ErrorResponse (mensaje dentro del diálogo)'),
+                    ('r', 'ctl', 'svc', '409 ErrorResponse (mensaje dentro del diálogo)'),
                 ]),
             ]),
         ], 'InvitacionEnviadaResponse'),
         ('r', 'ctl', 'svc', '201 Created'),
         ('r', 'ui', 'u', 'el botón pasa a «Invitación enviada»'),
-        ('nota', 'ui', 'Alternativa: el creador genera un código para unirse (CodigoUnionService.generar)'),
+        ('nota', 'ui', 'Alternativa: el creador comparte un código para unirse (ver HU13_secuencia_codigo)'),
     ],
 )
 
