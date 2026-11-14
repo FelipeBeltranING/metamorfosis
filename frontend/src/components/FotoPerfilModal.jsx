@@ -121,6 +121,7 @@ export default function FotoPerfilModal({ archivo, onUsar, onElegirOtra, onCance
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+      role="presentation"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onCancelar();
       }}
@@ -149,9 +150,12 @@ export default function FotoPerfilModal({ archivo, onUsar, onElegirOtra, onCance
         </div>
 
         <div className="flex justify-center rounded-2xl bg-[#1e1b2e] py-6">
-          <div
-            tabIndex={0}
-            role="img"
+          {/* RQ5: el visor se mueve con el puntero o con las flechas en dos ejes; no existe un rol ARIA
+              de control 2D, así que se usa role="application" y jsx-a11y no lo reconoce como interactivo. */}
+          {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/no-noninteractive-tabindex */}
+          <div tabIndex={0}
+            role="application"
+            aria-roledescription={t('fotoModal.vistaPrevia')}
             aria-label={t('fotoModal.vistaPrevia')}
             onPointerDown={alPresionarEnVisor}
             onPointerMove={alMoverEnVisor}

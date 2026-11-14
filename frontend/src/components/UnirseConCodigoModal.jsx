@@ -45,7 +45,7 @@ export default function UnirseConCodigoModal({ onCerrar }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center sm:p-4" onMouseDown={(e) => e.target === e.currentTarget && !enviando && onCerrar()}>
+    <div role="presentation" className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center sm:p-4" onMouseDown={(e) => e.target === e.currentTarget && !enviando && onCerrar()}>
       <form role="dialog" aria-modal="true" aria-labelledby="titulo-unirse" onSubmit={enviar} className="w-full max-w-md rounded-t-2xl bg-white p-6 shadow-2xl sm:rounded-2xl">
         <div className="mb-4 flex items-start justify-between">
           <div className="flex size-12 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
