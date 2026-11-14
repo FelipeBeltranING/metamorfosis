@@ -2,16 +2,20 @@ package com.metamorfosis.backend.service;
 
 import com.metamorfosis.backend.dto.CambiarContrasenaRequest;
 import com.metamorfosis.backend.dto.ContrasenaCambiadaResponse;
+import com.metamorfosis.backend.exception.CorreoNoEnviadoException;
 import com.metamorfosis.backend.exception.CuentaBloqueadaException;
 import com.metamorfosis.backend.exception.UsuarioNoEncontradoException;
 import com.metamorfosis.backend.exception.ValidacionException;
 import com.metamorfosis.backend.model.Usuario;
 import com.metamorfosis.backend.repository.UsuarioRepository;
+import com.metamorfosis.backend.service.correo.CorreoService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,10 +24,14 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 /** HU32: caja blanca de ContrasenaService.cambiar. */
@@ -36,6 +44,7 @@ class ContrasenaServiceTest {
     @Mock private UsuarioRepository usuarioRepository;
     @Mock private BloqueoLoginService bloqueoLoginService;
     @Mock private JwtService jwtService;
+    @Mock private CorreoService correoService;
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(4);
     private final Clock reloj = Clock.fixed(Instant.parse("2026-11-14T20:15:30.750Z"), ZoneOffset.UTC);
@@ -44,9 +53,17 @@ class ContrasenaServiceTest {
 
     @BeforeEach
     void preparar() {
-        servicio = new ContrasenaService(usuarioRepository, passwordEncoder, bloqueoLoginService, jwtService, reloj);
+        servicio = new ContrasenaService(usuarioRepository, passwordEncoder, bloqueoLoginService, jwtService,
+                correoService, "https://metamorfosis.app", reloj);
         usuario = new Usuario("Daniel", "Santos", "Daniel@Correo.com", passwordEncoder.encode(ACTUAL));
         usuario.setCodigoUsuario(1);
+        // Como lo deja Spring en una petición sin Accept-Language: español.
+        LocaleContextHolder.setLocale(Locale.forLanguageTag("es"));
+    }
+
+    @AfterEach
+    void limpiarIdioma() {
+        LocaleContextHolder.resetLocaleContext();
     }
 
     private ValidacionException fallaCon(CambiarContrasenaRequest pedido) {
@@ -67,6 +84,22 @@ class ContrasenaServiceTest {
         // En segundos enteros, como la fecha de emisión del JWT.
         assertEquals(LocalDateTime.of(2026, 11, 14, 20, 15, 30), usuario.getContrasenaCambiadaEn());
         verify(bloqueoLoginService).limpiar("daniel@correo.com");
+        verify(correoService).enviar(eq("Daniel@Correo.com"), eq("Tu contraseña de Metamorfosis cambió"),
+                contains("https://metamorfosis.app/login"), contains("Hola, Daniel:"));
+    }
+
+    @Test
+    void siElCorreoDeAvisoFallaLaContrasenaIgualQuedaCambiada() {
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.save(any(Usuario.class))).thenAnswer(i -> i.getArgument(0));
+        when(jwtService.generarToken(usuario)).thenReturn("token-nuevo");
+        doThrow(new CorreoNoEnviadoException("Brevo no responde"))
+                .when(correoService).enviar(anyString(), anyString(), anyString(), anyString());
+
+        ContrasenaCambiadaResponse respuesta = servicio.cambiar(1, new CambiarContrasenaRequest(ACTUAL, NUEVA, NUEVA));
+
+        assertEquals("token-nuevo", respuesta.token());
+        assertTrue(passwordEncoder.matches(NUEVA, usuario.getPasswordHash()));
     }
 
     @Test
@@ -78,6 +111,7 @@ class ContrasenaServiceTest {
         assertEquals(List.of(ContrasenaService.MENSAJE_ACTUAL_INCORRECTA), e.getErrores());
         verify(bloqueoLoginService).registrarFallo("daniel@correo.com");
         verify(usuarioRepository, never()).save(any());
+        verifyNoInteractions(correoService);
     }
 
     @Test
