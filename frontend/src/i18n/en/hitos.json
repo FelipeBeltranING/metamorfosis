@@ -1,0 +1,170 @@
+{
+  "hitos": {
+    "titulo": "Milestones",
+    "explicacion": "Steps you reach only once. Each milestone brings the goal closer to its destination.",
+    "avance": "{{logrados}} of {{total}} milestones",
+    "avanceEtiqueta": "Goal progress: {{porcentaje}}% ({{logrados}} of {{total}} milestones)",
+    "sinHitosAnillo": "The goal has no milestones yet to measure its progress",
+    "marcar": "Mark \"{{nombre}}\" as reached",
+    "desmarcar": "\"{{nombre}}\" is reached. Tap to set it back to pending",
+    "logradoEl": "Reached on {{fecha}}",
+    "logradoPor": "Reached on {{fecha}} by {{nombre}}",
+    "pendiente": "Pending",
+    "logradoAviso": "Milestone reached! You are at {{porcentaje}}%.",
+    "deshechoAviso": "The milestone is pending again.",
+    "agregarHito": "+ Add milestone",
+    "vacioCreador": "Add milestones to know how far you have left: for example, each book finished or each million saved.",
+    "vacioInvitado": "This goal has no milestones yet.",
+    "habitos": "Habits",
+    "habitosExplicacion": "What you repeat on certain days. They measure how consistent you are.",
+    "habitosVacioCreador": "Add habits for every day: for example, read 15 pages or save money every Monday.",
+    "habitosVacioInvitado": "This goal has no habits yet.",
+    "llegasteTitulo": "You reached every milestone!",
+    "llegasteTexto": "You made it to the destination of \"{{meta}}\". Mark it as achieved to celebrate, earn your badges and share it.",
+    "constancia": "Consistency (30 days)",
+    "hoy": "Today's habits",
+    "racha": "Streak",
+    "rachaDias_one": "{{count}} day",
+    "rachaDias_other": "{{count}} days",
+    "rachaCero": "Start today",
+    "faltan_one": "{{count}} milestone left",
+    "faltan_other": "{{count}} milestones left",
+    "todosLogrados": "All milestones reached!",
+    "enCurso": "In progress",
+    "constanciaSemana": "Habit consistency: {{porcentaje}}% this week",
+    "tarjetaHoy": "Today · {{hechas}} of {{total}} habits",
+    "tarjetaHoyNada": "No habits due today",
+    "tarjetaSinCaminoCreador": "This goal doesn't have a path yet. Add milestones to know how far you have left and habits for every day.",
+    "tarjetaSinCaminoInvitado": "The goal's creator hasn't laid out the path yet. Once they add steps, you'll track your progress here.",
+    "tarjetaPrimerPaso": "+ Lay out the path",
+    "eliminarMetaPasos_one": " step of the path (milestone or habit)",
+    "eliminarMetaPasos_other": " steps of the path (milestones and habits)",
+    "verHistorial": "Tap to see the history by day, week or month"
+  },
+  "subMetaPaso": {
+    "hito": "Milestone",
+    "hitoTexto": "A step you reach only once. It tells you how far you have left. E.g.: Finish book 3, Open the savings account.",
+    "habitoSiNo": "Habit · Yes / No",
+    "habitoMedible": "Habit · Measurable",
+    "tituloHito": "New milestone",
+    "tituloEditarHito": "Edit milestone",
+    "tituloEditarHabito": "Edit habit",
+    "nombrePlaceholderHito": "E.g. Finish book 3",
+    "resumenHito": "When you reach it, mark it in Your path: the goal's progress will go up.",
+    "masOpciones": "More options",
+    "ideas": "Ideas for this goal",
+    "ideasTexto": "Tap one to start with it; you can rename it afterwards.",
+    "grupoHito": "To measure how far you have left",
+    "grupoHabito": "For every day"
+  },
+  "ideasCamino": {
+    "PERSONAL": [
+      [
+        "HITO",
+        "Finish the first big step"
+      ],
+      [
+        "SI_NO",
+        "Spend 20 minutes on it"
+      ],
+      [
+        "SI_NO",
+        "Write down how it went"
+      ]
+    ],
+    "PROFESIONAL": [
+      [
+        "HITO",
+        "Finish the course"
+      ],
+      [
+        "HITO",
+        "Update my résumé"
+      ],
+      [
+        "SI_NO",
+        "Practice for 30 minutes"
+      ]
+    ],
+    "FINANCIERA": [
+      [
+        "HITO",
+        "Save the first 25%"
+      ],
+      [
+        "HITO",
+        "Save half"
+      ],
+      [
+        "MEDIBLE",
+        "Put money aside"
+      ]
+    ],
+    "SOCIAL_FAMILIAR": [
+      [
+        "HITO",
+        "Plan the get-together"
+      ],
+      [
+        "SI_NO",
+        "Call someone"
+      ],
+      [
+        "SI_NO",
+        "Share a meal"
+      ]
+    ],
+    "SALUD_BIENESTAR": [
+      [
+        "MEDIBLE",
+        "Walk"
+      ],
+      [
+        "SI_NO",
+        "Drink enough water"
+      ],
+      [
+        "HITO",
+        "Get the medical check-up"
+      ]
+    ],
+    "ACADEMICA": [
+      [
+        "HITO",
+        "Hand in the first assignment"
+      ],
+      [
+        "MEDIBLE",
+        "Study"
+      ],
+      [
+        "SI_NO",
+        "Review my notes"
+      ]
+    ],
+    "RECREATIVA_OCIO": [
+      [
+        "HITO",
+        "Finish the first project"
+      ],
+      [
+        "SI_NO",
+        "Practice"
+      ],
+      [
+        "MEDIBLE",
+        "Practice time"
+      ]
+    ],
+    "OTRO": [
+      [
+        "HITO",
+        "Take the first step"
+      ],
+      [
+        "SI_NO",
+        "Make a little progress"
+      ]
+    ]
+  }
+}

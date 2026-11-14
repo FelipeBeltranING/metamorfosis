@@ -8,8 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Un paso diario del camino hacia una meta. Sí/No ("¿lo hiciste?") o medible ("¿cuánto?",
- * con unidad, objetivo y tipo de objetivo). Solo toca los días marcados en {@code dias}.
+ * Un paso del camino hacia una meta (HU28). Hay dos clases de pasos:
+ * <ul>
+ *   <li><b>Hábito</b> (HU5): Sí/No ("¿lo hiciste?") o medible ("¿cuánto?", con unidad, objetivo y
+ *       tipo de objetivo). Se registra por día y solo toca los días marcados en {@code dias}.</li>
+ *   <li><b>Hito</b>: un paso que se logra una sola vez. Los hitos logrados sobre el total son el
+ *       avance de la meta (HU29). En una meta compartida el hito es del equipo.</li>
+ * </ul>
  */
 @Entity
 @Table(name = "sub_meta")
@@ -56,6 +61,15 @@ public class SubMeta {
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDate fechaCreacion;
 
+    /** Hito: el día en que se logró (null = pendiente). */
+    @Column(name = "fecha_logrado")
+    private LocalDate fechaLogrado;
+
+    /** Hito: el participante que lo marcó como logrado. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "codigo_usuario_logro")
+    private Usuario logradoPor;
+
     protected SubMeta() { }
 
     public SubMeta(Meta meta, TipoSubMeta tipo, LocalDate fechaCreacion) {
@@ -64,22 +78,49 @@ public class SubMeta {
         this.fechaCreacion = fechaCreacion;
     }
 
-    /** Datos editables. En Sí/No, unidad, objetivo y tipo de objetivo quedan vacíos. */
+    /**
+     * Datos editables. En Sí/No, unidad, objetivo y tipo de objetivo quedan vacíos. En un hito
+     * tampoco hay pregunta ni días (se guarda "todos los días" porque la columna no admite vacío).
+     */
     public void actualizar(String nombre, String pregunta, String unidad, BigDecimal objetivo,
                            TipoObjetivo tipoObjetivo, int dias, String notas) {
         this.nombre = nombre;
-        this.pregunta = pregunta;
         boolean medible = tipo == TipoSubMeta.MEDIBLE;
+        this.pregunta = esHito() ? null : pregunta;
         this.unidad = medible ? unidad : null;
         this.objetivo = medible ? objetivo : null;
         this.tipoObjetivo = medible ? tipoObjetivo : null;
-        this.dias = (short) dias;
+        this.dias = (short) (esHito() ? TODOS_LOS_DIAS : dias);
         this.notas = notas;
     }
 
-    /** ¿Toca registrar esta sub-meta ese día de la semana? */
+    public boolean esHito() {
+        return tipo == TipoSubMeta.HITO;
+    }
+
+    public boolean esHabito() {
+        return !esHito();
+    }
+
+    public boolean isLogrado() {
+        return fechaLogrado != null;
+    }
+
+    /** HU5: marca el hito como logrado ese día por ese participante. */
+    public void lograr(Usuario participante, LocalDate fecha) {
+        this.fechaLogrado = fecha;
+        this.logradoPor = participante;
+    }
+
+    /** HU5: el hito vuelve a quedar pendiente (por si se marcó por error). */
+    public void deshacerLogro() {
+        this.fechaLogrado = null;
+        this.logradoPor = null;
+    }
+
+    /** ¿Toca registrar este hábito ese día de la semana? Un hito nunca se registra por días. */
     public boolean tocaEl(LocalDate fecha) {
-        return (dias & bitDe(fecha.getDayOfWeek())) != 0;
+        return esHabito() && (dias & bitDe(fecha.getDayOfWeek())) != 0;
     }
 
     /** ¿Ese valor cumple la sub-meta? Sí/No: 1 = hecho. Medible: según el tipo de objetivo. */
@@ -114,4 +155,6 @@ public class SubMeta {
     public int getDias() { return dias; }
     public String getNotas() { return notas; }
     public LocalDate getFechaCreacion() { return fechaCreacion; }
+    public LocalDate getFechaLogrado() { return fechaLogrado; }
+    public Usuario getLogradoPor() { return logradoPor; }
 }

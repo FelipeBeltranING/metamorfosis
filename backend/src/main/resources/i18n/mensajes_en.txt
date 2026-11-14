@@ -48,14 +48,14 @@ El plazo es obligatorio => The term is required
 El tipo es obligatorio => The type is required
 No participas en esta meta => You're not taking part in this goal
 
-# Sub-metas y registro del día
+# HU28, HU5 y HU29: el camino (hitos y hábitos) y el registro del día
 La meta ya está cumplida: su camino es solo de lectura => The goal is already achieved: its path is read-only
-Elige si la sub-meta es Sí / No o medible => Choose whether the sub-goal is Yes / No or measurable
+Elige si el paso es un hito o un hábito => Choose whether the step is a milestone or a habit
 Faltan los datos de la sub-meta => The sub-goal details are missing
 El tipo de una sub-meta no se puede cambiar => A sub-goal's type can't be changed
 Solo el creador de la meta puede cambiar sus sub-metas => Only the goal's creator can change its sub-goals
 El nombre no puede tener más de 100 caracteres => The name can't be longer than 100 characters
-Ya tienes una sub-meta con este nombre en esta meta => You already have a sub-goal with this name in this goal
+Ya tienes un paso con este nombre en esta meta => You already have a step with this name in this goal
 La pregunta no puede tener más de 200 caracteres => The question can't be longer than 200 characters
 Las notas no pueden tener más de 500 caracteres => The notes can't be longer than 500 characters
 Escribe en qué lo mides (la unidad) => Enter what you measure it in (the unit)
@@ -73,6 +73,10 @@ Ese día la sub-meta todavía no existía => The sub-goal didn't exist yet on th
 Esta sub-meta no toca ese día => This sub-goal isn't scheduled on that day
 El valor es obligatorio => The value is required
 El valor no puede ser negativo => The value can't be negative
+Solo los participantes de la meta pueden marcar sus hitos => Only the goal's participants can mark its milestones
+Solo los hitos se marcan como logrados; los hábitos se registran por día => Only milestones are marked as achieved; habits are logged by day
+Un hito no se registra por día: se marca como logrado => A milestone isn't logged by day: it's marked as achieved
+Un hito no tiene estadísticas por día => A milestone has no daily statistics
 En una sub-meta Sí / No el valor es 1 (hecho) o 0 (no hecho) => In a Yes / No sub-goal the value is 1 (done) or 0 (not done)
 El valor no puede ser mayor que 1.000.000 => The value can't be greater than 1,000,000
 El valor admite máximo 2 decimales => The value allows at most 2 decimal places

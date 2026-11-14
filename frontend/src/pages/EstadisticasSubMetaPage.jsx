@@ -46,7 +46,7 @@ function Tarjeta({ titulo, valor, nota }) {
   );
 }
 
-/** Sub-metas (HU-C): estadísticas de una sub-meta para quien la consulta. */
+/** HU29: constancia, rachas e historial de un hábito para quien lo consulta. */
 export default function EstadisticasSubMetaPage() {
   const { t } = useTranslation();
   const { codigoSubMeta } = useParams();
@@ -268,9 +268,13 @@ export default function EstadisticasSubMetaPage() {
               </section>
             )}
 
-            <section aria-labelledby="t-historial" className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6">
-              <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                <h2 id="t-historial" className="text-lg font-extrabold">{medible ? t('estadisticas.historial') : t('estadisticas.diasCumplidos')}</h2>
+            {/* HU29: el historial detallado va plegado; arriba quedan la constancia y las rachas. */}
+            <details className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6">
+              <summary className="cursor-pointer">
+                <span className="text-lg font-extrabold">{medible ? t('estadisticas.historial') : t('estadisticas.diasCumplidos')}</span>
+                <span className="ml-2 text-sm font-semibold text-violet-700">{t('hitos.verHistorial')}</span>
+              </summary>
+              <div className="mb-4 mt-4 flex flex-wrap items-center justify-end gap-3">
                 <div role="group" aria-label={t('estadisticas.agruparPor')} className="flex gap-1 rounded-xl bg-slate-100 p-1">
                   {pestanas.map(([id, nombre]) => (
                     <button key={id} type="button" aria-pressed={vistaActual === id} onClick={() => setVista(id)} className={`h-9 rounded-[9px] px-3.5 text-sm font-bold ${vistaActual === id ? 'bg-white text-violet-800 shadow-sm' : 'text-gray-600'}`}>{nombre}</button>
@@ -298,7 +302,7 @@ export default function EstadisticasSubMetaPage() {
                   </div>
                 </div>
               </div>
-            </section>
+            </details>
 
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
               <section aria-labelledby="t-calendario" className="rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6">

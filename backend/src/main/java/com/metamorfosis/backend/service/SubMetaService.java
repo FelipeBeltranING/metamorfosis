@@ -2,6 +2,8 @@ package com.metamorfosis.backend.service;
 
 import com.metamorfosis.backend.auditoria.Auditar;
 import com.metamorfosis.backend.config.CalendarioUsuario;
+import com.metamorfosis.backend.dto.AvanceResponse;
+import com.metamorfosis.backend.dto.LogroHitoResponse;
 import com.metamorfosis.backend.dto.SubMetaRequest;
 import com.metamorfosis.backend.dto.SubMetaResponse;
 import com.metamorfosis.backend.exception.MetaNoEncontradaException;
@@ -17,6 +19,7 @@ import com.metamorfosis.backend.model.TipoObjetivo;
 import com.metamorfosis.backend.model.TipoSubMeta;
 import com.metamorfosis.backend.repository.MetaRepository;
 import com.metamorfosis.backend.repository.SubMetaRepository;
+import com.metamorfosis.backend.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sub-metas: crear, editar y eliminar los pasos diarios de una meta. Solo el creador de la meta,
- * y solo mientras la meta está activa (una meta cumplida queda en solo lectura).
+ * HU28: trazar el camino de una meta (crear, editar y eliminar sus hitos y hábitos). Solo el creador
+ * de la meta, y solo mientras está activa (una meta cumplida queda en solo lectura).
+ * HU5: marcar un hito como logrado o devolverlo a pendiente (cualquier participante: el hito es del equipo).
  */
 @Service
 public class SubMetaService {
@@ -37,12 +41,14 @@ public class SubMetaService {
 
     private final MetaRepository metaRepository;
     private final SubMetaRepository subMetaRepository;
+    private final UsuarioRepository usuarioRepository;
     private final CalendarioUsuario calendario;
 
     public SubMetaService(MetaRepository metaRepository, SubMetaRepository subMetaRepository,
-                          CalendarioUsuario calendario) {
+                          UsuarioRepository usuarioRepository, CalendarioUsuario calendario) {
         this.metaRepository = metaRepository;
         this.subMetaRepository = subMetaRepository;
+        this.usuarioRepository = usuarioRepository;
         this.calendario = calendario;
     }
 
@@ -53,7 +59,7 @@ public class SubMetaService {
                 .orElseThrow(() -> new MetaNoEncontradaException(codigoMeta));
         exigirCreadorYActiva(meta, codigoUsuario);
         if (pedido == null || pedido.tipo() == null) {
-            throw new ValidacionException(List.of("Elige si la sub-meta es Sí / No o medible"));
+            throw new ValidacionException(List.of("Elige si el paso es un hito o un hábito"));
         }
         Datos datos = validar(pedido, pedido.tipo(), codigoMeta, null);
 
@@ -87,6 +93,62 @@ public class SubMetaService {
         subMetaRepository.delete(subMeta);
     }
 
+    /**
+     * HU5: marca un hito como logrado (hoy, por quien lo marca). Si ya estaba logrado conserva la fecha
+     * original. Responde el avance de la meta (HU29) para que la app proponga cumplirla al llegar al 100 %.
+     */
+    @Auditar(accion = AccionLog.LOGRAR_HITO, entidad = EntidadLog.SUB_META)
+    @Transactional
+    public LogroHitoResponse lograrHito(Integer codigoSubMeta, Integer codigoUsuario) {
+        SubMeta hito = buscarHitoParaMarcar(codigoSubMeta, codigoUsuario);
+        if (!hito.isLogrado()) {
+            hito.lograr(usuarioRepository.getReferenceById(codigoUsuario), calendario.hoy());
+            subMetaRepository.save(hito);
+        }
+        return new LogroHitoResponse(SubMetaResponse.desde(hito), avance(hito.getMeta().getCodigoMeta()));
+    }
+
+    /** HU5: devuelve un hito a pendiente (por si se marcó por error). */
+    @Auditar(accion = AccionLog.DESHACER_HITO, entidad = EntidadLog.SUB_META)
+    @Transactional
+    public LogroHitoResponse deshacerHito(Integer codigoSubMeta, Integer codigoUsuario) {
+        SubMeta hito = buscarHitoParaMarcar(codigoSubMeta, codigoUsuario);
+        if (hito.isLogrado()) {
+            hito.deshacerLogro();
+            subMetaRepository.save(hito);
+        }
+        return new LogroHitoResponse(SubMetaResponse.desde(hito), avance(hito.getMeta().getCodigoMeta()));
+    }
+
+    /** El hito es del equipo: cualquier participante aceptado lo marca, mientras la meta esté activa. */
+    private SubMeta buscarHitoParaMarcar(Integer codigoSubMeta, Integer codigoUsuario) {
+        SubMeta hito = buscar(codigoSubMeta);
+        Meta meta = hito.getMeta();
+        if (!metaRepository.esParticipanteAceptado(meta.getCodigoMeta(), codigoUsuario)) {
+            throw new PermisoDenegadoException("Solo los participantes de la meta pueden marcar sus hitos");
+        }
+        if (meta.getEstado() != EstadoMeta.ACTIVA) {
+            throw new ValidacionException(List.of(MENSAJE_SOLO_LECTURA));
+        }
+        if (!hito.esHito()) {
+            throw new ValidacionException(List.of("Solo los hitos se marcan como logrados; los hábitos se registran por día"));
+        }
+        return hito;
+    }
+
+    /** HU29: hitos logrados sobre el total de hitos de la meta. */
+    public AvanceResponse avance(Integer codigoMeta) {
+        List<SubMeta> pasos = subMetaRepository.findByMetaCodigoMetaOrderByCodigoSubMetaAsc(codigoMeta);
+        int total = 0;
+        int logrados = 0;
+        for (SubMeta p : pasos) {
+            if (!p.esHito()) continue;
+            total++;
+            if (p.isLogrado()) logrados++;
+        }
+        return AvanceResponse.de(logrados, total);
+    }
+
     private SubMeta buscar(Integer codigoSubMeta) {
         return subMetaRepository.findById(codigoSubMeta)
                 .orElseThrow(() -> new SubMetaNoEncontradaException(codigoSubMeta));
@@ -114,10 +176,11 @@ public class SubMetaService {
                 ? subMetaRepository.existsByMetaCodigoMetaAndNombreIgnoreCase(codigoMeta, nombre)
                 : subMetaRepository.existsByMetaCodigoMetaAndNombreIgnoreCaseAndCodigoSubMetaNot(
                         codigoMeta, nombre, codigoSubMeta)) {
-            errores.add("Ya tienes una sub-meta con este nombre en esta meta");
+            errores.add("Ya tienes un paso con este nombre en esta meta");
         }
 
-        String pregunta = recortar(p.pregunta());
+        boolean hito = tipo == TipoSubMeta.HITO;
+        String pregunta = hito ? null : recortar(p.pregunta());
         if (pregunta != null && pregunta.length() > 200) {
             errores.add("La pregunta no puede tener más de 200 caracteres");
         }
@@ -150,7 +213,7 @@ public class SubMetaService {
         }
 
         int dias = 0;
-        if (p.dias() == null || p.dias().isEmpty()) {
+        if (hito || p.dias() == null || p.dias().isEmpty()) {
             dias = SubMeta.TODOS_LOS_DIAS;
         } else {
             for (Integer d : p.dias()) {

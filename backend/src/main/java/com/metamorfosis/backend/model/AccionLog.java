@@ -25,11 +25,13 @@ public enum AccionLog {
     RECHAZAR_REGISTRO,  // HU8: el dueño del correo respondió "No fui yo"
     INICIAR_SESION,     // HU9
     CERRAR_SESION,      // HU10
-    CREAR_SUB_META,     // sub-metas: crear
-    EDITAR_SUB_META,    // sub-metas: editar
-    ELIMINAR_SUB_META,  // sub-metas: eliminar
-    REGISTRAR_DIA,      // sub-metas: registrar o corregir el día
-    QUITAR_REGISTRO,    // sub-metas: quitar el registro de un día
+    CREAR_SUB_META,     // HU28: agregar un hito o un hábito al camino
+    EDITAR_SUB_META,    // HU28: editar un paso del camino
+    ELIMINAR_SUB_META,  // HU28: eliminar un paso del camino
+    REGISTRAR_DIA,      // HU5: registrar o corregir el día de un hábito
+    QUITAR_REGISTRO,    // HU5: quitar el registro de un día
+    LOGRAR_HITO,        // HU5: marcar un hito del camino como logrado
+    DESHACER_HITO,      // HU5: devolver un hito a pendiente
     EDITAR_PERFIL,      // HU23: nombre y apellido
     CAMBIAR_FOTO_PERFIL, // HU23
     QUITAR_FOTO_PERFIL, // HU23
