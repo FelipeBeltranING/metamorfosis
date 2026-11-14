@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowLeft, UserX } from 'lucide-react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Encabezado from '../components/Encabezado';
 import EstadoError from '../components/EstadoError';
 import { ContenidoPerfil, EsqueletoPerfil } from './PerfilPage';
@@ -14,6 +15,7 @@ const ES_CODIGO = /^\d+$/;
  * ni las acciones propias; las metas que el dueño ocultó (HU25) no llegan del servidor.
  */
 export default function PerfilPublicoPage() {
+  const { t } = useTranslation();
   const { codigoUsuario } = useParams();
   const navigate = useNavigate();
   const propio = String(obtenerSesion()?.codigoUsuario ?? '') === codigoUsuario;
@@ -57,17 +59,17 @@ export default function PerfilPublicoPage() {
           className="mb-4 inline-flex items-center gap-2 rounded-md text-sm font-bold text-violet-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
-          Buscar personas
+          {t('perfilPublico.buscarPersonas')}
         </Link>
         <h1 className="mb-6 text-2xl font-bold sm:text-3xl">
-          {perfil ? `Perfil de ${perfil.nombre}` : 'Perfil'}
+          {perfil ? t('perfilPublico.perfilDe', { nombre: perfil.nombre }) : t('perfilPublico.perfil')}
         </h1>
 
         {estado.fase === 'cargando' && <EsqueletoPerfil />}
 
         {estado.fase === 'error' && (
           <EstadoError
-            titulo="No pudimos cargar el perfil"
+            titulo={t('perfilPublico.errorCargar')}
             mensaje={estado.mensaje}
             onReintentar={() => setIntento((n) => n + 1)}
           />
@@ -79,14 +81,14 @@ export default function PerfilPublicoPage() {
               <UserX className="size-7 text-violet-600" aria-hidden="true" />
             </div>
             <div>
-              <p className="text-lg font-bold text-gray-900">Esta persona no existe</p>
-              <p className="mt-1 text-sm text-gray-600">Puede que el enlace esté mal o que la cuenta ya no exista.</p>
+              <p className="text-lg font-bold text-gray-900">{t('perfilPublico.noExiste')}</p>
+              <p className="mt-1 text-sm text-gray-600">{t('perfilPublico.noExisteTexto')}</p>
             </div>
             <Link
               to="/usuarios"
               className="flex h-12 items-center rounded-xl bg-violet-600 px-6 font-bold text-white hover:bg-violet-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
             >
-              Buscar personas
+              {t('perfilPublico.buscarPersonas')}
             </Link>
           </div>
         )}

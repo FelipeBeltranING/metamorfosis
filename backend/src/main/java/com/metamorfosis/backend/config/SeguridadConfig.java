@@ -1,5 +1,6 @@
 package com.metamorfosis.backend.config;
 
+import com.metamorfosis.backend.i18n.TraductorMensajes;
 import com.metamorfosis.backend.repository.TokenRevocadoRepository;
 import com.metamorfosis.backend.service.JwtService;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.LocaleResolver;
 
 import java.util.List;
 
@@ -28,7 +30,8 @@ public class SeguridadConfig {
 
     @Bean
     SecurityFilterChain filtros(HttpSecurity http, JwtService jwtService,
-                                TokenRevocadoRepository tokenRevocadoRepository) throws Exception {
+                                TokenRevocadoRepository tokenRevocadoRepository,
+                                TraductorMensajes traductor, LocaleResolver localeResolver) throws Exception {
         http.csrf(csrf -> csrf.disable())                     // API stateless sin cookies de sesión
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .cors(c -> {})
@@ -37,8 +40,10 @@ public class SeguridadConfig {
             .exceptionHandling(e -> e.authenticationEntryPoint((peticion, respuesta, error) -> {
                 respuesta.setStatus(401);
                 respuesta.setContentType("application/json;charset=UTF-8");
+                // Este error sale antes de llegar a los controladores: el idioma se lee aquí de la petición.
+                String mensaje = traductor.traducir("Autenticación requerida", localeResolver.resolveLocale(peticion));
                 respuesta.getWriter().write(
-                        "{\"estado\":401,\"mensaje\":\"Autenticación requerida\",\"errores\":[]}");
+                        "{\"estado\":401,\"mensaje\":\"" + mensaje + "\",\"errores\":[]}");
             }))
             .authorizeHttpRequests(a -> a
                 .requestMatchers("/api/auth/**").permitAll()
@@ -57,7 +62,7 @@ public class SeguridadConfig {
         c.setAllowedOrigins(origenes);
         c.setAllowedMethods(List.of(HttpMethod.GET.name(), HttpMethod.POST.name(),
                 HttpMethod.PUT.name(), HttpMethod.PATCH.name(), HttpMethod.DELETE.name()));
-        c.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        c.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept-Language"));
         UrlBasedCorsConfigurationSource fuente = new UrlBasedCorsConfigurationSource();
         fuente.registerCorsConfiguration("/api/**", c);
         return fuente;

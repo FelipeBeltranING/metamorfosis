@@ -1,0 +1,154 @@
+{
+  "comun": {
+    "app": "Metamorfosis",
+    "reintentar": "Reintentar",
+    "cancelar": "Cancelar",
+    "cerrar": "Cerrar",
+    "guardar": "Guardar",
+    "guardando": "Guardando…",
+    "volver": "Volver",
+    "ver": "Ver",
+    "cargando": "Cargando…",
+    "eliminar": "Eliminar",
+    "editar": "Editar",
+    "copiar": "Copiar",
+    "copiado": "Copiado",
+    "secciones": "Secciones"
+  },
+  "idioma": {
+    "etiqueta": "Idioma"
+  },
+  "errores": {
+    "sinConexion": "No se pudo conectar con el servidor",
+    "sinConexionReintentar": "No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.",
+    "respuestaInesperada": "Respuesta inesperada del servidor",
+    "inesperado": "Error inesperado",
+    "sesionExpirada": "Tu sesión expiró. Inicia sesión de nuevo.",
+    "marcarMeta": "No se pudo marcar la meta. Revisa tu conexión e inténtalo de nuevo",
+    "enviarInvitacion": "No se pudo enviar la invitación. Revisa tu conexión e inténtalo de nuevo.",
+    "cambiarVisibilidad": "No pudimos cambiar la visibilidad de la meta. Inténtalo de nuevo.",
+    "cambiarPrivacidad": "No pudimos cambiar la privacidad. Inténtalo de nuevo.",
+    "cargarMetas": "No pudimos cargar tus metas",
+    "revisaConexion": "Comprueba tu conexión e inténtalo de nuevo."
+  },
+  "encabezado": {
+    "misMetas": "Mis metas",
+    "reporte": "Reporte",
+    "personas": "Personas"
+  },
+  "menuPerfil": {
+    "tuCuenta": "Tu cuenta",
+    "tuCuentaDe": "Tu cuenta: {{nombre}}",
+    "pendientes_one": " ({{count}} invitación pendiente)",
+    "pendientes_other": " ({{count}} invitaciones pendientes)",
+    "verPerfil": "Ver mi perfil",
+    "editarPerfil": "Editar perfil",
+    "invitaciones": "Invitaciones"
+  },
+  "estadoVacio": {
+    "titulo": "Aún no tienes metas activas",
+    "texto": "Cada gran cambio empieza con un primer paso. Crea tu primera meta y empieza hoy.",
+    "boton": "Crear mi primera meta"
+  },
+  "sinResultados": {
+    "titulo": "Ninguna meta coincide con los filtros",
+    "texto": "Prueba con otro estado, tipo o plazo.",
+    "limpiar": "Limpiar filtros"
+  },
+  "enlaceNoValido": {
+    "texto": "Este enlace ya no es válido. Puede que haya vencido o que ya se haya usado.",
+    "boton": "Pedir un enlace nuevo"
+  },
+  "avisoInvitaciones": {
+    "texto_one": "Tienes {{count}} invitación a una meta compartida",
+    "texto_other": "Tienes {{count}} invitaciones a metas compartidas"
+  },
+  "fechas": {
+    "diasCortos": ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
+    "diasLargos": ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"],
+    "mesesCortos": ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
+    "mesesLargos": ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+    "diaYMes": "{{dia}} {{mes}}",
+    "mesYAnio": "{{mes}} de {{anio}}"
+  },
+  "opciones": {
+    "plazo": {
+      "CORTO": "Corto plazo",
+      "MEDIANO": "Mediano plazo",
+      "LARGO": "Largo plazo"
+    },
+    "tipo": {
+      "PERSONAL": "Personal",
+      "PROFESIONAL": "Profesional",
+      "FINANCIERA": "Financiera",
+      "SOCIAL_FAMILIAR": "Social / Familiar",
+      "SALUD_BIENESTAR": "Salud y bienestar",
+      "ACADEMICA": "Académica",
+      "RECREATIVA_OCIO": "Recreativa / Ocio",
+      "OTRO": "Otro"
+    }
+  },
+  "filtros": {
+    "estado": {
+      "ACTIVA": "Activas",
+      "CUMPLIDA": "Cumplidas",
+      "TODAS": "Todas"
+    }
+  },
+  "subMetas": {
+    "siNo": "Sí / No",
+    "alMenos": "Al menos {{valor}} {{unidad}}",
+    "comoMaximo": "Como máximo {{valor}} {{unidad}}",
+    "diariamente": "diariamente",
+    "lunesAViernes": "lunes a viernes",
+    "finesDeSemana": "fines de semana",
+    "soloUnDia": "solo {{dia}}",
+    "variosDias": "{{dias}} y {{ultimo}}"
+  },
+  "participantes": {
+    "conUno": "Con {{a}}",
+    "conDos": "Con {{a}} y {{b}}",
+    "conVarios_one": "Con {{a}} y {{count}} más",
+    "conVarios_other": "Con {{a}} y {{count}} más",
+    "pendientes_one": "{{count}} invitación pendiente",
+    "pendientes_other": "{{count}} invitaciones pendientes"
+  },
+  "apariencia": {
+    "titulo": "Apariencia",
+    "descripcion": "Elige cómo se ve Metamorfosis. Lo ves al instante y se guarda en tu cuenta al tocar Guardar cambios.",
+    "temasTitulo": "Temas",
+    "modoTitulo": "Modo",
+    "acentoTitulo": "Color de acento",
+    "acentoDe": "Acento {{nombre}}",
+    "modos": {
+      "claro": "Claro",
+      "oscuro": "Oscuro",
+      "automatico": "Automático"
+    },
+    "acentos": {
+      "violeta": "Violeta",
+      "azul": "Azul",
+      "esmeralda": "Esmeralda",
+      "coral": "Coral"
+    },
+    "temas": {
+      "crisalida": { "nombre": "Crisálida", "descripcion": "Claro y violeta, el de siempre" },
+      "noche": { "nombre": "Noche", "descripcion": "Negro y azul, descansa la vista" },
+      "bosque": { "nombre": "Bosque", "descripcion": "Oscuro con verde esmeralda" },
+      "amanecer": { "nombre": "Amanecer", "descripcion": "Claro y cálido, en coral" }
+    }
+  },
+  "portadas": {
+    "NINGUNA": "Sin portada",
+    "ESTRELLADA": "Noche estrellada",
+    "AURORA": "Aurora boreal",
+    "NEBULOSA": "Nebulosa",
+    "ATARDECER": "Atardecer en la montaña",
+    "OCEANO": "Océano",
+    "BOSQUE": "Bosque al amanecer",
+    "METAMORFOSIS": "Metamorfosis",
+    "LLUVIA": "Lluvia de estrellas",
+    "TOPOGRAFIA": "Topografía",
+    "FIESTA": "Fiesta"
+  }
+}

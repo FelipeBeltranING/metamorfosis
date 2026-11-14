@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 import {
   Ellipsis, Eye, EyeOff, Pencil, Trash2, UserPlus,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Menú "⋯" de una tarjeta de meta. Muestra solo las acciones que reciba
@@ -13,6 +14,7 @@ import {
 export default function MenuTarjeta({
   nombre, onEditar, editarBloqueado = false, oculta = false, onCambiarVisibilidad, onEliminar, onInvitar,
 }) {
+  const { t } = useTranslation();
   const [abierto, setAbierto] = useState(false);
   const contenedor = useRef(null);
   const boton = useRef(null);
@@ -51,7 +53,7 @@ export default function MenuTarjeta({
         onClick={() => setAbierto((actual) => !actual)}
         aria-haspopup="menu"
         aria-expanded={abierto}
-        aria-label={`Opciones de la meta ${nombre}`}
+        aria-label={t('menuTarjeta.opciones', { nombre })}
         className="flex size-12 items-center justify-center rounded-xl text-gray-900 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
       >
         <Ellipsis className="size-6" aria-hidden="true" />
@@ -73,10 +75,10 @@ export default function MenuTarjeta({
                 className="flex h-10 cursor-not-allowed items-center gap-3 text-left text-base font-semibold text-gray-400"
               >
                 <Pencil className="size-5" aria-hidden="true" />
-                Editar
+                {t('menuTarjeta.editar')}
               </button>
               <p id={idAyuda} className="text-sm leading-5 text-gray-500">
-                Una meta cumplida no se puede editar.
+                {t('menuTarjeta.noEditable')}
               </p>
             </div>
           )}
@@ -88,7 +90,7 @@ export default function MenuTarjeta({
               className="flex h-12 items-center gap-3 rounded-xl px-3 text-left text-base font-semibold text-gray-900 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
             >
               <Pencil className="size-5" aria-hidden="true" />
-              Editar
+              {t('menuTarjeta.editar')}
             </button>
           )}
           {onInvitar && editarBloqueado && (
@@ -102,10 +104,10 @@ export default function MenuTarjeta({
                 className="flex h-10 cursor-not-allowed items-center gap-3 text-left text-base font-semibold text-gray-400"
               >
                 <UserPlus className="size-5" aria-hidden="true" />
-                Invitar personas
+                {t('menuTarjeta.invitar')}
               </button>
               <p id={idAyudaInvitar} className="text-sm leading-5 text-gray-500">
-                Solo se puede invitar a metas activas.
+                {t('menuTarjeta.soloActivas')}
               </p>
             </div>
           )}
@@ -117,7 +119,7 @@ export default function MenuTarjeta({
               className="flex h-12 items-center gap-3 rounded-xl px-3 text-left text-base font-semibold text-gray-900 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
             >
               <UserPlus className="size-5" aria-hidden="true" />
-              Invitar personas
+              {t('menuTarjeta.invitar')}
             </button>
           )}
           {onCambiarVisibilidad && (
@@ -130,7 +132,7 @@ export default function MenuTarjeta({
               {oculta
                 ? <Eye className="size-5" aria-hidden="true" />
                 : <EyeOff className="size-5" aria-hidden="true" />}
-              {oculta ? 'Mostrar en el perfil' : 'Ocultar del perfil'}
+              {oculta ? t('menuTarjeta.mostrar') : t('menuTarjeta.ocultar')}
             </button>
           )}
           {onEliminar && (
@@ -141,7 +143,7 @@ export default function MenuTarjeta({
               className="flex h-12 items-center gap-3 rounded-xl px-3 text-left text-base font-semibold text-red-600 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300"
             >
               <Trash2 className="size-5" aria-hidden="true" />
-              Eliminar
+              {t('menuTarjeta.eliminar')}
             </button>
           )}
         </div>

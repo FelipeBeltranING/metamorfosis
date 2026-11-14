@@ -5,6 +5,7 @@ import {
 import {
   Link, useLocation, useNavigate, useSearchParams,
 } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Encabezado from '../components/Encabezado';
 import MetaTarjeta from '../components/MetaTarjeta';
 import MetaTarjetaEsqueleto from '../components/MetaTarjetaEsqueleto';
@@ -27,16 +28,6 @@ import {
   FILTROS_POR_DEFECTO, filtrosAUrl, filtrosDesdeUrl, hayFiltros,
 } from '../utils/filtrosMetas';
 
-const AVISOS = {
-  creada: '¡Meta creada! Ya aparece en tus metas activas.',
-  actualizada: '¡Meta actualizada!',
-  eliminada: 'Meta eliminada.',
-  sesion: '¡Sesión iniciada!',
-  cumplida: '¡Meta cumplida! Ya está en tus metas cumplidas.',
-  oculta: 'Meta oculta: ya no se mostrará en tu perfil público.', // HU25
-  visible: 'La meta vuelve a mostrarse en tu perfil público.', // HU25
-};
-
 /** Qué aviso mostrar al llegar a la lista (viene en el estado de navegación). */
 function avisoInicial(estadoNavegacion) {
   if (estadoNavegacion?.metaCreada) return 'creada';
@@ -46,6 +37,7 @@ function avisoInicial(estadoNavegacion) {
 }
 
 export default function MisMetasPage() {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const mostrarInsignias = useAvisosInsignia();
@@ -206,7 +198,7 @@ export default function MisMetasPage() {
       } else if (error.estado === 404) {
         actualizarMeta(codigoMeta, null);
         setMetaAMarcar(null);
-        setErrorLista('Esta meta ya no existe');
+        setErrorLista(t('misMetas.yaNoExiste'));
       } else {
         setErrorMarcar(error.message);
       }
@@ -231,7 +223,7 @@ export default function MisMetasPage() {
         navigate('/login', { replace: true });
       } else if (error.estado === 404) {
         actualizarMeta(codigoMeta, null);
-        setErrorLista('Esta meta ya no existe');
+        setErrorLista(t('misMetas.yaNoExiste'));
       } else {
         setErrorLista(error.message);
       }
@@ -251,9 +243,9 @@ export default function MisMetasPage() {
       <main className="mx-auto w-full max-w-[960px] px-4 pb-28 pt-6 sm:pb-10 sm:pt-12">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold sm:text-3xl">Mis metas</h1>
+            <h1 className="text-2xl font-bold sm:text-3xl">{t('misMetas.titulo')}</h1>
             <p className="mt-1 text-sm text-gray-500 sm:text-base">
-              Marca el círculo cuando logres una meta.
+              {t('misMetas.subtitulo')}
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -263,13 +255,13 @@ export default function MisMetasPage() {
               className="flex h-11 items-center gap-2 rounded-xl border border-violet-300 bg-white px-3.5 text-sm font-bold text-violet-700 hover:bg-violet-50 sm:h-14 sm:px-5 sm:text-base"
             >
               <KeyRound className="size-4 sm:size-5" aria-hidden="true" />
-              <span>Unirme<span className="hidden sm:inline"> con código</span></span>
+              <span>{t('misMetas.unirme')}<span className="hidden sm:inline">{t('misMetas.conCodigo')}</span></span>
             </button>
             <Link
               to="/metas/nueva"
               className="hidden h-14 items-center rounded-xl bg-violet-600 px-6 text-base font-bold text-white hover:bg-violet-700 sm:flex"
             >
-              + Nueva meta
+              {t('misMetas.nuevaMeta')}
             </Link>
           </div>
         </div>
@@ -320,7 +312,7 @@ export default function MisMetasPage() {
       {/* Botón flotante solo en móvil */}
       <Link
         to="/metas/nueva"
-        aria-label="Nueva meta"
+        aria-label={t('misMetas.nuevaMetaEtiqueta')}
         className="fixed bottom-6 right-4 flex size-14 items-center justify-center rounded-full bg-violet-600 text-white shadow-lg hover:bg-violet-700 sm:hidden"
       >
         <Plus className="size-6" aria-hidden="true" />
@@ -369,7 +361,7 @@ export default function MisMetasPage() {
           className="fixed bottom-24 left-1/2 flex w-[calc(100%-2rem)] max-w-[640px] -translate-x-1/2 items-center gap-3 rounded-xl bg-emerald-400 p-4 text-sm font-semibold leading-5 text-gray-900 shadow-[0_4px_16px_rgba(30,27,46,0.07)] sm:bottom-8"
         >
           <CircleCheck className="size-6 shrink-0" aria-hidden="true" />
-          <span className="flex-1">{AVISOS[aviso]}</span>
+          <span className="flex-1">{t(`misMetas.avisos.${aviso}`)}</span>
           {/* Con el filtro Activas la meta cumplida sale de la lista: el aviso dice dónde quedó. */}
           {aviso === 'cumplida' && filtros.estado === 'ACTIVA' && (
             <button
@@ -377,7 +369,7 @@ export default function MisMetasPage() {
               onClick={() => { setAviso(null); cambiarFiltros({ ...filtros, estado: 'CUMPLIDA' }); }}
               className="shrink-0 rounded-lg bg-white/70 px-3 py-1.5 font-bold text-gray-900 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900"
             >
-              Ver cumplidas
+              {t('misMetas.verCumplidas')}
             </button>
           )}
         </div>

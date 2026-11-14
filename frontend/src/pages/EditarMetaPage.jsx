@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { ArrowLeft, CircleAlert, Info } from 'lucide-react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
 import Encabezado from '../components/Encabezado';
 import BotonOpcion from '../components/BotonOpcion';
 import MensajeError from '../components/MensajeError';
@@ -11,9 +13,9 @@ const FORMULARIO_VACIO = { nombre: '', plazo: '', tipo: '' };
 
 /** Situaciones en las que la meta no se puede editar: se muestra el aviso y se bloquea el formulario. */
 const BLOQUEOS = {
-  noExiste: { tipo: 'error', texto: 'Esta meta ya no existe' },
-  sinPermiso: { tipo: 'error', texto: 'Solo el creador puede editar esta meta' },
-  cumplida: { tipo: 'info', texto: 'Esta meta ya está cumplida y no se puede editar' },
+  noExiste: { tipo: 'error', get texto() { return i18n.t('formMeta.bloqueos.noExiste'); } },
+  sinPermiso: { tipo: 'error', get texto() { return i18n.t('formMeta.bloqueos.sinPermiso'); } },
+  cumplida: { tipo: 'info', get texto() { return i18n.t('formMeta.bloqueos.cumplida'); } },
 };
 
 const desdeMeta = (meta) => ({ nombre: meta.nombre, plazo: meta.plazo, tipo: meta.tipo });
@@ -21,10 +23,10 @@ const desdeMeta = (meta) => ({ nombre: meta.nombre, plazo: meta.plazo, tipo: met
 /** Validación del cliente (la del servidor se mantiene siempre). */
 function validar({ nombre, plazo, tipo }) {
   const errores = {};
-  if (!nombre.trim()) errores.nombre = 'El nombre es obligatorio';
-  else if (nombre.trim().length > NOMBRE_MAX) errores.nombre = `Máximo ${NOMBRE_MAX} caracteres`;
-  if (!plazo) errores.plazo = 'Elige un plazo';
-  if (!tipo) errores.tipo = 'Elige un tipo';
+  if (!nombre.trim()) errores.nombre = i18n.t('formMeta.validacion.nombreObligatorio');
+  else if (nombre.trim().length > NOMBRE_MAX) errores.nombre = i18n.t('formMeta.validacion.nombreMaximo', { max: NOMBRE_MAX });
+  if (!plazo) errores.plazo = i18n.t('formMeta.validacion.plazo');
+  if (!tipo) errores.tipo = i18n.t('formMeta.validacion.tipo');
   return errores;
 }
 
@@ -32,7 +34,7 @@ function validar({ nombre, plazo, tipo }) {
 function bloqueoDesde(error) {
   if (error.estado === 404) return 'noExiste';
   if (error.estado === 403) return 'sinPermiso';
-  if (error.estado === 400 && error.errores?.some((e) => /cumplida/i.test(e))) return 'cumplida';
+  if (error.estado === 400 && error.errores?.some((e) => /cumplida|achieved/i.test(e))) return 'cumplida';
   return null;
 }
 
@@ -55,6 +57,7 @@ function Aviso({ tipo, texto }) {
 }
 
 export default function EditarMetaPage() {
+  const { t } = useTranslation();
   const { codigoMeta: parametro } = useParams();
   const codigoMeta = Number(parametro);
   const codigoValido = Number.isInteger(codigoMeta);
@@ -146,18 +149,18 @@ export default function EditarMetaPage() {
             <button
               type="button"
               onClick={() => navigate('/metas')}
-              aria-label="Volver a mis metas"
+              aria-label={t('formMeta.volverMetas')}
               className="flex size-12 items-center justify-center rounded-xl hover:bg-slate-100"
             >
               <ArrowLeft className="size-6" aria-hidden="true" />
             </button>
-            <h1 className="text-2xl font-bold sm:text-3xl">Editar meta</h1>
+            <h1 className="text-2xl font-bold sm:text-3xl">{t('formMeta.editarTitulo')}</h1>
           </div>
 
           {/* Nombre */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <label htmlFor="nombre" className="text-base font-bold">Nombre de la meta *</label>
+              <label htmlFor="nombre" className="text-base font-bold">{t('formMeta.nombre')}</label>
               <span className="text-xs font-semibold text-gray-500">
                 {formulario.nombre.length}/{NOMBRE_MAX}
               </span>
@@ -169,7 +172,7 @@ export default function EditarMetaPage() {
               value={formulario.nombre}
               disabled={bloqueado}
               onChange={(e) => actualizar('nombre', e.target.value)}
-              placeholder="Ej. Leer 20 libros"
+              placeholder={t('formMeta.nombrePlaceholder')}
               aria-invalid={Boolean(errores.nombre)}
               aria-describedby={errores.nombre ? 'error-nombre' : undefined}
               className={`h-14 w-full rounded-xl border p-4 text-base font-semibold outline-none placeholder:font-normal placeholder:text-gray-500 focus:ring-2 focus:ring-violet-300 disabled:cursor-not-allowed disabled:bg-slate-100 ${
@@ -181,7 +184,7 @@ export default function EditarMetaPage() {
 
           {/* Plazo */}
           <fieldset className="flex flex-col gap-2" disabled={bloqueado}>
-            <legend className="mb-2 text-base font-bold">Plazo *</legend>
+            <legend className="mb-2 text-base font-bold">{t('formMeta.plazo')}</legend>
             <div className="grid grid-cols-3 gap-2">
               {PLAZOS.map(({ valor, etiqueta }) => (
                 <BotonOpcion
@@ -202,7 +205,7 @@ export default function EditarMetaPage() {
 
           {/* Tipo */}
           <fieldset className="flex flex-col gap-2" disabled={bloqueado}>
-            <legend className="mb-2 text-base font-bold">Tipo de meta *</legend>
+            <legend className="mb-2 text-base font-bold">{t('formMeta.tipo')}</legend>
             <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
               {TIPOS.map(({ valor, etiqueta, Icono }) => (
                 <BotonOpcion
@@ -229,14 +232,14 @@ export default function EditarMetaPage() {
               onClick={() => navigate('/metas')}
               className="h-12 rounded-xl px-6 text-base font-bold text-gray-500 hover:bg-slate-100"
             >
-              {bloqueo === 'noExiste' ? 'Volver a mis metas' : 'Cancelar'}
+              {bloqueo === 'noExiste' ? t('formMeta.volverMetas') : t('formMeta.cancelar')}
             </button>
             <button
               type="submit"
               disabled={bloqueado}
               className="h-14 rounded-xl bg-violet-600 px-6 text-base font-bold text-white hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-violet-600 sm:w-52"
             >
-              {enviando ? 'Guardando...' : 'Guardar cambios'}
+              {enviando ? t('formMeta.guardando') : t('formMeta.guardar')}
             </button>
           </div>
         </form>

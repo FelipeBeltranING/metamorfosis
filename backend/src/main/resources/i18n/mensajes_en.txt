@@ -1,0 +1,121 @@
+# Traducción al inglés de los mensajes que la API devuelve al cliente.
+# Formato: mensaje en español => mensaje en inglés
+# {0}, {1}... marcan las partes que cambian (nombres, números, correos) y se copian tal cual.
+# Si un mensaje no está aquí, se devuelve en español.
+
+# Errores generales
+Datos inválidos => Invalid data
+Solicitud mal formada => Malformed request
+Error interno del servidor => Internal server error
+Método no permitido => Method not allowed
+Tipo de contenido no soportado => Unsupported content type
+Recurso no encontrado => Resource not found
+Autenticación requerida => Authentication required
+Falta el token de autorización => The authorization token is missing
+Token inválido o expirado => Invalid or expired token
+No existe el usuario con código {0} => The user with code {0} doesn't exist
+No existe la meta con código {0} => The goal with code {0} doesn't exist
+No se encontró la sub-meta {0} => Sub-goal {0} was not found
+
+# Inicio de sesión y registro (HU8, HU9, HU10)
+Email o contraseña incorrectos => Incorrect email or password
+La sesión ya fue cerrada => The session has already been closed
+Demasiados intentos fallidos. Intenta de nuevo en {0} minuto(s) => Too many failed attempts. Try again in {0} minute(s)
+Faltan los datos del registro => The sign-up details are missing
+El email ya está registrado => The email is already registered
+El email es obligatorio => Email is required
+El formato del email no es válido => The email format isn't valid
+La contraseña es obligatoria => Password is required
+El nombre es obligatorio => Name is required
+El apellido es obligatorio => Last name is required
+La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número => The password must have at least 8 characters, an uppercase letter, a lowercase letter and a number
+Este enlace ya no es válido. Pide uno nuevo para registrarte. => This link is no longer valid. Request a new one to sign up.
+Primero autoriza el registro desde el correo que te enviamos. => First authorize the sign-up from the email we sent you.
+El dueño de este correo rechazó el registro. Intenta de nuevo más tarde. => The owner of this email declined the sign-up. Try again later.
+Ya te enviamos un correo. Espera un minuto para pedir otro. => We already sent you an email. Wait a minute before requesting another one.
+Esta solicitud ya no está activa. => This request is no longer active.
+No pudimos enviar el correo. Intenta de nuevo en unos minutos. => We couldn't send the email. Try again in a few minutes.
+
+# Metas (HU1 a HU6, HU25, HU27)
+Solo el creador puede editar la meta => Only the creator can edit the goal
+Una meta cumplida no se puede editar => An achieved goal can't be edited
+Solo el creador puede eliminar la meta => Only the creator can delete the goal
+Solo el creador puede marcar la meta como cumplida => Only the creator can mark the goal as achieved
+Indica si la meta queda oculta => Indicate whether the goal is hidden
+Solo los participantes de la meta pueden ocultarla => Only the goal's participants can hide it
+El nombre no puede superar {0} caracteres => The name can't exceed {0} characters
+El plazo es obligatorio => The term is required
+El tipo es obligatorio => The type is required
+No participas en esta meta => You're not taking part in this goal
+
+# Sub-metas y registro del día
+La meta ya está cumplida: su camino es solo de lectura => The goal is already achieved: its path is read-only
+Elige si la sub-meta es Sí / No o medible => Choose whether the sub-goal is Yes / No or measurable
+Faltan los datos de la sub-meta => The sub-goal details are missing
+El tipo de una sub-meta no se puede cambiar => A sub-goal's type can't be changed
+Solo el creador de la meta puede cambiar sus sub-metas => Only the goal's creator can change its sub-goals
+El nombre no puede tener más de 100 caracteres => The name can't be longer than 100 characters
+Ya tienes una sub-meta con este nombre en esta meta => You already have a sub-goal with this name in this goal
+La pregunta no puede tener más de 200 caracteres => The question can't be longer than 200 characters
+Las notas no pueden tener más de 500 caracteres => The notes can't be longer than 500 characters
+Escribe en qué lo mides (la unidad) => Enter what you measure it in (the unit)
+La unidad no puede tener más de 30 caracteres => The unit can't be longer than 30 characters
+El objetivo es obligatorio => The target is required
+El objetivo debe ser mayor que 0 => The target must be greater than 0
+El objetivo no puede ser mayor que 1.000.000 => The target can't be greater than 1,000,000
+El objetivo admite máximo 2 decimales => The target allows at most 2 decimal places
+Elige si el objetivo es "al menos" o "como máximo" => Choose whether the target is "at least" or "at most"
+Los días van del 1 (lunes) al 7 (domingo) => Days go from 1 (Monday) to 7 (Sunday)
+La fecha es obligatoria => The date is required
+Solo los participantes de la meta pueden registrar su día => Only the goal's participants can log their day
+No puedes registrar días que aún no llegan => You can't log days that haven't arrived yet
+Ese día la sub-meta todavía no existía => The sub-goal didn't exist yet on that day
+Esta sub-meta no toca ese día => This sub-goal isn't scheduled on that day
+El valor es obligatorio => The value is required
+El valor no puede ser negativo => The value can't be negative
+En una sub-meta Sí / No el valor es 1 (hecho) o 0 (no hecho) => In a Yes / No sub-goal the value is 1 (done) or 0 (not done)
+El valor no puede ser mayor que 1.000.000 => The value can't be greater than 1,000,000
+El valor admite máximo 2 decimales => The value allows at most 2 decimal places
+
+# Metas compartidas, invitaciones y códigos (HU13, HU14)
+Elige a quién quieres invitar => Choose who you want to invite
+Solo el creador puede invitar personas a la meta => Only the creator can invite people to the goal
+Solo se puede invitar a metas activas => You can only invite people to active goals
+No puedes invitarte a ti mismo => You can't invite yourself
+{0} ya participa en esta meta => {0} is already taking part in this goal
+{0} ya tiene una invitación pendiente a esta meta => {0} already has a pending invitation to this goal
+La meta ya tiene el máximo de {0} personas => The goal already has the maximum of {0} people
+Indica si aceptas o rechazas la invitación => Indicate whether you accept or decline the invitation
+Esta invitación es para otra cuenta ({0}). Inicia sesión con esa cuenta para aceptarla. => This invitation is for another account ({0}). Sign in with that account to accept it.
+Esta meta ya se cumplió: ya no se pueden unir más personas => This goal has already been achieved: no more people can join
+No tienes una invitación pendiente a esta meta => You don't have a pending invitation to this goal
+Este enlace ya no sirve: la invitación se respondió, se canceló o venció. Si sigue pendiente, respóndela desde tus invitaciones en Metamorfosis. => This link no longer works: the invitation was answered, cancelled or expired. If it's still pending, answer it from your invitations in Metamorfosis.
+Escribe el código que te compartieron => Enter the code you were given
+Ese código no existe o ya venció. Revisa que esté bien escrito. => That code doesn't exist or has expired. Check that it's spelled correctly.
+Ya participas en esta meta => You're already taking part in this goal
+Solo el creador puede manejar el código de la meta => Only the creator can manage the goal's code
+Demasiados intentos con códigos. Espera unos minutos e inténtalo de nuevo. => Too many code attempts. Wait a few minutes and try again.
+
+# Logros compartidos (HU21)
+Solo se puede compartir una meta cumplida => Only an achieved goal can be shared
+Solo un participante de la meta puede compartir el logro => Only a participant of the goal can share the achievement
+Este logro no existe o el enlace no es válido => This achievement doesn't exist or the link isn't valid
+
+# Cuenta, perfil y privacidad (HU19, HU22 a HU26)
+Elige un modo válido => Choose a valid mode
+Elige un color de acento válido => Choose a valid accent color
+Escribe tu nombre => Enter your first name
+Escribe tu apellido => Enter your last name
+El nombre puede tener máximo {0} caracteres => The first name can have at most {0} characters
+El apellido puede tener máximo {0} caracteres => The last name can have at most {0} characters
+La foto debe ser una imagen JPG, PNG o WebP => The photo must be a JPG, PNG or WebP image
+Elige una foto => Choose a photo
+La foto pesa demasiado; elige una más liviana => The photo is too large; choose a smaller one
+Indica si el perfil queda privado => Indicate whether the profile is private
+Faltan los datos del perfil => The profile details are missing
+La frase puede tener hasta {0} caracteres => The quote can have up to {0} characters
+Elige una insignia que hayas ganado => Choose a badge you've earned
+Puedes destacar hasta {0} metas => You can feature up to {0} goals
+Solo puedes destacar metas tuyas que se vean en tu perfil => You can only feature your own goals that are visible on your profile
+Elige una portada válida => Choose a valid cover
+Escribe al menos 2 letras para buscar => Type at least 2 letters to search

@@ -1,0 +1,38 @@
+{
+  "reporte": {
+    "tipos": {
+      "general": "Overall completion",
+      "por-tipo": "Completion by goal type",
+      "por-plazo": "Goals by term and status",
+      "por-mes": "Goals achieved per month"
+    },
+    "tabla": {
+      "estado": "Status",
+      "metas": "Goals",
+      "cumplidas": "Achieved",
+      "activas": "Active",
+      "total": "Total",
+      "tipo": "Type",
+      "porcentaje": "% achieved",
+      "plazo": "Term",
+      "mes": "Month",
+      "metasCumplidas": "Goals achieved"
+    },
+    "verTabla": "View data as a table",
+    "porTipoDescripcion": "Percentage of goals achieved for each type",
+    "porPlazoDescripcion": "Active and achieved goals for each term",
+    "porMesDescripcion": "Last 6 months, by completion date",
+    "porMesEtiqueta": "Goals achieved per month over the last 6 months",
+    "generalDescripcion": "{{cumplidas}} of {{total}} goals achieved",
+    "generalEtiqueta": "Overall completion: {{porcentaje}} %",
+    "cumplido": "achieved",
+    "cumplidasValor": "Achieved: {{valor}}",
+    "activasValor": "Active: {{valor}}",
+    "titulo": "My report",
+    "subtitulo": "Here's how you're doing with your goals.",
+    "sinDatos": "No data for your report yet",
+    "sinDatosTexto": "Create your first goal and you'll see your progress here.",
+    "crearPrimera": "Create my first goal",
+    "selector": "Report type"
+  }
+}

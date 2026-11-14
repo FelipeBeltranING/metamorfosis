@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 /** Lado del recorte en pantalla y de la imagen que se guarda (px). */
 const VISOR = 240;
@@ -42,6 +43,7 @@ function estiloImagen(imagen, zoom, desplazamiento, lado) {
  * un JPEG cuadrado de 320 px (unos KB) como data URL.
  */
 export default function FotoPerfilModal({ archivo, onUsar, onElegirOtra, onCancelar, onError }) {
+  const { t } = useTranslation();
   const [url, setUrl] = useState(null);
   const [imagen, setImagen] = useState(null);
   const [zoom, setZoom] = useState(1);
@@ -54,14 +56,14 @@ export default function FotoPerfilModal({ archivo, onUsar, onElegirOtra, onCance
   useEffect(() => {
     const lector = new FileReader();
     lector.onload = () => setUrl(lector.result);
-    lector.onerror = () => onError(`${archivo.name} no se pudo abrir como imagen. Usa JPG, PNG o WebP de máximo 2 MB.`);
+    lector.onerror = () => onError(t('fotoModal.noAbre', { archivo: archivo.name }));
     lector.readAsDataURL(archivo);
     return () => {
       lector.onload = null;
       lector.onerror = null;
       lector.abort();
     };
-  }, [archivo, onError]);
+  }, [archivo, onError, t]);
 
   useEffect(() => {
     cerrar.current?.focus();
@@ -132,14 +134,14 @@ export default function FotoPerfilModal({ archivo, onUsar, onElegirOtra, onCance
       >
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 id="titulo-foto" className="text-[22px] font-extrabold text-gray-900">Tu nueva foto</h2>
-            <p id="descripcion-foto" className="mt-1 text-[15px] text-gray-600">Arrástrala para centrarla y usa el control para acercarla.</p>
+            <h2 id="titulo-foto" className="text-[22px] font-extrabold text-gray-900">{t('fotoModal.titulo')}</h2>
+            <p id="descripcion-foto" className="mt-1 text-[15px] text-gray-600">{t('fotoModal.descripcion')}</p>
           </div>
           <button
             ref={cerrar}
             type="button"
             onClick={onCancelar}
-            aria-label="Cerrar ventana"
+            aria-label={t('fotoModal.cerrarVentana')}
             className="rounded-lg p-2 text-gray-500 hover:bg-gray-100"
           >
             <X className="size-5" aria-hidden="true" />
@@ -150,7 +152,7 @@ export default function FotoPerfilModal({ archivo, onUsar, onElegirOtra, onCance
           <div
             tabIndex={0}
             role="img"
-            aria-label="Vista previa de tu foto recortada en círculo. Muévela con las flechas del teclado."
+            aria-label={t('fotoModal.vistaPrevia')}
             onPointerDown={alPresionarEnVisor}
             onPointerMove={alMoverEnVisor}
             onPointerUp={alSoltarEnVisor}
@@ -165,7 +167,7 @@ export default function FotoPerfilModal({ archivo, onUsar, onElegirOtra, onCance
                 alt=""
                 draggable={false}
                 onLoad={(e) => setImagen(e.currentTarget)}
-                onError={() => onError(`${archivo.name} no se pudo abrir como imagen. Usa JPG, PNG o WebP de máximo 2 MB.`)}
+                onError={() => onError(t('fotoModal.noAbre', { archivo: archivo.name }))}
                 style={estiloImagen(imagen, zoom, desplazamiento, VISOR)}
               />
             )}
@@ -173,7 +175,7 @@ export default function FotoPerfilModal({ archivo, onUsar, onElegirOtra, onCance
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="zoom-foto" className="text-sm font-bold text-gray-700">Acercar</label>
+          <label htmlFor="zoom-foto" className="text-sm font-bold text-gray-700">{t('fotoModal.acercar')}</label>
           <input
             id="zoom-foto"
             type="range"
@@ -193,7 +195,7 @@ export default function FotoPerfilModal({ archivo, onUsar, onElegirOtra, onCance
               {url && <img src={url} alt="" style={estiloImagen(imagen, zoom, desplazamiento, lado)} />}
             </span>
           ))}
-          <p className="text-sm text-gray-600">Así se verá en el encabezado y en el menú de tu cuenta.</p>
+          <p className="text-sm text-gray-600">{t('fotoModal.asiSeVera')}</p>
         </div>
 
         <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
@@ -202,7 +204,7 @@ export default function FotoPerfilModal({ archivo, onUsar, onElegirOtra, onCance
             onClick={onElegirOtra}
             className="h-12 rounded-xl border border-zinc-200 bg-white px-5 font-bold text-gray-700 hover:bg-gray-50"
           >
-            Elegir otra
+            {t('fotoModal.elegirOtra')}
           </button>
           <button
             type="button"
@@ -210,7 +212,7 @@ export default function FotoPerfilModal({ archivo, onUsar, onElegirOtra, onCance
             disabled={!imagen}
             className="h-12 rounded-xl bg-violet-600 px-6 font-bold text-white hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Usar esta foto
+            {t('fotoModal.usar')}
           </button>
         </div>
       </section>

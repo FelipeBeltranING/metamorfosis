@@ -1,10 +1,12 @@
 import { Check, Eye, Pin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import CabeceraPerfil from './CabeceraPerfil';
 import IconoInsignia from './IconoInsignia';
 import InsigniaDestacada from './InsigniaDestacada';
 import MetasDestacadas from './MetasDestacadas';
 import MensajeError from './MensajeError';
 import { MAXIMO_FRASE, PORTADAS } from '../constants/portadas';
+import { nombreInsignia } from '../utils/insignias';
 
 /**
  * HU19: lo que los demás ven del perfil, con una vista previa ("Así te ven los demás") que
@@ -13,6 +15,7 @@ import { MAXIMO_FRASE, PORTADAS } from '../constants/portadas';
 export default function SeccionPerfilPublico({
   valor, onCambiar, vistaPrevia, insignias = [], metas = [], errores = {},
 }) {
+  const { t } = useTranslation();
   const MAXIMO = 3;
   const elegidas = valor.metasDestacadas;
   const alternar = (codigo) => cambiar('metasDestacadas')(
@@ -26,13 +29,13 @@ export default function SeccionPerfilPublico({
   return (
     <section aria-labelledby="titulo-perfil-publico" className="flex flex-col gap-5 rounded-2xl border border-zinc-200 bg-white p-5 sm:p-7">
       <div>
-        <h2 id="titulo-perfil-publico" className="text-lg font-extrabold">Tu perfil público</h2>
-        <p className="mt-1 text-sm text-gray-600">Lo que ven las demás personas cuando abren tu perfil. Se guarda con Guardar cambios.</p>
+        <h2 id="titulo-perfil-publico" className="text-lg font-extrabold">{t('perfilPublicoForm.titulo')}</h2>
+        <p className="mt-1 text-sm text-gray-600">{t('perfilPublicoForm.subtitulo')}</p>
       </div>
 
       <div className="flex flex-col gap-2">
         <div className="flex items-baseline justify-between gap-2">
-          <label htmlFor="frase-perfil" className="text-sm font-bold text-gray-700">Frase o lema</label>
+          <label htmlFor="frase-perfil" className="text-sm font-bold text-gray-700">{t('perfilPublicoForm.frase')}</label>
           <span className={`text-xs ${largo > MAXIMO_FRASE ? 'font-bold text-red-600' : 'text-gray-500'}`} aria-live="polite">
             {largo} / {MAXIMO_FRASE}
           </span>
@@ -41,7 +44,7 @@ export default function SeccionPerfilPublico({
           id="frase-perfil"
           value={valor.frase}
           onChange={(e) => cambiar('frase')(e.target.value)}
-          placeholder="Por ejemplo: Un libro a la vez"
+          placeholder={t('perfilPublicoForm.frasePlaceholder')}
           maxLength={MAXIMO_FRASE + 20}
           aria-invalid={Boolean(errores.frase)}
           aria-describedby={errores.frase ? 'error-frase-perfil' : undefined}
@@ -51,7 +54,7 @@ export default function SeccionPerfilPublico({
       </div>
 
       <fieldset className="flex flex-col gap-2.5">
-        <legend className="mb-2.5 text-sm font-bold text-gray-700">Portada</legend>
+        <legend className="mb-2.5 text-sm font-bold text-gray-700">{t('perfilPublicoForm.portada')}</legend>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {PORTADAS.map((p) => {
             const activa = valor.portada === p.valor;
@@ -68,7 +71,7 @@ export default function SeccionPerfilPublico({
                   style={p.estilo ?? undefined}
                   aria-hidden="true"
                 >
-                  {!p.estilo && 'Sin portada'}
+                  {!p.estilo && t('perfilPublicoForm.sinPortada')}
                 </span>
                 <span className="px-3 py-2 text-sm font-bold">{p.nombre}</span>
                 {activa && (
@@ -84,13 +87,13 @@ export default function SeccionPerfilPublico({
       </fieldset>
 
       <fieldset className="flex flex-col gap-2.5">
-        <legend className="mb-1 text-sm font-bold text-gray-700">Insignia destacada</legend>
-        <p className="text-[13px] text-gray-500">Se muestra junto a tu nombre.</p>
+        <legend className="mb-1 text-sm font-bold text-gray-700">{t('perfilPublicoForm.insignia')}</legend>
+        <p className="text-[13px] text-gray-500">{t('perfilPublicoForm.insigniaAyuda')}</p>
         {insignias.length === 0 ? (
-          <p className="rounded-xl bg-slate-50 p-3 text-sm text-gray-600">Cuando ganes tu primera insignia podrás destacarla aquí.</p>
+          <p className="rounded-xl bg-slate-50 p-3 text-sm text-gray-600">{t('perfilPublicoForm.sinInsignias')}</p>
         ) : (
           <div className="flex flex-wrap gap-2">
-            {[{ codigoInsignia: null, nombre: 'Ninguna' }, ...insignias].map((i) => {
+            {[{ codigoInsignia: null, nombre: t('perfilPublicoForm.ninguna') }, ...insignias].map((i) => {
               const activa = valor.codigoInsigniaDestacada === i.codigoInsignia;
               return (
                 <button
@@ -101,7 +104,7 @@ export default function SeccionPerfilPublico({
                   className={`flex h-10 items-center gap-2 rounded-full border-2 px-3.5 text-sm font-bold ${activa ? 'border-violet-600 bg-violet-50 text-violet-800' : 'border-zinc-200 bg-white text-gray-700 hover:border-zinc-300'}`}
                 >
                   {i.codigoInsignia !== null && <IconoInsignia nombre={i.icono} className="size-4 text-violet-600" aria-hidden="true" />}
-                  {i.nombre}
+                  {i.codigoInsignia === null ? i.nombre : nombreInsignia(i)}
                 </button>
               );
             })}
@@ -111,12 +114,12 @@ export default function SeccionPerfilPublico({
       </fieldset>
 
       <fieldset className="flex flex-col gap-2.5">
-        <legend className="mb-1 text-sm font-bold text-gray-700">Metas destacadas</legend>
+        <legend className="mb-1 text-sm font-bold text-gray-700">{t('perfilPublicoForm.metas')}</legend>
         <p className="text-[13px] text-gray-500">
-          Elige hasta {MAXIMO} metas para mostrar primero en tu perfil ({elegidas.length} de {MAXIMO}). Las metas ocultas no aparecen aquí.
+          {t('perfilPublicoForm.metasAyuda', { max: MAXIMO, elegidas: elegidas.length })}
         </p>
         {metas.length === 0 ? (
-          <p className="rounded-xl bg-slate-50 p-3 text-sm text-gray-600">Cuando tengas metas visibles en tu perfil podrás destacarlas.</p>
+          <p className="rounded-xl bg-slate-50 p-3 text-sm text-gray-600">{t('perfilPublicoForm.sinMetas')}</p>
         ) : (
           <ul className="flex max-h-72 flex-col divide-y divide-zinc-100 overflow-y-auto rounded-xl border border-zinc-200">
             {metas.map((m) => {
@@ -134,9 +137,9 @@ export default function SeccionPerfilPublico({
                     />
                     <span className="min-w-0 flex-1 truncate text-[15px] font-semibold text-gray-900">{m.nombre}</span>
                     <span className={`shrink-0 rounded-lg px-2 py-0.5 text-xs font-bold ${m.estado === 'CUMPLIDA' ? 'bg-emerald-50 text-emerald-700' : 'bg-violet-50 text-violet-700'}`}>
-                      {m.estado === 'CUMPLIDA' ? 'Cumplida' : 'Activa'}
+                      {m.estado === 'CUMPLIDA' ? t('perfilPublicoForm.cumplida') : t('perfilPublicoForm.activa')}
                     </span>
-                    {marcada && <Pin className="size-4 shrink-0 text-violet-600" aria-label="Destacada" />}
+                    {marcada && <Pin className="size-4 shrink-0 text-violet-600" aria-label={t('perfilPublicoForm.destacada')} />}
                   </label>
                 </li>
               );
@@ -150,7 +153,7 @@ export default function SeccionPerfilPublico({
       <div className="flex flex-col gap-2.5 rounded-2xl bg-slate-50 p-4">
         <p className="flex items-center gap-2 text-sm font-bold text-gray-700">
           <Eye className="size-4" aria-hidden="true" />
-          Así te ven los demás
+          {t('perfilPublicoForm.asiTeVen')}
         </p>
         <CabeceraPerfil
           compacta

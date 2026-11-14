@@ -1,7 +1,9 @@
 import { CircleAlert } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 /** Error al cargar una pantalla. `titulo` cambia según la pantalla (por defecto, Mis metas). */
-export default function EstadoError({ titulo = 'No pudimos cargar tus metas', mensaje, onReintentar }) {
+export default function EstadoError({ titulo, mensaje, onReintentar }) {
+  const { t } = useTranslation();
   return (
     <div
       role="alert"
@@ -9,15 +11,15 @@ export default function EstadoError({ titulo = 'No pudimos cargar tus metas', me
     >
       <CircleAlert className="size-6 shrink-0" aria-hidden="true" />
       <div className="flex flex-1 flex-col gap-1">
-        <p className="text-base font-bold">{titulo}</p>
-        <p className="text-base">{mensaje || 'Comprueba tu conexión e inténtalo de nuevo.'}</p>
+        <p className="text-base font-bold">{titulo ?? t('errores.cargarMetas')}</p>
+        <p className="text-base">{mensaje || t('errores.revisaConexion')}</p>
       </div>
       <button
         type="button"
         onClick={onReintentar}
         className="h-12 rounded-xl border border-zinc-200 bg-white px-6 text-base font-bold text-violet-600 hover:bg-slate-50 sm:w-32"
       >
-        Reintentar
+        {t('comun.reintentar')}
       </button>
     </div>
   );

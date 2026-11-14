@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowLeft, CircleCheck } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
 import Encabezado from '../components/Encabezado';
 import BotonOpcion from '../components/BotonOpcion';
 import MensajeError from '../components/MensajeError';
@@ -12,14 +14,15 @@ const FORMULARIO_VACIO = { nombre: '', plazo: '', tipo: '' };
 /** Validación del cliente (la del servidor se mantiene siempre). */
 function validar({ nombre, plazo, tipo }) {
   const errores = {};
-  if (!nombre.trim()) errores.nombre = 'El nombre es obligatorio';
-  else if (nombre.trim().length > NOMBRE_MAX) errores.nombre = `Máximo ${NOMBRE_MAX} caracteres`;
-  if (!plazo) errores.plazo = 'Elige un plazo';
-  if (!tipo) errores.tipo = 'Elige un tipo';
+  if (!nombre.trim()) errores.nombre = i18n.t('formMeta.validacion.nombreObligatorio');
+  else if (nombre.trim().length > NOMBRE_MAX) errores.nombre = i18n.t('formMeta.validacion.nombreMaximo', { max: NOMBRE_MAX });
+  if (!plazo) errores.plazo = i18n.t('formMeta.validacion.plazo');
+  if (!tipo) errores.tipo = i18n.t('formMeta.validacion.tipo');
   return errores;
 }
 
 export default function CrearMetaPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [formulario, setFormulario] = useState(FORMULARIO_VACIO);
   const [errores, setErrores] = useState({});
@@ -77,18 +80,18 @@ export default function CrearMetaPage() {
             <button
               type="button"
               onClick={() => window.history.back()}
-              aria-label="Volver"
+              aria-label={t('formMeta.volver')}
               className="flex size-12 items-center justify-center rounded-xl hover:bg-slate-100"
             >
               <ArrowLeft className="size-6" aria-hidden="true" />
             </button>
-            <h1 className="text-2xl font-bold sm:text-3xl">Crear meta</h1>
+            <h1 className="text-2xl font-bold sm:text-3xl">{t('formMeta.crearTitulo')}</h1>
           </div>
 
           {/* Nombre */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <label htmlFor="nombre" className="text-base font-bold">Nombre de la meta *</label>
+              <label htmlFor="nombre" className="text-base font-bold">{t('formMeta.nombre')}</label>
               <span className="text-xs font-semibold text-gray-500">
                 {formulario.nombre.length}/{NOMBRE_MAX}
               </span>
@@ -99,7 +102,7 @@ export default function CrearMetaPage() {
               maxLength={NOMBRE_MAX}
               value={formulario.nombre}
               onChange={(e) => actualizar('nombre', e.target.value)}
-              placeholder="Ej. Leer 20 libros"
+              placeholder={t('formMeta.nombrePlaceholder')}
               aria-invalid={Boolean(errores.nombre)}
               aria-describedby={errores.nombre ? 'error-nombre' : undefined}
               className={`h-14 w-full rounded-xl border bg-white p-4 text-base outline-none placeholder:text-gray-500 focus:ring-2 focus:ring-violet-300 ${
@@ -111,7 +114,7 @@ export default function CrearMetaPage() {
 
           {/* Plazo */}
           <fieldset className="flex flex-col gap-2">
-            <legend className="mb-2 text-base font-bold">Plazo *</legend>
+            <legend className="mb-2 text-base font-bold">{t('formMeta.plazo')}</legend>
             <div className="grid grid-cols-3 gap-2">
               {PLAZOS.map(({ valor, etiqueta }) => (
                 <BotonOpcion
@@ -131,7 +134,7 @@ export default function CrearMetaPage() {
 
           {/* Tipo */}
           <fieldset className="flex flex-col gap-2">
-            <legend className="mb-2 text-base font-bold">Tipo de meta *</legend>
+            <legend className="mb-2 text-base font-bold">{t('formMeta.tipo')}</legend>
             <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
               {TIPOS.map(({ valor, etiqueta, Icono }) => (
                 <BotonOpcion
@@ -161,14 +164,14 @@ export default function CrearMetaPage() {
               onClick={() => navigate('/metas')}
               className="h-12 rounded-xl px-6 text-base font-bold text-gray-500 hover:bg-slate-100"
             >
-              Cancelar
+              {t('formMeta.cancelar')}
             </button>
             <button
               type="submit"
               disabled={enviando}
               className="h-14 rounded-xl bg-violet-600 px-6 text-base font-bold text-white hover:bg-violet-700 disabled:opacity-60"
             >
-              {enviando ? 'Creando...' : 'Crear meta'}
+              {enviando ? t('formMeta.creando') : t('formMeta.crear')}
             </button>
           </div>
         </form>
@@ -180,7 +183,7 @@ export default function CrearMetaPage() {
           className="fixed bottom-6 left-1/2 flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-center gap-3 rounded-xl bg-emerald-400 p-4 text-sm font-semibold text-gray-900 shadow-lg"
         >
           <CircleCheck className="size-6 shrink-0" aria-hidden="true" />
-          ¡Meta creada! Ya aparece en tus metas activas.
+          {t('formMeta.creada')}
         </div>
       )}
     </div>

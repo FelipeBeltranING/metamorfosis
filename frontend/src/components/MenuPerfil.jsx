@@ -3,6 +3,8 @@ import {
   ChevronRight, MailOpen, PencilLine, UserRound,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import SelectorIdioma from './SelectorIdioma';
 import AvatarUsuario from './AvatarUsuario';
 import { obtenerCuenta } from '../services/cuentaService';
 import { listarInvitaciones } from '../services/invitacionService';
@@ -19,6 +21,7 @@ import {
  * Se cierra al tocar fuera o con Esc.
  */
 export default function MenuPerfil() {
+  const { t } = useTranslation();
   const [perfil, setPerfil] = useState(() => datosPerfil(obtenerSesion()));
   const [abierto, setAbierto] = useState(false);
   const [invitaciones, setInvitaciones] = useState(0);
@@ -89,7 +92,7 @@ export default function MenuPerfil() {
         onClick={() => setAbierto((actual) => !actual)}
         aria-haspopup="dialog"
         aria-expanded={abierto}
-        aria-label={`${perfil?.nombre ? `Tu cuenta: ${perfil.nombre}` : 'Tu cuenta'}${invitaciones ? ` (${invitaciones} ${invitaciones === 1 ? 'invitación pendiente' : 'invitaciones pendientes'})` : ''}`}
+        aria-label={`${perfil?.nombre ? t('menuPerfil.tuCuentaDe', { nombre: perfil.nombre }) : t('menuPerfil.tuCuenta')}${invitaciones ? t('menuPerfil.pendientes', { count: invitaciones }) : ''}`}
         className="relative rounded-full transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300 focus-visible:ring-offset-2"
       >
         <AvatarUsuario foto={perfil?.foto} iniciales={perfil?.iniciales} clase="size-10 text-sm sm:size-12 sm:text-base" />
@@ -101,7 +104,7 @@ export default function MenuPerfil() {
       {abierto && perfil && (
         <div
           role="dialog"
-          aria-label="Tu cuenta"
+          aria-label={t('menuPerfil.tuCuenta')}
           className="absolute right-0 top-full z-20 mt-2 w-max min-w-[210px] max-w-[280px] rounded-xl border border-zinc-200 bg-white p-2 shadow-[0_4px_20px_rgba(30,27,46,0.08)]"
         >
           <div className="flex items-center gap-3 px-3 py-2">
@@ -121,7 +124,7 @@ export default function MenuPerfil() {
             className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[15px] font-semibold text-gray-700 hover:bg-violet-50 hover:text-violet-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
           >
             <UserRound className="size-5 text-violet-600" aria-hidden="true" />
-            <span className="flex-1">Ver mi perfil</span>
+            <span className="flex-1">{t('menuPerfil.verPerfil')}</span>
             <ChevronRight className="size-4 text-gray-400" aria-hidden="true" />
           </Link>
           {/* HU-23 */}
@@ -131,7 +134,7 @@ export default function MenuPerfil() {
             className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[15px] font-semibold text-gray-700 hover:bg-violet-50 hover:text-violet-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
           >
             <PencilLine className="size-5 text-violet-600" aria-hidden="true" />
-            <span className="flex-1">Editar perfil</span>
+            <span className="flex-1">{t('menuPerfil.editarPerfil')}</span>
             <ChevronRight className="size-4 text-gray-400" aria-hidden="true" />
           </Link>
           {/* HU14 */}
@@ -141,11 +144,14 @@ export default function MenuPerfil() {
             className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-[15px] font-semibold text-gray-700 hover:bg-violet-50 hover:text-violet-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
           >
             <MailOpen className="size-5 text-violet-600" aria-hidden="true" />
-            <span className="flex-1">Invitaciones</span>
+            <span className="flex-1">{t('menuPerfil.invitaciones')}</span>
             {invitaciones > 0
               ? <span className="rounded-full bg-violet-600 px-2 py-0.5 text-xs font-extrabold text-white">{invitaciones}</span>
               : <ChevronRight className="size-4 text-gray-400" aria-hidden="true" />}
           </Link>
+          {/* Idioma: en pantallas pequeñas el selector del encabezado no cabe. */}
+          <div className="my-1 border-t border-zinc-100 md:hidden" />
+          <SelectorIdioma clase="px-1 py-1 md:hidden" />
         </div>
       )}
     </div>

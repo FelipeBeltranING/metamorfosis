@@ -1,0 +1,99 @@
+{
+  "misMetas": {
+    "titulo": "My goals",
+    "subtitulo": "Tick the circle when you achieve a goal.",
+    "unirme": "Join",
+    "conCodigo": " with a code",
+    "nuevaMeta": "+ New goal",
+    "nuevaMetaEtiqueta": "New goal",
+    "verCumplidas": "See achieved",
+    "yaNoExiste": "This goal no longer exists",
+    "avisos": {
+      "creada": "Goal created! It now appears in your active goals.",
+      "actualizada": "Goal updated!",
+      "eliminada": "Goal deleted.",
+      "sesion": "Signed in!",
+      "cumplida": "Goal achieved! It's now in your achieved goals.",
+      "oculta": "Goal hidden: it will no longer show on your public profile.",
+      "visible": "The goal shows on your public profile again."
+    }
+  },
+  "filtrosMetas": {
+    "etiqueta": "Filter goals",
+    "estado": "Status",
+    "tipo": "Type",
+    "todosTipos": "All types",
+    "plazo": "Term",
+    "todosPlazos": "All terms",
+    "limpiar": "Clear filters",
+    "buscando": "Looking for goals...",
+    "cantidad_one": "{{count}} goal",
+    "cantidad_other": "{{count}} goals"
+  },
+  "tarjeta": {
+    "estaCumplida": "{{nombre}} is achieved",
+    "metaCumplida": "Goal achieved",
+    "marcarNombre": "Mark {{nombre}} as achieved",
+    "marcar": "Mark as achieved",
+    "pendiente": "Pending",
+    "hecho": "Done",
+    "noHecho": "Not done",
+    "noSeMuestra": "Not shown on your public profile",
+    "oculta": "Hidden",
+    "cumplida": "Achieved",
+    "activa": "Active",
+    "compartida": "Shared goal · {{detalle}}",
+    "hoy": "Today · {{hechas}} of {{total}} sub-goals",
+    "hoyNada": "No sub-goals due today",
+    "verCamino": "View my path",
+    "sinCaminoCreador": "This goal doesn't have a path yet. Break it into daily sub-goals so you know what to do each day.",
+    "sinCaminoInvitado": "The goal's creator hasn't laid out the path yet. Once they add sub-goals, you'll check off your days here.",
+    "primeraSubMeta": "+ Add the first sub-goal",
+    "creadaEl": "Created {{fecha}}",
+    "cumplidaEl": "Achieved {{fecha}}",
+    "verRecorrido": "See how you walked the path",
+    "compartirLogro": "Share achievement"
+  },
+  "menuTarjeta": {
+    "opciones": "Options for goal {{nombre}}",
+    "editar": "Edit",
+    "noEditable": "An achieved goal can't be edited.",
+    "invitar": "Invite people",
+    "soloActivas": "You can only invite people to active goals.",
+    "mostrar": "Show on profile",
+    "ocultar": "Hide from profile",
+    "eliminar": "Delete"
+  },
+  "eliminarMeta": {
+    "estaMeta": "this goal",
+    "cerrarVentana": "Close window",
+    "titulo": "Delete this goal?",
+    "seguro": "Are you sure you want to delete <b>{{nombre}}</b>?",
+    "conCamino": " It will be deleted along with its whole path:",
+    "sinDeshacer": " This action can't be undone.",
+    "subMetas_one": " sub-goal",
+    "subMetas_other": " sub-goals",
+    "dias_one": " logged day and its statistics",
+    "dias_other": " logged days and their statistics",
+    "noSeDeshace": "This action can't be undone.",
+    "cancelar": "Cancel",
+    "eliminando": "Deleting...",
+    "eliminar": "Delete goal"
+  },
+  "cumplirMeta": {
+    "cerrarVentana": "Close window",
+    "titulo": "Mark this goal as achieved?",
+    "texto": "<b>{{nombre}}</b> will be marked as achieved with today's date and moved to your achieved goals. You won't be able to edit it or add sub-goals, and its sub-goals will stop being logged; their history and statistics are kept. This action can't be undone.",
+    "cancelar": "Cancel",
+    "marcando": "Marking...",
+    "marcar": "Mark as achieved"
+  },
+  "unirse": {
+    "codigoCorto": "The code has 8 characters, for example ABCD-EFGH.",
+    "cerrarVentana": "Close window",
+    "titulo": "Join with a code",
+    "texto": "Enter the code shared by the person who created the goal.",
+    "codigo": "Code",
+    "boton": "Join the goal"
+  }
+}

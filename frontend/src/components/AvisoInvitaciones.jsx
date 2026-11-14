@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { ArrowRight, MailOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { listarInvitaciones } from '../services/invitacionService';
 
 /** HU14: aviso en Mis metas cuando hay invitaciones pendientes. Si falla la consulta, no muestra nada. */
 export default function AvisoInvitaciones() {
+  const { t } = useTranslation();
   const [cantidad, setCantidad] = useState(0);
 
   useEffect(() => {
@@ -21,9 +23,9 @@ export default function AvisoInvitaciones() {
     >
       <MailOpen className="size-5 shrink-0" aria-hidden="true" />
       <span className="flex-1">
-        {cantidad === 1 ? 'Tienes 1 invitación a una meta compartida' : `Tienes ${cantidad} invitaciones a metas compartidas`}
+        {t('avisoInvitaciones.texto', { count: cantidad })}
       </span>
-      <span className="inline-flex items-center gap-1 font-bold">Ver <ArrowRight className="size-4" aria-hidden="true" /></span>
+      <span className="inline-flex items-center gap-1 font-bold">{t('comun.ver')} <ArrowRight className="size-4" aria-hidden="true" /></span>
     </Link>
   );
 }

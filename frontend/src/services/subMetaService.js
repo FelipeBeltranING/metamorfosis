@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import { cabeceras, errorSesionExpirada } from './metaService';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -16,13 +17,13 @@ async function pedir(ruta, { metodo = 'GET', cuerpo } = {}) {
       body: cuerpo !== undefined ? JSON.stringify(cuerpo) : undefined,
     });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error(t('errores.sinConexion'));
   }
   if (respuesta.status === 401) throw errorSesionExpirada();
   if (respuesta.status === 204) return null;
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.errores?.[0] ?? datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.errores?.[0] ?? datos?.mensaje ?? t('errores.inesperado'));
     error.errores = datos?.errores ?? [];
     error.estado = respuesta.status;
     throw error;

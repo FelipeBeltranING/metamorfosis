@@ -1,7 +1,9 @@
 import { CircleAlert, LoaderCircle, Trash2, X } from 'lucide-react';
+import { Trans, useTranslation } from 'react-i18next';
 
 /** Sub-metas: confirma eliminar una sub-meta (se borran también sus registros). */
 export default function EliminarSubMetaModal({ subMeta, nombreMeta, eliminando, error, onConfirmar, onCancelar }) {
+  const { t } = useTranslation();
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
@@ -24,18 +26,19 @@ export default function EliminarSubMetaModal({ subMeta, nombreMeta, eliminando, 
             type="button"
             onClick={onCancelar}
             disabled={eliminando}
-            aria-label="Cerrar ventana"
+            aria-label={t('eliminarSubMeta.cerrarVentana')}
             className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 disabled:opacity-50"
           >
             <X className="size-5" aria-hidden="true" />
           </button>
         </div>
         <h2 id="titulo-eliminar-submeta" className="text-xl font-bold text-gray-900">
-          ¿Eliminar &quot;{subMeta.nombre}&quot;?
+          {t('eliminarSubMeta.titulo', { nombre: subMeta.nombre })}
         </h2>
         <p id="descripcion-eliminar-submeta" className="mt-3 text-sm leading-6 text-gray-600">
-          Se borrarán la sub-meta y <strong>todos sus días registrados</strong>.
-          {nombreMeta && <> La constancia de &quot;{nombreMeta}&quot; se recalculará sin ella.</>} Esta acción no se puede deshacer.
+          <Trans i18nKey="eliminarSubMeta.texto" components={{ b: <strong /> }} />
+          {nombreMeta && t('eliminarSubMeta.constancia', { meta: nombreMeta })}
+          {t('eliminarSubMeta.sinDeshacer')}
         </p>
         {error && (
           <p role="alert" className="mt-4 flex gap-2 rounded-xl bg-red-50 p-3 text-sm text-red-700">
@@ -50,7 +53,7 @@ export default function EliminarSubMetaModal({ subMeta, nombreMeta, eliminando, 
             disabled={eliminando}
             className="h-11 rounded-xl border border-gray-200 px-5 font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-50"
           >
-            Cancelar
+            {t('eliminarSubMeta.cancelar')}
           </button>
           <button
             type="button"
@@ -59,7 +62,7 @@ export default function EliminarSubMetaModal({ subMeta, nombreMeta, eliminando, 
             className="flex h-11 items-center justify-center gap-2 rounded-xl bg-red-600 px-5 font-semibold text-white hover:bg-red-700 disabled:opacity-60"
           >
             {eliminando && <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />}
-            {eliminando ? 'Eliminando...' : 'Sí, eliminar'}
+            {eliminando ? t('eliminarSubMeta.eliminando') : t('eliminarSubMeta.confirmar')}
           </button>
         </div>
       </section>

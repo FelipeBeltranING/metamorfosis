@@ -1,0 +1,29 @@
+{
+  "formMeta": {
+    "crearTitulo": "Create goal",
+    "editarTitulo": "Edit goal",
+    "volver": "Back",
+    "volverMetas": "Back to my goals",
+    "nombre": "Goal name *",
+    "nombrePlaceholder": "e.g. Read 20 books",
+    "plazo": "Term *",
+    "tipo": "Goal type *",
+    "cancelar": "Cancel",
+    "creando": "Creating...",
+    "crear": "Create goal",
+    "guardando": "Saving...",
+    "guardar": "Save changes",
+    "creada": "Goal created! It now appears in your active goals.",
+    "validacion": {
+      "nombreObligatorio": "Name is required",
+      "nombreMaximo": "Maximum {{max}} characters",
+      "plazo": "Choose a term",
+      "tipo": "Choose a type"
+    },
+    "bloqueos": {
+      "noExiste": "This goal no longer exists",
+      "sinPermiso": "Only the creator can edit this goal",
+      "cumplida": "This goal is already achieved and can't be edited"
+    }
+  }
+}

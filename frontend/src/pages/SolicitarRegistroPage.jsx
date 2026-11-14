@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CircleAlert, LoaderCircle, MailCheck } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Trans, useTranslation } from 'react-i18next';
 import LayoutAuth from '../components/LayoutAuth';
 import CampoTexto from '../components/CampoTexto';
 import AlertaFormulario from '../components/AlertaFormulario';
@@ -11,9 +12,9 @@ import { REGEX_EMAIL, TEXTO_USUARIO_MAX } from '../constants/validaciones';
 const ESPERA_REENVIO = 60; // segundos, igual que el servidor
 
 const MENSAJES_FIN = {
-  RECHAZADA: 'Desde el correo se respondió "No fui yo", así que este registro se anuló.',
-  VENCIDA: 'El enlace venció antes de que lo autorizaras.',
-  INACTIVA: 'Esta solicitud ya no está activa.',
+  RECHAZADA: 'auth.solicitar.finRechazada',
+  VENCIDA: 'auth.solicitar.finVencida',
+  INACTIVA: 'auth.solicitar.finInactiva',
 };
 
 /**
@@ -22,6 +23,7 @@ const MENSAJES_FIN = {
  * pestaña, o en el celular), abre el formulario sola.
  */
 export default function SolicitarRegistroPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
@@ -99,8 +101,8 @@ export default function SolicitarRegistroPage() {
       setEspera(ESPERA_REENVIO);
     } catch (e) {
       if (e.estado === 409) {
-        setError('Este correo ya está registrado');
-        setErrorServidor('Este correo ya tiene una cuenta. Inicia sesión o usa otro correo.');
+        setError(t('auth.solicitar.yaRegistrado'));
+        setErrorServidor(t('auth.solicitar.yaRegistradoDetalle'));
         setEnviadoA('');
         setSesion('');
       } else if (e.estado === 400 && e.errores?.length) {
@@ -117,7 +119,7 @@ export default function SolicitarRegistroPage() {
     evento.preventDefault();
     const correo = email.trim();
     if (!REGEX_EMAIL.test(correo)) {
-      setError('Ingresa un correo válido');
+      setError(t('auth.validacion.emailInvalido'));
       document.getElementById('email')?.focus();
       return;
     }
@@ -126,18 +128,18 @@ export default function SolicitarRegistroPage() {
 
   if (enviadoA && fin) {
     return (
-      <LayoutAuth titulo="Registro anulado" subtitulo="No se creó ninguna cuenta.">
+      <LayoutAuth titulo={t('auth.solicitar.anuladoTitulo')} subtitulo={t('auth.solicitar.anuladoSubtitulo')}>
         <div className="flex flex-col items-center text-center">
           <div className="flex size-16 items-center justify-center rounded-2xl bg-amber-50 text-amber-700">
             <CircleAlert className="size-8" aria-hidden="true" />
           </div>
-          <p className="mt-4 text-[15px] leading-6 text-gray-600">{MENSAJES_FIN[fin]}</p>
+          <p className="mt-4 text-[15px] leading-6 text-gray-600">{t(MENSAJES_FIN[fin])}</p>
           <button
             type="button"
             onClick={empezarDeNuevo}
             className="mt-6 flex h-[46px] w-full items-center justify-center rounded-xl bg-violet-600 font-bold text-white hover:bg-violet-700"
           >
-            Empezar de nuevo
+            {t('auth.solicitar.empezarDeNuevo')}
           </button>
         </div>
       </LayoutAuth>
@@ -146,22 +148,25 @@ export default function SolicitarRegistroPage() {
 
   if (enviadoA) {
     return (
-      <LayoutAuth titulo="Revisa tu correo" subtitulo="Te enviamos un enlace para autorizar tu registro.">
+      <LayoutAuth titulo={t('auth.solicitar.revisaTitulo')} subtitulo={t('auth.solicitar.revisaSubtitulo')}>
         <AlertaFormulario texto={errorServidor} />
         <div className="flex flex-col items-center text-center">
           <div className="flex size-16 items-center justify-center rounded-2xl bg-violet-50 text-violet-600">
             <MailCheck className="size-8" aria-hidden="true" />
           </div>
           <p className="mt-4 text-[15px] leading-6 text-gray-600">
-            Abre el correo que enviamos a <strong className="break-all text-gray-900">{enviadoA}</strong> y
-            toca <strong className="text-gray-900">Autorizar y continuar</strong>. El enlace vence en 30 minutos.
+            <Trans
+              i18nKey="auth.solicitar.revisaTexto"
+              values={{ email: enviadoA }}
+              components={{ b: <strong className="break-all text-gray-900" />, c: <strong className="text-gray-900" /> }}
+            />
           </p>
-          <p className="mt-2 text-sm text-gray-500">Si no lo ves, revisa la carpeta de spam.</p>
+          <p className="mt-2 text-sm text-gray-500">{t('auth.solicitar.spam')}</p>
 
           {sesion && (
             <p role="status" className="mt-5 flex items-center gap-2 rounded-xl bg-violet-50 px-4 py-3 text-sm font-semibold text-violet-700">
               <LoaderCircle className="size-4 shrink-0 animate-spin" aria-hidden="true" />
-              Esperando tu autorización. Esta página avanzará sola.
+              {t('auth.solicitar.esperando')}
             </p>
           )}
 
@@ -172,14 +177,14 @@ export default function SolicitarRegistroPage() {
             className="mt-6 flex h-[46px] w-full items-center justify-center gap-2 rounded-xl border border-zinc-200 font-bold text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:text-gray-400"
           >
             {enviando && <LoaderCircle className="size-[18px] animate-spin" aria-hidden="true" />}
-            {espera > 0 ? `Reenviar en ${espera} s` : 'Reenviar correo'}
+            {espera > 0 ? t('auth.solicitar.reenviarEn', { segundos: espera }) : t('auth.solicitar.reenviar')}
           </button>
           <button
             type="button"
             onClick={empezarDeNuevo}
             className="mt-3 text-sm font-bold text-violet-600 hover:underline"
           >
-            Usar otro correo
+            {t('auth.solicitar.otroCorreo')}
           </button>
         </div>
       </LayoutAuth>
@@ -187,17 +192,17 @@ export default function SolicitarRegistroPage() {
   }
 
   return (
-    <LayoutAuth titulo="Crear cuenta" subtitulo="Primero confirmemos que el correo es tuyo.">
+    <LayoutAuth titulo={t('auth.solicitar.titulo')} subtitulo={t('auth.solicitar.subtitulo')}>
       <AlertaFormulario texto={errorServidor} />
 
       <form onSubmit={enviar} noValidate className="flex flex-col gap-4">
         <CampoTexto
           id="email"
-          etiqueta="Correo electrónico"
+          etiqueta={t('auth.campos.email')}
           tipo="email"
           valor={email}
           onChange={(v) => { setEmail(v); setError(''); setErrorServidor(''); }}
-          placeholder="nombre@correo.com"
+          placeholder={t('auth.campos.emailPlaceholder')}
           error={error}
           deshabilitado={enviando}
           autoComplete="email"
@@ -212,16 +217,16 @@ export default function SolicitarRegistroPage() {
           {enviando ? (
             <>
               <LoaderCircle className="size-[18px] animate-spin" aria-hidden="true" />
-              Enviando...
+              {t('auth.solicitar.enviando')}
             </>
           ) : (
-            'Enviar enlace de autorización'
+            t('auth.solicitar.boton')
           )}
         </button>
 
         <p className="text-center text-sm text-gray-500">
-          ¿Ya tienes una cuenta?{' '}
-          <Link to="/login" className="font-bold text-violet-600 hover:underline">Inicia sesión</Link>
+          {t('auth.solicitar.yaTienesCuenta')}{' '}
+          <Link to="/login" className="font-bold text-violet-600 hover:underline">{t('auth.solicitar.iniciaSesion')}</Link>
         </p>
       </form>
     </LayoutAuth>

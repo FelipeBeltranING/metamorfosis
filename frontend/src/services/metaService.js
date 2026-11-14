@@ -1,13 +1,12 @@
+import { cabeceraIdioma, t } from '../i18n';
 import { cerrarSesion, obtenerSesion } from './sesionService';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const MENSAJE_SESION_EXPIRADA = 'Tu sesión expiró. Inicia sesión de nuevo.';
-
 /** Error 401 de sesión: borra la sesión local para que las rutas protegidas manden al login. */
 export function errorSesionExpirada() {
   cerrarSesion();
-  const error = new Error(MENSAJE_SESION_EXPIRADA);
+  const error = new Error(t('errores.sesionExpirada'));
   error.estado = 401;
   return error;
 }
@@ -16,7 +15,7 @@ export function errorSesionExpirada() {
 export function cabeceras(extra = {}) {
   const sesion = obtenerSesion();
   if (!sesion) throw errorSesionExpirada();
-  return { ...extra, Authorization: `Bearer ${sesion.token}` };
+  return { ...cabeceraIdioma(), ...extra, Authorization: `Bearer ${sesion.token}` };
 }
 
 /** Crea una meta. Lanza Error con `mensaje` y `errores` si el servidor la rechaza. */
@@ -30,13 +29,13 @@ export async function crearMeta(solicitud) {
       body: JSON.stringify(solicitud),
     });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error(t('errores.sinConexion'));
   }
 
   if (respuesta.status === 401) throw errorSesionExpirada();
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.mensaje ?? t('errores.inesperado'));
     error.errores = datos?.errores ?? [];
     throw error;
   }
@@ -56,14 +55,14 @@ export async function listarMetas(filtros = {}) {
   try {
     respuesta = await fetch(`${API_URL}/api/metas${params ? `?${params}` : ''}`, { headers: encabezados });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error(t('errores.sinConexion'));
   }
 
   if (respuesta.status === 401) throw errorSesionExpirada();
   const datos = await respuesta.json().catch(() => null);
-  if (!respuesta.ok) throw new Error(datos?.mensaje ?? 'Error inesperado');
+  if (!respuesta.ok) throw new Error(datos?.mensaje ?? t('errores.inesperado'));
   // Si no llega una lista (p. ej. la petición no llegó a la API), mejor un error que una pantalla rota.
-  if (!Array.isArray(datos)) throw new Error('Respuesta inesperada del servidor');
+  if (!Array.isArray(datos)) throw new Error(t('errores.respuestaInesperada'));
   return datos;
 }
 
@@ -77,13 +76,13 @@ export async function eliminarMeta(codigoMeta) {
       headers: encabezados,
     });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error(t('errores.sinConexion'));
   }
 
   if (respuesta.status === 401) throw errorSesionExpirada();
   if (!respuesta.ok) {
     const datos = await respuesta.json().catch(() => null);
-    throw new Error(datos?.mensaje ?? 'Error inesperado');
+    throw new Error(datos?.mensaje ?? t('errores.inesperado'));
   }
   // 204 No Content: no hay cuerpo que leer.
 }
@@ -102,13 +101,13 @@ export async function editarMeta(codigoMeta, solicitud) {
       body: JSON.stringify(solicitud),
     });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error(t('errores.sinConexion'));
   }
 
   if (respuesta.status === 401) throw errorSesionExpirada();
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.mensaje ?? t('errores.inesperado'));
     error.errores = datos?.errores ?? [];
     error.estado = respuesta.status;
     throw error;
@@ -130,17 +129,17 @@ export async function marcarCumplida(codigoMeta) {
       headers: encabezados,
     });
   } catch {
-    throw new Error('No se pudo marcar la meta. Revisa tu conexión e inténtalo de nuevo');
+    throw new Error(t('errores.marcarMeta'));
   }
 
   if (respuesta.status === 401) throw errorSesionExpirada();
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.mensaje ?? t('errores.inesperado'));
     error.estado = respuesta.status;
     throw error;
   }
-  if (!datos?.meta) throw new Error('Respuesta inesperada del servidor');
+  if (!datos?.meta) throw new Error(t('errores.respuestaInesperada'));
   return { meta: datos.meta, insigniasNuevas: datos.insigniasNuevas ?? [] };
 }
 
@@ -158,17 +157,17 @@ export async function cambiarVisibilidad(codigoMeta, oculta) {
       body: JSON.stringify({ oculta }),
     });
   } catch {
-    throw new Error('No pudimos cambiar la visibilidad de la meta. Inténtalo de nuevo.');
+    throw new Error(t('errores.cambiarVisibilidad'));
   }
 
   if (respuesta.status === 401) throw errorSesionExpirada();
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.errores?.[0] ?? datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.errores?.[0] ?? datos?.mensaje ?? t('errores.inesperado'));
     error.estado = respuesta.status;
     throw error;
   }
-  if (!datos?.codigoMeta) throw new Error('Respuesta inesperada del servidor');
+  if (!datos?.codigoMeta) throw new Error(t('errores.respuestaInesperada'));
   return datos;
 }
 
@@ -187,16 +186,16 @@ export async function invitarAMeta(codigoMeta, codigoUsuario) {
       body: JSON.stringify({ codigoUsuario }),
     });
   } catch {
-    throw new Error('No se pudo enviar la invitación. Revisa tu conexión e inténtalo de nuevo.');
+    throw new Error(t('errores.enviarInvitacion'));
   }
 
   if (respuesta.status === 401) throw errorSesionExpirada();
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.errores?.[0] ?? datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.errores?.[0] ?? datos?.mensaje ?? t('errores.inesperado'));
     error.estado = respuesta.status;
     throw error;
   }
-  if (!datos?.participante?.codigoUsuario) throw new Error('Respuesta inesperada del servidor');
+  if (!datos?.participante?.codigoUsuario) throw new Error(t('errores.respuestaInesperada'));
   return datos;
 }

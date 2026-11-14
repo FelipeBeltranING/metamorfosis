@@ -6,6 +6,7 @@ import {
   LineElement, PointElement, Tooltip,
 } from 'chart.js';
 import { Bar, Doughnut, Line } from 'react-chartjs-2';
+import { useTranslation } from 'react-i18next';
 import Encabezado from '../components/Encabezado';
 import EstadoError from '../components/EstadoError';
 import { obtenerReporte } from '../services/reporteService';
@@ -23,6 +24,7 @@ const ENTEROS = { precision: 0, font: FUENTE };
 function TarjetaGrafica({
   titulo, descripcion, tabla, children,
 }) {
+  const { t } = useTranslation();
   return (
     <section className="flex flex-col gap-4 rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6">
       <div>
@@ -31,7 +33,7 @@ function TarjetaGrafica({
       </div>
       {children}
       <details className="text-sm text-gray-600">
-        <summary className="cursor-pointer font-semibold text-violet-700">Ver datos en tabla</summary>
+        <summary className="cursor-pointer font-semibold text-violet-700">{t('reporte.verTabla')}</summary>
         <table className="mt-2 w-full text-left">
           <caption className="sr-only">{titulo}</caption>
           <thead>
@@ -71,6 +73,7 @@ function Esqueleto() {
  * por defecto, el cumplimiento general. La opción elegida queda en la URL (?reporte=...).
  */
 export default function ReportePage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const idSelector = useId();
   const [parametros, setParametros] = useSearchParams();
@@ -93,13 +96,14 @@ export default function ReportePage() {
   }, [intento, navigate]);
 
   const reporte = estado.fase === 'listo' ? estado.reporte : null;
-  const tablas = useMemo(() => (reporte ? tablasDelReporte(reporte) : null), [reporte]);
+  // Con `t` en las dependencias, las tablas y gráficas se rehacen al cambiar de idioma.
+  const tablas = useMemo(() => (reporte && t ? tablasDelReporte(reporte) : null), [reporte, t]);
 
   const datos = useMemo(() => {
     if (!reporte) return null;
     return {
       general: {
-        labels: ['Cumplidas', 'Activas'],
+        labels: [t('reporte.tabla.cumplidas'), t('reporte.tabla.activas')],
         datasets: [{
           data: [reporte.metasCumplidas, reporte.metasActivas],
           backgroundColor: [COLORES.cumplidas, COLORES.activas],
@@ -107,22 +111,22 @@ export default function ReportePage() {
         }],
       },
       porTipo: {
-        labels: reporte.porTipo.map((t) => etiquetaTipo(t.tipo)),
+        labels: reporte.porTipo.map((x) => etiquetaTipo(x.tipo)),
         datasets: [{
-          label: '% cumplido', data: reporte.porTipo.map((t) => t.porcentaje), backgroundColor: COLORES.cumplidas, borderRadius: 6,
+          label: t('reporte.tabla.porcentaje'), data: reporte.porTipo.map((x) => x.porcentaje), backgroundColor: COLORES.cumplidas, borderRadius: 6,
         }],
       },
       porPlazo: {
         labels: reporte.porPlazo.map((p) => etiquetaPlazo(p.plazo)),
         datasets: [
-          { label: 'Activas', data: reporte.porPlazo.map((p) => p.activas), backgroundColor: COLORES.activas, borderRadius: 4 },
-          { label: 'Cumplidas', data: reporte.porPlazo.map((p) => p.cumplidas), backgroundColor: COLORES.cumplidas, borderRadius: 4 },
+          { label: t('reporte.tabla.activas'), data: reporte.porPlazo.map((p) => p.activas), backgroundColor: COLORES.activas, borderRadius: 4 },
+          { label: t('reporte.tabla.cumplidas'), data: reporte.porPlazo.map((p) => p.cumplidas), backgroundColor: COLORES.cumplidas, borderRadius: 4 },
         ],
       },
       porMes: {
         labels: reporte.cumplidasPorMes.map((m) => etiquetaMes(m.mes)),
         datasets: [{
-          label: 'Metas cumplidas',
+          label: t('reporte.tabla.metasCumplidas'),
           data: reporte.cumplidasPorMes.map((m) => m.cumplidas),
           borderColor: COLORES.linea,
           backgroundColor: COLORES.linea,
@@ -131,7 +135,7 @@ export default function ReportePage() {
         }],
       },
     };
-  }, [reporte]);
+  }, [reporte, t]);
 
   const cambiarTipoReporte = (valor) => {
     const siguientes = new URLSearchParams(parametros);
@@ -145,8 +149,8 @@ export default function ReportePage() {
       case 'por-tipo':
         return (
           <TarjetaGrafica
-            titulo="Cumplimiento por tipo de meta"
-            descripcion="Porcentaje de metas cumplidas de cada tipo"
+            titulo={t('reporte.tipos.por-tipo')}
+            descripcion={t('reporte.porTipoDescripcion')}
             tabla={tablas.porTipo}
           >
             <div className="h-72">
@@ -162,7 +166,7 @@ export default function ReportePage() {
                   },
                 }}
                 role="img"
-                aria-label="Cumplimiento por tipo de meta"
+                aria-label={t('reporte.tipos.por-tipo')}
               />
             </div>
           </TarjetaGrafica>
@@ -170,8 +174,8 @@ export default function ReportePage() {
       case 'por-plazo':
         return (
           <TarjetaGrafica
-            titulo="Metas por plazo y estado"
-            descripcion="Activas y cumplidas en cada plazo"
+            titulo={t('reporte.tipos.por-plazo')}
+            descripcion={t('reporte.porPlazoDescripcion')}
             tabla={tablas.porPlazo}
           >
             <div className="h-72">
@@ -186,7 +190,7 @@ export default function ReportePage() {
                   },
                 }}
                 role="img"
-                aria-label="Metas por plazo y estado"
+                aria-label={t('reporte.tipos.por-plazo')}
               />
             </div>
           </TarjetaGrafica>
@@ -194,8 +198,8 @@ export default function ReportePage() {
       case 'por-mes':
         return (
           <TarjetaGrafica
-            titulo="Metas cumplidas por mes"
-            descripcion="Últimos 6 meses, según la fecha de cumplimiento"
+            titulo={t('reporte.tipos.por-mes')}
+            descripcion={t('reporte.porMesDescripcion')}
             tabla={tablas.porMes}
           >
             <div className="h-72">
@@ -207,7 +211,7 @@ export default function ReportePage() {
                   scales: { y: { beginAtZero: true, ticks: ENTEROS }, x: { ticks: { font: FUENTE } } },
                 }}
                 role="img"
-                aria-label="Metas cumplidas por mes en los últimos 6 meses"
+                aria-label={t('reporte.porMesEtiqueta')}
               />
             </div>
           </TarjetaGrafica>
@@ -215,8 +219,8 @@ export default function ReportePage() {
       default:
         return (
           <TarjetaGrafica
-            titulo="Cumplimiento general"
-            descripcion={`${reporte.metasCumplidas} de ${reporte.totalMetas} metas cumplidas`}
+            titulo={t('reporte.tipos.general')}
+            descripcion={t('reporte.generalDescripcion', { cumplidas: reporte.metasCumplidas, total: reporte.totalMetas })}
             tabla={tablas.general}
           >
             <div className="relative mx-auto h-64 w-64">
@@ -224,21 +228,21 @@ export default function ReportePage() {
                 data={datos.general}
                 options={{ cutout: '72%', maintainAspectRatio: false, plugins: { legend: { display: false } } }}
                 role="img"
-                aria-label={`Cumplimiento general: ${reporte.porcentajeCumplimiento} %`}
+                aria-label={t('reporte.generalEtiqueta', { porcentaje: reporte.porcentajeCumplimiento })}
               />
               <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-4xl font-bold text-violet-700">{reporte.porcentajeCumplimiento} %</span>
-                <span className="text-sm text-gray-500">cumplido</span>
+                <span className="text-sm text-gray-500">{t('reporte.cumplido')}</span>
               </div>
             </div>
             <div className="flex justify-center gap-6 text-sm text-gray-600">
               <span className="flex items-center gap-2">
                 <span className="size-3 rounded-full" style={{ backgroundColor: COLORES.cumplidas }} aria-hidden="true" />
-                {`Cumplidas: ${reporte.metasCumplidas}`}
+                {t('reporte.cumplidasValor', { valor: reporte.metasCumplidas })}
               </span>
               <span className="flex items-center gap-2">
                 <span className="size-3 rounded-full" style={{ backgroundColor: COLORES.activas }} aria-hidden="true" />
-                {`Activas: ${reporte.metasActivas}`}
+                {t('reporte.activasValor', { valor: reporte.metasActivas })}
               </span>
             </div>
           </TarjetaGrafica>
@@ -251,8 +255,8 @@ export default function ReportePage() {
       <Encabezado />
       <main className="mx-auto w-full max-w-[860px] px-4 pb-16 pt-6 sm:pt-12">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold sm:text-3xl">Mi reporte</h1>
-          <p className="mt-1 text-sm text-gray-500 sm:text-base">Así vas con tus metas.</p>
+          <h1 className="text-2xl font-bold sm:text-3xl">{t('reporte.titulo')}</h1>
+          <p className="mt-1 text-sm text-gray-500 sm:text-base">{t('reporte.subtitulo')}</p>
         </div>
 
         {estado.fase === 'cargando' && <Esqueleto />}
@@ -273,11 +277,11 @@ export default function ReportePage() {
               <ChartColumn className="size-10 text-violet-600" aria-hidden="true" />
             </div>
             <div>
-              <h2 className="text-xl font-bold">Aún no hay datos para tu reporte</h2>
-              <p className="mt-2 text-gray-500">Crea tu primera meta y aquí verás cómo avanzas.</p>
+              <h2 className="text-xl font-bold">{t('reporte.sinDatos')}</h2>
+              <p className="mt-2 text-gray-500">{t('reporte.sinDatosTexto')}</p>
             </div>
             <Link to="/metas/nueva" className="flex h-12 items-center rounded-xl bg-violet-600 px-6 font-bold text-white hover:bg-violet-700">
-              Crear mi primera meta
+              {t('reporte.crearPrimera')}
             </Link>
           </div>
         )}
@@ -285,14 +289,14 @@ export default function ReportePage() {
         {reporte && reporte.totalMetas > 0 && (
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <label htmlFor={idSelector} className="text-sm font-bold text-gray-600">Tipo de reporte</label>
+              <label htmlFor={idSelector} className="text-sm font-bold text-gray-600">{t('reporte.selector')}</label>
               <select
                 id={idSelector}
                 value={tipoReporte}
                 onChange={(e) => cambiarTipoReporte(e.target.value)}
                 className="h-11 w-full rounded-xl border border-zinc-200 bg-white px-3 text-[15px] font-semibold text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300 sm:w-80"
               >
-                {TIPOS_REPORTE.map((t) => <option key={t.valor} value={t.valor}>{t.etiqueta}</option>)}
+                {TIPOS_REPORTE.map((x) => <option key={x.valor} value={x.valor}>{x.etiqueta}</option>)}
               </select>
             </div>
             {/*

@@ -2,6 +2,8 @@
 // descargadas): se ven nítidos en cualquier pantalla, pesan poco y son iguales en el tema claro y
 // el oscuro. Las estrellas y figuras salen de un generador con semilla fija, así que cada lienzo
 // se dibuja siempre igual.
+import { t } from '../i18n';
+
 const W = 1200, H = 300;
 
 function rng(semilla) { let s = semilla >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
@@ -142,17 +144,17 @@ const estilo = (valor) => ({ backgroundImage: uri(DIBUJOS[valor]()), backgroundS
 
 // Los valores son los del enum Portada del backend.
 export const PORTADAS = [
-  { valor: 'NINGUNA', nombre: 'Sin portada', estilo: null },
-  { valor: 'ESTRELLADA', nombre: 'Noche estrellada', estilo: estilo('ESTRELLADA') },
-  { valor: 'AURORA', nombre: 'Aurora boreal', estilo: estilo('AURORA') },
-  { valor: 'NEBULOSA', nombre: 'Nebulosa', estilo: estilo('NEBULOSA') },
-  { valor: 'ATARDECER', nombre: 'Atardecer en la montaña', estilo: estilo('ATARDECER') },
-  { valor: 'OCEANO', nombre: 'Océano', estilo: estilo('OCEANO') },
-  { valor: 'BOSQUE', nombre: 'Bosque al amanecer', estilo: estilo('BOSQUE') },
-  { valor: 'METAMORFOSIS', nombre: 'Metamorfosis', estilo: estilo('METAMORFOSIS') },
-  { valor: 'LLUVIA', nombre: 'Lluvia de estrellas', estilo: estilo('LLUVIA') },
-  { valor: 'TOPOGRAFIA', nombre: 'Topografía', estilo: estilo('TOPOGRAFIA') },
-  { valor: 'FIESTA', nombre: 'Fiesta', estilo: estilo('FIESTA') },
+  { valor: 'NINGUNA', get nombre() { return t('portadas.NINGUNA'); }, estilo: null },
+  { valor: 'ESTRELLADA', get nombre() { return t('portadas.ESTRELLADA'); }, estilo: estilo('ESTRELLADA') },
+  { valor: 'AURORA', get nombre() { return t('portadas.AURORA'); }, estilo: estilo('AURORA') },
+  { valor: 'NEBULOSA', get nombre() { return t('portadas.NEBULOSA'); }, estilo: estilo('NEBULOSA') },
+  { valor: 'ATARDECER', get nombre() { return t('portadas.ATARDECER'); }, estilo: estilo('ATARDECER') },
+  { valor: 'OCEANO', get nombre() { return t('portadas.OCEANO'); }, estilo: estilo('OCEANO') },
+  { valor: 'BOSQUE', get nombre() { return t('portadas.BOSQUE'); }, estilo: estilo('BOSQUE') },
+  { valor: 'METAMORFOSIS', get nombre() { return t('portadas.METAMORFOSIS'); }, estilo: estilo('METAMORFOSIS') },
+  { valor: 'LLUVIA', get nombre() { return t('portadas.LLUVIA'); }, estilo: estilo('LLUVIA') },
+  { valor: 'TOPOGRAFIA', get nombre() { return t('portadas.TOPOGRAFIA'); }, estilo: estilo('TOPOGRAFIA') },
+  { valor: 'FIESTA', get nombre() { return t('portadas.FIESTA'); }, estilo: estilo('FIESTA') },
 ];
 
 export const PORTADA_POR_VALOR = Object.fromEntries(PORTADAS.map((p) => [p.valor, p]));

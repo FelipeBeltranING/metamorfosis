@@ -1,0 +1,42 @@
+{
+  "insignias": {
+    "como": {
+      "metas_one": "Achieve your first goal",
+      "metas_other": "Achieve {{count}} goals",
+      "metasPlazo_one": "Achieve one {{plazo}}-term goal",
+      "metasPlazo_other": "Achieve {{count}} {{plazo}}-term goals",
+      "tipos_one": "Achieve goals of {{count}} type",
+      "tipos_other": "Achieve goals of {{count}} different types",
+      "seguir": "Keep achieving goals"
+    },
+    "plazo": {
+      "CORTO": "short",
+      "MEDIANO": "medium",
+      "LARGO": "long"
+    },
+    "catalogo": {
+      "Footprints": { "nombre": "First step", "descripcion": "You achieved your first goal" },
+      "Flame": { "nombre": "On a roll", "descripcion": "You achieved 5 goals" },
+      "Rocket": { "nombre": "Unstoppable", "descripcion": "You achieved 10 goals" },
+      "Zap": { "nombre": "Short-term sprinter", "descripcion": "You achieved 3 short-term goals" },
+      "Mountain": { "nombre": "Long-term vision", "descripcion": "You achieved a long-term goal" },
+      "Compass": { "nombre": "All-rounder", "descripcion": "You achieved goals of 3 different types" }
+    },
+    "avance": "{{valor}} of {{maximo}}",
+    "ganada": "earned",
+    "pendiente": "pending",
+    "estado": "{{nombre}}: {{estado}}",
+    "ganadaEl": "Earned {{fecha}}",
+    "avanceDe": "Progress on {{nombre}}",
+    "miPerfil": "My profile",
+    "titulo": "My badges",
+    "errorCargar": "We couldn't load your badges",
+    "resumen": "Badges summary",
+    "hasGanado": "You've earned {{ganadas}} of {{total}} badges",
+    "ganadas": "Badges earned",
+    "primera": "Achieve your first goal to earn <b>First step</b>.",
+    "galeria": "Badge gallery",
+    "ganaste": "You earned a badge!",
+    "cerrarAviso": "Close the notice for badge {{nombre}}"
+  }
+}

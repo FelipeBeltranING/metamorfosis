@@ -1,0 +1,63 @@
+{
+  "perfil": {
+    "titulo": "My profile",
+    "errorCargar": "We couldn't load your profile",
+    "editarPerfil": "Edit profile",
+    "perfilPrivado": "Private profile",
+    "esPrivado": "This profile is private",
+    "decidioOcultar": "{{nombre}} chose not to show their goals or badges.",
+    "resumen": "Goals summary",
+    "verReporte": "View my report",
+    "metasActivas": "Active goals",
+    "metasCumplidas": "Achieved goals",
+    "cumplimiento": "Completion",
+    "insignias": "Badges",
+    "misInsignias": "My badges",
+    "deInsignias": "{{ganadas}} of {{total}} badges",
+    "verGaleria": "View gallery",
+    "sinInsigniasPublico": "No badges yet.",
+    "sinInsignias": "You don't have any badges yet. Achieve your first goal to earn <b>First step</b>.",
+    "ultimasCumplidas": "Latest achieved goals",
+    "verTodas": "View all",
+    "tipoCumplida": "{{tipo}} · Achieved {{fecha}}",
+    "sinCumplidasPublico": "No achieved goals to show yet.",
+    "sinCumplidas": "You haven't achieved any goals yet. The first one is close!",
+    "sinMetas": "You don't have any goals yet. Create the first one and you'll see your achievements here.",
+    "crearPrimera": "Create my first goal",
+    "datosPersonales": "Personal details",
+    "miembroDesde": "Member since {{fecha}}",
+    "destacadas": "Featured goals",
+    "cumplidaEl": "Achieved {{fecha}}",
+    "enCurso": "In progress · {{tipo}}"
+  },
+  "privacidad": {
+    "privado": "Your profile is now private.",
+    "publico": "Your profile is public again.",
+    "titulo": "Private profile",
+    "ayuda": "If you turn it on, other people will only see your header: photo, name, quote, cover and how long you've been a member."
+  },
+  "perfilPublico": {
+    "buscarPersonas": "Search people",
+    "perfilDe": "{{nombre}}'s profile",
+    "perfil": "Profile",
+    "errorCargar": "We couldn't load the profile",
+    "noExiste": "This person doesn't exist",
+    "noExisteTexto": "The link may be wrong or the account may no longer exist."
+  },
+  "personas": {
+    "titulo": "People",
+    "subtitulo": "Search for other people by first or last name and view their profile.",
+    "etiqueta": "First or last name",
+    "placeholder": "For example, Laura",
+    "corto": "Type at least 2 letters to search",
+    "ayuda": "Capital letters and accents don't matter.",
+    "empezar": "Type a name to get started.",
+    "errorBuscar": "We couldn't search",
+    "cantidad_one": "{{count}} person",
+    "cantidad_other": "{{count}} people",
+    "sinResultados": "We couldn't find anyone matching «{{texto}}»",
+    "sinResultadosAyuda": "Check the spelling or try just the last name.",
+    "privado": "Private profile",
+    "verPerfil": "View profile"
+  }
+}
