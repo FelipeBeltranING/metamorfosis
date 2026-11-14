@@ -1,0 +1,42 @@
+{
+  "insignias": {
+    "como": {
+      "metas_one": "Cumple tu primera meta",
+      "metas_other": "Cumple {{count}} metas",
+      "metasPlazo_one": "Cumple una meta de {{plazo}} plazo",
+      "metasPlazo_other": "Cumple {{count}} metas de {{plazo}} plazo",
+      "tipos_one": "Cumple metas de {{count}} tipo distinto",
+      "tipos_other": "Cumple metas de {{count}} tipos distintos",
+      "seguir": "Sigue cumpliendo metas"
+    },
+    "plazo": {
+      "CORTO": "corto",
+      "MEDIANO": "mediano",
+      "LARGO": "largo"
+    },
+    "catalogo": {
+      "Footprints": { "nombre": "Primer paso", "descripcion": "Cumpliste tu primera meta" },
+      "Flame": { "nombre": "En racha", "descripcion": "Cumpliste 5 metas" },
+      "Rocket": { "nombre": "Imparable", "descripcion": "Cumpliste 10 metas" },
+      "Zap": { "nombre": "Corredor de corto plazo", "descripcion": "Cumpliste 3 metas de corto plazo" },
+      "Mountain": { "nombre": "Visión de largo plazo", "descripcion": "Cumpliste una meta de largo plazo" },
+      "Compass": { "nombre": "Todoterreno", "descripcion": "Cumpliste metas de 3 tipos distintos" }
+    },
+    "avance": "{{valor}} de {{maximo}}",
+    "ganada": "ganada",
+    "pendiente": "pendiente",
+    "estado": "{{nombre}}: {{estado}}",
+    "ganadaEl": "Ganada el {{fecha}}",
+    "avanceDe": "Avance de {{nombre}}",
+    "miPerfil": "Mi perfil",
+    "titulo": "Mis insignias",
+    "errorCargar": "No pudimos cargar tus insignias",
+    "resumen": "Resumen de insignias",
+    "hasGanado": "Has ganado {{ganadas}} de {{total}} insignias",
+    "ganadas": "Insignias ganadas",
+    "primera": "Cumple tu primera meta para ganar <b>Primer paso</b>.",
+    "galeria": "Galería de insignias",
+    "ganaste": "¡Ganaste una insignia!",
+    "cerrarAviso": "Cerrar el aviso de la insignia {{nombre}}"
+  }
+}

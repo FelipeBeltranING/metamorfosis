@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { AvisosInsigniaContexto } from '../hooks/useAvisosInsignia';
 import IconoInsignia from './IconoInsignia';
-import { DURACION_AVISO_INSIGNIA_MS } from '../utils/insignias';
+import { DURACION_AVISO_INSIGNIA_MS, descripcionInsignia, nombreInsignia } from '../utils/insignias';
 
 /** Un aviso "¡Ganaste una insignia!". Se cierra solo a los 6 segundos o con la X. */
 function AvisoInsignia({ id, insignia, onCerrar }) {
+  const { t } = useTranslation();
   useEffect(() => {
     const temporizador = setTimeout(() => onCerrar(id), DURACION_AVISO_INSIGNIA_MS);
     return () => clearTimeout(temporizador);
@@ -17,14 +19,14 @@ function AvisoInsignia({ id, insignia, onCerrar }) {
         <IconoInsignia nombre={insignia.icono} className="size-7 text-white" aria-hidden="true" />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-bold text-violet-700">¡Ganaste una insignia!</p>
-        <p className="text-base font-bold text-gray-900">{insignia.nombre}</p>
-        <p className="text-sm text-gray-600">{insignia.descripcion}</p>
+        <p className="text-sm font-bold text-violet-700">{t('insignias.ganaste')}</p>
+        <p className="text-base font-bold text-gray-900">{nombreInsignia(insignia)}</p>
+        <p className="text-sm text-gray-600">{descripcionInsignia(insignia)}</p>
       </div>
       <button
         type="button"
         onClick={() => onCerrar(id)}
-        aria-label={`Cerrar el aviso de la insignia ${insignia.nombre}`}
+        aria-label={t('insignias.cerrarAviso', { nombre: nombreInsignia(insignia) })}
         className="flex size-8 shrink-0 items-center justify-center rounded-lg text-gray-500 hover:bg-slate-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
       >
         <X className="size-5" aria-hidden="true" />

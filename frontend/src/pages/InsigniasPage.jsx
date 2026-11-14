@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react';
 import { ArrowLeft, CircleCheck, Lock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Trans, useTranslation } from 'react-i18next';
 import Encabezado from '../components/Encabezado';
 import EstadoError from '../components/EstadoError';
 import IconoInsignia from '../components/IconoInsignia';
 import { obtenerGaleria } from '../services/insigniaService';
 import { formatearFecha } from '../utils/fechas';
-import { comoGanarla, porcentajeAvance } from '../utils/insignias';
+import {
+  comoGanarla, descripcionInsignia, nombreInsignia, porcentajeAvance,
+} from '../utils/insignias';
 
 const TARJETA = 'rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6';
 
 /** Barra de avance accesible: el lector de pantalla anuncia "3 de 5". */
 function BarraAvance({ valor, maximo, etiqueta }) {
+  const { t } = useTranslation();
   return (
     <div
       role="progressbar"
@@ -19,7 +23,7 @@ function BarraAvance({ valor, maximo, etiqueta }) {
       aria-valuemin={0}
       aria-valuemax={maximo}
       aria-valuenow={valor}
-      aria-valuetext={`${valor} de ${maximo}`}
+      aria-valuetext={t('insignias.avance', { valor, maximo })}
       className="h-2 w-full overflow-hidden rounded-full bg-slate-200"
     >
       <div className="h-full rounded-full bg-violet-600" style={{ width: `${porcentajeAvance(valor, maximo)}%` }} />
@@ -28,10 +32,12 @@ function BarraAvance({ valor, maximo, etiqueta }) {
 }
 
 function TarjetaInsignia({ insignia }) {
-  const { nombre, obtenida } = insignia;
+  const { t } = useTranslation();
+  const { obtenida } = insignia;
+  const nombre = nombreInsignia(insignia);
   return (
     <li
-      aria-label={`${nombre}: ${obtenida ? 'ganada' : 'pendiente'}`}
+      aria-label={t('insignias.estado', { nombre, estado: obtenida ? t('insignias.ganada') : t('insignias.pendiente') })}
       className={`flex h-full flex-col items-center gap-3 rounded-2xl border p-5 text-center ${
         obtenida ? 'border-violet-200 bg-violet-50/60' : 'border-zinc-200 bg-white'
       }`}
@@ -50,18 +56,18 @@ function TarjetaInsignia({ insignia }) {
 
       {obtenida ? (
         <>
-          <p className="text-sm text-gray-600">{insignia.descripcion}</p>
+          <p className="text-sm text-gray-600">{descripcionInsignia(insignia)}</p>
           <p className="mt-auto flex items-center gap-1.5 text-sm font-semibold text-emerald-700">
             <CircleCheck className="size-4" aria-hidden="true" />
-            {`Ganada el ${formatearFecha(insignia.fechaObtenida)}`}
+            {t('insignias.ganadaEl', { fecha: formatearFecha(insignia.fechaObtenida) })}
           </p>
         </>
       ) : (
         <>
           <p className="text-sm text-gray-500">{comoGanarla(insignia)}</p>
           <div className="mt-auto flex w-full flex-col gap-1.5">
-            <BarraAvance valor={insignia.avance} maximo={insignia.cantidadRequerida} etiqueta={`Avance de ${nombre}`} />
-            <p className="text-xs font-semibold text-gray-500">{`${insignia.avance} de ${insignia.cantidadRequerida}`}</p>
+            <BarraAvance valor={insignia.avance} maximo={insignia.cantidadRequerida} etiqueta={t('insignias.avanceDe', { nombre })} />
+            <p className="text-xs font-semibold text-gray-500">{t('insignias.avance', { valor: insignia.avance, maximo: insignia.cantidadRequerida })}</p>
           </div>
         </>
       )}
@@ -88,6 +94,7 @@ function Esqueleto() {
  * fecha y las pendientes en gris, con candado, cómo ganarlas y el avance. Se abre desde Mi perfil.
  */
 export default function InsigniasPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [estado, setEstado] = useState({ fase: 'cargando' });
   const [intento, setIntento] = useState(0);
@@ -117,15 +124,15 @@ export default function InsigniasPage() {
           className="mb-3 inline-flex items-center gap-1.5 rounded-md text-sm font-semibold text-gray-600 hover:text-violet-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
-          Mi perfil
+          {t('insignias.miPerfil')}
         </Link>
-        <h1 className="mb-6 text-2xl font-bold sm:text-3xl">Mis insignias</h1>
+        <h1 className="mb-6 text-2xl font-bold sm:text-3xl">{t('insignias.titulo')}</h1>
 
         {estado.fase === 'cargando' && <Esqueleto />}
 
         {estado.fase === 'error' && (
           <EstadoError
-            titulo="No pudimos cargar tus insignias"
+            titulo={t('insignias.errorCargar')}
             mensaje={estado.mensaje}
             onReintentar={() => {
               setEstado({ fase: 'cargando' });
@@ -136,22 +143,19 @@ export default function InsigniasPage() {
 
         {galeria && (
           <div className="flex flex-col gap-4">
-            <section aria-label="Resumen de insignias" className={`${TARJETA} flex flex-col gap-3`}>
+            <section aria-label={t('insignias.resumen')} className={`${TARJETA} flex flex-col gap-3`}>
               <p className="text-lg font-bold">
-                {`Has ganado ${galeria.ganadas} de ${galeria.total} insignias`}
+                {t('insignias.hasGanado', { ganadas: galeria.ganadas, total: galeria.total })}
               </p>
-              <BarraAvance valor={galeria.ganadas} maximo={galeria.total} etiqueta="Insignias ganadas" />
+              <BarraAvance valor={galeria.ganadas} maximo={galeria.total} etiqueta={t('insignias.ganadas')} />
               {galeria.ganadas === 0 && (
                 <p className="text-sm text-gray-600">
-                  Cumple tu primera meta para ganar
-                  {' '}
-                  <strong className="font-semibold text-gray-800">Primer paso</strong>
-                  .
+                  <Trans i18nKey="insignias.primera" components={{ b: <strong className="font-semibold text-gray-800" /> }} />
                 </p>
               )}
             </section>
 
-            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-label="Galería de insignias">
+            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-label={t('insignias.galeria')}>
               {galeria.insignias.map((insignia) => (
                 <TarjetaInsignia key={insignia.codigoInsignia} insignia={insignia} />
               ))}

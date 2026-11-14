@@ -6,6 +6,7 @@ import InsigniaDestacada from './InsigniaDestacada';
 import MetasDestacadas from './MetasDestacadas';
 import MensajeError from './MensajeError';
 import { MAXIMO_FRASE, PORTADAS } from '../constants/portadas';
+import { nombreInsignia } from '../utils/insignias';
 
 /**
  * HU19: lo que los demás ven del perfil, con una vista previa ("Así te ven los demás") que
@@ -103,7 +104,7 @@ export default function SeccionPerfilPublico({
                   className={`flex h-10 items-center gap-2 rounded-full border-2 px-3.5 text-sm font-bold ${activa ? 'border-violet-600 bg-violet-50 text-violet-800' : 'border-zinc-200 bg-white text-gray-700 hover:border-zinc-300'}`}
                 >
                   {i.codigoInsignia !== null && <IconoInsignia nombre={i.icono} className="size-4 text-violet-600" aria-hidden="true" />}
-                  {i.nombre}
+                  {i.codigoInsignia === null ? i.nombre : nombreInsignia(i)}
                 </button>
               );
             })}

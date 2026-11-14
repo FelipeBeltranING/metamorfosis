@@ -15,6 +15,7 @@ import TarjetaPrivacidad from '../components/TarjetaPrivacidad';
 import { TIPOS } from '../constants/opcionesMeta';
 import { obtenerPerfil } from '../services/perfilService';
 import { formatearFecha } from '../utils/fechas';
+import { descripcionInsignia, nombreInsignia } from '../utils/insignias';
 import { EVENTO_CUENTA, datosPerfil, obtenerSesion } from '../services/sesionService';
 
 const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((x) => [x.valor, x]));
@@ -222,12 +223,12 @@ export function ContenidoPerfil({ perfil, publico = false }) {
               <li
                 key={insignia.codigoInsignia}
                 className="flex flex-col items-center gap-2 rounded-xl border border-violet-100 bg-violet-50/60 p-4 text-center"
-                title={insignia.descripcion}
+                title={descripcionInsignia(insignia)}
               >
                 <div className="flex size-12 items-center justify-center rounded-full bg-violet-600">
                   <IconoInsignia nombre={insignia.icono} className="size-6 text-white" aria-hidden="true" />
                 </div>
-                <p className="text-sm font-bold leading-tight text-gray-900">{insignia.nombre}</p>
+                <p className="text-sm font-bold leading-tight text-gray-900">{nombreInsignia(insignia)}</p>
                 <p className="text-xs text-gray-500">{formatearFecha(insignia.fechaObtenida)}</p>
               </li>
             ))}

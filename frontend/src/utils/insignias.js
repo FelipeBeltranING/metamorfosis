@@ -22,6 +22,20 @@ export function comoGanarla({ criterio, plazoRequerido, cantidadRequerida: n }) 
   }
 }
 
+/**
+ * Nombre y descripción de una insignia en el idioma activo. El catálogo del servidor está en
+ * español; se traduce por el ícono (único en cada insignia) y, si no hay traducción, se deja el del servidor.
+ */
+export function nombreInsignia(insignia) {
+  if (!insignia) return '';
+  return t(`insignias.catalogo.${insignia.icono}.nombre`, { defaultValue: insignia.nombre });
+}
+
+export function descripcionInsignia(insignia) {
+  if (!insignia) return '';
+  return t(`insignias.catalogo.${insignia.icono}.descripcion`, { defaultValue: insignia.descripcion });
+}
+
 /** HU12: porcentaje entero (0 a 100) para las barras de avance. */
 export function porcentajeAvance(avance, total) {
   if (!total) return 0;
