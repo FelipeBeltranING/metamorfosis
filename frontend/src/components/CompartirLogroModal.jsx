@@ -111,6 +111,7 @@ export default function CompartirLogroModal({ meta, onCerrar }) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center sm:p-4"
+      role="presentation"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onCerrar();
       }}

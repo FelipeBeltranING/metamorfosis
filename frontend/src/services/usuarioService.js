@@ -18,7 +18,7 @@ export async function buscarUsuarios(nombre, { signal } = {}) {
     respuesta = await fetch(`${API_URL}/api/usuarios?${params}`, { headers: encabezados, signal });
   } catch (error) {
     if (error.name === 'AbortError') throw error;
-    throw new Error(t('errores.sinConexion'));
+    throw new Error(t('errores.sinConexion'), { cause: error });
   }
   if (respuesta.status === 401) throw errorSesionExpirada();
   const datos = await respuesta.json().catch(() => null);
