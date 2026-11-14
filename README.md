@@ -82,5 +82,9 @@ El despliegue en Render (backend) y Vercel (frontend) está en [docs/DESPLIEGUE.
 Entrega final (24 de octubre – 18 de noviembre de 2026). El plan de cierre, con lo que falta, está en
 [docs/PLAN_ENTREGA_FINAL.md](docs/PLAN_ENTREGA_FINAL.md).
 
+## Créditos
+Los avatares (HU20) usan las ilustraciones «Big Smile» de Ashley Seo, con licencia
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), a través de [DiceBear](https://www.dicebear.com) (MIT).
+
 ## Licencia
 Este proyecto está bajo la licencia MIT. Ver [LICENSE](LICENSE).

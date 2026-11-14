@@ -1,0 +1,85 @@
+{
+  "avatar": {
+    "titulo": "Your avatar",
+    "texto": "Build a character that looks like you. That way people recognize you without seeing your photo. Everything is free and you can change it whenever you want.",
+    "alt": "{{nombre}}'s avatar",
+    "vistaPrevia": "Preview of your avatar",
+    "sorprendeme": "Surprise me",
+    "categorias": "Avatar parts",
+    "credito": "“Big Smile” illustrations by Ashley Seo (CC BY 4.0), via DiceBear.",
+    "categoria": {
+      "piel": "Skin",
+      "peinado": "Hairstyle",
+      "colorPelo": "Hair color",
+      "ojos": "Eyes",
+      "boca": "Mouth",
+      "accesorio": "Accessory"
+    },
+    "piel": {
+      "ffe4c0": "Very light skin",
+      "f5d7b1": "Light skin",
+      "efcc9f": "Light medium skin",
+      "e2ba87": "Medium skin",
+      "c99c62": "Olive skin",
+      "a47539": "Brown skin",
+      "8c5a2b": "Dark brown skin",
+      "643d19": "Dark skin"
+    },
+    "peinado": {
+      "shortHair": "Short",
+      "curlyShortHair": "Short curly",
+      "bowlCutHair": "Bowl cut",
+      "mohawk": "Mohawk",
+      "halfShavedHead": "Half shaved",
+      "shavedHead": "Shaved",
+      "bangs": "Bangs",
+      "wavyBob": "Wavy bob",
+      "curlyBob": "Curly bob",
+      "straightHair": "Long straight",
+      "braids": "Braids",
+      "bunHair": "Bun",
+      "froBun": "Afro bun"
+    },
+    "colorPelo": {
+      "220f00": "Black hair",
+      "3a1a00": "Dark brown hair",
+      "71472d": "Brown hair",
+      "e2ba87": "Dark blond hair",
+      "e9b729": "Blond hair",
+      "d56c0c": "Copper hair",
+      "605de4": "Purple hair",
+      "238d80": "Teal hair"
+    },
+    "ojos": {
+      "cheery": "Cheerful",
+      "normal": "Calm",
+      "winking": "Wink",
+      "starstruck": "Stars",
+      "sleepy": "Sleepy",
+      "confused": "Confused",
+      "sad": "Sad",
+      "angry": "Angry"
+    },
+    "boca": {
+      "openedSmile": "Open smile",
+      "teethSmile": "Big smile",
+      "gapSmile": "Gap tooth",
+      "awkwardSmile": "Nervous",
+      "kawaii": "Cute",
+      "braces": "Braces",
+      "unimpressed": "Serious",
+      "openSad": "Sad"
+    },
+    "accesorio": {
+      "ninguno": "None",
+      "glasses": "Glasses",
+      "sunglasses": "Sunglasses",
+      "catEars": "Cat ears",
+      "sailormoonCrown": "Crown",
+      "mustache": "Mustache",
+      "clownNose": "Clown nose",
+      "sleepMask": "Eye mask",
+      "faceMask": "Face mask"
+    }
+  }
+}

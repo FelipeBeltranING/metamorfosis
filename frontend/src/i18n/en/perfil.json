@@ -34,7 +34,7 @@
     "privado": "Your profile is now private.",
     "publico": "Your profile is public again.",
     "titulo": "Private profile",
-    "ayuda": "If you turn it on, other people will only see your header: photo, name, quote, cover, pet and how long you've been a member."
+    "ayuda": "If you turn it on, other people will only see your header: photo, name, quote, cover, avatar and how long you've been a member."
   },
   "perfilPublico": {
     "buscarPersonas": "Search people",

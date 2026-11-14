@@ -163,7 +163,7 @@ export default function SeccionPerfilPublico({
           fechaRegistro={vistaPrevia.fechaRegistro}
           frase={valor.frase.trim().replace(/\s+/g, ' ')}
           portada={valor.portada}
-          mascota={vistaPrevia.mascota}
+          avatar={vistaPrevia.avatar}
           extraNombre={<InsigniaDestacada insignia={insigniaElegida} />}
         />
         <MetasDestacadas compacta metas={metasElegidas} />

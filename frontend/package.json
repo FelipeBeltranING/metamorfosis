@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dicebear/big-smile": "9.2.2",
+    "@dicebear/core": "9.2.2",
     "@tailwindcss/vite": "^4.3.3",
     "chart.js": "^4.6.1",
     "i18next": "^25.10.10",

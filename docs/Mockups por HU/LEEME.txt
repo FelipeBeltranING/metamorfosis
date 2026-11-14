@@ -50,8 +50,9 @@ HU29 Avance y constancia   · Mis metas con el avance real, estadísticas del h�
                              celular
 HU15 Logro de meta compartida · hito logrado por el compañero, la meta cumplida en el perfil y en las
                              cumplidas del compañero
-HU20 Elegir mascota        · sección Tu mascota, cambiar de mascota, Mi perfil y perfil de otra persona
-                             con la mascota, celular
+HU20 Personalizar mi avatar · sección Tu avatar (peinados y accesorios), Mi perfil y perfil de otra
+                             persona con el avatar asomado sobre la portada, celular. Reemplaza a las
+                             capturas de la mascota (la HU20 cambió de mascota a avatar).
 
 Historico/Sub-metas (antes del rediseño): las capturas de las sub-metas solo con hábitos y el
 porcentaje de constancia; quedan como referencia del cambio.

@@ -23,7 +23,7 @@ Dos diagramas por historia de usuario, en draw.io (se abren y se editan en [app.
 | HU14 | Responder invitación | [clases](Clases/HU14_clases.drawio) | [secuencia](Secuencia/HU14_secuencia.drawio) |
 | HU15 | Logro de meta compartida | [clases](Clases/HU15_clases.drawio) | [secuencia](Secuencia/HU15_secuencia.drawio) |
 | HU19 | Personalizar mi perfil público | [clases](Clases/HU19_clases.drawio) | [secuencia](Secuencia/HU19_secuencia.drawio) |
-| HU20 | Elegir mi mascota | [clases](Clases/HU20_clases.drawio) | [secuencia](Secuencia/HU20_secuencia.drawio) |
+| HU20 | Personalizar mi avatar | [clases](Clases/HU20_clases.drawio) | [secuencia](Secuencia/HU20_secuencia.drawio) |
 | HU21 | Compartir logro | [clases](Clases/HU21_clases.drawio) | [secuencia](Secuencia/HU21_secuencia.drawio) |
 | HU22 | Ver mi perfil | [clases](Clases/HU22_clases.drawio) | [secuencia](Secuencia/HU22_secuencia.drawio) |
 | HU23 | Editar perfil y foto | [clases](Clases/HU23_clases.drawio) | [secuencia](Secuencia/HU23_secuencia.drawio) |

@@ -224,6 +224,21 @@ Elegir una mascota gratis es **una sola HU**: catálogo fijo, elegir una, guarda
 
 **Recomendación:** hacer la **HU20** sí o sí y la **HU30** solo si queda tiempo después de los requisitos P0.
 
+### 4.2 HU20 rediseñada: avatar en lugar de mascota (14 de noviembre de 2026)
+
+Al ver la mascota en la app, el equipo decidió quitarla: los dibujos no conectaban y no decían nada de la persona. La HU20 pasa a ser **Personalizar mi avatar**: *como usuario quiero armar un avatar que se parezca a mí, para que las demás personas me reconozcan sin ver mi foto.*
+
+| Qué | Cómo |
+|---|---|
+| Estilo | «Big Smile» de DiceBear (ilustraciones de Ashley Seo, CC BY 4.0; código MIT). Se dibuja en el navegador, sin servicios externos. El crédito va en el editor y en el README. |
+| Piezas | 8 tonos de piel, 13 peinados, 8 colores de pelo, 8 ojos, 8 bocas y 8 accesorios opcionales. Todo gratis. |
+| Editor | Sección «Tu avatar» de Editar perfil: vista previa, una pestaña por pieza con la miniatura de cada opción y «Sorpréndeme». Se guarda con el formulario. |
+| Dónde se ve | Asomado detrás del panel de la cabecera, sobre la portada, en Mi perfil, en el perfil de otra persona y en la vista previa; también con el perfil privado (HU26). |
+| Backend | V26 quita `usuario.mascota` y agrega `avatar_*` con restricciones check; `Avatar` (@Embeddable), `CatalogoAvatar`, `AvatarPerfil`; `PUT /api/usuarios/me/avatar`; auditoría `CAMBIAR_AVATAR` (los registros viejos con `CAMBIAR_MASCOTA` se conservan: la bitácora es de solo escritura). |
+| Pruebas | `CuentaServiceAvatarTest` (6 casos de caja blanca). |
+
+La **HU30 opcional** (la mascota que se transforma) se retira con la mascota.
+
 **Efecto en el backlog:** salen 8 puntos (HU17 3 + HU18 5); la HU20 baja de 13 a 5; entran 13 (HU28 5 + HU29 3 + HU20 5) y 3 opcionales (HU30). Se documenta en §2.1 y en los riesgos (EF-01 se materializó y se mitigó respetando el orden MoSCoW). RF4.2 (puntos) queda **no implementado**; RF4.3 se cumple con la personalización gratuita.
 
 ---
@@ -359,3 +374,4 @@ Exportar el reporte a PDF/CSV · PWA · Swagger · Internacionalización es/en.
 | 5 | Complemento de accesibilidad | ✅ Opción C (librería open source con npm). |
 | 6 | Equipo | ✅ Cristian sale del proyecto; se gestiona en el README, la Entrega final y la RACI. |
 | 7 | Secuencias | ❓ ¿Solo el caso positivo (como dice `docs/LEEME.txt`) o con `alt` para los errores principales? Recomendado: caso positivo + un `alt` con el error más importante de cada HU. |
+| 8 | HU20 | ✅ La mascota se quita: la HU20 es **Personalizar mi avatar** con el estilo Big Smile (sección 4.2). La HU30 opcional se retira. |
