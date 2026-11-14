@@ -124,7 +124,7 @@ public class PerfilService {
             return new PerfilPublicoResponse(dueno.getCodigoUsuario(), dueno.getNombre(), dueno.getApellido(),
                     dueno.getFotoPerfil(), dueno.getFechaRegistro(), null, List.of(),
                     insigniaRepository.count(), List.of(), true,
-                    PersonalizacionPerfil.soloCabecera(dueno.getFrase(), dueno.getPortada()));
+                    PersonalizacionPerfil.soloCabecera(dueno.getFrase(), dueno.getPortada(), dueno.getMascota()));
         }
 
         List<Meta> visibles = metaRepository.findByParticipante(codigoPerfil).stream()
@@ -245,7 +245,8 @@ public class PerfilService {
                         .thenComparing(MetaResponse::codigoMeta, Comparator.reverseOrder()))
                 .limit(MAXIMO_DESTACADAS)
                 .toList();
-        return new PersonalizacionPerfil(usuario.getFrase(), usuario.getPortada(), destacada, metasDestacadas);
+        return new PersonalizacionPerfil(usuario.getFrase(), usuario.getPortada(), destacada, metasDestacadas,
+                usuario.getMascota());
     }
 
     /**

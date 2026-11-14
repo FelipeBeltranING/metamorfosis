@@ -1,0 +1,15 @@
+{
+  "mascota": {
+    "titulo": "Tu mascota",
+    "texto": "Elige quién te acompaña en tu camino. Todas son gratis y puedes cambiarla cuando quieras.",
+    "acompana": "Te acompaña {{nombre}}",
+    "nombres": {
+      "MARIPOSA": "Mariposa",
+      "MARIQUITA": "Mariquita",
+      "ABEJA": "Abeja",
+      "LUCIERNAGA": "Luciérnaga",
+      "LIBELULA": "Libélula",
+      "CARACOL": "Caracol"
+    }
+  }
+}
