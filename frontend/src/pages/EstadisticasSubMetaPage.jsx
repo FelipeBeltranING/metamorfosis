@@ -5,7 +5,7 @@ import Encabezado from '../components/Encabezado';
 import EstadoError from '../components/EstadoError';
 import { obtenerEstadisticas } from '../services/subMetaService';
 import {
-  aFecha, aIso, diaYMes, NOMBRES_DIAS, NOMBRES_MESES,
+  aFecha, aIso, diaYMes, nombresDias, nombresMeses,
 } from '../utils/fechas';
 import { detalleSubMeta, formatearNumero } from '../utils/subMetas';
 
@@ -133,7 +133,7 @@ export default function EstadisticasSubMetaPage() {
     }));
   } else {
     const grupos = vistaActual === 'semana' ? semanas : meses;
-    const rotulo = (g) => (vistaActual === 'semana' ? diaYMes(g.clave) : NOMBRES_MESES[Number(g.clave.slice(5)) - 1]);
+    const rotulo = (g) => (vistaActual === 'semana' ? diaYMes(g.clave) : nombresMeses()[Number(g.clave.slice(5)) - 1]);
     if (medible) {
       const metaDe = (g) => objetivo * g.tocan;
       const max = Math.max(1, ...grupos.map((g) => Math.max(g.suma, metaDe(g))));
@@ -164,7 +164,7 @@ export default function EstadisticasSubMetaPage() {
       return { iso, dia: porFecha[iso] };
     });
     const conMes = celdas.find((c) => c.iso.slice(8) === '01');
-    return { clave: celdas[0].iso, celdas, mes: w === 0 || conMes ? NOMBRES_MESES[aFecha((conMes ?? celdas[0]).iso).getMonth()] : '' };
+    return { clave: celdas[0].iso, celdas, mes: w === 0 || conMes ? nombresMeses()[aFecha((conMes ?? celdas[0]).iso).getMonth()] : '' };
   });
   const colorCelda = (c) => {
     if (!c.dia) return 'bg-white text-transparent';
@@ -243,7 +243,7 @@ export default function EstadisticasSubMetaPage() {
                   {[
                     ['Hoy', hoyDia?.valor !== null && hoyDia?.valor !== undefined ? Number(hoyDia.valor) : 0, hoyDia?.toca ? objetivo : 0],
                     ['Últimos 7 días', suma7, objetivo * tocan7],
-                    [NOMBRES_MESES[aFecha(hoy).getMonth()].replace(/^./, (l) => l.toUpperCase()), sumaMes, objetivo * tocanMes],
+                    [nombresMeses()[aFecha(hoy).getMonth()].replace(/^./, (l) => l.toUpperCase()), sumaMes, objetivo * tocanMes],
                   ].map(([nombre, valor, meta]) => {
                     const cumple = meta > 0 && (subMeta.tipoObjetivo === 'COMO_MAXIMO' ? valor <= meta : valor >= meta);
                     const ancho = meta > 0 ? Math.min(100, Math.round((100 * valor) / meta)) : 0;
@@ -303,7 +303,7 @@ export default function EstadisticasSubMetaPage() {
                 <h2 id="t-calendario" className="mb-3.5 text-lg font-extrabold">Calendario</h2>
                 <div className="flex gap-1.5 overflow-x-auto">
                   <div className="flex flex-col gap-1 pt-5">
-                    {NOMBRES_DIAS.map((n) => <span key={n} className="flex h-7 items-center text-[11px] font-bold text-gray-600">{n.slice(0, 1)}</span>)}
+                    {nombresDias().map((n) => <span key={n} className="flex h-7 items-center text-[11px] font-bold text-gray-600">{n.slice(0, 1)}</span>)}
                   </div>
                   {columnas.map((col) => (
                     <div key={col.clave} className="flex flex-col gap-1">
@@ -349,10 +349,10 @@ export default function EstadisticasSubMetaPage() {
                 <h3 className="mb-2.5 mt-6 text-base font-extrabold">Qué días cumples más</h3>
                 <div className="flex h-28 items-end gap-2">
                   {datos.porDiaSemana.map((p, i) => (p === null ? null : (
-                    <div key={NOMBRES_DIAS[i]} className="flex h-full flex-1 flex-col items-center justify-end gap-1">
+                    <div key={nombresDias()[i]} className="flex h-full flex-1 flex-col items-center justify-end gap-1">
                       <span className="text-xs font-extrabold text-gray-700">{p}%</span>
-                      <div role="img" aria-label={`${NOMBRES_DIAS[i]}: ${p}%`} className="w-full max-w-8 rounded-t-md bg-violet-400" style={{ height: Math.max(2, p * 0.7) }} />
-                      <span className="text-xs font-bold text-gray-600">{NOMBRES_DIAS[i]}</span>
+                      <div role="img" aria-label={`${nombresDias()[i]}: ${p}%`} className="w-full max-w-8 rounded-t-md bg-violet-400" style={{ height: Math.max(2, p * 0.7) }} />
+                      <span className="text-xs font-bold text-gray-600">{nombresDias()[i]}</span>
                     </div>
                   )))}
                 </div>

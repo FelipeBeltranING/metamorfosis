@@ -1,18 +1,20 @@
 // HU19 (prototipo): apariencia de la app. Un tema es una combinación de modo y color de acento.
+import { t } from '../i18n';
+
 const CLAVE = 'metamorfosis.apariencia';
 
 export const ACENTOS = [
-  { valor: 'violeta', nombre: 'Violeta', color: '#7f22fe' },
-  { valor: 'azul', nombre: 'Azul', color: '#2f6bff' },
-  { valor: 'esmeralda', nombre: 'Esmeralda', color: '#10b981' },
-  { valor: 'coral', nombre: 'Coral', color: '#f0603c' },
+  { valor: 'violeta', get nombre() { return t('apariencia.acentos.violeta'); }, color: '#7f22fe' },
+  { valor: 'azul', get nombre() { return t('apariencia.acentos.azul'); }, color: '#2f6bff' },
+  { valor: 'esmeralda', get nombre() { return t('apariencia.acentos.esmeralda'); }, color: '#10b981' },
+  { valor: 'coral', get nombre() { return t('apariencia.acentos.coral'); }, color: '#f0603c' },
 ];
 
 export const TEMAS = [
-  { valor: 'crisalida', nombre: 'Crisálida', descripcion: 'Claro y violeta, el de siempre', modo: 'claro', acento: 'violeta', fondo: '#f8fafc', tarjeta: '#ffffff', texto: '#111827' },
-  { valor: 'noche', nombre: 'Noche', descripcion: 'Negro y azul, descansa la vista', modo: 'oscuro', acento: 'azul', fondo: '#070b14', tarjeta: '#0e1524', texto: '#eef2f7' },
-  { valor: 'bosque', nombre: 'Bosque', descripcion: 'Oscuro con verde esmeralda', modo: 'oscuro', acento: 'esmeralda', fondo: '#070b14', tarjeta: '#0e1524', texto: '#eef2f7' },
-  { valor: 'amanecer', nombre: 'Amanecer', descripcion: 'Claro y cálido, en coral', modo: 'claro', acento: 'coral', fondo: '#fffaf7', tarjeta: '#ffffff', texto: '#111827' },
+  { valor: 'crisalida', get nombre() { return t('apariencia.temas.crisalida.nombre'); }, get descripcion() { return t('apariencia.temas.crisalida.descripcion'); }, modo: 'claro', acento: 'violeta', fondo: '#f8fafc', tarjeta: '#ffffff', texto: '#111827' },
+  { valor: 'noche', get nombre() { return t('apariencia.temas.noche.nombre'); }, get descripcion() { return t('apariencia.temas.noche.descripcion'); }, modo: 'oscuro', acento: 'azul', fondo: '#070b14', tarjeta: '#0e1524', texto: '#eef2f7' },
+  { valor: 'bosque', get nombre() { return t('apariencia.temas.bosque.nombre'); }, get descripcion() { return t('apariencia.temas.bosque.descripcion'); }, modo: 'oscuro', acento: 'esmeralda', fondo: '#070b14', tarjeta: '#0e1524', texto: '#eef2f7' },
+  { valor: 'amanecer', get nombre() { return t('apariencia.temas.amanecer.nombre'); }, get descripcion() { return t('apariencia.temas.amanecer.descripcion'); }, modo: 'claro', acento: 'coral', fondo: '#fffaf7', tarjeta: '#ffffff', texto: '#111827' },
 ];
 
 export const POR_DEFECTO = { modo: 'claro', acento: 'violeta' };

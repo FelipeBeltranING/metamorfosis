@@ -7,7 +7,7 @@ import EliminarSubMetaModal from '../components/EliminarSubMetaModal';
 import {
   crearSubMeta, editarSubMeta, eliminarSubMeta, obtenerCamino, obtenerEstadisticas,
 } from '../services/subMetaService';
-import { DIAS_LARGOS, formatearNumero, textoDias } from '../utils/subMetas';
+import { diasLargos, formatearNumero, textoDias } from '../utils/subMetas';
 
 const LETRAS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
 const VACIO = {
@@ -253,7 +253,7 @@ export default function SubMetaFormPage() {
                       key={l}
                       type="button"
                       aria-pressed={activo}
-                      aria-label={DIAS_LARGOS[i]}
+                      aria-label={diasLargos()[i]}
                       onClick={() => alternarDia(i + 1)}
                       className={`h-11 w-12 rounded-xl border text-sm font-extrabold ${activo ? 'border-violet-600 bg-violet-600 text-white' : errores.dias ? 'border-red-400 bg-white text-gray-700' : 'border-zinc-200 bg-white text-gray-700'}`}
                     >

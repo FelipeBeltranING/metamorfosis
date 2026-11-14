@@ -1,7 +1,7 @@
+import { t } from '../i18n';
+
 /** HU11: tiempo que el aviso de una insignia queda visible antes de cerrarse solo. */
 export const DURACION_AVISO_INSIGNIA_MS = 6000;
-
-const PLAZO_EN_TEXTO = { CORTO: 'corto', MEDIANO: 'mediano', LARGO: 'largo' };
 
 /**
  * HU12: cómo se gana una insignia pendiente, según su criterio.
@@ -10,15 +10,15 @@ const PLAZO_EN_TEXTO = { CORTO: 'corto', MEDIANO: 'mediano', LARGO: 'largo' };
 export function comoGanarla({ criterio, plazoRequerido, cantidadRequerida: n }) {
   switch (criterio) {
     case 'METAS_CUMPLIDAS':
-      return n === 1 ? 'Cumple tu primera meta' : `Cumple ${n} metas`;
+      return t('insignias.como.metas', { count: n });
     case 'METAS_CUMPLIDAS_PLAZO': {
-      const plazo = PLAZO_EN_TEXTO[plazoRequerido] ?? '';
-      return n === 1 ? `Cumple una meta de ${plazo} plazo` : `Cumple ${n} metas de ${plazo} plazo`;
+      const plazo = plazoRequerido ? t(`insignias.plazo.${plazoRequerido}`, { defaultValue: '' }) : '';
+      return t('insignias.como.metasPlazo', { count: n, plazo });
     }
     case 'TIPOS_DISTINTOS':
-      return `Cumple metas de ${n} tipos distintos`;
+      return t('insignias.como.tipos', { count: n });
     default:
-      return 'Sigue cumpliendo metas';
+      return t('insignias.como.seguir');
   }
 }
 

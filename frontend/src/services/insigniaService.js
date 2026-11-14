@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import { cabeceras, errorSesionExpirada } from './metaService';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -12,17 +13,17 @@ export async function obtenerGaleria() {
   try {
     respuesta = await fetch(`${API_URL}/api/usuarios/me/insignias`, { headers: encabezados });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error(t('errores.sinConexion'));
   }
   if (respuesta.status === 401) throw errorSesionExpirada();
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.mensaje ?? t('errores.inesperado'));
     error.estado = respuesta.status;
     throw error;
   }
   if (!datos || !Array.isArray(datos.insignias)) {
-    throw new Error('Respuesta inesperada del servidor');
+    throw new Error(t('errores.respuestaInesperada'));
   }
   return datos;
 }

@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import { cabeceras, errorSesionExpirada } from './metaService';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -12,17 +13,17 @@ export async function obtenerPerfil() {
   try {
     respuesta = await fetch(`${API_URL}/api/usuarios/me/perfil`, { headers: encabezados });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error(t('errores.sinConexion'));
   }
   if (respuesta.status === 401) throw errorSesionExpirada();
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.mensaje ?? t('errores.inesperado'));
     error.estado = respuesta.status;
     throw error;
   }
   if (!datos || !datos.resumen || !Array.isArray(datos.insignias)) {
-    throw new Error('Respuesta inesperada del servidor');
+    throw new Error(t('errores.respuestaInesperada'));
   }
   return datos;
 }
@@ -37,18 +38,18 @@ export async function obtenerPerfilPublico(codigoUsuario) {
   try {
     respuesta = await fetch(`${API_URL}/api/usuarios/${codigoUsuario}/perfil`, { headers: encabezados });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error(t('errores.sinConexion'));
   }
   if (respuesta.status === 401) throw errorSesionExpirada();
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.mensaje ?? t('errores.inesperado'));
     error.estado = respuesta.status;
     throw error;
   }
   // HU26: de un perfil privado el resumen llega en null (solo viene la cabecera).
   if (!datos || (!datos.resumen && !datos.privado) || !Array.isArray(datos.insignias)) {
-    throw new Error('Respuesta inesperada del servidor');
+    throw new Error(t('errores.respuestaInesperada'));
   }
   return datos;
 }
@@ -67,16 +68,16 @@ export async function cambiarPrivacidad(privado) {
       body: JSON.stringify({ privado }),
     });
   } catch {
-    throw new Error('No pudimos cambiar la privacidad. Inténtalo de nuevo.');
+    throw new Error(t('errores.cambiarPrivacidad'));
   }
   if (respuesta.status === 401) throw errorSesionExpirada();
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.errores?.[0] ?? datos?.mensaje ?? 'No pudimos cambiar la privacidad. Inténtalo de nuevo.');
+    const error = new Error(datos?.errores?.[0] ?? datos?.mensaje ?? t('errores.cambiarPrivacidad'));
     error.estado = respuesta.status;
     throw error;
   }
-  if (typeof datos?.privado !== 'boolean') throw new Error('Respuesta inesperada del servidor');
+  if (typeof datos?.privado !== 'boolean') throw new Error(t('errores.respuestaInesperada'));
   return datos;
 }
 
@@ -94,16 +95,16 @@ export async function editarPerfilPublico(datosPerfil) {
       body: JSON.stringify(datosPerfil),
     });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error(t('errores.sinConexion'));
   }
   if (respuesta.status === 401) throw errorSesionExpirada();
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.errores?.[0] ?? datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.errores?.[0] ?? datos?.mensaje ?? t('errores.inesperado'));
     error.estado = respuesta.status;
     error.errores = datos?.errores ?? [];
     throw error;
   }
-  if (!datos?.personalizacion) throw new Error('Respuesta inesperada del servidor');
+  if (!datos?.personalizacion) throw new Error(t('errores.respuestaInesperada'));
   return datos;
 }

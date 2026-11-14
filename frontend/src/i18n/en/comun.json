@@ -1,0 +1,154 @@
+{
+  "comun": {
+    "app": "Metamorfosis",
+    "reintentar": "Try again",
+    "cancelar": "Cancel",
+    "cerrar": "Close",
+    "guardar": "Save",
+    "guardando": "Saving…",
+    "volver": "Back",
+    "ver": "View",
+    "cargando": "Loading…",
+    "eliminar": "Delete",
+    "editar": "Edit",
+    "copiar": "Copy",
+    "copiado": "Copied",
+    "secciones": "Sections"
+  },
+  "idioma": {
+    "etiqueta": "Language"
+  },
+  "errores": {
+    "sinConexion": "Could not connect to the server",
+    "sinConexionReintentar": "Could not connect to the server. Check your connection and try again.",
+    "respuestaInesperada": "Unexpected response from the server",
+    "inesperado": "Unexpected error",
+    "sesionExpirada": "Your session has expired. Please sign in again.",
+    "marcarMeta": "Could not mark the goal. Check your connection and try again",
+    "enviarInvitacion": "Could not send the invitation. Check your connection and try again.",
+    "cambiarVisibilidad": "We couldn't change the goal's visibility. Please try again.",
+    "cambiarPrivacidad": "We couldn't change your privacy. Please try again.",
+    "cargarMetas": "We couldn't load your goals",
+    "revisaConexion": "Check your connection and try again."
+  },
+  "encabezado": {
+    "misMetas": "My goals",
+    "reporte": "Report",
+    "personas": "People"
+  },
+  "menuPerfil": {
+    "tuCuenta": "Your account",
+    "tuCuentaDe": "Your account: {{nombre}}",
+    "pendientes_one": " ({{count}} pending invitation)",
+    "pendientes_other": " ({{count}} pending invitations)",
+    "verPerfil": "View my profile",
+    "editarPerfil": "Edit profile",
+    "invitaciones": "Invitations"
+  },
+  "estadoVacio": {
+    "titulo": "You don't have any active goals yet",
+    "texto": "Every big change starts with a first step. Create your first goal and start today.",
+    "boton": "Create my first goal"
+  },
+  "sinResultados": {
+    "titulo": "No goals match the filters",
+    "texto": "Try a different status, type or term.",
+    "limpiar": "Clear filters"
+  },
+  "enlaceNoValido": {
+    "texto": "This link is no longer valid. It may have expired or already been used.",
+    "boton": "Request a new link"
+  },
+  "avisoInvitaciones": {
+    "texto_one": "You have {{count}} invitation to a shared goal",
+    "texto_other": "You have {{count}} invitations to shared goals"
+  },
+  "fechas": {
+    "diasCortos": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "diasLargos": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    "mesesCortos": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    "mesesLargos": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    "diaYMes": "{{mes}} {{dia}}",
+    "mesYAnio": "{{mes}} {{anio}}"
+  },
+  "opciones": {
+    "plazo": {
+      "CORTO": "Short term",
+      "MEDIANO": "Medium term",
+      "LARGO": "Long term"
+    },
+    "tipo": {
+      "PERSONAL": "Personal",
+      "PROFESIONAL": "Professional",
+      "FINANCIERA": "Financial",
+      "SOCIAL_FAMILIAR": "Social / Family",
+      "SALUD_BIENESTAR": "Health and wellness",
+      "ACADEMICA": "Academic",
+      "RECREATIVA_OCIO": "Recreation / Leisure",
+      "OTRO": "Other"
+    }
+  },
+  "filtros": {
+    "estado": {
+      "ACTIVA": "Active",
+      "CUMPLIDA": "Achieved",
+      "TODAS": "All"
+    }
+  },
+  "subMetas": {
+    "siNo": "Yes / No",
+    "alMenos": "At least {{valor}} {{unidad}}",
+    "comoMaximo": "At most {{valor}} {{unidad}}",
+    "diariamente": "daily",
+    "lunesAViernes": "Monday to Friday",
+    "finesDeSemana": "weekends",
+    "soloUnDia": "only on {{dia}}",
+    "variosDias": "{{dias}} and {{ultimo}}"
+  },
+  "participantes": {
+    "conUno": "With {{a}}",
+    "conDos": "With {{a}} and {{b}}",
+    "conVarios_one": "With {{a}} and {{count}} other",
+    "conVarios_other": "With {{a}} and {{count}} others",
+    "pendientes_one": "{{count}} pending invitation",
+    "pendientes_other": "{{count}} pending invitations"
+  },
+  "apariencia": {
+    "titulo": "Appearance",
+    "descripcion": "Choose how Metamorfosis looks. You see it instantly, and it's saved to your account when you tap Save changes.",
+    "temasTitulo": "Themes",
+    "modoTitulo": "Mode",
+    "acentoTitulo": "Accent color",
+    "acentoDe": "{{nombre}} accent",
+    "modos": {
+      "claro": "Light",
+      "oscuro": "Dark",
+      "automatico": "Automatic"
+    },
+    "acentos": {
+      "violeta": "Violet",
+      "azul": "Blue",
+      "esmeralda": "Emerald",
+      "coral": "Coral"
+    },
+    "temas": {
+      "crisalida": { "nombre": "Chrysalis", "descripcion": "Light and violet, the classic" },
+      "noche": { "nombre": "Night", "descripcion": "Black and blue, easy on the eyes" },
+      "bosque": { "nombre": "Forest", "descripcion": "Dark with emerald green" },
+      "amanecer": { "nombre": "Sunrise", "descripcion": "Light and warm, in coral" }
+    }
+  },
+  "portadas": {
+    "NINGUNA": "No cover",
+    "ESTRELLADA": "Starry night",
+    "AURORA": "Northern lights",
+    "NEBULOSA": "Nebula",
+    "ATARDECER": "Mountain sunset",
+    "OCEANO": "Ocean",
+    "BOSQUE": "Forest at dawn",
+    "METAMORFOSIS": "Metamorphosis",
+    "LLUVIA": "Meteor shower",
+    "TOPOGRAFIA": "Topography",
+    "FIESTA": "Party"
+  }
+}

@@ -1,3 +1,4 @@
+import { cabeceraIdioma, t } from '../i18n';
 const API_URL = import.meta.env.VITE_API_URL;
 
 /**
@@ -10,18 +11,19 @@ async function post(ruta, solicitud, token) {
     respuesta = await fetch(`${API_URL}${ruta}`, {
       method: 'POST',
       headers: {
+        ...cabeceraIdioma(),
         'Content-Type': 'application/json',
         ...(token && { Authorization: `Bearer ${token}` }),
       },
       body: solicitud && JSON.stringify(solicitud),
     });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error(t('errores.sinConexion'));
   }
 
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.mensaje ?? t('errores.inesperado'));
     error.errores = datos?.errores ?? [];
     error.estado = respuesta.status;
     throw error;
@@ -42,13 +44,13 @@ export function solicitarRegistro(email) {
 export async function consultarSolicitud(token) {
   let respuesta;
   try {
-    respuesta = await fetch(`${API_URL}/api/auth/registro/solicitud/${encodeURIComponent(token)}`);
+    respuesta = await fetch(`${API_URL}/api/auth/registro/solicitud/${encodeURIComponent(token)}`, { headers: cabeceraIdioma() });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error(t('errores.sinConexion'));
   }
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.mensaje ?? t('errores.inesperado'));
     error.estado = respuesta.status;
     throw error;
   }
@@ -67,13 +69,13 @@ export function autorizarRegistro(token) {
 export async function consultarEstado(sesion) {
   let respuesta;
   try {
-    respuesta = await fetch(`${API_URL}/api/auth/registro/estado/${encodeURIComponent(sesion)}`);
+    respuesta = await fetch(`${API_URL}/api/auth/registro/estado/${encodeURIComponent(sesion)}`, { headers: cabeceraIdioma() });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error(t('errores.sinConexion'));
   }
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.mensaje ?? t('errores.inesperado'));
     error.estado = respuesta.status;
     throw error;
   }
@@ -100,7 +102,7 @@ export function registrar({ token, nombre, apellido, password }) {
  */
 export async function iniciarSesion({ email, password }) {
   const datos = await post('/api/auth/login', { email, password });
-  if (!datos?.token || !datos?.codigoUsuario) throw new Error('Respuesta inesperada del servidor');
+  if (!datos?.token || !datos?.codigoUsuario) throw new Error(t('errores.respuestaInesperada'));
   return datos;
 }
 

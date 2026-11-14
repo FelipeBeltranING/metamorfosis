@@ -1,10 +1,11 @@
 import { PLAZOS, TIPOS } from '../constants/opcionesMeta';
+import { t } from '../i18n';
 
 /** HU27: opciones del filtro de estado de Mis metas. */
 export const ESTADOS_FILTRO = [
-  { valor: 'ACTIVA', etiqueta: 'Activas' },
-  { valor: 'CUMPLIDA', etiqueta: 'Cumplidas' },
-  { valor: 'TODAS', etiqueta: 'Todas' },
+  { valor: 'ACTIVA', get etiqueta() { return t('filtros.estado.ACTIVA'); } },
+  { valor: 'CUMPLIDA', get etiqueta() { return t('filtros.estado.CUMPLIDA'); } },
+  { valor: 'TODAS', get etiqueta() { return t('filtros.estado.TODAS'); } },
 ];
 
 export const FILTROS_POR_DEFECTO = { estado: 'ACTIVA', tipo: '', plazo: '' };

@@ -1,3 +1,4 @@
+import { cabeceraIdioma, t } from '../i18n';
 import { cabeceras, errorSesionExpirada } from './metaService';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -15,18 +16,18 @@ export async function crearEnlace(codigoMeta) {
       headers: encabezados,
     });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error(t('errores.sinConexion'));
   }
 
   if (respuesta.status === 401) throw errorSesionExpirada();
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.mensaje ?? t('errores.inesperado'));
     error.errores = datos?.errores ?? [];
     error.estado = respuesta.status;
     throw error;
   }
-  if (!datos?.url) throw new Error('Respuesta inesperada del servidor');
+  if (!datos?.url) throw new Error(t('errores.respuestaInesperada'));
   return datos;
 }
 
@@ -37,14 +38,14 @@ export async function crearEnlace(codigoMeta) {
 export async function obtenerLogroPublico(token) {
   let respuesta;
   try {
-    respuesta = await fetch(`${API_URL}/api/logros/${encodeURIComponent(token)}`);
+    respuesta = await fetch(`${API_URL}/api/logros/${encodeURIComponent(token)}`, { headers: cabeceraIdioma() });
   } catch {
-    throw new Error('No se pudo conectar con el servidor');
+    throw new Error(t('errores.sinConexion'));
   }
 
   const datos = await respuesta.json().catch(() => null);
   if (!respuesta.ok) {
-    const error = new Error(datos?.mensaje ?? 'Error inesperado');
+    const error = new Error(datos?.mensaje ?? t('errores.inesperado'));
     error.estado = respuesta.status;
     throw error;
   }

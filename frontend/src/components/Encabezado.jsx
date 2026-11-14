@@ -1,13 +1,16 @@
 import { NavLink } from 'react-router-dom';
 import { Sprout } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import MenuPerfil from './MenuPerfil';
 import BotonCerrarSesion from './BotonCerrarSesion';
+import SelectorIdioma from './SelectorIdioma';
 
 const claseEnlace = ({ isActive }) => `rounded-lg px-2.5 py-2 text-sm font-semibold sm:px-3 sm:text-base ${
   isActive ? 'bg-violet-50 text-violet-700' : 'text-gray-600 hover:bg-gray-100'
 }`;
 
 export default function Encabezado() {
+  const { t } = useTranslation();
   return (
     <header className="flex h-16 items-center justify-between gap-2 border-b border-zinc-200 bg-white px-4 sm:h-20 sm:px-12">
       <div className="flex items-center gap-3">
@@ -18,12 +21,13 @@ export default function Encabezado() {
       </div>
       <div className="flex items-center gap-1 sm:gap-4">
         {/* Navegación: las metas cumplidas están en el filtro de Mis metas (HU27). HU7: reporte general. */}
-        <nav aria-label="Secciones" className="flex items-center gap-1">
-          <NavLink to="/metas" end className={claseEnlace}>Mis metas</NavLink>
-          <NavLink to="/reporte" className={claseEnlace}>Reporte</NavLink>
+        <nav aria-label={t('comun.secciones')} className="flex items-center gap-1">
+          <NavLink to="/metas" end className={claseEnlace}>{t('encabezado.misMetas')}</NavLink>
+          <NavLink to="/reporte" className={claseEnlace}>{t('encabezado.reporte')}</NavLink>
           {/* HU24: buscar personas y ver su perfil */}
-          <NavLink to="/usuarios" className={claseEnlace}>Personas</NavLink>
+          <NavLink to="/usuarios" className={claseEnlace}>{t('encabezado.personas')}</NavLink>
         </nav>
+        <SelectorIdioma clase="hidden md:flex" />
         <BotonCerrarSesion />
         <MenuPerfil />
       </div>
