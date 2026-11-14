@@ -17,6 +17,7 @@ import com.metamorfosis.backend.service.correo.CorreoService;
 import com.metamorfosis.backend.service.correo.PlantillaAutorizacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -119,9 +120,11 @@ public class SolicitudRegistroService {
 
         String urlAutorizar = urlFrontend + "/registro/autorizar?token=" + token;
         String urlRechazar = urlFrontend + "/registro/rechazar?token=" + token;
-        correoService.enviar(email, PlantillaAutorizacion.ASUNTO,
-                PlantillaAutorizacion.html(email, urlAutorizar, urlRechazar, minutosVigencia),
-                PlantillaAutorizacion.texto(email, urlAutorizar, urlRechazar, minutosVigencia));
+        // i18n: el correo sale en el idioma de quien pidió el registro (cabecera Accept-Language).
+        var idioma = LocaleContextHolder.getLocale();
+        correoService.enviar(email, PlantillaAutorizacion.asunto(idioma),
+                PlantillaAutorizacion.html(email, urlAutorizar, urlRechazar, minutosVigencia, idioma),
+                PlantillaAutorizacion.texto(email, urlAutorizar, urlRechazar, minutosVigencia, idioma));
 
         logService.registrar(null, AccionLog.SOLICITAR_REGISTRO, EntidadLog.USUARIO, null, ResultadoLog.EXITO, null);
         return new SolicitudRegistroResponse(email, solicitud.getFechaExpiracion(), sesion);

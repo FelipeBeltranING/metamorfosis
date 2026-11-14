@@ -35,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -231,10 +232,12 @@ public class InvitacionService {
         String base = urlFrontend + "/invitaciones/responder?token=" + token;
         String aceptar = base + "&accion=aceptar";
         String rechazar = base + "&accion=rechazar";
+        // i18n: el correo sale en el idioma de quien invita (cabecera Accept-Language).
+        var idioma = LocaleContextHolder.getLocale();
         try {
-            correoService.enviar(invitado.getEmail(), PlantillaInvitacion.asunto(nombreInvitador),
-                    PlantillaInvitacion.html(nombreInvitador, meta.getNombre(), aceptar, rechazar, DIAS_VIGENCIA),
-                    PlantillaInvitacion.texto(nombreInvitador, meta.getNombre(), aceptar, rechazar, DIAS_VIGENCIA));
+            correoService.enviar(invitado.getEmail(), PlantillaInvitacion.asunto(nombreInvitador, idioma),
+                    PlantillaInvitacion.html(nombreInvitador, meta.getNombre(), aceptar, rechazar, DIAS_VIGENCIA, idioma),
+                    PlantillaInvitacion.texto(nombreInvitador, meta.getNombre(), aceptar, rechazar, DIAS_VIGENCIA, idioma));
             return true;
         } catch (CorreoNoEnviadoException e) {
             log.warn("No se pudo enviar el correo de invitación a la meta {}", meta.getCodigoMeta(), e);
