@@ -2022,3 +2022,32 @@ HU['HU28'].setdefault('secuencias_extra', []).append(dict(
         ('nota', 'ui', 'Si no es el creador: 403. Si la meta ya está cumplida: 400 «su camino es solo de lectura»'),
     ],
 ))
+
+HU['HU23'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='quitar_foto',
+    nombre='Quitar la foto',
+    participantes=[U, ('ui', 'EditarPerfilPage', 'boundary'), ('svc', 'cuentaService.js', 'module'),
+                   ('ctl', 'CuentaController', 'RestController'), ASP, ('srv', 'CuentaService', 'Service'),
+                   ('ur', 'UsuarioRepository', 'Repository'), ('usr', 'usuario : Usuario', 'Entity'), LOG],
+    pasos=[
+        ('m', 'u', 'ui', 'pulsa «Quitar foto»'),
+        ('r', 'ui', 'u', 'la vista previa muestra las iniciales (aún no se guarda)'),
+        ('m', 'u', 'ui', 'pulsa «Guardar cambios»'),
+        ('m', 'ui', 'svc', 'quitarFoto()'),
+        ('m', 'svc', 'ctl', 'DELETE /api/usuarios/me/foto'),
+        NOTA_TOKEN,
+        *auditado('quitarFoto(codigoUsuario)', 'QUITAR_FOTO_PERFIL', 'USUARIO', [
+            ('m', 'srv', 'ur', 'findById(codigoUsuario)'),
+            ('r', 'ur', 'srv', 'usuario'),
+            ('opt', [
+                ('[tenía foto]', [
+                    ('m', 'srv', 'usr', 'setFotoPerfil(null)'),
+                    ('m', 'srv', 'ur', 'save(usuario)'),
+                ]),
+            ]),
+        ], 'CuentaResponse.desde(usuario)  (foto = null)'),
+        ('r', 'ctl', 'svc', '200 OK + CuentaResponse'),
+        ('r', 'svc', 'ui', 'cuenta'),
+        ('r', 'ui', 'u', '«¡Perfil actualizado!»: el encabezado, Mi perfil y el perfil público muestran las iniciales'),
+    ],
+))
