@@ -6,6 +6,8 @@ extraer_modelo.py). Si un método pedido no existe en el código, el generador f
 puede quedar distinto al código sin que se note.
 
 Secuencias: caso positivo completo y un fragmento alt con el error principal de la HU.
+Si la HU tiene otro flujo que no cabe en esa secuencia (por ejemplo, unirse con un código además de
+aceptar en la app), va en secuencias_extra: una lista de dict(sufijo, nombre, participantes, pasos).
 """
 import json
 from pathlib import Path
