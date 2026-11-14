@@ -2,6 +2,7 @@ package com.metamorfosis.backend.service;
 
 import com.metamorfosis.backend.auditoria.Auditar;
 import com.metamorfosis.backend.dto.AparienciaRequest;
+import com.metamorfosis.backend.dto.MascotaRequest;
 import com.metamorfosis.backend.dto.CuentaResponse;
 import com.metamorfosis.backend.dto.EditarCuentaRequest;
 import com.metamorfosis.backend.dto.FotoPerfilRequest;
@@ -9,6 +10,7 @@ import com.metamorfosis.backend.exception.UsuarioNoEncontradoException;
 import com.metamorfosis.backend.exception.ValidacionException;
 import com.metamorfosis.backend.model.AccionLog;
 import com.metamorfosis.backend.model.ColorAcento;
+import com.metamorfosis.backend.model.Mascota;
 import com.metamorfosis.backend.model.EntidadLog;
 import com.metamorfosis.backend.model.ModoTema;
 import com.metamorfosis.backend.model.Usuario;
@@ -97,6 +99,19 @@ public class CuentaService {
 
         usuario.setModoTema(modo);
         usuario.setColorAcento(acento);
+        return CuentaResponse.desde(usuarioRepository.save(usuario));
+    }
+
+    /** HU20: cambia la mascota. Todas son gratis; solo se valida que exista. */
+    @Auditar(accion = AccionLog.CAMBIAR_MASCOTA, entidad = EntidadLog.USUARIO)
+    @Transactional
+    public CuentaResponse cambiarMascota(Integer codigoUsuario, MascotaRequest pedido) {
+        Usuario usuario = buscar(codigoUsuario);
+        List<String> errores = new ArrayList<>();
+        Mascota mascota = valorDe(Mascota.class, pedido == null ? null : pedido.mascota(), "Elige una mascota válida", errores);
+        if (!errores.isEmpty()) throw new ValidacionException(errores);
+
+        usuario.setMascota(mascota);
         return CuentaResponse.desde(usuarioRepository.save(usuario));
     }
 

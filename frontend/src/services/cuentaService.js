@@ -43,3 +43,6 @@ export const quitarFoto = () => pedir('/foto', { method: 'DELETE' });
 
 /** HU19: `apariencia` como la manda el servidor: { modo: 'OSCURO', acento: 'AZUL' }. */
 export const cambiarApariencia = (apariencia) => pedir('/apariencia', { method: 'PUT', body: apariencia });
+
+/** HU20: elige la mascota (gratis): 'MARIPOSA', 'MARIQUITA', 'ABEJA', 'LUCIERNAGA', 'LIBELULA' o 'CARACOL'. */
+export const cambiarMascota = (mascota) => pedir('/mascota', { method: 'PUT', body: { mascota } });

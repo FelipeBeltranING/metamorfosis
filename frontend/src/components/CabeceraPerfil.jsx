@@ -2,14 +2,15 @@ import { CalendarDays, Mail, Quote } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { PORTADA_POR_VALOR } from '../constants/portadas';
 import { iniciales, mesYAnio } from '../utils/perfil';
+import MascotaIlustracion from './MascotaIlustracion';
 
 /**
- * Cabecera del perfil: portada (HU19), foto o iniciales, nombre, frase (HU19), correo (solo en
- * Mi perfil) y fecha de registro. `acciones` va a la derecha (p. ej. el botón Editar perfil).
+ * Cabecera del perfil: portada (HU19), foto o iniciales, nombre, frase (HU19), mascota (HU20), correo
+ * (solo en Mi perfil) y fecha de registro. `acciones` va a la derecha (p. ej. el botón Editar perfil).
  * Se usa en Mi perfil, en el perfil de otra persona (HU24) y en la vista previa de Editar perfil.
  */
 export default function CabeceraPerfil({
-  nombre, apellido, foto, email, fechaRegistro, frase, portada, acciones, extraNombre, compacta = false,
+  nombre, apellido, foto, email, fechaRegistro, frase, portada, mascota, acciones, extraNombre, compacta = false,
 }) {
   const { t } = useTranslation();
   const estiloPortada = PORTADA_POR_VALOR[portada]?.estilo ?? null;
@@ -38,6 +39,12 @@ export default function CabeceraPerfil({
             <p className={`flex items-start justify-center gap-1.5 text-[15px] italic leading-6 text-gray-700 ${compacta ? '' : 'sm:justify-start'}`}>
               <Quote className="mt-1 size-3.5 shrink-0 text-violet-400" aria-hidden="true" />
               <span className="break-words">{frase}</span>
+            </p>
+          )}
+          {mascota && (
+            <p className={`flex items-center justify-center gap-1.5 text-sm font-semibold text-violet-800 ${compacta ? '' : 'sm:justify-start'}`}>
+              <MascotaIlustracion mascota={mascota} tamano={28} decorativa />
+              {t('mascota.acompana', { nombre: t(`mascota.nombres.${mascota}`) })}
             </p>
           )}
           {email && (

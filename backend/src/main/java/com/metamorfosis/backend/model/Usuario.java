@@ -52,6 +52,11 @@ public class Usuario {
     @Column(name = "codigo_insignia_destacada")
     private Integer codigoInsigniaDestacada;
 
+    /** HU20: la mascota que lo acompaña (gratis; se puede cambiar cuando quiera). */
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 12)
+    private Mascota mascota = Mascota.MARIPOSA;
+
     @Column(name = "fecha_registro", nullable = false, updatable = false)
     private LocalDate fechaRegistro;
 
@@ -91,6 +96,8 @@ public class Usuario {
     public ModoTema getModoTema() { return modoTema; }
     public void setModoTema(ModoTema modoTema) { this.modoTema = modoTema; }
     public ColorAcento getColorAcento() { return colorAcento; }
+    public Mascota getMascota() { return mascota; }
+    public void setMascota(Mascota mascota) { this.mascota = mascota; }
     public void setColorAcento(ColorAcento colorAcento) { this.colorAcento = colorAcento; }
     public String getFrase() { return frase; }
     public void setFrase(String frase) { this.frase = frase; }

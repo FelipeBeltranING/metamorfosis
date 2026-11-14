@@ -13,11 +13,12 @@ import AvatarUsuario from '../components/AvatarUsuario';
 import FotoPerfilModal from '../components/FotoPerfilModal';
 import SeccionApariencia from '../components/SeccionApariencia';
 import SeccionPerfilPublico from '../components/SeccionPerfilPublico';
+import SeccionMascota from '../components/SeccionMascota';
 import { editarPerfilPublico, obtenerPerfil } from '../services/perfilService';
 import { listarMetas } from '../services/metaService';
 import { MAXIMO_FRASE } from '../constants/portadas';
 import {
-  cambiarApariencia, cambiarFoto, editarDatos, obtenerCuenta, quitarFoto,
+  cambiarApariencia, cambiarFoto, cambiarMascota, editarDatos, obtenerCuenta, quitarFoto,
 } from '../services/cuentaService';
 import {
   aplicarApariencia, desdeServidor, haciaServidor, leerApariencia, mismaApariencia,
@@ -94,6 +95,7 @@ function erroresDelServidor(error) {
     else if (/nombre|name/i.test(mensaje)) campos.nombre = mensaje;
     else if (/foto|photo/i.test(mensaje)) campos.foto = mensaje;
     else if (/modo|acento|mode|accent/i.test(mensaje)) campos.apariencia = mensaje;
+    else if (/mascota|pet/i.test(mensaje)) campos.mascota = mensaje;
     else generales.push(mensaje);
   }
   return { campos, general: generales[0] ?? (Object.keys(campos).length ? '' : error.message) };
@@ -144,6 +146,8 @@ export default function EditarPerfilPage() {
     frase: '', portada: 'NINGUNA', codigoInsigniaDestacada: null, metasDestacadas: [],
   });
   const [metasVisibles, setMetasVisibles] = useState([]);
+  // HU20: mascota elegida (gratis; se guarda con el formulario).
+  const [mascota, setMascota] = useState('MARIPOSA');
   const selectorArchivo = useRef(null);
 
   useEffect(() => {
@@ -156,6 +160,7 @@ export default function EditarPerfilPage() {
         setPerfilPublico(publicoDesde(miPerfil));
         setCarga({ fase: 'lista', cuenta });
         setFormulario({ nombre: cuenta.nombre, apellido: cuenta.apellido });
+        setMascota(cuenta.mascota ?? 'MARIPOSA');
         const guardada = desdeServidor(cuenta.apariencia);
         setApariencia(guardada);
         aplicarApariencia(guardada, true);
@@ -186,7 +191,8 @@ export default function EditarPerfilPage() {
   );
   const aparienciaCambio = Boolean(cuenta) && !mismaApariencia(apariencia, desdeServidor(cuenta.apariencia));
   const perfilPublicoCambio = Boolean(perfil) && !mismoPerfilPublico(perfilPublico, publicoDesde(perfil));
-  const hayCambios = datosCambiaron || fotoPendiente !== null || aparienciaCambio || perfilPublicoCambio;
+  const mascotaCambio = Boolean(cuenta) && mascota !== (cuenta.mascota ?? 'MARIPOSA');
+  const hayCambios = datosCambiaron || fotoPendiente !== null || aparienciaCambio || perfilPublicoCambio || mascotaCambio;
   const fotoMostrada = fotoPendiente?.tipo === 'nueva' ? fotoPendiente.foto
     : fotoPendiente?.tipo === 'quitar' ? null : cuenta?.foto ?? null;
 
@@ -244,7 +250,9 @@ export default function EditarPerfilPage() {
     if (limpiar(perfilPublico.frase).length > MAXIMO_FRASE) {
       encontrados.frase = t('editarPerfil.fraseLarga', { max: MAXIMO_FRASE });
     }
-    setErrores((actuales) => ({ ...encontrados, foto: actuales.foto, apariencia: actuales.apariencia }));
+    setErrores((actuales) => ({
+      ...encontrados, foto: actuales.foto, apariencia: actuales.apariencia, mascota: actuales.mascota,
+    }));
     setErrorGeneral(Object.keys(encontrados).length ? t('editarPerfil.noGuardado') : '');
     if (Object.keys(encontrados).length || !hayCambios) return;
 
@@ -257,6 +265,7 @@ export default function EditarPerfilPage() {
       if (fotoPendiente?.tipo === 'nueva') actualizada = await cambiarFoto(fotoPendiente.foto);
       if (fotoPendiente?.tipo === 'quitar') actualizada = await quitarFoto();
       if (aparienciaCambio) actualizada = await cambiarApariencia(haciaServidor(apariencia));
+      if (mascotaCambio) actualizada = await cambiarMascota(mascota);
       if (perfilPublicoCambio) {
         const nuevo = await editarPerfilPublico(haciaServidorPerfil(perfilPublico));
         setPerfil(nuevo);
@@ -442,7 +451,18 @@ export default function EditarPerfilPage() {
                 apellido: limpiar(formulario.apellido) || cuenta.apellido,
                 foto: fotoMostrada,
                 fechaRegistro: perfil?.fechaRegistro,
+                mascota,
               }}
+            />
+
+            <SeccionMascota
+              mascota={mascota}
+              onCambiar={(nueva) => {
+                setMascota(nueva);
+                setErrores((actuales) => ({ ...actuales, mascota: undefined }));
+                setGuardado(false);
+              }}
+              error={errores.mascota}
             />
 
             <SeccionApariencia apariencia={apariencia} onCambiar={elegirApariencia} error={errores.apariencia} />
