@@ -13,12 +13,13 @@ import AvatarUsuario from '../components/AvatarUsuario';
 import FotoPerfilModal from '../components/FotoPerfilModal';
 import SeccionApariencia from '../components/SeccionApariencia';
 import SeccionPerfilPublico from '../components/SeccionPerfilPublico';
-import SeccionMascota from '../components/SeccionMascota';
+import SeccionAvatar from '../components/SeccionAvatar';
 import { editarPerfilPublico, obtenerPerfil } from '../services/perfilService';
 import { listarMetas } from '../services/metaService';
 import { MAXIMO_FRASE } from '../constants/portadas';
+import { AVATAR_INICIAL, avatarCompleto, mismoAvatar } from '../constants/avatar';
 import {
-  cambiarApariencia, cambiarFoto, cambiarMascota, editarDatos, obtenerCuenta, quitarFoto,
+  cambiarApariencia, cambiarAvatar, cambiarFoto, editarDatos, obtenerCuenta, quitarFoto,
 } from '../services/cuentaService';
 import {
   aplicarApariencia, desdeServidor, haciaServidor, leerApariencia, mismaApariencia,
@@ -88,6 +89,7 @@ function erroresDelServidor(error) {
   const generales = [];
   for (const mensaje of error.errores ?? []) {
     if (/frase|quote|motto/i.test(mensaje)) campos.frase = mensaje; // HU19: perfil público
+    else if (/piel|peinado|pelo|ojos|boca|accesorio|skin|hair|eyes|mouth|accessory/i.test(mensaje)) campos.avatar = mensaje; // HU20
     else if (/portada|cover/i.test(mensaje)) campos.portada = mensaje;
     else if (/insignia|badge/i.test(mensaje)) campos.insigniaDestacada = mensaje;
     else if (/destacar|feature/i.test(mensaje)) campos.metasDestacadas = mensaje;
@@ -95,7 +97,6 @@ function erroresDelServidor(error) {
     else if (/nombre|name/i.test(mensaje)) campos.nombre = mensaje;
     else if (/foto|photo/i.test(mensaje)) campos.foto = mensaje;
     else if (/modo|acento|mode|accent/i.test(mensaje)) campos.apariencia = mensaje;
-    else if (/mascota|pet/i.test(mensaje)) campos.mascota = mensaje;
     else generales.push(mensaje);
   }
   return { campos, general: generales[0] ?? (Object.keys(campos).length ? '' : error.message) };
@@ -146,8 +147,8 @@ export default function EditarPerfilPage() {
     frase: '', portada: 'NINGUNA', codigoInsigniaDestacada: null, metasDestacadas: [],
   });
   const [metasVisibles, setMetasVisibles] = useState([]);
-  // HU20: mascota elegida (gratis; se guarda con el formulario).
-  const [mascota, setMascota] = useState('MARIPOSA');
+  // HU20: avatar que se está armando (gratis; se guarda con el formulario).
+  const [avatar, setAvatar] = useState(AVATAR_INICIAL);
   const selectorArchivo = useRef(null);
 
   useEffect(() => {
@@ -160,7 +161,7 @@ export default function EditarPerfilPage() {
         setPerfilPublico(publicoDesde(miPerfil));
         setCarga({ fase: 'lista', cuenta });
         setFormulario({ nombre: cuenta.nombre, apellido: cuenta.apellido });
-        setMascota(cuenta.mascota ?? 'MARIPOSA');
+        setAvatar(avatarCompleto(cuenta.avatar));
         const guardada = desdeServidor(cuenta.apariencia);
         setApariencia(guardada);
         aplicarApariencia(guardada, true);
@@ -191,8 +192,8 @@ export default function EditarPerfilPage() {
   );
   const aparienciaCambio = Boolean(cuenta) && !mismaApariencia(apariencia, desdeServidor(cuenta.apariencia));
   const perfilPublicoCambio = Boolean(perfil) && !mismoPerfilPublico(perfilPublico, publicoDesde(perfil));
-  const mascotaCambio = Boolean(cuenta) && mascota !== (cuenta.mascota ?? 'MARIPOSA');
-  const hayCambios = datosCambiaron || fotoPendiente !== null || aparienciaCambio || perfilPublicoCambio || mascotaCambio;
+  const avatarCambio = Boolean(cuenta) && !mismoAvatar(avatar, cuenta.avatar);
+  const hayCambios = datosCambiaron || fotoPendiente !== null || aparienciaCambio || perfilPublicoCambio || avatarCambio;
   const fotoMostrada = fotoPendiente?.tipo === 'nueva' ? fotoPendiente.foto
     : fotoPendiente?.tipo === 'quitar' ? null : cuenta?.foto ?? null;
 
@@ -251,7 +252,7 @@ export default function EditarPerfilPage() {
       encontrados.frase = t('editarPerfil.fraseLarga', { max: MAXIMO_FRASE });
     }
     setErrores((actuales) => ({
-      ...encontrados, foto: actuales.foto, apariencia: actuales.apariencia, mascota: actuales.mascota,
+      ...encontrados, foto: actuales.foto, apariencia: actuales.apariencia, avatar: actuales.avatar,
     }));
     setErrorGeneral(Object.keys(encontrados).length ? t('editarPerfil.noGuardado') : '');
     if (Object.keys(encontrados).length || !hayCambios) return;
@@ -265,7 +266,7 @@ export default function EditarPerfilPage() {
       if (fotoPendiente?.tipo === 'nueva') actualizada = await cambiarFoto(fotoPendiente.foto);
       if (fotoPendiente?.tipo === 'quitar') actualizada = await quitarFoto();
       if (aparienciaCambio) actualizada = await cambiarApariencia(haciaServidor(apariencia));
-      if (mascotaCambio) actualizada = await cambiarMascota(mascota);
+      if (avatarCambio) actualizada = await cambiarAvatar(avatar);
       if (perfilPublicoCambio) {
         const nuevo = await editarPerfilPublico(haciaServidorPerfil(perfilPublico));
         setPerfil(nuevo);
@@ -451,18 +452,18 @@ export default function EditarPerfilPage() {
                 apellido: limpiar(formulario.apellido) || cuenta.apellido,
                 foto: fotoMostrada,
                 fechaRegistro: perfil?.fechaRegistro,
-                mascota,
+                avatar,
               }}
             />
 
-            <SeccionMascota
-              mascota={mascota}
-              onCambiar={(nueva) => {
-                setMascota(nueva);
-                setErrores((actuales) => ({ ...actuales, mascota: undefined }));
+            <SeccionAvatar
+              avatar={avatar}
+              onCambiar={(nuevo) => {
+                setAvatar(nuevo);
+                setErrores((actuales) => ({ ...actuales, avatar: undefined }));
                 setGuardado(false);
               }}
-              error={errores.mascota}
+              error={errores.avatar}
             />
 
             <SeccionApariencia apariencia={apariencia} onCambiar={elegirApariencia} error={errores.apariencia} />

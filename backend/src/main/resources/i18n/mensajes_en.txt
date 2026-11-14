@@ -108,7 +108,12 @@ Este logro no existe o el enlace no es válido => This achievement doesn't exist
 # Cuenta, perfil y privacidad (HU19, HU22 a HU26)
 Elige un modo válido => Choose a valid mode
 Elige un color de acento válido => Choose a valid accent color
-Elige una mascota válida => Choose a valid pet
+Elige un tono de piel válido => Choose a valid skin tone
+Elige un peinado válido => Choose a valid hairstyle
+Elige un color de pelo válido => Choose a valid hair color
+Elige unos ojos válidos => Choose valid eyes
+Elige una boca válida => Choose a valid mouth
+Elige un accesorio válido => Choose a valid accessory
 Escribe tu nombre => Enter your first name
 Escribe tu apellido => Enter your last name
 El nombre puede tener máximo {0} caracteres => The first name can have at most {0} characters

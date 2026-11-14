@@ -2,7 +2,7 @@ package com.metamorfosis.backend.service;
 
 import com.metamorfosis.backend.auditoria.Auditar;
 import com.metamorfosis.backend.dto.AparienciaRequest;
-import com.metamorfosis.backend.dto.MascotaRequest;
+import com.metamorfosis.backend.dto.AvatarPerfil;
 import com.metamorfosis.backend.dto.CuentaResponse;
 import com.metamorfosis.backend.dto.EditarCuentaRequest;
 import com.metamorfosis.backend.dto.FotoPerfilRequest;
@@ -10,7 +10,8 @@ import com.metamorfosis.backend.exception.UsuarioNoEncontradoException;
 import com.metamorfosis.backend.exception.ValidacionException;
 import com.metamorfosis.backend.model.AccionLog;
 import com.metamorfosis.backend.model.ColorAcento;
-import com.metamorfosis.backend.model.Mascota;
+import com.metamorfosis.backend.model.Avatar;
+import com.metamorfosis.backend.model.CatalogoAvatar;
 import com.metamorfosis.backend.model.EntidadLog;
 import com.metamorfosis.backend.model.ModoTema;
 import com.metamorfosis.backend.model.Usuario;
@@ -18,6 +19,7 @@ import com.metamorfosis.backend.repository.UsuarioRepository;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.stereotype.Service;
@@ -102,17 +104,35 @@ public class CuentaService {
         return CuentaResponse.desde(usuarioRepository.save(usuario));
     }
 
-    /** HU20: cambia la mascota. Todas son gratis; solo se valida que exista. */
-    @Auditar(accion = AccionLog.CAMBIAR_MASCOTA, entidad = EntidadLog.USUARIO)
+    /**
+     * HU20: guarda el avatar. Todas las piezas son gratis; solo se valida que cada una exista en el
+     * catálogo. El accesorio es opcional (vacío o null es sin accesorio).
+     */
+    @Auditar(accion = AccionLog.CAMBIAR_AVATAR, entidad = EntidadLog.USUARIO)
     @Transactional
-    public CuentaResponse cambiarMascota(Integer codigoUsuario, MascotaRequest pedido) {
+    public CuentaResponse cambiarAvatar(Integer codigoUsuario, AvatarPerfil pedido) {
         Usuario usuario = buscar(codigoUsuario);
+        AvatarPerfil p = pedido == null ? new AvatarPerfil(null, null, null, null, null, null) : pedido;
         List<String> errores = new ArrayList<>();
-        Mascota mascota = valorDe(Mascota.class, pedido == null ? null : pedido.mascota(), "Elige una mascota válida", errores);
+        String piel = pieza(CatalogoAvatar.PIELES, p.piel(), "Elige un tono de piel válido", errores);
+        String peinado = pieza(CatalogoAvatar.PEINADOS, p.peinado(), "Elige un peinado válido", errores);
+        String colorPelo = pieza(CatalogoAvatar.COLORES_PELO, p.colorPelo(), "Elige un color de pelo válido", errores);
+        String ojos = pieza(CatalogoAvatar.OJOS, p.ojos(), "Elige unos ojos válidos", errores);
+        String boca = pieza(CatalogoAvatar.BOCAS, p.boca(), "Elige una boca válida", errores);
+        String accesorio = p.accesorio() == null || p.accesorio().isBlank() ? null
+                : pieza(CatalogoAvatar.ACCESORIOS, p.accesorio(), "Elige un accesorio válido", errores);
         if (!errores.isEmpty()) throw new ValidacionException(errores);
 
-        usuario.setMascota(mascota);
+        usuario.setAvatar(new Avatar(piel, peinado, colorPelo, ojos, boca, accesorio));
         return CuentaResponse.desde(usuarioRepository.save(usuario));
+    }
+
+    /** Devuelve la pieza sin espacios si está en el catálogo; si no, anota el error. */
+    private static String pieza(Set<String> catalogo, String valor, String mensaje, List<String> errores) {
+        String limpio = valor == null ? null : valor.strip();
+        if (limpio != null && catalogo.contains(limpio)) return limpio;
+        errores.add(mensaje);
+        return null;
     }
 
     private static <E extends Enum<E>> E valorDe(Class<E> tipo, String valor, String mensaje, List<String> errores) {
