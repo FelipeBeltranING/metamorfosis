@@ -1,0 +1,29 @@
+{
+  "formMeta": {
+    "crearTitulo": "Crear meta",
+    "editarTitulo": "Editar meta",
+    "volver": "Volver",
+    "volverMetas": "Volver a mis metas",
+    "nombre": "Nombre de la meta *",
+    "nombrePlaceholder": "Ej. Leer 20 libros",
+    "plazo": "Plazo *",
+    "tipo": "Tipo de meta *",
+    "cancelar": "Cancelar",
+    "creando": "Creando...",
+    "crear": "Crear meta",
+    "guardando": "Guardando...",
+    "guardar": "Guardar cambios",
+    "creada": "¡Meta creada! Ya aparece en tus metas activas.",
+    "validacion": {
+      "nombreObligatorio": "El nombre es obligatorio",
+      "nombreMaximo": "Máximo {{max}} caracteres",
+      "plazo": "Elige un plazo",
+      "tipo": "Elige un tipo"
+    },
+    "bloqueos": {
+      "noExiste": "Esta meta ya no existe",
+      "sinPermiso": "Solo el creador puede editar esta meta",
+      "cumplida": "Esta meta ya está cumplida y no se puede editar"
+    }
+  }
+}
