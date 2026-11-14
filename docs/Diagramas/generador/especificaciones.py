@@ -1824,3 +1824,61 @@ HU['HU13'].setdefault('secuencias_extra', []).append(dict(
         ('nota', 'ui', '«Cambiar código» vuelve a llamar a generar; «Desactivar» → DELETE /api/metas/{codigoMeta}/codigo → desactivarCodigoUnion()'),
     ],
 ))
+
+HU['HU14'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='correo',
+    nombre='Responder desde el correo',
+    participantes=[('u', 'Invitado', 'actor'), ('ui', 'ResponderInvitacionPage', 'boundary'),
+                   ('svc', 'invitacionService.js', 'module'), ('ctl', 'InvitacionController', 'RestController'), ASP,
+                   ('srv', 'InvitacionService', 'Service'), ('pr', 'ParticipacionRepository', 'Repository'),
+                   ('p', 'participación : Participacion', 'Entity'), LOG],
+    pasos=[
+        ('m', 'u', 'ui', 'pulsa «Aceptar» en el correo → /invitaciones/responder?token=…&accion=aceptar'),
+        ('m', 'ui', 'svc', 'consultarInvitacionCorreo(token)'),
+        ('m', 'svc', 'ctl', 'GET /api/invitaciones/correo?token=…  (público)'),
+        ('m', 'ctl', 'srv', 'consultarPorToken(token)'),
+        ('m', 'srv', 'pr', 'findByTokenHash(hash(token))'),
+        ('r', 'pr', 'srv', 'participación PENDIENTE y vigente (7 días)'),
+        ('r', 'srv', 'ctl', 'InvitacionCorreoResponse(meta, invitador, paraEmail = l***@gmail.com)'),
+        ('r', 'ctl', 'svc', '200 OK'),
+        ('r', 'ui', 'u', '«Daniel Santos te invitó a Leer 20 libros» con el botón «Aceptar invitación»'),
+        ('opt', [
+            ('[no ha iniciado sesión]', [
+                ('r', 'ui', 'u', '«Inicia sesión para aceptar» → /login?volver=… y, al entrar (HU9), vuelve a esta página'),
+            ]),
+        ]),
+        ('m', 'u', 'ui', 'pulsa «Aceptar invitación»'),
+        ('m', 'ui', 'svc', 'aceptarInvitacionCorreo(token)'),
+        ('m', 'svc', 'ctl', 'POST /api/invitaciones/correo/aceptar { token }  (Bearer token)'),
+        NOTA_TOKEN,
+        *auditado('aceptarPorToken(token, codigoUsuario)', 'RESPONDER_INVITACION', 'META', [
+            ('m', 'srv', 'pr', 'findByTokenHash(hash(token))'),
+            ('r', 'pr', 'srv', 'participación PENDIENTE y vigente'),
+            ('alt', [
+                ('[la invitación es de esta cuenta y la meta sigue ACTIVA]', [
+                    ('m', 'srv', 'p', 'responder(true)  [ACEPTADA, borra el token]'),
+                    ('m', 'srv', 'pr', 'save(participación)'),
+                ]),
+                ('[la invitación es para otra cuenta (correo reenviado)]', [
+                    ('r', 'srv', 'asp', 'PermisoDenegadoException("Esta invitación es para otra cuenta (l***@gmail.com)…")'),
+                    ('m', 'asp', 'log', 'registrar(…, RESPONDER_INVITACION, …, ERROR, motivo)'),
+                    ('r', 'ctl', 'svc', '403 ErrorResponse'),
+                    ('r', 'ui', 'u', '«Inicia sesión con esa cuenta para aceptarla»'),
+                ]),
+            ]),
+        ], 'InvitacionRespondidaResponse(codigoMeta, nombre, aceptada = true)'),
+        ('r', 'ctl', 'svc', '200 OK'),
+        ('r', 'ui', 'u', 'abre Tu camino de la meta compartida (/metas/{codigoMeta})'),
+        ('m', 'u', 'ui', 'o bien: «Rechazar» en el correo (no pide sesión) y confirma'),
+        ('m', 'ui', 'svc', 'rechazarInvitacionCorreo(token)'),
+        ('m', 'svc', 'ctl', 'POST /api/invitaciones/correo/rechazar { token }  (público)'),
+        ('m', 'ctl', 'srv', 'rechazarPorToken(token)'),
+        ('m', 'srv', 'pr', 'findByTokenHash(hash(token))'),
+        ('m', 'srv', 'p', 'responder(false)  [RECHAZADA, borra el token]'),
+        ('m', 'srv', 'pr', 'save(participación)'),
+        ('m', 'srv', 'log', 'registrar(codigoInvitado, RESPONDER_INVITACION, META, codigo, EXITO, {aceptada: false, desde: correo})'),
+        ('r', 'ctl', 'svc', '204 No Content'),
+        ('r', 'ui', 'u', '«Rechazaste la invitación»'),
+        ('nota', 'ui', 'Enlace vencido, ya usado o cancelado: InvitacionNoValidaException → 410 Gone → EnlaceNoValido'),
+    ],
+))
