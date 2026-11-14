@@ -1457,7 +1457,7 @@ HU['HU21'] = dict(
                     ('m', 'srv', 'lr', 'save(new LogroCompartido(meta, usuario, token))'),
                 ]),
                 ('[la meta sigue activa]', [
-                    ('r', 'srv', 'asp', 'ValidacionException("Solo se comparten metas cumplidas")'),
+                    ('r', 'srv', 'asp', 'ValidacionException("Solo se puede compartir una meta cumplida")'),
                     ('m', 'asp', 'log', 'registrar(…, COMPARTIR_LOGRO, …, ERROR, motivo)'),
                     ('r', 'ctl', 'svc', '400 ErrorResponse'),
                 ]),
