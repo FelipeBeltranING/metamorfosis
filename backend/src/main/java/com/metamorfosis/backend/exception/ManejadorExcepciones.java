@@ -1,8 +1,10 @@
 package com.metamorfosis.backend.exception;
 
 import com.metamorfosis.backend.dto.ErrorResponse;
+import com.metamorfosis.backend.i18n.TraductorMensajes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,13 @@ import java.util.List;
 public class ManejadorExcepciones {
 
     private static final Logger log = LoggerFactory.getLogger(ManejadorExcepciones.class);
+
+    /** Traduce los mensajes al idioma de la petición (cabecera Accept-Language). */
+    private final TraductorMensajes traductor;
+
+    public ManejadorExcepciones(TraductorMensajes traductor) {
+        this.traductor = traductor;
+    }
 
     @ExceptionHandler(ValidacionException.class)
     public ResponseEntity<ErrorResponse> validacion(ValidacionException e) {
@@ -46,7 +55,13 @@ public class ManejadorExcepciones {
     }
 
     private ResponseEntity<ErrorResponse> responder(HttpStatus estado, String mensaje, List<String> errores) {
-        return ResponseEntity.status(estado).body(new ErrorResponse(estado.value(), mensaje, errores));
+        return ResponseEntity.status(estado).body(cuerpo(estado, mensaje, errores));
+    }
+
+    /** Cuerpo del error con el mensaje y los errores en el idioma de la petición. */
+    private ErrorResponse cuerpo(HttpStatus estado, String mensaje, List<String> errores) {
+        var idioma = LocaleContextHolder.getLocale();
+        return new ErrorResponse(estado.value(), traductor.traducir(mensaje, idioma), traductor.traducir(errores, idioma));
     }
     /** HU13: la persona ya participa o ya tiene una invitación pendiente. */
     @ExceptionHandler(ConflictoException.class)
@@ -115,7 +130,7 @@ public class ManejadorExcepciones {
     public ResponseEntity<ErrorResponse> cuentaBloqueada(CuentaBloqueadaException e) {
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
                 .header(HttpHeaders.RETRY_AFTER, String.valueOf(e.getSegundosRestantes()))
-                .body(new ErrorResponse(HttpStatus.TOO_MANY_REQUESTS.value(), e.getMessage(), List.of()));
+                .body(cuerpo(HttpStatus.TOO_MANY_REQUESTS, e.getMessage(), List.of()));
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
