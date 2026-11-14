@@ -30,8 +30,9 @@ def _es_dependencia(atributo):
     return tipo in ('PasswordEncoder', 'Clock')
 
 
-def C(nombre, metodos=(), atributos=None):
-    """Una clase del código. atributos=None: todos; [] ninguno; lista: solo esos nombres."""
+def C(nombre, metodos=(), atributos=None, estereotipo=None):
+    """Una clase del código. atributos=None: todos; [] ninguno; lista: solo esos nombres.
+    estereotipo: para mostrarla con otro (por ejemplo «utility» en una clase de métodos estáticos)."""
     def construir():
         if nombre not in MODELO:
             raise KeyError(f'La clase {nombre} no está en el código')
@@ -58,7 +59,8 @@ def C(nombre, metodos=(), atributos=None):
             for firma in encontrados:
                 anotacion = d['auditar'].get(m)
                 lista_met.append(firma + (f'  «@Auditar({anotacion})»' if anotacion else ''))
-        return {'nombre': nombre, 'estereotipo': d['estereotipo'], 'atributos': lista_atr, 'metodos': lista_met}
+        return {'nombre': nombre, 'estereotipo': estereotipo or d['estereotipo'], 'atributos': lista_atr,
+                'metodos': lista_met}
     return construir
 
 
@@ -1629,3 +1631,56 @@ HU['HU30'] = dict(
 )
 
 NOMBRES_ARCHIVO = {clave: f'{clave}_{datos["nombre"]}' for clave, datos in HU.items()}
+
+
+# ================================ Idioma (HU16) ===============================================
+
+HU['HU16'] = dict(
+    nombre='Cambiar idioma (español / inglés)',
+    filas=[
+        [S('SelectorIdioma', 'componente React', ['- actual: "es" | "en"'],
+           ['+ onChange(e): i18n.changeLanguage(e.target.value)']),
+         S('i18n/index.js', 'module', ['+ CLAVE_IDIOMA = "metamorfosis.idioma"', '+ IDIOMAS: es (es-CO), en (en-US)'],
+           ['+ idiomaActual(): "es" | "en"', '+ localeActual(): "es-CO" | "en-US"',
+            '+ cabeceraIdioma(): { Accept-Language }', '+ t(clave, valores): String']),
+         S('i18next', 'library', ['LanguageDetector: localStorage → navegador → html'],
+           ['+ changeLanguage(idioma): Promise', '+ on("languageChanged", alCambiarIdioma)']),
+         S('es/*.json · en/*.json', 'textos', ['15 archivos por idioma: auth, metas, camino, perfil, reporte…'], []),
+         S('metaService.js · authService.js · logroService.js', 'module', [],
+           ['+ cabeceras(): Accept-Language + Authorization'])],
+        [S('IdiomaConfig', 'Configuration', [], ['~ localeResolver(): LocaleResolver']),
+         S('AcceptHeaderLocaleResolver', 'Spring', ['- supportedLocales: [es, en]', '- defaultLocale: es'],
+           ['+ resolveLocale(peticion): Locale']),
+         S('LocaleContextHolder', 'Spring', [], ['+ getLocale(): Locale$'])],
+        [C('ManejadorExcepciones', ['validacion', 'conflicto', 'permisoDenegado']),
+         C('TraductorMensajes', ['traducir'], ['ESPANOL', 'INGLES', 'IDIOMAS', 'exactas', 'plantillas']),
+         S('mensajes_en.txt', 'resource', ['«mensaje en español» => «English message»', 'plantillas con {0}, {1}…'], []),
+         C('ErrorResponse')],
+        [C('InvitacionService', ['invitar']), C('SolicitudRegistroService', ['solicitar']),
+         C('PlantillaInvitacion', ['asunto', 'html', 'texto'], estereotipo='utility'),
+         C('PlantillaAutorizacion', ['asunto', 'html', 'texto'], estereotipo='utility'),
+         C('CorreoService', ['enviar'])],
+    ],
+    relaciones=[
+        ('SelectorIdioma', 'i18next', 'usa', 'changeLanguage', None),
+        ('SelectorIdioma', 'i18n/index.js', 'usa', 'IDIOMAS, idiomaActual', None),
+        ('i18n/index.js', 'i18next', 'usa', 'configura', None),
+        ('i18n/index.js', 'es/*.json · en/*.json', 'usa', 'carga los textos', None),
+        ('metaService.js · authService.js · logroService.js', 'i18n/index.js', 'usa', 'cabeceraIdioma()', None),
+        ('metaService.js · authService.js · logroService.js', 'AcceptHeaderLocaleResolver', 'usa',
+         'HTTP Accept-Language: en', None),
+        ('IdiomaConfig', 'AcceptHeaderLocaleResolver', 'usa', '«create» @Bean', None),
+        ('IdiomaConfig', 'TraductorMensajes', 'usa', 'IDIOMAS, ESPANOL', None),
+        ('AcceptHeaderLocaleResolver', 'LocaleContextHolder', 'usa', 'idioma de la petición', None),
+        ('ManejadorExcepciones', 'TraductorMensajes', 'asoc', 'traductor', None),
+        ('ManejadorExcepciones', 'LocaleContextHolder', 'usa', 'getLocale()', None),
+        ('ManejadorExcepciones', 'ErrorResponse', 'usa', 'devuelve traducido', None),
+        ('TraductorMensajes', 'mensajes_en.txt', 'usa', 'lee al iniciar', None),
+        ('InvitacionService', 'LocaleContextHolder', 'usa', 'idioma de quien invita', None),
+        ('SolicitudRegistroService', 'LocaleContextHolder', 'usa', 'idioma de quien pide el registro', None),
+        ('InvitacionService', 'PlantillaInvitacion', 'usa', 'asunto/html/texto(…, idioma)', None),
+        ('SolicitudRegistroService', 'PlantillaAutorizacion', 'usa', 'asunto/html/texto(…, idioma)', None),
+        ('InvitacionService', 'CorreoService', 'asoc', 'correoService', None),
+        ('SolicitudRegistroService', 'CorreoService', 'asoc', 'correoService', None),
+    ],
+)

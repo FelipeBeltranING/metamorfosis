@@ -22,6 +22,7 @@ Dos diagramas por historia de usuario, en draw.io (se abren y se editan en [app.
 | HU13 | Invitar a una meta | [clases](Clases/HU13_clases.drawio) | [secuencia](Secuencia/HU13_secuencia.drawio) |
 | HU14 | Responder invitación | [clases](Clases/HU14_clases.drawio) | [secuencia](Secuencia/HU14_secuencia.drawio) |
 | HU15 | Logro de meta compartida | [clases](Clases/HU15_clases.drawio) | [secuencia](Secuencia/HU15_secuencia.drawio) |
+| HU16 | Cambiar idioma (español / inglés) | [clases](Clases/HU16_clases.drawio) | — |
 | HU19 | Personalizar mi perfil público | [clases](Clases/HU19_clases.drawio) | [secuencia](Secuencia/HU19_secuencia.drawio) |
 | HU20 | Elegir mi mascota | [clases](Clases/HU20_clases.drawio) | [secuencia](Secuencia/HU20_secuencia.drawio) |
 | HU21 | Compartir logro | [clases](Clases/HU21_clases.drawio) | [secuencia](Secuencia/HU21_secuencia.drawio) |
@@ -35,7 +36,8 @@ Dos diagramas por historia de usuario, en draw.io (se abren y se editan en [app.
 | HU29 | Ver cuánto me falta y qué tan constante soy | [clases](Clases/HU29_clases.drawio) | [secuencia](Secuencia/HU29_secuencia.drawio) |
 | HU30 | Elegir la apariencia de la app | [clases](Clases/HU30_clases.drawio) | [secuencia](Secuencia/HU30_secuencia.drawio) |
 
-**No tienen diagramas:** HU16 (internacionalización, transversal: ver el README del repositorio), HU17 y HU18 (retiradas) y HU31 (opcional, no implementada).
+**No tienen diagramas:** HU17 y HU18 (retiradas) y HU31 (opcional, no implementada).
+**HU16** es transversal (toca casi todas las pantallas): su diagrama de clases muestra también la parte del frontend (selector, i18next, archivos de textos y la cabecera Accept-Language), porque ahí está la mayor parte de la HU.
 **HU30** es la que el equipo había dejado como "HU sin número - Apariencia de la app": se numera para que tenga el mismo sustento que las demás.
 
 ## Cómo se generan
