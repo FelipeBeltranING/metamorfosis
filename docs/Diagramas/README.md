@@ -11,7 +11,7 @@ Dos diagramas por historia de usuario, en draw.io (se abren y se editan en [app.
 | HU2 | Editar meta | [clases](Clases/HU02_clases.drawio) | [secuencia](Secuencia/HU02_secuencia.drawio) |
 | HU3 | Ver mis metas | [clases](Clases/HU03_clases.drawio) | [secuencia](Secuencia/HU03_secuencia.drawio) |
 | HU4 | Eliminar meta | [clases](Clases/HU04_clases.drawio) | [secuencia](Secuencia/HU04_secuencia.drawio) |
-| HU5 | Registrar mi avance (hitos logrados y días de los hábitos) | [clases](Clases/HU05_clases.drawio) | [secuencia](Secuencia/HU05_secuencia.drawio) |
+| HU5 | Registrar mi avance (hitos logrados y días de los hábitos) | [clases](Clases/HU05_clases.drawio) | [secuencia](Secuencia/HU05_secuencia.drawio) · [registrar el día de un hábito](Secuencia/HU05_secuencia_habito.drawio) |
 | HU6 | Marcar meta como cumplida | [clases](Clases/HU06_clases.drawio) | [secuencia](Secuencia/HU06_secuencia.drawio) |
 | HU7 | Ver reporte general | [clases](Clases/HU07_clases.drawio) | [secuencia](Secuencia/HU07_secuencia.drawio) |
 | HU8 | Registrarse (con autorización por correo) | [clases](Clases/HU08_clases.drawio) | [secuencia](Secuencia/HU08_secuencia.drawio) |

@@ -1721,3 +1721,51 @@ HU['HU16'] = dict(
         ]),
     ],
 )
+
+
+# ================================ Otros flujos (secuencias_extra) ===========================
+
+HU['HU05'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='habito',
+    nombre='Registrar el día de un hábito',
+    participantes=[U, ('ui', 'CaminoMetaPage · RegistrarValorModal', 'boundary'), ('svc', 'subMetaService.js', 'module'),
+                   ('ctl', 'SubMetaController', 'RestController'), ASP, ('srv', 'RegistroDiaService', 'Service'),
+                   ('sr', 'SubMetaRepository', 'Repository'), ('mr', 'MetaRepository', 'Repository'),
+                   ('sm', 'hábito : SubMeta', 'Entity'), ('rr', 'RegistroSubMetaRepository', 'Repository'), LOG],
+    pasos=[
+        ('m', 'u', 'ui', 'toca el día de hoy del hábito «Leer» (al menos 15 páginas)'),
+        ('r', 'ui', 'u', 'ventana «¿Cuántas páginas hiciste?»'),
+        ('m', 'u', 'ui', 'escribe 20 y pulsa «Guardar»'),
+        ('m', 'ui', 'svc', 'registrarDia(codigoSubMeta, "2026-11-14", 20)'),
+        ('m', 'svc', 'ctl', 'PUT /api/submetas/{codigoSubMeta}/registros/2026-11-14 { valor: 20 }'),
+        NOTA_TOKEN,
+        *auditado('registrar(codigoSubMeta, fecha, pedido, codigoUsuario)', 'REGISTRAR_DIA', 'SUB_META', [
+            ('m', 'srv', 'sr', 'findById(codigoSubMeta)'),
+            ('r', 'sr', 'srv', 'hábito'),
+            ('m', 'srv', 'mr', 'esParticipanteAceptado(codigoMeta, codigoUsuario)'),
+            ('r', 'mr', 'srv', 'true'),
+            ('m', 'srv', 'sm', 'tocaEl(fecha)  [meta ACTIVA, es hábito, el día ya llegó y no es antes de crearlo]'),
+            ('r', 'sm', 'srv', 'true'),
+            ('alt', [
+                ('[el valor es válido (≥ 0, máximo 2 decimales; Sí/No solo 0 o 1)]', [
+                    ('m', 'srv', 'rr', 'findBySubMetaCodigoSubMetaAndUsuarioCodigoUsuarioAndFecha(codigoSubMeta, codigoUsuario, fecha)'),
+                    ('r', 'rr', 'srv', 'Optional.empty() → «create» new RegistroSubMeta(hábito, usuario, fecha, 20)'),
+                    ('m', 'srv', 'rr', 'save(registro)  [si ya había registro ese día: cambiarValor(20)]'),
+                    ('m', 'srv', 'sm', 'cumple(20)'),
+                    ('r', 'sm', 'srv', 'true  (20 ≥ 15)'),
+                ]),
+                ('[día futuro, no toca ese día o valor no válido]', [
+                    ('r', 'srv', 'asp', 'ValidacionException("No puedes registrar días que aún no llegan")'),
+                    ('m', 'asp', 'log', 'registrar(…, REGISTRAR_DIA, …, ERROR, motivo)'),
+                    ('r', 'ctl', 'svc', '400 ErrorResponse'),
+                    ('r', 'ui', 'u', 'el error aparece en la ventana; no se guarda'),
+                ]),
+            ]),
+        ], 'DiaResponse(fecha, toca = true, valor = 20, cumplido = true)'),
+        ('r', 'ctl', 'svc', '200 OK + DiaResponse'),
+        ('r', 'svc', 'ui', 'día registrado'),
+        ('m', 'ui', 'ui', 'recargar() → GET /api/metas/{codigoMeta}/camino (HU29)'),
+        ('r', 'ui', 'u', 'aviso «Registro guardado»: el día queda cumplido y la constancia se recalcula'),
+        ('nota', 'ui', 'Hábito Sí/No: un toque guarda 1 (hecho), otro 0 (no hecho) y otro quita el registro con DELETE …/registros/{fecha}'),
+    ],
+))
