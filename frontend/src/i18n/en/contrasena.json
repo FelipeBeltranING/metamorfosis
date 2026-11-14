@@ -1,9 +1,8 @@
 {
   "contrasena": {
     "titulo": "Change password",
-    "subtitulo": "For your security, first enter the password you use now.",
+    "subtitulo": "Enter the new password twice to confirm it.",
     "volver": "Back to Edit profile",
-    "actual": "Current password",
     "nueva": "New password",
     "confirmar": "Repeat the new password",
     "requisitos": "The new password must have:",
@@ -17,10 +16,8 @@
     "guardar": "Change password",
     "cambiando": "Changing…",
     "cancelar": "Cancel",
-    "faltaActual": "Enter your current password.",
     "faltaNueva": "Enter the new password.",
     "noCumple": "The new password doesn't meet the requirements yet.",
-    "igualALaActual": "The new password must be different from the current one.",
     "noCoinciden": "The new passwords don't match.",
     "noCambiada": "The password wasn't changed. Check the highlighted fields.",
     "listoTitulo": "Done! Your password changed",

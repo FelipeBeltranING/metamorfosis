@@ -1,35 +1,20 @@
 import { useEffect, useState } from 'react';
-import { ArrowLeft, Check, CircleAlert, CircleCheck, Circle, KeyRound, LoaderCircle, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, CircleAlert, CircleCheck, KeyRound, LoaderCircle, ShieldCheck } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Encabezado from '../components/Encabezado';
 import CampoTexto from '../components/CampoTexto';
+import RequisitosContrasena from '../components/RequisitosContrasena';
 import { cambiarContrasena } from '../services/cuentaService';
 import { actualizarSesion } from '../services/sesionService';
+import { validarContrasenaNueva } from '../utils/contrasena';
 
-const VACIO = { actual: '', nueva: '', confirmacion: '' };
-
-/** Los mismos requisitos que pide el servidor (ReglaContrasena) y el registro. */
-const REQUISITOS = [
-  { clave: 'req8', cumple: (v) => v.length >= 8 },
-  { clave: 'reqMayuscula', cumple: (v) => /[A-Z]/.test(v) },
-  { clave: 'reqMinuscula', cumple: (v) => /[a-z]/.test(v) },
-  { clave: 'reqNumero', cumple: (v) => /\d/.test(v) },
-];
-
-function validar({ actual, nueva, confirmacion }, t) {
-  const errores = {};
-  if (!actual) errores.actual = t('contrasena.faltaActual');
-  if (!nueva) errores.nueva = t('contrasena.faltaNueva');
-  else if (!REQUISITOS.every((r) => r.cumple(nueva))) errores.nueva = t('contrasena.noCumple');
-  else if (actual && nueva === actual) errores.nueva = t('contrasena.igualALaActual');
-  if (nueva && confirmacion !== nueva) errores.confirmacion = t('contrasena.noCoinciden');
-  return errores;
-}
+const VACIO = { nueva: '', confirmacion: '' };
 
 /**
- * HU32: cambiar la contraseña. Pide la actual, la nueva (con sus requisitos a la vista) y la
- * confirmación. Al cambiarla, el servidor cierra las demás sesiones y esta sigue con un token nuevo.
+ * HU32: cambiar la contraseña dentro de la app. Como ya hay sesión, solo pide la nueva (con sus
+ * requisitos a la vista) y la confirmación. Al cambiarla, el servidor cierra las demás sesiones y
+ * esta sigue con un token nuevo.
  */
 export default function CambiarContrasenaPage() {
   const { t } = useTranslation();
@@ -51,7 +36,7 @@ export default function CambiarContrasenaPage() {
 
   const enviar = async (evento) => {
     evento.preventDefault();
-    const encontrados = validar(formulario, t);
+    const encontrados = validarContrasenaNueva(formulario, t);
     setErrores(encontrados);
     if (Object.keys(encontrados).length) {
       setErrorGeneral(t('contrasena.noCambiada'));
@@ -70,9 +55,9 @@ export default function CambiarContrasenaPage() {
         navigate('/login', { replace: true });
         return;
       }
-      // Con todo lo demás ya revisado aquí, un 400 del servidor es la contraseña actual incorrecta.
+      // Con la regla y la confirmación ya revisadas aquí, un 400 es que la nueva es igual a la actual.
       if (error.estado === 400 && error.errores?.length) {
-        setErrores({ actual: error.errores.join(' ') });
+        setErrores({ nueva: error.errores.join(' ') });
         setErrorGeneral(t('contrasena.noCambiada'));
       } else {
         setErrorGeneral(error.message);
@@ -120,16 +105,6 @@ export default function CambiarContrasenaPage() {
               </p>
             )}
 
-            <CampoTexto
-              id="contrasena-actual"
-              etiqueta={t('contrasena.actual')}
-              tipo="password"
-              valor={formulario.actual}
-              onChange={cambiar('actual')}
-              error={errores.actual}
-              deshabilitado={enviando}
-              autoComplete="current-password"
-            />
 
             <div className="flex flex-col gap-2.5">
               <CampoTexto
@@ -142,23 +117,7 @@ export default function CambiarContrasenaPage() {
                 deshabilitado={enviando}
                 autoComplete="new-password"
               />
-              <div className="rounded-xl bg-slate-50 p-3.5">
-                <p id="requisitos-contrasena" className="text-[13px] font-bold text-gray-700">{t('contrasena.requisitos')}</p>
-                <ul aria-labelledby="requisitos-contrasena" className="mt-2 grid gap-1.5 sm:grid-cols-2">
-                  {REQUISITOS.map(({ clave, cumple }) => {
-                    const ok = cumple(formulario.nueva);
-                    return (
-                      <li key={clave} className={`flex items-center gap-2 text-[13px] font-semibold ${ok ? 'text-emerald-700' : 'text-gray-500'}`}>
-                        {ok
-                          ? <Check className="size-4 shrink-0" aria-hidden="true" />
-                          : <Circle className="size-4 shrink-0" aria-hidden="true" />}
-                        {t(`contrasena.${clave}`)}
-                        <span className="sr-only">{ok ? t('contrasena.cumplido') : t('contrasena.pendiente')}</span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+              <RequisitosContrasena valor={formulario.nueva} />
             </div>
 
             <CampoTexto

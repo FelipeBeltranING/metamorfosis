@@ -1,9 +1,8 @@
 {
   "contrasena": {
     "titulo": "Cambiar contraseña",
-    "subtitulo": "Por seguridad, primero escribe la contraseña que usas ahora.",
+    "subtitulo": "Escribe la contraseña nueva dos veces para confirmarla.",
     "volver": "Volver a Editar perfil",
-    "actual": "Contraseña actual",
     "nueva": "Contraseña nueva",
     "confirmar": "Repite la contraseña nueva",
     "requisitos": "La contraseña nueva debe tener:",
@@ -17,10 +16,8 @@
     "guardar": "Cambiar contraseña",
     "cambiando": "Cambiando…",
     "cancelar": "Cancelar",
-    "faltaActual": "Escribe tu contraseña actual.",
     "faltaNueva": "Escribe la contraseña nueva.",
     "noCumple": "La contraseña nueva aún no cumple los requisitos.",
-    "igualALaActual": "La contraseña nueva debe ser distinta de la actual.",
     "noCoinciden": "Las contraseñas nuevas no coinciden.",
     "noCambiada": "No se cambió la contraseña. Revisa los campos marcados.",
     "listoTitulo": "¡Listo! Tu contraseña cambió",

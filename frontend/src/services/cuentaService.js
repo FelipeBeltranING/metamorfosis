@@ -48,18 +48,17 @@ export const cambiarApariencia = (apariencia) => pedir('/apariencia', { method: 
 export const cambiarAvatar = (avatar) => pedir('/avatar', { method: 'PUT', body: avatar });
 
 /**
- * HU32: cambia la contraseña. Devuelve { token }: el token nuevo de esta sesión (las demás se
- * cierran en el servidor). Un 400 trae `errores` (por ejemplo, la contraseña actual no es correcta)
- * y un 429, el aviso de demasiados intentos. Aquí un 400 nunca cierra la sesión.
+ * HU32: cambia la contraseña (solo la nueva y su confirmación). Devuelve { token }: el token nuevo
+ * de esta sesión (las demás se cierran en el servidor). Un 400 trae `errores`.
  */
-export async function cambiarContrasena({ actual, nueva, confirmacion }) {
+export async function cambiarContrasena({ nueva, confirmacion }) {
   const encabezados = cabeceras({ 'Content-Type': 'application/json' });
   let respuesta;
   try {
     respuesta = await fetch(`${API_URL}/api/usuarios/me/contrasena`, {
       method: 'PUT',
       headers: encabezados,
-      body: JSON.stringify({ actual, nueva, confirmacion }),
+      body: JSON.stringify({ nueva, confirmacion }),
     });
   } catch {
     throw new Error(t('errores.sinConexion'));

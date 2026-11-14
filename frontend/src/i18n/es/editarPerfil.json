@@ -31,7 +31,7 @@
     "correo": "Correo",
     "correoAyuda": "Es el correo con el que inicias sesión, por eso no se cambia aquí.",
     "contrasena": "Contraseña",
-    "contrasenaAyuda": "Te pediremos la actual antes de cambiarla.",
+    "contrasenaAyuda": "Al cambiarla cerraremos tu sesión en los demás dispositivos.",
     "cambiarContrasena": "Cambiar contraseña",
     "cancelar": "Cancelar",
     "guardando": "Guardando...",
