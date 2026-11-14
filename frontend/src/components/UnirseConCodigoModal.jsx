@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { CircleAlert, KeyRound, LoaderCircle, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { unirseConCodigo } from '../services/invitacionService';
 
 /** "abcd efgh" → "ABCD-EFGH" mientras se escribe (sin letras confusas no hace falta más). */
@@ -11,6 +12,7 @@ function formatear(texto) {
 
 /** Unirse a una meta con el código que compartió quien la creó. Al lograrlo abre la meta. */
 export default function UnirseConCodigoModal({ onCerrar }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [codigo, setCodigo] = useState('');
   const [enviando, setEnviando] = useState(false);
@@ -27,7 +29,7 @@ export default function UnirseConCodigoModal({ onCerrar }) {
   const enviar = async (e) => {
     e.preventDefault();
     if (codigo.replace('-', '').length < 8) {
-      setError('El código tiene 8 caracteres, por ejemplo ABCD-EFGH.');
+      setError(t('unirse.codigoCorto'));
       return;
     }
     setEnviando(true);
@@ -49,13 +51,13 @@ export default function UnirseConCodigoModal({ onCerrar }) {
           <div className="flex size-12 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
             <KeyRound className="size-6" aria-hidden="true" />
           </div>
-          <button type="button" onClick={onCerrar} aria-label="Cerrar ventana" className="rounded-lg p-2 text-gray-500 hover:bg-gray-100">
+          <button type="button" onClick={onCerrar} aria-label={t('unirse.cerrarVentana')} className="rounded-lg p-2 text-gray-500 hover:bg-gray-100">
             <X className="size-5" aria-hidden="true" />
           </button>
         </div>
-        <h2 id="titulo-unirse" className="text-xl font-bold text-gray-900">Unirme con un código</h2>
-        <p className="mt-1 text-sm leading-6 text-gray-600">Escribe el código que te compartió quien creó la meta.</p>
-        <label htmlFor="codigo-union" className="mt-5 block text-sm font-bold text-gray-700">Código</label>
+        <h2 id="titulo-unirse" className="text-xl font-bold text-gray-900">{t('unirse.titulo')}</h2>
+        <p className="mt-1 text-sm leading-6 text-gray-600">{t('unirse.texto')}</p>
+        <label htmlFor="codigo-union" className="mt-5 block text-sm font-bold text-gray-700">{t('unirse.codigo')}</label>
         <input
           ref={campo}
           id="codigo-union"
@@ -76,7 +78,7 @@ export default function UnirseConCodigoModal({ onCerrar }) {
         )}
         <button type="submit" disabled={enviando} className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-violet-600 font-bold text-white hover:bg-violet-700 disabled:opacity-60">
           {enviando && <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />}
-          Unirme a la meta
+          {t('unirse.boton')}
         </button>
       </form>
     </div>

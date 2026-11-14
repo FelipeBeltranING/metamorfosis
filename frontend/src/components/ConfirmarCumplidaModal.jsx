@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { CircleAlert, CircleCheck, LoaderCircle, X } from 'lucide-react';
+import { Trans, useTranslation } from 'react-i18next';
 
 /**
  * HU6: confirma antes de marcar una meta como cumplida, porque no se puede deshacer.
@@ -8,6 +9,7 @@ import { CircleAlert, CircleCheck, LoaderCircle, X } from 'lucide-react';
 export default function ConfirmarCumplidaModal({
   meta, guardando, error, onConfirmar, onCancelar,
 }) {
+  const { t } = useTranslation();
   const botonConfirmar = useRef(null);
 
   // Foco en la acción principal al abrir; Esc cierra.
@@ -42,7 +44,7 @@ export default function ConfirmarCumplidaModal({
             type="button"
             onClick={onCancelar}
             disabled={guardando}
-            aria-label="Cerrar ventana"
+            aria-label={t('cumplirMeta.cerrarVentana')}
             className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 disabled:opacity-50"
           >
             <X className="size-5" aria-hidden="true" />
@@ -50,12 +52,10 @@ export default function ConfirmarCumplidaModal({
         </div>
 
         <h2 id="titulo-confirmar-cumplida" className="text-xl font-bold text-gray-900">
-          ¿Marcar esta meta como cumplida?
+          {t('cumplirMeta.titulo')}
         </h2>
         <p id="descripcion-confirmar-cumplida" className="mt-3 text-sm leading-6 text-gray-600">
-          <strong>{meta.nombre}</strong> quedará como cumplida con la fecha de hoy y pasará a tus metas cumplidas.
-          Ya no podrás editarla ni agregarle sub-metas, y sus sub-metas dejarán de registrarse; su
-          historial y estadísticas se conservan. Esta acción no se puede deshacer.
+          <Trans i18nKey="cumplirMeta.texto" values={{ nombre: meta.nombre }} components={{ b: <strong /> }} />
         </p>
 
         {error && (
@@ -72,7 +72,7 @@ export default function ConfirmarCumplidaModal({
             disabled={guardando}
             className="h-11 rounded-xl border border-gray-200 px-5 font-semibold text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Cancelar
+            {t('cumplirMeta.cancelar')}
           </button>
           <button
             ref={botonConfirmar}
@@ -84,12 +84,12 @@ export default function ConfirmarCumplidaModal({
             {guardando ? (
               <>
                 <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />
-                Marcando...
+                {t('cumplirMeta.marcando')}
               </>
             ) : (
               <>
                 <CircleCheck className="size-4" aria-hidden="true" />
-                Marcar como cumplida
+                {t('cumplirMeta.marcar')}
               </>
             )}
           </button>

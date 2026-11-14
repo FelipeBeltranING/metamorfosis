@@ -1,0 +1,99 @@
+{
+  "misMetas": {
+    "titulo": "Mis metas",
+    "subtitulo": "Marca el círculo cuando logres una meta.",
+    "unirme": "Unirme",
+    "conCodigo": " con código",
+    "nuevaMeta": "+ Nueva meta",
+    "nuevaMetaEtiqueta": "Nueva meta",
+    "verCumplidas": "Ver cumplidas",
+    "yaNoExiste": "Esta meta ya no existe",
+    "avisos": {
+      "creada": "¡Meta creada! Ya aparece en tus metas activas.",
+      "actualizada": "¡Meta actualizada!",
+      "eliminada": "Meta eliminada.",
+      "sesion": "¡Sesión iniciada!",
+      "cumplida": "¡Meta cumplida! Ya está en tus metas cumplidas.",
+      "oculta": "Meta oculta: ya no se mostrará en tu perfil público.",
+      "visible": "La meta vuelve a mostrarse en tu perfil público."
+    }
+  },
+  "filtrosMetas": {
+    "etiqueta": "Filtrar metas",
+    "estado": "Estado",
+    "tipo": "Tipo",
+    "todosTipos": "Todos los tipos",
+    "plazo": "Plazo",
+    "todosPlazos": "Todos los plazos",
+    "limpiar": "Limpiar filtros",
+    "buscando": "Buscando metas...",
+    "cantidad_one": "{{count}} meta",
+    "cantidad_other": "{{count}} metas"
+  },
+  "tarjeta": {
+    "estaCumplida": "{{nombre}} está cumplida",
+    "metaCumplida": "Meta cumplida",
+    "marcarNombre": "Marcar {{nombre}} como cumplida",
+    "marcar": "Marcar como cumplida",
+    "pendiente": "Pendiente",
+    "hecho": "Hecho",
+    "noHecho": "No hecho",
+    "noSeMuestra": "No se muestra en tu perfil público",
+    "oculta": "Oculta",
+    "cumplida": "Cumplida",
+    "activa": "Activa",
+    "compartida": "Meta compartida · {{detalle}}",
+    "hoy": "Hoy · {{hechas}} de {{total}} sub-metas",
+    "hoyNada": "Hoy no toca ninguna sub-meta",
+    "verCamino": "Ver mi camino",
+    "sinCaminoCreador": "Esta meta aún no tiene un camino. Divídela en sub-metas diarias para saber qué hacer cada día.",
+    "sinCaminoInvitado": "Quien creó la meta aún no ha trazado el camino. Cuando agregue sub-metas, marcarás aquí tus días.",
+    "primeraSubMeta": "+ Agregar la primera sub-meta",
+    "creadaEl": "Creada el {{fecha}}",
+    "cumplidaEl": "Cumplida el {{fecha}}",
+    "verRecorrido": "Ver cómo recorriste el camino",
+    "compartirLogro": "Compartir logro"
+  },
+  "menuTarjeta": {
+    "opciones": "Opciones de la meta {{nombre}}",
+    "editar": "Editar",
+    "noEditable": "Una meta cumplida no se puede editar.",
+    "invitar": "Invitar personas",
+    "soloActivas": "Solo se puede invitar a metas activas.",
+    "mostrar": "Mostrar en el perfil",
+    "ocultar": "Ocultar del perfil",
+    "eliminar": "Eliminar"
+  },
+  "eliminarMeta": {
+    "estaMeta": "esta meta",
+    "cerrarVentana": "Cerrar ventana",
+    "titulo": "¿Eliminar esta meta?",
+    "seguro": "¿Seguro que deseas eliminar <b>{{nombre}}</b>?",
+    "conCamino": " Se eliminará junto con todo su camino:",
+    "sinDeshacer": " Esta acción no se puede deshacer.",
+    "subMetas_one": " sub-meta",
+    "subMetas_other": " sub-metas",
+    "dias_one": " día registrado y sus estadísticas",
+    "dias_other": " días registrados y sus estadísticas",
+    "noSeDeshace": "Esta acción no se puede deshacer.",
+    "cancelar": "Cancelar",
+    "eliminando": "Eliminando...",
+    "eliminar": "Eliminar meta"
+  },
+  "cumplirMeta": {
+    "cerrarVentana": "Cerrar ventana",
+    "titulo": "¿Marcar esta meta como cumplida?",
+    "texto": "<b>{{nombre}}</b> quedará como cumplida con la fecha de hoy y pasará a tus metas cumplidas. Ya no podrás editarla ni agregarle sub-metas, y sus sub-metas dejarán de registrarse; su historial y estadísticas se conservan. Esta acción no se puede deshacer.",
+    "cancelar": "Cancelar",
+    "marcando": "Marcando...",
+    "marcar": "Marcar como cumplida"
+  },
+  "unirse": {
+    "codigoCorto": "El código tiene 8 caracteres, por ejemplo ABCD-EFGH.",
+    "cerrarVentana": "Cerrar ventana",
+    "titulo": "Unirme con un código",
+    "texto": "Escribe el código que te compartió quien creó la meta.",
+    "codigo": "Código",
+    "boton": "Unirme a la meta"
+  }
+}

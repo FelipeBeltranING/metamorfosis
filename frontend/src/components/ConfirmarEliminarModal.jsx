@@ -1,5 +1,6 @@
 
 import { CircleAlert, LoaderCircle, Trash2, X } from 'lucide-react';
+import { Trans, useTranslation } from 'react-i18next';
 
 export default function ConfirmarEliminarModal({
   meta,
@@ -9,7 +10,8 @@ export default function ConfirmarEliminarModal({
   onConfirmar,
   onCancelar,
 }) {
-  const nombreMeta = meta?.titulo || meta?.nombre || 'esta meta';
+  const { t } = useTranslation();
+  const nombreMeta = meta?.titulo || meta?.nombre || t('eliminarMeta.estaMeta');
 
   return (
     <div
@@ -36,7 +38,7 @@ export default function ConfirmarEliminarModal({
             type="button"
             onClick={onCancelar}
             disabled={eliminando}
-            aria-label="Cerrar ventana"
+            aria-label={t('eliminarMeta.cerrarVentana')}
             className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 disabled:opacity-50"
           >
             <X className="size-5" aria-hidden="true" />
@@ -47,15 +49,15 @@ export default function ConfirmarEliminarModal({
           id="titulo-confirmar-eliminar"
           className="text-xl font-bold text-gray-900"
         >
-          ¿Eliminar esta meta?
+          {t('eliminarMeta.titulo')}
         </h2>
 
         <p
           id="descripcion-confirmar-eliminar"
           className="mt-3 text-sm leading-6 text-gray-600"
         >
-          ¿Seguro que deseas eliminar <strong>{nombreMeta}</strong>?
-          {resumen?.totalSubMetas > 0 ? ' Se eliminará junto con todo su camino:' : ' Esta acción no se puede deshacer.'}
+          <Trans i18nKey="eliminarMeta.seguro" values={{ nombre: nombreMeta }} components={{ b: <strong /> }} />
+          {resumen?.totalSubMetas > 0 ? t('eliminarMeta.conCamino') : t('eliminarMeta.sinDeshacer')}
         </p>
 
         {/* HU4 + sub-metas: se borran en cascada sus sub-metas y registros. */}
@@ -64,14 +66,14 @@ export default function ConfirmarEliminarModal({
             <ul className="mt-3 flex flex-col gap-1.5 text-sm text-gray-700">
               <li className="rounded-lg bg-slate-50 px-3 py-2">
                 <strong className="text-gray-900">{resumen.totalSubMetas}</strong>
-                {resumen.totalSubMetas === 1 ? ' sub-meta' : ' sub-metas'}
+                {t('eliminarMeta.subMetas', { count: resumen.totalSubMetas })}
               </li>
               <li className="rounded-lg bg-slate-50 px-3 py-2">
                 <strong className="text-gray-900">{resumen.totalRegistros}</strong>
-                {resumen.totalRegistros === 1 ? ' día registrado' : ' días registrados'} y sus estadísticas
+                {t('eliminarMeta.dias', { count: resumen.totalRegistros })}
               </li>
             </ul>
-            <p className="mt-3 text-sm text-gray-600">Esta acción no se puede deshacer.</p>
+            <p className="mt-3 text-sm text-gray-600">{t('eliminarMeta.noSeDeshace')}</p>
           </>
         )}
 
@@ -95,7 +97,7 @@ export default function ConfirmarEliminarModal({
             disabled={eliminando}
             className="h-11 rounded-xl border border-gray-200 px-5 font-semibold text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Cancelar
+            {t('eliminarMeta.cancelar')}
           </button>
 
           <button
@@ -110,12 +112,12 @@ export default function ConfirmarEliminarModal({
                   className="size-4 animate-spin"
                   aria-hidden="true"
                 />
-                Eliminando...
+                {t('eliminarMeta.eliminando')}
               </>
             ) : (
               <>
                 <Trash2 className="size-4" aria-hidden="true" />
-                Eliminar meta
+                {t('eliminarMeta.eliminar')}
               </>
             )}
           </button>

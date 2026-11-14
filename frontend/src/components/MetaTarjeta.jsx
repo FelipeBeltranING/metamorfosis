@@ -2,6 +2,9 @@ import {
   Check, Clock, EyeOff, Share2,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
+import { formatearFecha } from '../utils/fechas';
 import MenuTarjeta from './MenuTarjeta';
 import AnilloConstancia from './AnilloConstancia';
 import { AvataresEncimados } from './Participantes';
@@ -10,17 +13,8 @@ import { obtenerSesion } from '../services/sesionService';
 import { formatearNumero } from '../utils/subMetas';
 import { PLAZOS, TIPOS } from '../constants/opcionesMeta';
 
-const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((t) => [t.valor, t]));
+const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((x) => [x.valor, x]));
 const PLAZO_POR_VALOR = Object.fromEntries(PLAZOS.map((p) => [p.valor, p]));
-
-const FORMATO_FECHA = new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
-
-/** "2026-11-01" → "1 nov 2026". Se arma con la fecha local para no correr el día por la zona horaria. */
-function formatearFecha(iso) {
-  if (!iso) return '';
-  const [anio, mes, dia] = iso.split('-').map(Number);
-  return FORMATO_FECHA.format(new Date(anio, mes - 1, dia)).replace('.', '');
-}
 
 function Chip({ Icono, texto }) {
   return (
@@ -36,13 +30,14 @@ function Chip({ Icono, texto }) {
  * con la meta cumplida solo muestra el check, porque no se puede desmarcar.
  */
 function CirculoCumplida({ nombreMeta, cumplida, onClick }) {
+  const { t } = useTranslation();
   const base = 'flex size-10 shrink-0 items-center justify-center rounded-full border';
   if (cumplida) {
     return (
       <span
         role="img"
-        aria-label={`${nombreMeta} está cumplida`}
-        title="Meta cumplida"
+        aria-label={t('tarjeta.estaCumplida', { nombre: nombreMeta })}
+        title={t('tarjeta.metaCumplida')}
         className={`${base} border-emerald-500 bg-emerald-500 text-white`}
       >
         <Check className="size-5" aria-hidden="true" />
@@ -53,8 +48,8 @@ function CirculoCumplida({ nombreMeta, cumplida, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      aria-label={`Marcar ${nombreMeta} como cumplida`}
-      title="Marcar como cumplida"
+      aria-label={t('tarjeta.marcarNombre', { nombre: nombreMeta })}
+      title={t('tarjeta.marcar')}
       className={`${base} border-zinc-300 bg-white text-transparent transition hover:border-emerald-400 hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300`}
     >
       <Check className="size-5" aria-hidden="true" />
@@ -64,20 +59,21 @@ function CirculoCumplida({ nombreMeta, cumplida, onClick }) {
 
 /** Sub-metas: valor de hoy de una sub-meta en la tarjeta ("20 / 15 págs", "Hecho", "Pendiente"). */
 function valorHoy({ subMeta, dia }) {
-  if (dia.valor === null || dia.valor === undefined) return 'Pendiente';
-  if (subMeta.tipo === 'SI_NO') return Number(dia.valor) >= 1 ? 'Hecho' : 'No hecho';
+  if (dia.valor === null || dia.valor === undefined) return i18n.t('tarjeta.pendiente');
+  if (subMeta.tipo === 'SI_NO') return Number(dia.valor) >= 1 ? i18n.t('tarjeta.hecho') : i18n.t('tarjeta.noHecho');
   return `${formatearNumero(dia.valor)} / ${formatearNumero(subMeta.objetivo)} ${subMeta.unidad}`;
 }
 
 /** HU25: la meta no se muestra en el perfil público del usuario. El texto lo lee el lector de pantalla. */
 export function EtiquetaOculta({ className = '' }) {
+  const { t } = useTranslation();
   return (
     <span
-      title="No se muestra en tu perfil público"
+      title={t('tarjeta.noSeMuestra')}
       className={`flex items-center gap-1.5 rounded-xl bg-slate-100 px-3 py-2 text-sm font-bold text-gray-700 ${className}`}
     >
       <EyeOff className="size-4" aria-hidden="true" />
-      Oculta
+      {t('tarjeta.oculta')}
     </span>
   );
 }
@@ -85,6 +81,7 @@ export function EtiquetaOculta({ className = '' }) {
 export default function MetaTarjeta({
   meta, resumen, onMarcarCumplida, onEditar, onCambiarVisibilidad, onEliminar, onCompartir, onInvitar,
 }) {
+  const { t } = useTranslation();
   const tipo = TIPO_POR_VALOR[meta.tipo] ?? TIPO_POR_VALOR.OTRO;
   const plazo = PLAZO_POR_VALOR[meta.plazo];
   const cumplida = meta.estado === 'CUMPLIDA';
@@ -106,11 +103,11 @@ export default function MetaTarjeta({
         <div className="flex flex-wrap items-center justify-end gap-2">
           {meta.oculta && <EtiquetaOculta />}
           {cumplida ? (
-            <span className="rounded-xl bg-violet-600 px-3 py-2 text-sm font-bold text-white">Cumplida</span>
+            <span className="rounded-xl bg-violet-600 px-3 py-2 text-sm font-bold text-white">{t('tarjeta.cumplida')}</span>
           ) : (
             <span className="flex items-center gap-1.5 rounded-xl bg-emerald-100 px-3 py-2 text-sm font-bold text-emerald-800">
               <span className="text-[10px]" aria-hidden="true">●</span>
-              Activa
+              {t('tarjeta.activa')}
             </span>
           )}
           {onMarcarCumplida && (soyCreador || cumplida) && (
@@ -151,7 +148,7 @@ export default function MetaTarjeta({
           className="-mt-1 flex items-center gap-3 self-start rounded-xl text-left text-sm font-semibold text-gray-600 enabled:hover:text-violet-700 disabled:cursor-default"
         >
           <AvataresEncimados personas={participantes} />
-          <span>Meta compartida · {textoParticipantes(participantes, obtenerSesion()?.codigoUsuario)}</span>
+          <span>{t('tarjeta.compartida', { detalle: textoParticipantes(participantes, obtenerSesion()?.codigoUsuario) })}</span>
         </button>
       )}
 
@@ -161,8 +158,8 @@ export default function MetaTarjeta({
           <div className="flex flex-col gap-2.5 border-t border-zinc-100 pt-4">
             <p className="text-sm font-bold text-gray-600">
               {resumen.tocanHoy > 0
-                ? `Hoy · ${resumen.cumplidasHoy} de ${resumen.tocanHoy} sub-metas`
-                : 'Hoy no toca ninguna sub-meta'}
+                ? t('tarjeta.hoy', { hechas: resumen.cumplidasHoy, total: resumen.tocanHoy })
+                : t('tarjeta.hoyNada')}
             </p>
             <ul className="flex flex-col gap-2">
               {resumen.hoy.map((item) => (
@@ -185,36 +182,36 @@ export default function MetaTarjeta({
               to={`/metas/${meta.codigoMeta}`}
               className="mt-1 flex h-11 items-center justify-center rounded-xl border border-violet-300 bg-violet-50 font-bold text-violet-800 hover:bg-violet-100"
             >
-              Ver mi camino
+              {t('tarjeta.verCamino')}
             </Link>
           </div>
         ) : (
           <div className="flex flex-col gap-3 border-t border-zinc-100 pt-4">
             <p className="text-[15px] leading-6 text-gray-600">
               {soyCreador
-                ? 'Esta meta aún no tiene un camino. Divídela en sub-metas diarias para saber qué hacer cada día.'
-                : 'Quien creó la meta aún no ha trazado el camino. Cuando agregue sub-metas, marcarás aquí tus días.'}
+                ? t('tarjeta.sinCaminoCreador')
+                : t('tarjeta.sinCaminoInvitado')}
             </p>
             {soyCreador && (
               <Link
                 to={`/metas/${meta.codigoMeta}`}
                 className="flex h-11 items-center justify-center rounded-xl bg-violet-600 font-bold text-white hover:bg-violet-700"
               >
-                + Agregar la primera sub-meta
+                {t('tarjeta.primeraSubMeta')}
               </Link>
             )}
           </div>
         )
       )}
       <div className="flex flex-wrap items-center justify-between gap-2 border-t border-zinc-100 pt-4 text-sm text-gray-500">
-        {meta.fechaCreacion && <span>Creada el {formatearFecha(meta.fechaCreacion)}</span>}
+        {meta.fechaCreacion && <span>{t('tarjeta.creadaEl', { fecha: formatearFecha(meta.fechaCreacion) })}</span>}
         {cumplida && meta.fechaCumplida ? (
           <span className="flex items-center gap-1 font-semibold text-emerald-700">
             <Check className="size-4" aria-hidden="true" />
-            Cumplida el {formatearFecha(meta.fechaCumplida)}
+            {t('tarjeta.cumplidaEl', { fecha: formatearFecha(meta.fechaCumplida) })}
           </span>
         ) : (
-          <span>Pendiente</span>
+          <span>{t('tarjeta.pendiente')}</span>
         )}
       </div>
       {/* HU6 + sub-metas: el camino de una meta cumplida queda para consultar. */}
@@ -223,7 +220,7 @@ export default function MetaTarjeta({
           to={`/metas/${meta.codigoMeta}`}
           className="flex h-11 items-center justify-center rounded-xl border border-zinc-200 bg-white font-semibold text-gray-700 hover:bg-gray-50"
         >
-          Ver cómo recorriste el camino
+          {t('tarjeta.verRecorrido')}
         </Link>
       )}
       {/* HU21: una meta cumplida se puede compartir como logro. */}
@@ -234,7 +231,7 @@ export default function MetaTarjeta({
           className="flex h-11 items-center justify-center gap-2 rounded-xl border border-violet-200 bg-white font-semibold text-violet-700 hover:bg-violet-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
         >
           <Share2 className="size-4" aria-hidden="true" />
-          Compartir logro
+          {t('tarjeta.compartirLogro')}
         </button>
       )}
     </li>
