@@ -1,6 +1,7 @@
 package com.metamorfosis.backend.service;
 
 import com.metamorfosis.backend.config.CalendarioUsuario;
+import com.metamorfosis.backend.dto.AvanceResponse;
 import com.metamorfosis.backend.dto.CaminoResponse;
 import com.metamorfosis.backend.dto.ParticipanteResponse;
 import com.metamorfosis.backend.dto.DiaResponse;
@@ -12,6 +13,7 @@ import com.metamorfosis.backend.dto.SubMetaResponse;
 import com.metamorfosis.backend.exception.MetaNoEncontradaException;
 import com.metamorfosis.backend.exception.PermisoDenegadoException;
 import com.metamorfosis.backend.exception.SubMetaNoEncontradaException;
+import com.metamorfosis.backend.exception.ValidacionException;
 import com.metamorfosis.backend.model.EstadoMeta;
 import com.metamorfosis.backend.model.Meta;
 import com.metamorfosis.backend.model.RegistroSubMeta;
@@ -33,8 +35,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Sub-metas: lo que se muestra del camino. "Tu camino" de una meta, el resumen de hoy para las
- * tarjetas de "Mis metas" y las estadísticas de una sub-meta. Las reglas están en {@link CalculoCamino}.
+ * Lo que se muestra del camino de una meta: "Tu camino" (hitos y hábitos), el resumen para las
+ * tarjetas de "Mis metas" (HU3) y las estadísticas de un hábito (HU29).
+ * El avance de la meta sale de los hitos; la constancia, de los hábitos. Las reglas de los hábitos
+ * están en {@link CalculoCamino}.
  */
 @Service
 public class CaminoService {
@@ -55,7 +59,7 @@ public class CaminoService {
         this.calendario = calendario;
     }
 
-    /** "Tu camino" de una meta: sub-metas con los últimos 7 días y las constancias del usuario. */
+    /** "Tu camino" de una meta: hitos con su avance (HU29) y hábitos con sus últimos 7 días y constancias (HU5). */
     @Transactional(readOnly = true)
     public CaminoResponse camino(Integer codigoMeta, Integer codigoUsuario) {
         Meta meta = metaRepository.findById(codigoMeta)
@@ -63,7 +67,9 @@ public class CaminoService {
         exigirParticipante(codigoMeta, codigoUsuario);
 
         LocalDate hoy = calendario.hoy();
-        List<SubMeta> subMetas = subMetaRepository.findByMetaCodigoMetaOrderByCodigoSubMetaAsc(codigoMeta);
+        List<SubMeta> pasos = subMetaRepository.findByMetaCodigoMetaOrderByCodigoSubMetaAsc(codigoMeta);
+        List<SubMeta> hitos = pasos.stream().filter(SubMeta::esHito).toList();
+        List<SubMeta> subMetas = pasos.stream().filter(SubMeta::esHabito).toList();
         Map<Integer, List<DiaResponse>> dias = diasPorSubMeta(subMetas, codigoUsuario, hoy.minusDays(DIAS_CAMINO - 1L), hoy);
 
         List<DiaResponse> todos = new ArrayList<>();
@@ -90,21 +96,24 @@ public class CaminoService {
                 meta.getCodigoMeta(), meta.getNombre(), meta.getTipo(), meta.getPlazo(), meta.getEstado(),
                 meta.getFechaCreacion(), meta.getFechaCumplida(meta.getCreador().getCodigoUsuario()), hoy,
                 soloLectura, esCreador && !soloLectura,
+                avance(hitos),
                 CalculoCamino.constancia(todos, hoy, 7), CalculoCamino.constancia(todos, hoy, 30),
                 cumplidasHoy, tocanHoy,
                 CalculoCamino.diasSeguidosCompletos(new ArrayList<>(dias.values()), hoy),
                 registroRepository.countBySubMetaMetaCodigoMeta(codigoMeta),
+                hitos.stream().map(SubMetaResponse::desde).toList(),
                 items,
                 meta.participantesVisibles().stream().map(p -> ParticipanteResponse.desde(p, meta.getCreador())).toList());
     }
 
-    /** Para cada meta activa del usuario: constancia de 7 días y sub-metas que tocan hoy (HU3). */
+    /** Para cada meta activa del usuario (HU3): avance por hitos (HU29), constancia de 7 días y hábitos de hoy (HU5). */
     @Transactional(readOnly = true)
     public List<ResumenCaminoResponse> resumenes(Integer codigoUsuario) {
         LocalDate hoy = calendario.hoy();
         List<ResumenCaminoResponse> resumenes = new ArrayList<>();
         for (Meta meta : metaRepository.findActivasByParticipante(codigoUsuario)) {
-            List<SubMeta> subMetas = subMetaRepository.findByMetaCodigoMetaOrderByCodigoSubMetaAsc(meta.getCodigoMeta());
+            List<SubMeta> pasos = subMetaRepository.findByMetaCodigoMetaOrderByCodigoSubMetaAsc(meta.getCodigoMeta());
+            List<SubMeta> subMetas = pasos.stream().filter(SubMeta::esHabito).toList();
             Map<Integer, List<DiaResponse>> dias = diasPorSubMeta(subMetas, codigoUsuario, hoy.minusDays(6), hoy);
 
             List<DiaResponse> todos = new ArrayList<>();
@@ -119,20 +128,24 @@ public class CaminoService {
                     if (hoyDia.cumplido()) cumplidas++;
                 }
             }
-            resumenes.add(new ResumenCaminoResponse(meta.getCodigoMeta(), subMetas.size(),
+            resumenes.add(new ResumenCaminoResponse(meta.getCodigoMeta(), pasos.size(),
+                    avance(pasos.stream().filter(SubMeta::esHito).toList()),
                     registroRepository.countBySubMetaMetaCodigoMeta(meta.getCodigoMeta()),
                     CalculoCamino.constancia(todos, hoy, 7), cumplidas, deHoy.size(), deHoy));
         }
         return resumenes;
     }
 
-    /** Estadísticas de una sub-meta para el usuario: constancias, rachas, totales e historial diario. */
+    /** HU29: estadísticas de un hábito para el usuario: constancias, rachas, totales e historial diario. */
     @Transactional(readOnly = true)
     public EstadisticasResponse estadisticas(Integer codigoSubMeta, Integer codigoUsuario) {
         SubMeta subMeta = subMetaRepository.findById(codigoSubMeta)
                 .orElseThrow(() -> new SubMetaNoEncontradaException(codigoSubMeta));
         Meta meta = subMeta.getMeta();
         exigirParticipante(meta.getCodigoMeta(), codigoUsuario);
+        if (subMeta.esHito()) {
+            throw new ValidacionException(List.of("Un hito no tiene estadísticas por día"));
+        }
 
         LocalDate hoy = calendario.hoy();
         LocalDate desde = subMeta.getFechaCreacion();
@@ -161,6 +174,12 @@ public class CaminoService {
                 rachas.subList(0, Math.min(5, rachas.size())),
                 cumplidos, registrados, medible ? total : null, promedio,
                 CalculoCamino.porDiaSemana(dias, hoy), dias);
+    }
+
+    /** HU29: hitos logrados sobre el total. */
+    private static AvanceResponse avance(List<SubMeta> hitos) {
+        int logrados = (int) hitos.stream().filter(SubMeta::isLogrado).count();
+        return AvanceResponse.de(logrados, hitos.size());
     }
 
     private void exigirParticipante(Integer codigoMeta, Integer codigoUsuario) {
