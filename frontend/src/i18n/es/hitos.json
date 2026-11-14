@@ -1,0 +1,170 @@
+{
+  "hitos": {
+    "titulo": "Hitos",
+    "explicacion": "Pasos que logras una sola vez. Cada hito logrado acerca la meta a su destino.",
+    "avance": "{{logrados}} de {{total}} hitos",
+    "avanceEtiqueta": "Avance de la meta: {{porcentaje}} % ({{logrados}} de {{total}} hitos)",
+    "sinHitosAnillo": "La meta aún no tiene hitos para medir su avance",
+    "marcar": "Marcar \"{{nombre}}\" como logrado",
+    "desmarcar": "\"{{nombre}}\" está logrado. Tocar para devolverlo a pendiente",
+    "logradoEl": "Logrado el {{fecha}}",
+    "logradoPor": "Logrado el {{fecha}} por {{nombre}}",
+    "pendiente": "Pendiente",
+    "logradoAviso": "¡Hito logrado! Vas en {{porcentaje}} %.",
+    "deshechoAviso": "El hito volvió a pendiente.",
+    "agregarHito": "+ Agregar hito",
+    "vacioCreador": "Agrega hitos para saber cuánto te falta: por ejemplo, cada libro terminado o cada millón ahorrado.",
+    "vacioInvitado": "Esta meta aún no tiene hitos.",
+    "habitos": "Hábitos",
+    "habitosExplicacion": "Lo que repites en ciertos días. Miden qué tan constante vas.",
+    "habitosVacioCreador": "Agrega hábitos para el día a día: por ejemplo, leer 15 páginas o guardar dinero cada lunes.",
+    "habitosVacioInvitado": "Esta meta aún no tiene hábitos.",
+    "llegasteTitulo": "¡Lograste todos los hitos!",
+    "llegasteTexto": "Llegaste al destino de \"{{meta}}\". Márcala como cumplida para celebrarla, ganar tus insignias y compartirla.",
+    "constancia": "Constancia (30 días)",
+    "hoy": "Hábitos de hoy",
+    "racha": "Racha",
+    "rachaDias_one": "{{count}} día",
+    "rachaDias_other": "{{count}} días",
+    "rachaCero": "Empieza hoy",
+    "faltan_one": "Falta {{count}} hito",
+    "faltan_other": "Faltan {{count}} hitos",
+    "todosLogrados": "¡Todos los hitos logrados!",
+    "enCurso": "En curso",
+    "constanciaSemana": "Constancia de los hábitos: {{porcentaje}} % esta semana",
+    "tarjetaHoy": "Hoy · {{hechas}} de {{total}} hábitos",
+    "tarjetaHoyNada": "Hoy no toca ningún hábito",
+    "tarjetaSinCaminoCreador": "Esta meta aún no tiene un camino. Agrega hitos para saber cuánto te falta y hábitos para el día a día.",
+    "tarjetaSinCaminoInvitado": "Quien creó la meta aún no ha trazado el camino. Cuando agregue pasos, marcarás aquí tu avance.",
+    "tarjetaPrimerPaso": "+ Trazar el camino",
+    "eliminarMetaPasos_one": " paso del camino (hito o hábito)",
+    "eliminarMetaPasos_other": " pasos del camino (hitos y hábitos)",
+    "verHistorial": "Toca para ver el historial por día, semana o mes"
+  },
+  "subMetaPaso": {
+    "hito": "Hito",
+    "hitoTexto": "Un paso que logras una sola vez. Te dice cuánto te falta. Ej.: Terminar el libro 3, Abrir la cuenta de ahorros.",
+    "habitoSiNo": "Hábito · Sí / No",
+    "habitoMedible": "Hábito · Medible",
+    "tituloHito": "Nuevo hito",
+    "tituloEditarHito": "Editar hito",
+    "tituloEditarHabito": "Editar hábito",
+    "nombrePlaceholderHito": "Ej. Terminar el libro 3",
+    "resumenHito": "Cuando lo logres, márcalo en Tu camino: el avance de la meta subirá.",
+    "masOpciones": "Más opciones",
+    "ideas": "Ideas para esta meta",
+    "ideasTexto": "Toca una para empezar con ella; luego puedes cambiar el nombre.",
+    "grupoHito": "Para medir cuánto te falta",
+    "grupoHabito": "Para el día a día"
+  },
+  "ideasCamino": {
+    "PERSONAL": [
+      [
+        "HITO",
+        "Terminar el primer paso grande"
+      ],
+      [
+        "SI_NO",
+        "Dedicarle 20 minutos"
+      ],
+      [
+        "SI_NO",
+        "Escribir cómo me fue"
+      ]
+    ],
+    "PROFESIONAL": [
+      [
+        "HITO",
+        "Terminar el curso"
+      ],
+      [
+        "HITO",
+        "Actualizar la hoja de vida"
+      ],
+      [
+        "SI_NO",
+        "Practicar 30 minutos"
+      ]
+    ],
+    "FINANCIERA": [
+      [
+        "HITO",
+        "Ahorrar el primer 25 %"
+      ],
+      [
+        "HITO",
+        "Ahorrar la mitad"
+      ],
+      [
+        "MEDIBLE",
+        "Guardar dinero"
+      ]
+    ],
+    "SOCIAL_FAMILIAR": [
+      [
+        "HITO",
+        "Organizar el encuentro"
+      ],
+      [
+        "SI_NO",
+        "Llamar a alguien"
+      ],
+      [
+        "SI_NO",
+        "Compartir una comida"
+      ]
+    ],
+    "SALUD_BIENESTAR": [
+      [
+        "MEDIBLE",
+        "Caminar"
+      ],
+      [
+        "SI_NO",
+        "Tomar agua suficiente"
+      ],
+      [
+        "HITO",
+        "Hacer el chequeo médico"
+      ]
+    ],
+    "ACADEMICA": [
+      [
+        "HITO",
+        "Entregar el primer trabajo"
+      ],
+      [
+        "MEDIBLE",
+        "Estudiar"
+      ],
+      [
+        "SI_NO",
+        "Repasar los apuntes"
+      ]
+    ],
+    "RECREATIVA_OCIO": [
+      [
+        "HITO",
+        "Terminar el primer proyecto"
+      ],
+      [
+        "SI_NO",
+        "Practicar"
+      ],
+      [
+        "MEDIBLE",
+        "Tiempo de práctica"
+      ]
+    ],
+    "OTRO": [
+      [
+        "HITO",
+        "Dar el primer paso"
+      ],
+      [
+        "SI_NO",
+        "Avanzar un poco"
+      ]
+    ]
+  }
+}

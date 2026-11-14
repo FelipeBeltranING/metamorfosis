@@ -1,6 +1,7 @@
 package com.metamorfosis.backend.controller;
 
 import com.metamorfosis.backend.dto.LogroHitoResponse;
+import com.metamorfosis.backend.dto.PasoResponse;
 import com.metamorfosis.backend.dto.CaminoResponse;
 import com.metamorfosis.backend.dto.DiaResponse;
 import com.metamorfosis.backend.dto.EstadisticasResponse;
@@ -56,6 +57,13 @@ public class SubMetaController {
     public ResponseEntity<SubMetaResponse> crear(@PathVariable Integer codigoMeta, @RequestBody SubMetaRequest pedido,
                                                  @AuthenticationPrincipal Integer codigoUsuario) {
         return ResponseEntity.status(HttpStatus.CREATED).body(subMetaService.crear(codigoMeta, pedido, codigoUsuario));
+    }
+
+    /** HU28: un paso del camino, para editarlo. */
+    @GetMapping("/submetas/{codigoSubMeta}")
+    public ResponseEntity<PasoResponse> paso(@PathVariable Integer codigoSubMeta,
+                                             @AuthenticationPrincipal Integer codigoUsuario) {
+        return ResponseEntity.ok(caminoService.paso(codigoSubMeta, codigoUsuario));
     }
 
     @PutMapping("/submetas/{codigoSubMeta}")

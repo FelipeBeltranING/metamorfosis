@@ -1,6 +1,6 @@
 {
   "estadisticas": {
-    "noExiste": "This sub-goal doesn't exist.",
+    "noExiste": "This habit doesn't exist.",
     "objetivoLinea": "Target: {{valor}} {{unidad}}",
     "sinRegistro": "not logged",
     "barraDia": "{{dia}}: {{valor}}",

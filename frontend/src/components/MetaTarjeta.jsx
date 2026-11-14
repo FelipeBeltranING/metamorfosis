@@ -57,7 +57,7 @@ function CirculoCumplida({ nombreMeta, cumplida, onClick }) {
   );
 }
 
-/** Sub-metas: valor de hoy de una sub-meta en la tarjeta ("20 / 15 págs", "Hecho", "Pendiente"). */
+/** HU5: valor de hoy de un hábito en la tarjeta ("20 / 15 págs", "Hecho", "Pendiente"). */
 function valorHoy({ subMeta, dia }) {
   if (dia.valor === null || dia.valor === undefined) return i18n.t('tarjeta.pendiente');
   if (subMeta.tipo === 'SI_NO') return Number(dia.valor) >= 1 ? i18n.t('tarjeta.hecho') : i18n.t('tarjeta.noHecho');
@@ -138,7 +138,13 @@ export default function MetaTarjeta({
           <Chip Icono={tipo.Icono} texto={tipo.etiqueta} />
           {plazo && <Chip Icono={Clock} texto={plazo.etiqueta} />}
         </div>
-        {resumen?.totalSubMetas > 0 && <AnilloConstancia porcentaje={resumen.constancia7} />}
+        {/* HU29: el anillo es el avance real de la meta (hitos logrados), no la constancia. */}
+        {resumen?.avance?.total > 0 && (
+          <AnilloConstancia
+            porcentaje={resumen.avance.porcentaje}
+            etiqueta={t('hitos.avanceEtiqueta', { porcentaje: resumen.avance.porcentaje, logrados: resumen.avance.logrados, total: resumen.avance.total })}
+          />
+        )}
       </div>
       {compartida && (
         <button
@@ -152,15 +158,24 @@ export default function MetaTarjeta({
         </button>
       )}
 
-      {/* Sub-metas: lo que toca hoy y el acceso a "Tu camino". */}
+      {/* HU5 y HU29: los hábitos que tocan hoy, la constancia y el acceso a "Tu camino". */}
       {resumen && !cumplida && (
         resumen.totalSubMetas > 0 ? (
           <div className="flex flex-col gap-2.5 border-t border-zinc-100 pt-4">
-            <p className="text-sm font-bold text-gray-600">
-              {resumen.tocanHoy > 0
-                ? t('tarjeta.hoy', { hechas: resumen.cumplidasHoy, total: resumen.tocanHoy })
-                : t('tarjeta.hoyNada')}
-            </p>
+            {resumen.avance?.total > 0 && (
+              <p className="text-sm font-bold text-violet-800">
+                {resumen.avance.logrados === resumen.avance.total
+                  ? t('hitos.todosLogrados')
+                  : `${t('hitos.avance', { logrados: resumen.avance.logrados, total: resumen.avance.total })} · ${t('hitos.faltan', { count: resumen.avance.total - resumen.avance.logrados })}`}
+              </p>
+            )}
+            {(resumen.tocanHoy > 0 || resumen.avance?.total !== resumen.totalSubMetas) && (
+              <p className="text-sm font-bold text-gray-600">
+                {resumen.tocanHoy > 0
+                  ? t('hitos.tarjetaHoy', { hechas: resumen.cumplidasHoy, total: resumen.tocanHoy })
+                  : t('hitos.tarjetaHoyNada')}
+              </p>
+            )}
             <ul className="flex flex-col gap-2">
               {resumen.hoy.map((item) => (
                 <li key={item.subMeta.codigoSubMeta} className="flex items-center gap-2.5 text-[15px]">
@@ -178,6 +193,9 @@ export default function MetaTarjeta({
                 </li>
               ))}
             </ul>
+            {resumen.constancia7 !== null && resumen.constancia7 !== undefined && (
+              <p className="text-[13px] font-semibold text-gray-600">{t('hitos.constanciaSemana', { porcentaje: resumen.constancia7 })}</p>
+            )}
             <Link
               to={`/metas/${meta.codigoMeta}`}
               className="mt-1 flex h-11 items-center justify-center rounded-xl border border-violet-300 bg-violet-50 font-bold text-violet-800 hover:bg-violet-100"
@@ -189,15 +207,15 @@ export default function MetaTarjeta({
           <div className="flex flex-col gap-3 border-t border-zinc-100 pt-4">
             <p className="text-[15px] leading-6 text-gray-600">
               {soyCreador
-                ? t('tarjeta.sinCaminoCreador')
-                : t('tarjeta.sinCaminoInvitado')}
+                ? t('hitos.tarjetaSinCaminoCreador')
+                : t('hitos.tarjetaSinCaminoInvitado')}
             </p>
             {soyCreador && (
               <Link
                 to={`/metas/${meta.codigoMeta}`}
                 className="flex h-11 items-center justify-center rounded-xl bg-violet-600 font-bold text-white hover:bg-violet-700"
               >
-                {t('tarjeta.primeraSubMeta')}
+                {t('hitos.tarjetaPrimerPaso')}
               </Link>
             )}
           </div>
@@ -211,7 +229,7 @@ export default function MetaTarjeta({
             {t('tarjeta.cumplidaEl', { fecha: formatearFecha(meta.fechaCumplida) })}
           </span>
         ) : (
-          <span>{t('tarjeta.pendiente')}</span>
+          <span>{t('hitos.enCurso')}</span>
         )}
       </div>
       {/* HU6 + sub-metas: el camino de una meta cumplida queda para consultar. */}

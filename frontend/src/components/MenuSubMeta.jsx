@@ -3,12 +3,16 @@ import { ChartColumn, EllipsisVertical, Pencil, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-/** Sub-metas: menú ⋮ de una sub-meta en "Tu camino" (estadísticas, editar, eliminar). */
+/**
+ * HU28: menú ⋮ de un paso en "Tu camino" (editar, eliminar). Los hábitos además llevan a sus
+ * estadísticas (HU29); un hito no tiene estadísticas por día, así que sin permiso de edición no hay menú.
+ */
 export default function MenuSubMeta({ subMeta, puedeEditar, onEliminar }) {
   const { t } = useTranslation();
   const [abierto, setAbierto] = useState(false);
   const contenedor = useRef(null);
   const boton = useRef(null);
+  const esHito = subMeta.tipo === 'HITO';
 
   useEffect(() => {
     if (!abierto) return undefined;
@@ -30,6 +34,7 @@ export default function MenuSubMeta({ subMeta, puedeEditar, onEliminar }) {
   }, [abierto]);
 
   const clase = 'flex h-11 items-center gap-2.5 rounded-lg px-3 text-[15px] font-bold hover:bg-slate-50';
+  if (esHito && !puedeEditar) return null;
   return (
     <div ref={contenedor} className="relative">
       <button
@@ -44,11 +49,13 @@ export default function MenuSubMeta({ subMeta, puedeEditar, onEliminar }) {
         <EllipsisVertical className="size-5" aria-hidden="true" />
       </button>
       {abierto && (
-        <div role="menu" className="absolute left-0 top-12 z-20 flex w-56 flex-col rounded-xl border border-zinc-200 bg-white p-1.5 shadow-xl">
-          <Link role="menuitem" to={`/submetas/${subMeta.codigoSubMeta}`} className={`${clase} text-gray-700`}>
-            <ChartColumn className="size-[18px]" aria-hidden="true" />
-            {t('menuSubMeta.estadisticas')}
-          </Link>
+        <div role="menu" className={`absolute top-12 z-20 flex w-56 flex-col rounded-xl border border-zinc-200 bg-white p-1.5 shadow-xl ${esHito ? 'right-0' : 'left-0'}`}>
+          {!esHito && (
+            <Link role="menuitem" to={`/submetas/${subMeta.codigoSubMeta}`} className={`${clase} text-gray-700`}>
+              <ChartColumn className="size-[18px]" aria-hidden="true" />
+              {t('menuSubMeta.estadisticas')}
+            </Link>
+          )}
           {puedeEditar && (
             <>
               <Link role="menuitem" to={`/submetas/${subMeta.codigoSubMeta}/editar`} className={`${clase} text-gray-700`}>

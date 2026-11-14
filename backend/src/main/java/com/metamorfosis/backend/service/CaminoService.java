@@ -4,6 +4,7 @@ import com.metamorfosis.backend.config.CalendarioUsuario;
 import com.metamorfosis.backend.dto.AvanceResponse;
 import com.metamorfosis.backend.dto.CaminoResponse;
 import com.metamorfosis.backend.dto.ParticipanteResponse;
+import com.metamorfosis.backend.dto.PasoResponse;
 import com.metamorfosis.backend.dto.DiaResponse;
 import com.metamorfosis.backend.dto.EstadisticasResponse;
 import com.metamorfosis.backend.dto.EstadisticasResponse.Racha;
@@ -174,6 +175,18 @@ public class CaminoService {
                 rachas.subList(0, Math.min(5, rachas.size())),
                 cumplidos, registrados, medible ? total : null, promedio,
                 CalculoCamino.porDiaSemana(dias, hoy), dias);
+    }
+
+    /** HU28: un paso del camino para el formulario de edición (cualquier participante puede leerlo). */
+    @Transactional(readOnly = true)
+    public PasoResponse paso(Integer codigoSubMeta, Integer codigoUsuario) {
+        SubMeta paso = subMetaRepository.findById(codigoSubMeta)
+                .orElseThrow(() -> new SubMetaNoEncontradaException(codigoSubMeta));
+        Meta meta = paso.getMeta();
+        exigirParticipante(meta.getCodigoMeta(), codigoUsuario);
+        boolean soloLectura = meta.getEstado() != EstadoMeta.ACTIVA;
+        boolean esCreador = meta.getCreador().getCodigoUsuario().equals(codigoUsuario);
+        return new PasoResponse(SubMetaResponse.desde(paso), meta.getNombre(), soloLectura, esCreador && !soloLectura);
     }
 
     /** HU29: hitos logrados sobre el total. */
