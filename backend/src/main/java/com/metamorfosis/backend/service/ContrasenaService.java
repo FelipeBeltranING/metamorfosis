@@ -96,9 +96,10 @@ public class ContrasenaService {
     /**
      * Pone la contraseña nueva (ya validada): debe ser distinta de la actual. Anota la hora del cambio
      * (las sesiones anteriores dejan de servir), borra los intentos fallidos del inicio de sesión y
-     * manda el correo de aviso.
+     * manda el correo de aviso. Público porque lo llama otro servicio a través del proxy de Spring
+     * (este servicio tiene @Auditar): un método de paquete se ejecutaría sobre el proxy, sin campos.
      */
-    Usuario ponerNueva(Usuario usuario, String nueva) {
+    public Usuario ponerNueva(Usuario usuario, String nueva) {
         if (passwordEncoder.matches(nueva, usuario.getPasswordHash())) {
             throw new ValidacionException(List.of(MENSAJE_IGUAL_A_LA_ACTUAL));
         }
