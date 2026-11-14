@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowLeft, Check, CircleAlert, CircleCheck, Circle, KeyRound, LoaderCircle, ShieldCheck } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -40,6 +40,9 @@ export default function CambiarContrasenaPage() {
   const [enviando, setEnviando] = useState(false);
   const [listo, setListo] = useState(false);
 
+  // Se llega desde abajo de Editar perfil: la pantalla abre desde arriba.
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+
   const cambiar = (campo) => (valor) => {
     setFormulario((actual) => ({ ...actual, [campo]: valor }));
     setErrores((actuales) => ({ ...actuales, [campo]: undefined }));
@@ -61,6 +64,7 @@ export default function CambiarContrasenaPage() {
       actualizarSesion({ token });
       setFormulario(VACIO);
       setListo(true);
+      window.scrollTo(0, 0);
     } catch (error) {
       if (error.estado === 401) {
         navigate('/login', { replace: true });
