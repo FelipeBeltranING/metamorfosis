@@ -1,7 +1,7 @@
 # Pruebas de la API (RQ3 y RQ9)
 
 ## Colección de Postman
-- `postman/Metamorfosis.postman_collection.json`: 100 peticiones en 22 carpetas (una por HU), con 157 aserciones (código HTTP y campos clave).
+- `postman/Metamorfosis.postman_collection.json`: 106 peticiones en 23 carpetas (una por HU), con 165 aserciones (código HTTP y campos clave).
 - `postman/generar_coleccion.py` la genera; `postman/datos_de_prueba.sql` crea los dos usuarios de prueba (solo en una base local o de pruebas).
 
 ```bash
