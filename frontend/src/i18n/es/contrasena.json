@@ -1,0 +1,31 @@
+{
+  "contrasena": {
+    "titulo": "Cambiar contraseña",
+    "subtitulo": "Por seguridad, primero escribe la contraseña que usas ahora.",
+    "volver": "Volver a Editar perfil",
+    "actual": "Contraseña actual",
+    "nueva": "Contraseña nueva",
+    "confirmar": "Repite la contraseña nueva",
+    "requisitos": "La contraseña nueva debe tener:",
+    "req8": "Al menos 8 caracteres",
+    "reqMayuscula": "Una mayúscula",
+    "reqMinuscula": "Una minúscula",
+    "reqNumero": "Un número",
+    "cumplido": "(cumplido)",
+    "pendiente": "(pendiente)",
+    "aviso": "Al cambiarla cerraremos tu sesión en los demás dispositivos y te enviaremos un correo de aviso.",
+    "guardar": "Cambiar contraseña",
+    "cambiando": "Cambiando…",
+    "cancelar": "Cancelar",
+    "faltaActual": "Escribe tu contraseña actual.",
+    "faltaNueva": "Escribe la contraseña nueva.",
+    "noCumple": "La contraseña nueva aún no cumple los requisitos.",
+    "igualALaActual": "La contraseña nueva debe ser distinta de la actual.",
+    "noCoinciden": "Las contraseñas nuevas no coinciden.",
+    "noCambiada": "No se cambió la contraseña. Revisa los campos marcados.",
+    "listoTitulo": "¡Listo! Tu contraseña cambió",
+    "listoTexto": "Cerramos tu sesión en los demás dispositivos y te enviamos un correo de aviso. En este sigues con tu sesión abierta.",
+    "irEditar": "Volver a Editar perfil",
+    "irMetas": "Ir a mis metas"
+  }
+}
