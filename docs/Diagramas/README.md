@@ -39,7 +39,7 @@ Dos diagramas por historia de usuario, en draw.io (se abren y se editan en [app.
 
 **No tienen diagramas:** HU17 y HU18 (retiradas) y HU31 (opcional, no implementada).
 **HU16** es transversal (toca casi todas las pantallas): su diagrama de clases muestra también la parte del frontend (selector, i18next, archivos de textos y la cabecera Accept-Language), porque ahí está la mayor parte de la HU.
-**HU30** es la que el equipo había dejado como "HU sin número - Apariencia de la app": se numera para que tenga el mismo sustento que las demás.
+**HU30** es la que el equipo había dejado como "HU sin número - Apariencia de la app": se numera para que tenga el mismo sustento que las demás (sus mockups están en `Mockups por HU/HU30 Apariencia de la app`).
 
 ## Cómo se generan
 

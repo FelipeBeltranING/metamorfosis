@@ -29,7 +29,7 @@ HU21 Compartir logro    · botón en cumplidas, imagen para compartir, página p
 HU22 Mi perfil          · menú de la cuenta, perfil
 HU23 Editar perfil      · formulario, errores, recorte de foto, guardado, perfil con foto
 HU27 Filtrar metas      · cumplidas, todas, sin resultados
-HU sin número - Apariencia de la app · cómo se ve la app para uno mismo (modo claro, oscuro
+HU30 Apariencia de la app · cómo se ve la app para uno mismo (modo claro, oscuro
                           o automático y color de acento): tema Noche en las pantallas principales,
                           los 4 temas comparados y la sección Apariencia de Editar perfil
 Sub-metas               · tu camino, registrar valor, menú, eliminar, camino vacío,
