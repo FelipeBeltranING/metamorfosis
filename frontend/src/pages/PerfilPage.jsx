@@ -154,6 +154,7 @@ export function ContenidoPerfil({ perfil, publico = false }) {
         fechaRegistro={perfil.fechaRegistro}
         frase={personalizacion?.frase}
         portada={personalizacion?.portada}
+        mascota={personalizacion?.mascota}
         extraNombre={<InsigniaDestacada insignia={personalizacion?.insigniaDestacada} />}
         acciones={publico ? null : (
           <Link
