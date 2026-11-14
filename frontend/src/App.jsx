@@ -8,6 +8,7 @@ import CrearMetaPage from './pages/CrearMetaPage';
 import EditarMetaPage from './pages/EditarMetaPage';
 import EditarPerfilPage from './pages/EditarPerfilPage';
 import CambiarContrasenaPage from './pages/CambiarContrasenaPage';
+import RecuperarContrasenaPage from './pages/RecuperarContrasenaPage';
 import RegistroPage from './pages/RegistroPage';
 import SolicitarRegistroPage from './pages/SolicitarRegistroPage';
 import RechazarRegistroPage from './pages/RechazarRegistroPage';
@@ -45,6 +46,8 @@ export default function App() {
           <Route path="/registro/completar" element={<RegistroPage />} />
           <Route path="/registro/rechazar" element={<RechazarRegistroPage />} />
           <Route path="/login" element={<LoginPage />} />
+          {/* HU33: olvidé mi contraseña (código por correo, sin sesión). */}
+          <Route path="/recuperar-contrasena" element={<RecuperarContrasenaPage />} />
           <Route path="/logros/:token" element={<LogroPublicoPage />} />
           <Route path="/invitaciones/responder" element={<ResponderInvitacionPage />} />
           <Route element={<RutaProtegida />}>
