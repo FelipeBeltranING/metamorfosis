@@ -3,6 +3,7 @@ import {
   Check, ChevronLeft, CircleAlert, CircleCheck, Lock, Route, Trophy, UserPlus,
 } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Encabezado from '../components/Encabezado';
 import EstadoError from '../components/EstadoError';
 import AnilloConstancia from '../components/AnilloConstancia';
@@ -23,8 +24,8 @@ import {
 import { diaCorto, formatearFecha } from '../utils/fechas';
 import { detalleSubMeta, formatearNumero } from '../utils/subMetas';
 
-const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((t) => [t.valor, t.etiqueta]));
-const PLAZO_POR_VALOR = Object.fromEntries(PLAZOS.map((p) => [p.valor, p.etiqueta]));
+const etiquetaTipo = (valor) => TIPOS.find((x) => x.valor === valor)?.etiqueta;
+const etiquetaPlazo = (valor) => PLAZOS.find((x) => x.valor === valor)?.etiqueta;
 // 5 días en el celular y 7 desde sm: la 6.ª y 7.ª columna se ocultan en pantallas angostas.
 const COLUMNAS = 'grid grid-cols-5 gap-1 sm:grid-cols-[minmax(200px,1fr)_repeat(7,64px)] sm:gap-2';
 const OCULTA_EN_MOVIL = (i) => (i >= 5 ? 'hidden sm:flex' : 'flex');
@@ -34,6 +35,7 @@ const OCULTA_EN_MOVIL = (i) => (i >= 5 ? 'hidden sm:flex' : 'flex');
  * para marcar cada sub-meta (HU-B). Una meta cumplida se muestra en solo lectura (HU6).
  */
 export default function CaminoMetaPage() {
+  const { t } = useTranslation();
   const { codigoMeta } = useParams();
   const navigate = useNavigate();
   const mostrarInsignias = useAvisosInsignia();
@@ -53,8 +55,8 @@ export default function CaminoMetaPage() {
 
   const manejarError = useCallback((error, poner) => {
     if (error.estado === 401) navigate('/login', { replace: true });
-    else poner(error.estado ? error.message : 'No se guardó. No pudimos conectar con el servidor: revisa tu conexión.');
-  }, [navigate]);
+    else poner(error.estado ? error.message : t('camino.errorGuardar'));
+  }, [navigate, t]);
 
   const recargar = useCallback(() => obtenerCamino(codigoMeta)
     .then((camino) => setEstado({ fase: 'lista', camino })), [codigoMeta]);
@@ -66,20 +68,20 @@ export default function CaminoMetaPage() {
       .catch((error) => {
         if (!activo) return;
         if (error.estado === 401) navigate('/login', { replace: true });
-        else setEstado({ fase: 'error', mensaje: error.estado === 404 ? 'Esta meta no existe.' : error.message });
+        else setEstado({ fase: 'error', mensaje: error.estado === 404 ? t('camino.noExiste') : error.message });
       });
     return () => {
       activo = false;
     };
-  }, [codigoMeta, intento, navigate]);
+  }, [codigoMeta, intento, navigate, t]);
 
   useEffect(() => {
     if (!aviso && !errorAccion) return undefined;
-    const t = setTimeout(() => {
+    const temporizador = setTimeout(() => {
       setAviso('');
       setErrorAccion('');
     }, 4500);
-    return () => clearTimeout(t);
+    return () => clearTimeout(temporizador);
   }, [aviso, errorAccion]);
 
   if (estado.fase !== 'lista') {
@@ -127,14 +129,14 @@ export default function CaminoMetaPage() {
     await registrarDia(registrando.subMeta.codigoSubMeta, registrando.dia.fecha, valor);
     await recargar();
     setRegistrando(null);
-    setAviso('Registro guardado.');
+    setAviso(t('camino.registroGuardado'));
   };
 
   const quitarValor = async () => {
     await quitarRegistro(registrando.subMeta.codigoSubMeta, registrando.dia.fecha);
     await recargar();
     setRegistrando(null);
-    setAviso('Registro quitado.');
+    setAviso(t('camino.registroQuitado'));
   };
 
   const confirmarEliminar = async () => {
@@ -144,7 +146,7 @@ export default function CaminoMetaPage() {
       await eliminarSubMeta(aEliminar.codigoSubMeta);
       await recargar();
       setAEliminar(null);
-      setAviso('Sub-meta eliminada.');
+      setAviso(t('camino.subMetaEliminada'));
     } catch (error) {
       manejarError(error, setErrorEliminar);
     } finally {
@@ -159,7 +161,7 @@ export default function CaminoMetaPage() {
       const { insigniasNuevas } = await marcarCumplida(camino.codigoMeta);
       await recargar();
       setConfirmarCumplida(false);
-      setAviso('¡Meta cumplida! La encuentras en Mis metas, en el filtro Cumplidas.');
+      setAviso(t('camino.metaCumplida'));
       mostrarInsignias(insigniasNuevas); // HU11
     } catch (error) {
       manejarError(error, setErrorCumplida);
@@ -169,25 +171,25 @@ export default function CaminoMetaPage() {
   };
 
   const celda = (subMeta, dia, i) => {
-    const etiquetaDia = dia.fecha === camino.hoy ? 'hoy' : `${diaCorto(dia.fecha)} ${dia.fecha.slice(8)}`;
+    const etiquetaDia = dia.fecha === camino.hoy ? t('camino.hoyMinuscula') : `${diaCorto(dia.fecha)} ${dia.fecha.slice(8)}`;
     const visible = OCULTA_EN_MOVIL(i);
     if (!dia.toca) {
       return (
-        <span key={dia.fecha} role="cell" aria-label={`${subMeta.nombre}, ${etiquetaDia}: no toca`} className={`${visible} items-center justify-center text-lg font-bold text-zinc-400`}>–</span>
+        <span key={dia.fecha} role="cell" aria-label={t('camino.noToca', { nombre: subMeta.nombre, dia: etiquetaDia })} className={`${visible} items-center justify-center text-lg font-bold text-zinc-400`}>–</span>
       );
     }
     const hecho = dia.cumplido;
     const registrado = dia.valor !== null;
     const bloqueado = camino.soloLectura || ocupado === `${subMeta.codigoSubMeta}-${dia.fecha}`;
     if (subMeta.tipo === 'SI_NO') {
-      const estadoTexto = !registrado ? 'sin marcar' : hecho ? 'hecho' : 'no hecho';
+      const estadoTexto = !registrado ? t('camino.sinMarcar') : hecho ? t('camino.hecho') : t('camino.noHecho');
       return (
         <span key={dia.fecha} role="cell" className={`${visible} items-center justify-center`}>
           <button
             type="button"
             disabled={bloqueado}
             onClick={() => alternarSiNo(subMeta, dia)}
-            aria-label={`${subMeta.nombre}, ${etiquetaDia}: ${estadoTexto}${camino.soloLectura ? '' : '. Tocar para cambiar'}`}
+            aria-label={`${t('camino.celdaSiNo', { nombre: subMeta.nombre, dia: etiquetaDia, estado: estadoTexto })}${camino.soloLectura ? '' : t('camino.tocarCambiar')}`}
             className={`flex size-10 items-center justify-center rounded-full text-lg font-extrabold sm:size-11 ${
               hecho ? 'bg-emerald-500 text-white'
                 : registrado ? 'border border-orange-300 bg-orange-50 text-orange-700'
@@ -205,7 +207,11 @@ export default function CaminoMetaPage() {
           type="button"
           disabled={bloqueado}
           onClick={() => setRegistrando({ subMeta, dia })}
-          aria-label={`${subMeta.nombre}, ${etiquetaDia}: ${registrado ? `${formatearNumero(dia.valor)} ${subMeta.unidad}, ${hecho ? 'cumplido' : 'no cumplido'}` : 'sin registrar'}`}
+          aria-label={registrado
+            ? t('camino.celdaMedible', {
+              nombre: subMeta.nombre, dia: etiquetaDia, valor: formatearNumero(dia.valor), unidad: subMeta.unidad, estado: hecho ? t('camino.cumplido') : t('camino.noCumplido'),
+            })
+            : t('camino.celdaSinRegistrar', { nombre: subMeta.nombre, dia: etiquetaDia })}
           className={`flex h-11 w-[42px] flex-col items-center justify-center rounded-xl border sm:w-[60px] ${
             hecho ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
               : registrado ? 'border-orange-300 bg-orange-50 text-orange-700'
@@ -225,7 +231,7 @@ export default function CaminoMetaPage() {
       <main className="mx-auto flex w-full max-w-[1040px] flex-col gap-5 px-4 pb-16 pt-6 sm:pt-8">
         <Link to={camino.soloLectura ? '/metas?estado=CUMPLIDA' : '/metas'} className="inline-flex items-center gap-1 self-start text-[15px] font-bold text-violet-700 hover:underline">
           <ChevronLeft className="size-[18px]" aria-hidden="true" />
-          {camino.soloLectura ? 'Metas cumplidas' : 'Mis metas'}
+          {camino.soloLectura ? t('camino.metasCumplidas') : t('camino.misMetas')}
         </Link>
 
         <section className={`flex flex-wrap items-center gap-5 rounded-2xl border bg-white p-5 sm:p-7 ${camino.soloLectura ? 'border-violet-300' : 'border-zinc-200'}`}>
@@ -234,14 +240,14 @@ export default function CaminoMetaPage() {
             {camino.soloLectura && camino.fechaCumplida && (
               <span className="inline-flex items-center gap-1.5 self-start rounded-lg bg-violet-600 px-2.5 py-1 text-sm font-extrabold text-white">
                 <Trophy className="size-4" aria-hidden="true" />
-                Cumplida el {formatearFecha(camino.fechaCumplida)}
+                {t('camino.cumplidaEl', { fecha: formatearFecha(camino.fechaCumplida) })}
               </span>
             )}
             <h1 className="break-words text-2xl font-extrabold sm:text-3xl">{camino.nombre}</h1>
             <div className="flex flex-wrap gap-1.5 text-[13px] font-semibold text-gray-600">
-              {TIPO_POR_VALOR[camino.tipo] && <span className="rounded-lg bg-slate-100 px-2.5 py-1.5">{TIPO_POR_VALOR[camino.tipo]}</span>}
-              {PLAZO_POR_VALOR[camino.plazo] && <span className="rounded-lg bg-slate-100 px-2.5 py-1.5">{PLAZO_POR_VALOR[camino.plazo]}</span>}
-              <span className="rounded-lg bg-slate-100 px-2.5 py-1.5">Creada el {formatearFecha(camino.fechaCreacion)}</span>
+              {etiquetaTipo(camino.tipo) && <span className="rounded-lg bg-slate-100 px-2.5 py-1.5">{etiquetaTipo(camino.tipo)}</span>}
+              {etiquetaPlazo(camino.plazo) && <span className="rounded-lg bg-slate-100 px-2.5 py-1.5">{etiquetaPlazo(camino.plazo)}</span>}
+              <span className="rounded-lg bg-slate-100 px-2.5 py-1.5">{t('camino.creadaEl', { fecha: formatearFecha(camino.fechaCreacion) })}</span>
             </div>
             {/* HU13: quiénes recorren la meta y, para el creador, el acceso a invitar. */}
             {(participantes.length > 1 || puedeInvitar) && (
@@ -259,7 +265,7 @@ export default function CaminoMetaPage() {
                     className="flex h-9 items-center gap-1.5 rounded-xl border border-violet-300 bg-violet-50 px-3 text-sm font-bold text-violet-800 hover:bg-violet-100"
                   >
                     <UserPlus className="size-4" aria-hidden="true" />
-                    {participantes.length > 1 ? 'Invitar' : 'Invitar personas'}
+                    {participantes.length > 1 ? t('camino.invitar') : t('camino.invitarPersonas')}
                   </button>
                 )}
               </div>
@@ -268,15 +274,15 @@ export default function CaminoMetaPage() {
           {camino.subMetas.length > 0 && (
             <dl className="grid flex-[1_1_320px] grid-cols-3 gap-2.5">
               <div className="rounded-xl bg-slate-50 px-3.5 py-3">
-                <dt className="text-[13px] font-semibold text-gray-600">Hoy</dt>
-                <dd className="mt-0.5 text-xl font-extrabold">{camino.tocanHoy ? `${camino.cumplidasHoy} de ${camino.tocanHoy}` : '—'}</dd>
+                <dt className="text-[13px] font-semibold text-gray-600">{t('camino.hoy')}</dt>
+                <dd className="mt-0.5 text-xl font-extrabold">{camino.tocanHoy ? t('camino.hoyValor', { hechas: camino.cumplidasHoy, total: camino.tocanHoy }) : '—'}</dd>
               </div>
               <div className="rounded-xl bg-slate-50 px-3.5 py-3">
-                <dt className="text-[13px] font-semibold text-gray-600">Últimos 30 días</dt>
+                <dt className="text-[13px] font-semibold text-gray-600">{t('camino.ultimos30')}</dt>
                 <dd className="mt-0.5 text-xl font-extrabold">{camino.constancia30 ?? '—'}{camino.constancia30 !== null && '%'}</dd>
               </div>
               <div className="rounded-xl bg-slate-50 px-3.5 py-3">
-                <dt className="text-[13px] font-semibold text-gray-600">Días seguidos al 100%</dt>
+                <dt className="text-[13px] font-semibold text-gray-600">{t('camino.diasSeguidos')}</dt>
                 <dd className="mt-0.5 text-xl font-extrabold">{camino.diasSeguidosCompletos}</dd>
               </div>
             </dl>
@@ -288,15 +294,15 @@ export default function CaminoMetaPage() {
             <div className="flex size-16 items-center justify-center rounded-2xl bg-violet-50 text-violet-600">
               <Route className="size-8" aria-hidden="true" />
             </div>
-            <h2 className="text-xl font-extrabold">Traza el camino hacia esta meta</h2>
+            <h2 className="text-xl font-extrabold">{t('camino.trazaTitulo')}</h2>
             <p className="max-w-lg text-[15px] leading-6 text-gray-600">
               {camino.puedeEditar || camino.soloLectura
-                ? 'Divide la meta en pequeñas sub-metas diarias. Cada día marcas lo que hiciste y ves qué tan constante vas.'
-                : 'Quien creó la meta aún no ha trazado el camino. Cuando agregue sub-metas, aquí marcarás tus días.'}
+                ? t('camino.trazaCreador')
+                : t('camino.trazaInvitado')}
             </p>
             {camino.puedeEditar && (
               <Link to={`/metas/${camino.codigoMeta}/submetas/nueva`} className="mt-2 flex h-12 items-center rounded-xl bg-violet-600 px-6 font-bold text-white hover:bg-violet-700">
-                + Agregar la primera sub-meta
+                {t('camino.primeraSubMeta')}
               </Link>
             )}
           </section>
@@ -305,31 +311,31 @@ export default function CaminoMetaPage() {
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
                 <h2 id="titulo-camino" className="text-xl font-extrabold sm:text-2xl">
-                  {camino.soloLectura ? 'Así recorriste tu camino' : 'Tu camino'}
+                  {camino.soloLectura ? t('camino.asiRecorriste') : t('camino.tuCamino')}
                 </h2>
                 <p className="text-sm text-gray-600 sm:text-[15px]">
                   {camino.soloLectura
-                    ? 'Solo lectura: la meta está cumplida y sus sub-metas ya no se registran.'
-                    : 'Marca cada día lo que hiciste. Toca el nombre para ver sus estadísticas.'}
+                    ? t('camino.soloLectura')
+                    : t('camino.instrucciones')}
                 </p>
               </div>
               {camino.soloLectura ? (
                 <span className="flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-2 text-[13px] font-bold text-gray-600">
-                  <Lock className="size-4" aria-hidden="true" /> Cerrada
+                  <Lock className="size-4" aria-hidden="true" /> {t('camino.cerrada')}
                 </span>
               ) : camino.puedeEditar && (
                 <Link to={`/metas/${camino.codigoMeta}/submetas/nueva`} className="flex h-11 items-center rounded-xl bg-violet-600 px-4 text-[15px] font-bold text-white hover:bg-violet-700">
-                  + Agregar sub-meta
+                  {t('camino.agregarSubMeta')}
                 </Link>
               )}
             </div>
 
-            <div role="table" aria-label="Sub-metas de los últimos días" className="flex flex-col gap-2">
+            <div role="table" aria-label={t('camino.tablaEtiqueta')} className="flex flex-col gap-2">
               <div role="row" className={`${COLUMNAS} items-end px-1`}>
-                <span role="columnheader" className="hidden px-2 text-[13px] font-bold text-gray-600 sm:block">Sub-meta</span>
+                <span role="columnheader" className="hidden px-2 text-[13px] font-bold text-gray-600 sm:block">{t('camino.columnaSubMeta')}</span>
                 {fechas.map((f, i) => (
                   <span key={f} role="columnheader" className={`${OCULTA_EN_MOVIL(i)} flex-col items-center text-[11px] font-extrabold leading-tight sm:text-xs ${f === camino.hoy ? 'text-violet-700' : 'text-gray-600'}`}>
-                    <span>{f === camino.hoy ? 'Hoy' : diaCorto(f)}</span>
+                    <span>{f === camino.hoy ? t('camino.hoy') : diaCorto(f)}</span>
                     <span className="text-sm sm:text-[15px]">{Number(f.slice(8))}</span>
                   </span>
                 ))}
@@ -349,10 +355,10 @@ export default function CaminoMetaPage() {
             </div>
 
             <div className="flex flex-wrap gap-x-4 gap-y-1.5 pt-1 text-[13px] font-semibold text-gray-600">
-              <span className="flex items-center gap-1.5"><span aria-hidden="true" className="size-3.5 rounded-full bg-emerald-500" />Cumplido</span>
-              <span className="flex items-center gap-1.5"><span aria-hidden="true" className="size-3.5 rounded-full border border-orange-300 bg-orange-50" />No cumplido</span>
-              <span className="flex items-center gap-1.5"><span aria-hidden="true" className="size-3.5 rounded-full border-2 border-zinc-300" />Sin marcar</span>
-              <span>– No toca ese día</span>
+              <span className="flex items-center gap-1.5"><span aria-hidden="true" className="size-3.5 rounded-full bg-emerald-500" />{t('camino.leyendaCumplido')}</span>
+              <span className="flex items-center gap-1.5"><span aria-hidden="true" className="size-3.5 rounded-full border border-orange-300 bg-orange-50" />{t('camino.leyendaNoCumplido')}</span>
+              <span className="flex items-center gap-1.5"><span aria-hidden="true" className="size-3.5 rounded-full border-2 border-zinc-300" />{t('camino.leyendaSinMarcar')}</span>
+              <span>{t('camino.leyendaNoToca')}</span>
             </div>
           </section>
         )}
@@ -360,14 +366,14 @@ export default function CaminoMetaPage() {
         {!camino.soloLectura && camino.puedeEditar && (
           <section className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-dashed border-violet-300 bg-violet-50/60 p-5">
             <p className="flex-[1_1_320px] text-[15px] leading-6 text-gray-600">
-              ¿Ya llegaste al destino? Márcala como cumplida: pasará a tus metas cumplidas y podrás compartirla.
+              {t('camino.llegaste')}
             </p>
             <button
               type="button"
               onClick={() => { setErrorCumplida(''); setConfirmarCumplida(true); }}
               className="h-11 rounded-xl border border-violet-300 bg-white px-4 font-bold text-violet-800 hover:bg-violet-50"
             >
-              Marcar meta como cumplida
+              {t('camino.marcarCumplida')}
             </button>
           </section>
         )}

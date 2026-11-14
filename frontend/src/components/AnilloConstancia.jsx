@@ -1,8 +1,11 @@
+import { useTranslation } from 'react-i18next';
+
 /**
  * Sub-metas: anillo con el % de constancia (días cumplidos de los que tocaban).
  * Sin porcentaje (aún no hay días que contar) muestra "—".
  */
 export default function AnilloConstancia({ porcentaje, tamano = 64, grosor = 8, etiqueta }) {
+  const { t } = useTranslation();
   const radio = (tamano - grosor) / 2;
   const circunferencia = 2 * Math.PI * radio;
   const valor = porcentaje ?? 0;
@@ -15,8 +18,8 @@ export default function AnilloConstancia({ porcentaje, tamano = 64, grosor = 8, 
         viewBox={`0 0 ${tamano} ${tamano}`}
         role="img"
         aria-label={etiqueta ?? (porcentaje === null || porcentaje === undefined
-          ? 'Aún no hay días para calcular la constancia'
-          : `${porcentaje}% de constancia en los últimos 7 días`)}
+          ? t('anillo.sinDias')
+          : t('anillo.constancia', { porcentaje }))}
       >
         <circle cx={tamano / 2} cy={tamano / 2} r={radio} fill="none" style={{ stroke: 'var(--color-violet-100)' }} strokeWidth={grosor} />
         <circle
