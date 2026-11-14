@@ -35,3 +35,23 @@ HU sin número - Apariencia de la app · cómo se ve la app para uno mismo (modo
 Sub-metas               · tu camino, registrar valor, menú, eliminar, camino vacío,
                           elegir tipo, nueva medible, nueva Sí/No, errores, editar,
                           estadísticas medible y Sí/No, camino de una meta cumplida
+
+Mockups del rediseño del camino y de la HU20 (14 de noviembre de 2026)
+=======================================================================
+Capturas de la versión con hitos y mascota (rama hu20-mascota) contra una base local con datos de
+ejemplo (Laura Gómez y Andrés Rojas). Escritorio a 1280 px; celular (_movil) a 390 px y doble resolución.
+Se toman con Chrome headless (puppeteer-core) para que se puedan repetir.
+
+HU28 Trazar el camino      · elegir hito o hábito con ideas según el tipo de meta, nuevo hito,
+                             nuevo hábito medible con «Más opciones», camino vacío, celular
+HU05 Registrar mi avance   · Tu camino con hitos y hábitos, hito logrado con su aviso, todos los hitos
+                             logrados (propone cumplir la meta), registrar valor, celular
+HU29 Avance y constancia   · Mis metas con el avance real, estadísticas del hábito, historial desplegado,
+                             celular
+HU15 Logro de meta compartida · hito logrado por el compañero, la meta cumplida en el perfil y en las
+                             cumplidas del compañero
+HU20 Elegir mascota        · sección Tu mascota, cambiar de mascota, Mi perfil y perfil de otra persona
+                             con la mascota, celular
+
+Historico/Sub-metas (antes del rediseño): las capturas de las sub-metas solo con hábitos y el
+porcentaje de constancia; quedan como referencia del cambio.
