@@ -1403,7 +1403,7 @@ HU['HU14'] = dict(
                     ('m', 'srv', 'pr', 'save(participación)'),
                 ]),
                 ('[la meta ya se cumplió]', [
-                    ('r', 'srv', 'asp', 'ValidacionException("La meta ya se cumplió…")'),
+                    ('r', 'srv', 'asp', 'ValidacionException("Esta meta ya se cumplió: ya no se pueden unir más personas")'),
                     ('m', 'asp', 'log', 'registrar(…, RESPONDER_INVITACION, …, ERROR, motivo)'),
                     ('r', 'ctl', 'svc', '400 ErrorResponse'),
                 ]),
@@ -1411,7 +1411,7 @@ HU['HU14'] = dict(
         ], 'InvitacionRespondidaResponse'),
         ('r', 'ctl', 'svc', '200 OK'),
         ('r', 'ui', 'u', '«Te uniste a la meta»: ya aparece en Mis metas'),
-        ('nota', 'ui', 'Desde el correo: ResponderInvitacionPage → /api/invitaciones/correo/aceptar o /rechazar con el token'),
+        ('nota', 'ui', 'Otros flujos: responder desde el correo (HU14_secuencia_correo) y unirse con un código (HU14_secuencia_codigo)'),
     ],
 )
 
