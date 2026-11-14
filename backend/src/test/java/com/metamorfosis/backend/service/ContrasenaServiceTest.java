@@ -3,7 +3,6 @@ package com.metamorfosis.backend.service;
 import com.metamorfosis.backend.dto.CambiarContrasenaRequest;
 import com.metamorfosis.backend.dto.ContrasenaCambiadaResponse;
 import com.metamorfosis.backend.exception.CorreoNoEnviadoException;
-import com.metamorfosis.backend.exception.CuentaBloqueadaException;
 import com.metamorfosis.backend.exception.UsuarioNoEncontradoException;
 import com.metamorfosis.backend.exception.ValidacionException;
 import com.metamorfosis.backend.model.Usuario;
@@ -34,7 +33,7 @@ import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-/** HU32: caja blanca de ContrasenaService.cambiar. */
+/** HU32: caja blanca de ContrasenaService.cambiar (dentro de la app: solo la nueva y su confirmación). */
 @ExtendWith(MockitoExtension.class)
 class ContrasenaServiceTest {
 
@@ -66,17 +65,21 @@ class ContrasenaServiceTest {
         LocaleContextHolder.resetLocaleContext();
     }
 
+    private void conUsuarioQueSeGuarda() {
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.save(any(Usuario.class))).thenAnswer(i -> i.getArgument(0));
+    }
+
     private ValidacionException fallaCon(CambiarContrasenaRequest pedido) {
         return assertThrows(ValidacionException.class, () -> servicio.cambiar(1, pedido));
     }
 
     @Test
     void cambiaLaContrasenaAnotaElMomentoYDevuelveUnTokenNuevo() {
-        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
-        when(usuarioRepository.save(any(Usuario.class))).thenAnswer(i -> i.getArgument(0));
+        conUsuarioQueSeGuarda();
         when(jwtService.generarToken(usuario)).thenReturn("token-nuevo");
 
-        ContrasenaCambiadaResponse respuesta = servicio.cambiar(1, new CambiarContrasenaRequest(ACTUAL, NUEVA, NUEVA));
+        ContrasenaCambiadaResponse respuesta = servicio.cambiar(1, new CambiarContrasenaRequest(NUEVA, NUEVA));
 
         assertEquals("token-nuevo", respuesta.token());
         assertTrue(passwordEncoder.matches(NUEVA, usuario.getPasswordHash()));
@@ -89,82 +92,54 @@ class ContrasenaServiceTest {
     }
 
     @Test
+    void noPideLaContrasenaActual() {
+        conUsuarioQueSeGuarda();
+        when(jwtService.generarToken(usuario)).thenReturn("token-nuevo");
+
+        assertDoesNotThrow(() -> servicio.cambiar(1, new CambiarContrasenaRequest(NUEVA, NUEVA)));
+    }
+
+    @Test
     void siElCorreoDeAvisoFallaLaContrasenaIgualQuedaCambiada() {
-        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
-        when(usuarioRepository.save(any(Usuario.class))).thenAnswer(i -> i.getArgument(0));
+        conUsuarioQueSeGuarda();
         when(jwtService.generarToken(usuario)).thenReturn("token-nuevo");
         doThrow(new CorreoNoEnviadoException("Brevo no responde"))
                 .when(correoService).enviar(anyString(), anyString(), anyString(), anyString());
 
-        ContrasenaCambiadaResponse respuesta = servicio.cambiar(1, new CambiarContrasenaRequest(ACTUAL, NUEVA, NUEVA));
+        ContrasenaCambiadaResponse respuesta = servicio.cambiar(1, new CambiarContrasenaRequest(NUEVA, NUEVA));
 
         assertEquals("token-nuevo", respuesta.token());
         assertTrue(passwordEncoder.matches(NUEVA, usuario.getPasswordHash()));
     }
 
     @Test
-    void laContrasenaActualIncorrectaCuentaComoIntentoFallido() {
+    void laNuevaDebeSerDistintaDeLaActual() {
         when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 
-        ValidacionException e = fallaCon(new CambiarContrasenaRequest("Otra1234", NUEVA, NUEVA));
+        ValidacionException e = fallaCon(new CambiarContrasenaRequest(ACTUAL, ACTUAL));
 
-        assertEquals(List.of(ContrasenaService.MENSAJE_ACTUAL_INCORRECTA), e.getErrores());
-        verify(bloqueoLoginService).registrarFallo("daniel@correo.com");
+        assertEquals(List.of(ContrasenaService.MENSAJE_IGUAL_A_LA_ACTUAL), e.getErrores());
         verify(usuarioRepository, never()).save(any());
         verifyNoInteractions(correoService);
     }
 
     @Test
-    void conElCorreoBloqueadoNiSiquieraRevisaLaContrasena() {
-        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
-        when(bloqueoLoginService.segundosBloqueado("daniel@correo.com")).thenReturn(120L);
-
-        CuentaBloqueadaException e = assertThrows(CuentaBloqueadaException.class,
-                () -> servicio.cambiar(1, new CambiarContrasenaRequest(ACTUAL, NUEVA, NUEVA)));
-
-        assertEquals(120L, e.getSegundosRestantes());
-        verify(bloqueoLoginService, never()).registrarFallo(any());
-        verify(usuarioRepository, never()).save(any());
-    }
-
-    @Test
-    void laNuevaDebeSerDistintaDeLaActual() {
+    void sinLaNuevaLaPide() {
         when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 
-        ValidacionException e = fallaCon(new CambiarContrasenaRequest(ACTUAL, ACTUAL, ACTUAL));
-
-        assertEquals(List.of(ContrasenaService.MENSAJE_IGUAL_A_LA_ACTUAL), e.getErrores());
-        verify(usuarioRepository, never()).save(any());
-    }
-
-    @Test
-    void sinDatosPideLasDosContrasenas() {
-        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
-
-        ValidacionException e = fallaCon(new CambiarContrasenaRequest("", null, null));
-
-        assertEquals(List.of(ContrasenaService.MENSAJE_FALTA_ACTUAL, ContrasenaService.MENSAJE_FALTA_NUEVA),
-                e.getErrores());
-        verifyNoInteractions(bloqueoLoginService);
-    }
-
-    @Test
-    void pedidoVacioTambienSeValida() {
-        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
-
-        ValidacionException e = fallaCon(null);
-
-        assertEquals(2, e.getErrores().size());
+        assertEquals(List.of(ContrasenaService.MENSAJE_FALTA_NUEVA),
+                fallaCon(new CambiarContrasenaRequest("", null)).getErrores());
+        assertEquals(List.of(ContrasenaService.MENSAJE_FALTA_NUEVA), fallaCon(null).getErrores());
     }
 
     @Test
     void laNuevaDebeCumplirLaReglaYCoincidirConLaConfirmacion() {
         when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
 
-        ValidacionException e = fallaCon(new CambiarContrasenaRequest(ACTUAL, "corta", "otra"));
+        ValidacionException e = fallaCon(new CambiarContrasenaRequest("corta", "otra"));
 
         assertEquals(List.of(ReglaContrasena.MENSAJE, ContrasenaService.MENSAJE_NO_COINCIDEN), e.getErrores());
-        verifyNoInteractions(bloqueoLoginService);
+        verify(usuarioRepository, never()).save(any());
     }
 
     @Test
@@ -172,6 +147,6 @@ class ContrasenaServiceTest {
         when(usuarioRepository.findById(9)).thenReturn(Optional.empty());
 
         assertThrows(UsuarioNoEncontradoException.class,
-                () -> servicio.cambiar(9, new CambiarContrasenaRequest(ACTUAL, NUEVA, NUEVA)));
+                () -> servicio.cambiar(9, new CambiarContrasenaRequest(NUEVA, NUEVA)));
     }
 }

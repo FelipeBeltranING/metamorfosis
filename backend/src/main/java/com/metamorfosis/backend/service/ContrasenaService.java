@@ -3,7 +3,6 @@ package com.metamorfosis.backend.service;
 import com.metamorfosis.backend.auditoria.Auditar;
 import com.metamorfosis.backend.dto.CambiarContrasenaRequest;
 import com.metamorfosis.backend.dto.ContrasenaCambiadaResponse;
-import com.metamorfosis.backend.exception.CuentaBloqueadaException;
 import com.metamorfosis.backend.service.correo.CorreoService;
 import com.metamorfosis.backend.service.correo.PlantillaContrasenaCambiada;
 import com.metamorfosis.backend.exception.UsuarioNoEncontradoException;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -28,18 +28,15 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * HU32: cambiar la contraseña desde la cuenta. Pide la contraseña actual; si está mal, cuenta como
- * un intento fallido del mismo bloqueo del inicio de sesión (5 fallos → 5 minutos), para que una
- * sesión robada no sirva para adivinarla. Al cambiarla, las demás sesiones se cierran, esta recibe
- * un token nuevo y llega un correo de aviso.
+ * HU32: cambiar la contraseña desde la cuenta. Como ya hay una sesión iniciada, solo se pide la
+ * nueva y su confirmación. Al cambiarla, las demás sesiones se cierran, esta recibe un token nuevo y
+ * llega un correo de aviso (por si no fue la persona dueña de la cuenta).
  */
 @Service
 public class ContrasenaService {
 
-    static final String MENSAJE_FALTA_ACTUAL = "Escribe tu contraseña actual";
     static final String MENSAJE_FALTA_NUEVA = "Escribe la contraseña nueva";
     static final String MENSAJE_NO_COINCIDEN = "Las contraseñas nuevas no coinciden";
-    static final String MENSAJE_ACTUAL_INCORRECTA = "La contraseña actual no es correcta";
     static final String MENSAJE_IGUAL_A_LA_ACTUAL = "La contraseña nueva debe ser distinta de la actual";
 
     private static final Logger log = LoggerFactory.getLogger(ContrasenaService.class);
@@ -73,40 +70,45 @@ public class ContrasenaService {
         this.reloj = reloj;
     }
 
-    /**
-     * Sin @Transactional a propósito: si la contraseña actual está mal se lanza un error, y el
-     * intento fallido que se acaba de contar no debe deshacerse con él.
-     */
     @Auditar(accion = AccionLog.CAMBIAR_CONTRASENA, entidad = EntidadLog.USUARIO)
+    @Transactional
     public ContrasenaCambiadaResponse cambiar(Integer codigoUsuario, CambiarContrasenaRequest pedido) {
         Usuario usuario = usuarioRepository.findById(codigoUsuario)
                 .orElseThrow(() -> new UsuarioNoEncontradoException(codigoUsuario));
-        String actual = pedido == null ? null : pedido.actual();
-        String nueva = pedido == null ? null : pedido.nueva();
-        String confirmacion = pedido == null ? null : pedido.confirmacion();
-        validar(actual, nueva, confirmacion);
+        List<String> errores = new ArrayList<>();
+        validarNueva(pedido == null ? null : pedido.nueva(), pedido == null ? null : pedido.confirmacion(), errores);
+        if (!errores.isEmpty()) throw new ValidacionException(errores);
 
-        // La misma llave que usa el inicio de sesión para contar los fallos de ese correo.
-        String email = usuario.getEmail().strip().toLowerCase(Locale.ROOT);
-        long segundosBloqueado = bloqueoLoginService.segundosBloqueado(email);
-        if (segundosBloqueado > 0) {
-            throw new CuentaBloqueadaException(segundosBloqueado);
+        Usuario guardado = ponerNueva(usuario, pedido.nueva());
+        return new ContrasenaCambiadaResponse(jwtService.generarToken(guardado));
+    }
+
+    /** Revisa la contraseña nueva y su confirmación; anota los errores en la lista. */
+    static void validarNueva(String nueva, String confirmacion, List<String> errores) {
+        if (nueva == null || nueva.isEmpty()) {
+            errores.add(MENSAJE_FALTA_NUEVA);
+            return;
         }
-        if (!passwordEncoder.matches(actual, usuario.getPasswordHash())) {
-            bloqueoLoginService.registrarFallo(email);
-            throw new ValidacionException(List.of(MENSAJE_ACTUAL_INCORRECTA));
-        }
+        if (!ReglaContrasena.cumple(nueva)) errores.add(ReglaContrasena.MENSAJE);
+        if (!nueva.equals(confirmacion)) errores.add(MENSAJE_NO_COINCIDEN);
+    }
+
+    /**
+     * Pone la contraseña nueva (ya validada): debe ser distinta de la actual. Anota la hora del cambio
+     * (las sesiones anteriores dejan de servir), borra los intentos fallidos del inicio de sesión y
+     * manda el correo de aviso.
+     */
+    Usuario ponerNueva(Usuario usuario, String nueva) {
         if (passwordEncoder.matches(nueva, usuario.getPasswordHash())) {
             throw new ValidacionException(List.of(MENSAJE_IGUAL_A_LA_ACTUAL));
         }
-        bloqueoLoginService.limpiar(email);
-
         // En segundos enteros, como la fecha de emisión del JWT: el token nuevo no queda "antes" del cambio.
         LocalDateTime ahora = LocalDateTime.now(reloj).truncatedTo(ChronoUnit.SECONDS);
         usuario.cambiarContrasena(passwordEncoder.encode(nueva), ahora);
         Usuario guardado = usuarioRepository.save(usuario);
+        bloqueoLoginService.limpiar(usuario.getEmail().strip().toLowerCase(Locale.ROOT));
         avisarPorCorreo(guardado);
-        return new ContrasenaCambiadaResponse(jwtService.generarToken(guardado));
+        return guardado;
     }
 
     /** El aviso es un extra: si el correo falla, la contraseña ya quedó cambiada y no se deshace. */
@@ -120,19 +122,5 @@ public class ContrasenaService {
         } catch (RuntimeException e) {
             log.warn("No se pudo enviar el aviso de cambio de contraseña al usuario {}", usuario.getCodigoUsuario(), e);
         }
-    }
-
-    private static void validar(String actual, String nueva, String confirmacion) {
-        List<String> errores = new ArrayList<>();
-        if (actual == null || actual.isEmpty()) {
-            errores.add(MENSAJE_FALTA_ACTUAL);
-        }
-        if (nueva == null || nueva.isEmpty()) {
-            errores.add(MENSAJE_FALTA_NUEVA);
-        } else {
-            if (!ReglaContrasena.cumple(nueva)) errores.add(ReglaContrasena.MENSAJE);
-            if (!nueva.equals(confirmacion)) errores.add(MENSAJE_NO_COINCIDEN);
-        }
-        if (!errores.isEmpty()) throw new ValidacionException(errores);
     }
 }

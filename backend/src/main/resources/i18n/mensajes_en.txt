@@ -131,8 +131,6 @@ Elige una portada válida => Choose a valid cover
 Escribe al menos 2 letras para buscar => Type at least 2 letters to search
 
 # Cambiar la contraseña (HU32)
-Escribe tu contraseña actual => Enter your current password
 Escribe la contraseña nueva => Enter the new password
 Las contraseñas nuevas no coinciden => The new passwords don't match
-La contraseña actual no es correcta => The current password is incorrect
 La contraseña nueva debe ser distinta de la actual => The new password must be different from the current one
