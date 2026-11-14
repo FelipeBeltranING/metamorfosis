@@ -37,8 +37,11 @@ export default function EliminarSubMetaModal({ subMeta, nombreMeta, eliminando, 
           {t('eliminarSubMeta.titulo', { nombre: subMeta.nombre })}
         </h2>
         <p id="descripcion-eliminar-submeta" className="mt-3 text-sm leading-6 text-gray-600">
-          <Trans i18nKey="eliminarSubMeta.texto" components={{ b: <strong /> }} />
-          {nombreMeta && t('eliminarSubMeta.constancia', { meta: nombreMeta })}
+          {/* HU28: un hito no tiene días registrados; al borrarlo cambia el avance (HU29), no la constancia. */}
+          {subMeta.tipo === 'HITO'
+            ? t('eliminarSubMeta.textoHito')
+            : <Trans i18nKey="eliminarSubMeta.texto" components={{ b: <strong /> }} />}
+          {nombreMeta && t(subMeta.tipo === 'HITO' ? 'eliminarSubMeta.avance' : 'eliminarSubMeta.constancia', { meta: nombreMeta })}
           {t('eliminarSubMeta.sinDeshacer')}
         </p>
         {error && (

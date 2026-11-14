@@ -1,6 +1,6 @@
 {
   "estadisticas": {
-    "noExiste": "Esta sub-meta no existe.",
+    "noExiste": "Este hábito no existe.",
     "objetivoLinea": "Objetivo: {{valor}} {{unidad}}",
     "sinRegistro": "sin registro",
     "barraDia": "{{dia}}: {{valor}}",

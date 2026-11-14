@@ -15,3 +15,5 @@ application-local.properties
 
 # Node (por si luego hay frontend)
 node_modules/
+# RQ8: archivos del log de aplicación
+logs/

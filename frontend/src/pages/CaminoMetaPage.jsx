@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
-  Check, ChevronLeft, CircleAlert, CircleCheck, Lock, Route, Trophy, UserPlus,
+  Check, ChevronLeft, CircleAlert, CircleCheck, Lock, PartyPopper, Repeat, Route, Trophy, UserPlus,
 } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -15,11 +15,12 @@ import MenuSubMeta from '../components/MenuSubMeta';
 import RegistrarValorModal from '../components/RegistrarValorModal';
 import EliminarSubMetaModal from '../components/EliminarSubMetaModal';
 import ConfirmarCumplidaModal from '../components/ConfirmarCumplidaModal';
+import HitosCamino from '../components/HitosCamino';
 import { PLAZOS, TIPOS } from '../constants/opcionesMeta';
 import { marcarCumplida } from '../services/metaService';
 import { useAvisosInsignia } from '../hooks/useAvisosInsignia';
 import {
-  eliminarSubMeta, obtenerCamino, quitarRegistro, registrarDia,
+  deshacerHito, eliminarSubMeta, lograrHito, obtenerCamino, quitarRegistro, registrarDia,
 } from '../services/subMetaService';
 import { diaCorto, formatearFecha } from '../utils/fechas';
 import { detalleSubMeta, formatearNumero } from '../utils/subMetas';
@@ -31,8 +32,11 @@ const COLUMNAS = 'grid grid-cols-5 gap-1 sm:grid-cols-[minmax(200px,1fr)_repeat(
 const OCULTA_EN_MOVIL = (i) => (i >= 5 ? 'hidden sm:flex' : 'flex');
 
 /**
- * Sub-metas · "Tu camino" de una meta: resumen de constancia y cuadrícula de los últimos días
- * para marcar cada sub-meta (HU-B). Una meta cumplida se muestra en solo lectura (HU6).
+ * "Tu camino" de una meta.
+ * - HU29: la cabecera muestra el avance real (hitos logrados sobre el total) y la constancia de los hábitos.
+ * - HU5: se marcan los hitos logrados y, en la cuadrícula de los últimos días, lo que se hizo en cada hábito.
+ * - HU6: al lograr todos los hitos la app propone marcar la meta como cumplida; una meta cumplida
+ *   se muestra en solo lectura.
  */
 export default function CaminoMetaPage() {
   const { t } = useTranslation();
@@ -104,7 +108,10 @@ export default function CaminoMetaPage() {
   }
 
   const { camino } = estado;
-  const fechas = camino.subMetas[0]?.dias.map((d) => d.fecha) ?? [];
+  const { habitos, hitos, avance } = camino;
+  const fechas = habitos[0]?.dias.map((d) => d.fecha) ?? [];
+  const sinPasos = hitos.length === 0 && habitos.length === 0;
+  const todosLosHitos = avance.total > 0 && avance.logrados === avance.total;
   const yo = obtenerSesion()?.codigoUsuario;
   const participantes = camino.participantes ?? [];
   const puedeInvitar = !camino.soloLectura && camino.puedeEditar && (participantes.length === 0 || participantes.some((p) => p.creador && p.codigoUsuario === yo));
@@ -118,6 +125,24 @@ export default function CaminoMetaPage() {
       else if (Number(dia.valor) >= 1) await registrarDia(subMeta.codigoSubMeta, dia.fecha, 0);
       else await quitarRegistro(subMeta.codigoSubMeta, dia.fecha);
       await recargar();
+    } catch (error) {
+      manejarError(error, setErrorAccion);
+    } finally {
+      setOcupado('');
+    }
+  };
+
+  // HU5: un hito se marca como logrado o vuelve a pendiente; el aviso dice cómo va el avance (HU29).
+  const alternarHito = async (hito) => {
+    setOcupado(`hito-${hito.codigoSubMeta}`);
+    try {
+      const respuesta = hito.fechaLogrado
+        ? await deshacerHito(hito.codigoSubMeta)
+        : await lograrHito(hito.codigoSubMeta);
+      await recargar();
+      setAviso(hito.fechaLogrado
+        ? t('hitos.deshechoAviso')
+        : t('hitos.logradoAviso', { porcentaje: respuesta.avance.porcentaje }));
     } catch (error) {
       manejarError(error, setErrorAccion);
     } finally {
@@ -235,7 +260,19 @@ export default function CaminoMetaPage() {
         </Link>
 
         <section className={`flex flex-wrap items-center gap-5 rounded-2xl border bg-white p-5 sm:p-7 ${camino.soloLectura ? 'border-violet-300' : 'border-zinc-200'}`}>
-          <AnilloConstancia porcentaje={camino.constancia7} tamano={96} grosor={10} />
+          {/* HU29: el anillo es el avance real (hitos). Sin hitos no se muestra un porcentaje que engañe. */}
+          {avance.total > 0 ? (
+            <AnilloConstancia
+              porcentaje={avance.porcentaje}
+              tamano={96}
+              grosor={10}
+              etiqueta={t('hitos.avanceEtiqueta', { porcentaje: avance.porcentaje, logrados: avance.logrados, total: avance.total })}
+            />
+          ) : (
+            <div className="flex size-24 shrink-0 items-center justify-center rounded-2xl bg-violet-50 text-violet-600">
+              <Route className="size-10" aria-hidden="true" />
+            </div>
+          )}
           <div className="flex min-w-0 flex-[1_1_260px] flex-col gap-2">
             {camino.soloLectura && camino.fechaCumplida && (
               <span className="inline-flex items-center gap-1.5 self-start rounded-lg bg-violet-600 px-2.5 py-1 text-sm font-extrabold text-white">
@@ -271,25 +308,39 @@ export default function CaminoMetaPage() {
               </div>
             )}
           </div>
-          {camino.subMetas.length > 0 && (
-            <dl className="grid flex-[1_1_320px] grid-cols-3 gap-2.5">
-              <div className="rounded-xl bg-slate-50 px-3.5 py-3">
-                <dt className="text-[13px] font-semibold text-gray-600">{t('camino.hoy')}</dt>
-                <dd className="mt-0.5 text-xl font-extrabold">{camino.tocanHoy ? t('camino.hoyValor', { hechas: camino.cumplidasHoy, total: camino.tocanHoy }) : '—'}</dd>
-              </div>
-              <div className="rounded-xl bg-slate-50 px-3.5 py-3">
-                <dt className="text-[13px] font-semibold text-gray-600">{t('camino.ultimos30')}</dt>
-                <dd className="mt-0.5 text-xl font-extrabold">{camino.constancia30 ?? '—'}{camino.constancia30 !== null && '%'}</dd>
-              </div>
-              <div className="rounded-xl bg-slate-50 px-3.5 py-3">
-                <dt className="text-[13px] font-semibold text-gray-600">{t('camino.diasSeguidos')}</dt>
-                <dd className="mt-0.5 text-xl font-extrabold">{camino.diasSeguidosCompletos}</dd>
-              </div>
+          {!sinPasos && (
+            <dl className="grid flex-[1_1_320px] grid-cols-2 gap-2.5 sm:grid-cols-[repeat(auto-fit,minmax(130px,1fr))]">
+              {avance.total > 0 && (
+                <div className="rounded-xl bg-violet-50 px-3.5 py-3">
+                  <dt className="text-[13px] font-semibold text-violet-900">{t('hitos.titulo')}</dt>
+                  <dd className="mt-0.5 text-xl font-extrabold">{t('camino.hoyValor', { hechas: avance.logrados, total: avance.total })}</dd>
+                </div>
+              )}
+              {habitos.length > 0 && (
+                <>
+                  <div className="rounded-xl bg-slate-50 px-3.5 py-3">
+                    <dt className="text-[13px] font-semibold text-gray-600">{t('hitos.hoy')}</dt>
+                    <dd className="mt-0.5 text-xl font-extrabold">{camino.tocanHoy ? t('camino.hoyValor', { hechas: camino.cumplidasHoy, total: camino.tocanHoy }) : '—'}</dd>
+                  </div>
+                  <div className="rounded-xl bg-slate-50 px-3.5 py-3">
+                    <dt className="text-[13px] font-semibold text-gray-600">{t('hitos.constancia')}</dt>
+                    <dd className="mt-0.5 text-xl font-extrabold">{camino.constancia30 ?? '—'}{camino.constancia30 !== null && '%'}</dd>
+                  </div>
+                  <div className="rounded-xl bg-slate-50 px-3.5 py-3">
+                    <dt className="text-[13px] font-semibold text-gray-600">{t('hitos.racha')}</dt>
+                    <dd className="mt-0.5 text-xl font-extrabold">
+                      {camino.diasSeguidosCompletos > 0
+                        ? t('hitos.rachaDias', { count: camino.diasSeguidosCompletos })
+                        : <span className="text-base text-violet-700">{t('hitos.rachaCero')}</span>}
+                    </dd>
+                  </div>
+                </>
+              )}
             </dl>
           )}
         </section>
 
-        {camino.subMetas.length === 0 ? (
+        {sinPasos ? (
           <section className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-violet-300 bg-white px-6 py-12 text-center">
             <div className="flex size-16 items-center justify-center rounded-2xl bg-violet-50 text-violet-600">
               <Route className="size-8" aria-hidden="true" />
@@ -307,16 +358,48 @@ export default function CaminoMetaPage() {
             )}
           </section>
         ) : (
+          <>
+          {camino.soloLectura && (
+            <p className="flex items-center gap-2 rounded-xl bg-slate-100 px-4 py-3 text-[15px] font-semibold text-gray-700">
+              <Lock className="size-4 shrink-0" aria-hidden="true" />
+              {t('camino.asiRecorriste')}. {t('camino.soloLectura')}
+            </p>
+          )}
+          <HitosCamino
+            camino={camino}
+            ocupado={ocupado}
+            onAlternar={alternarHito}
+            onEliminar={(s) => { setErrorEliminar(''); setAEliminar(s); }}
+          />
+          {habitos.length === 0 ? (
+            <section className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-zinc-200 bg-white p-4 sm:p-7">
+              <div className="flex-[1_1_280px]">
+                <h2 className="flex items-center gap-2 text-xl font-extrabold sm:text-2xl">
+                  <Repeat className="size-5 text-violet-600" aria-hidden="true" />
+                  {t('hitos.habitos')}
+                </h2>
+                <p className="text-[15px] leading-6 text-gray-600">
+                  {camino.puedeEditar ? t('hitos.habitosVacioCreador') : t('hitos.habitosVacioInvitado')}
+                </p>
+              </div>
+              {camino.puedeEditar && (
+                <Link to={`/metas/${camino.codigoMeta}/submetas/nueva`} className="flex h-11 items-center rounded-xl bg-violet-600 px-4 text-[15px] font-bold text-white hover:bg-violet-700">
+                  {t('camino.agregarSubMeta')}
+                </Link>
+              )}
+            </section>
+          ) : (
           <section aria-labelledby="titulo-camino" className="flex flex-col gap-3 rounded-2xl border border-zinc-200 bg-white p-4 sm:p-7">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h2 id="titulo-camino" className="text-xl font-extrabold sm:text-2xl">
-                  {camino.soloLectura ? t('camino.asiRecorriste') : t('camino.tuCamino')}
+                <h2 id="titulo-camino" className="flex items-center gap-2 text-xl font-extrabold sm:text-2xl">
+                  <Repeat className="size-5 text-violet-600" aria-hidden="true" />
+                  {t('hitos.habitos')}
                 </h2>
                 <p className="text-sm text-gray-600 sm:text-[15px]">
                   {camino.soloLectura
-                    ? t('camino.soloLectura')
-                    : t('camino.instrucciones')}
+                    ? t('hitos.habitosExplicacion')
+                    : `${t('hitos.habitosExplicacion')} ${t('camino.instrucciones')}`}
                 </p>
               </div>
               {camino.soloLectura ? (
@@ -340,7 +423,7 @@ export default function CaminoMetaPage() {
                   </span>
                 ))}
               </div>
-              {camino.subMetas.map(({ subMeta, dias }) => (
+              {habitos.map(({ subMeta, dias }) => (
                 <div key={subMeta.codigoSubMeta} role="row" className={`${COLUMNAS} items-center rounded-xl bg-slate-50 py-1.5 pl-1 pr-1 gap-y-1.5`}>
                   <div role="rowheader" className="col-span-full flex min-w-0 items-center gap-0.5 sm:col-span-1">
                     <MenuSubMeta subMeta={subMeta} puedeEditar={camino.puedeEditar} onEliminar={(s) => { setErrorEliminar(''); setAEliminar(s); }} />
@@ -361,9 +444,30 @@ export default function CaminoMetaPage() {
               <span>{t('camino.leyendaNoToca')}</span>
             </div>
           </section>
+          )}
+          </>
         )}
 
-        {!camino.soloLectura && camino.puedeEditar && (
+        {/* HU6: con todos los hitos logrados, la app propone cumplir la meta. */}
+        {!camino.soloLectura && camino.puedeEditar && todosLosHitos && (
+          <section className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-emerald-300 bg-emerald-50 p-5">
+            <div className="flex flex-[1_1_320px] items-start gap-3">
+              <PartyPopper className="mt-0.5 size-7 shrink-0 text-emerald-700" aria-hidden="true" />
+              <div>
+                <h2 className="text-lg font-extrabold text-emerald-900">{t('hitos.llegasteTitulo')}</h2>
+                <p className="text-[15px] leading-6 text-emerald-900">{t('hitos.llegasteTexto', { meta: camino.nombre })}</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => { setErrorCumplida(''); setConfirmarCumplida(true); }}
+              className="h-11 rounded-xl bg-emerald-600 px-5 font-bold text-white hover:bg-emerald-700"
+            >
+              {t('camino.marcarCumplida')}
+            </button>
+          </section>
+        )}
+        {!camino.soloLectura && camino.puedeEditar && !todosLosHitos && (
           <section className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-dashed border-violet-300 bg-violet-50/60 p-5">
             <p className="flex-[1_1_320px] text-[15px] leading-6 text-gray-600">
               {t('camino.llegaste')}

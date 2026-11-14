@@ -61,13 +61,13 @@ export default function ConfirmarEliminarModal({
           {resumen?.totalSubMetas > 0 ? t('eliminarMeta.conCamino') : t('eliminarMeta.sinDeshacer')}
         </p>
 
-        {/* HU4 + sub-metas: se borran en cascada sus sub-metas y registros. */}
+        {/* HU4 + HU28: se borran en cascada los pasos del camino (hitos y hábitos) y sus registros. */}
         {resumen?.totalSubMetas > 0 && (
           <>
             <ul className="mt-3 flex flex-col gap-1.5 text-sm text-gray-700">
               <li className="rounded-lg bg-slate-50 px-3 py-2">
                 <strong className="text-gray-900">{resumen.totalSubMetas}</strong>
-                {t('eliminarMeta.subMetas', { count: resumen.totalSubMetas })}
+                {t('hitos.eliminarMetaPasos', { count: resumen.totalSubMetas })}
               </li>
               <li className="rounded-lg bg-slate-50 px-3 py-2">
                 <strong className="text-gray-900">{resumen.totalRegistros}</strong>

@@ -25,7 +25,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Sub-metas: registrar (o corregir) y quitar lo que un participante hizo en un día.
+ * HU5: registrar (o corregir) y quitar lo que un participante hizo en un día en un hábito del camino.
  * Un registro por sub-meta, usuario y día. No se registran días futuros, días antes de que la
  * sub-meta existiera ni días que no tocan. Una meta cumplida queda en solo lectura.
  */
@@ -85,6 +85,9 @@ public class RegistroDiaService {
         }
         if (subMeta.getMeta().getEstado() != EstadoMeta.ACTIVA) {
             throw new ValidacionException(List.of(SubMetaService.MENSAJE_SOLO_LECTURA));
+        }
+        if (subMeta.esHito()) {
+            throw new ValidacionException(List.of("Un hito no se registra por día: se marca como logrado"));
         }
         return subMeta;
     }

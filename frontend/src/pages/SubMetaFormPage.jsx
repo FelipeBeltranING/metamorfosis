@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { ChartColumn, Check, ChevronLeft, CircleAlert, Info, LoaderCircle, TriangleAlert } from 'lucide-react';
+import {
+  ChartColumn, Check, ChevronLeft, CircleAlert, Flag, Info, Lightbulb, LoaderCircle, TriangleAlert,
+} from 'lucide-react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Trans, useTranslation } from 'react-i18next';
 import i18n from '../i18n';
@@ -7,8 +9,10 @@ import Encabezado from '../components/Encabezado';
 import EstadoError from '../components/EstadoError';
 import EliminarSubMetaModal from '../components/EliminarSubMetaModal';
 import {
-  crearSubMeta, editarSubMeta, eliminarSubMeta, obtenerCamino, obtenerEstadisticas,
+  crearSubMeta, editarSubMeta, eliminarSubMeta, obtenerCamino, obtenerPaso,
 } from '../services/subMetaService';
+
+const TIPOS_PASO = ['HITO', 'SI_NO', 'MEDIBLE'];
 import { diasLargos, formatearNumero, textoDias } from '../utils/subMetas';
 
 const VACIO = {
@@ -20,8 +24,9 @@ function validar(f, tipo) {
   const t = (clave, opciones) => i18n.t(`subMetaForm.validacion.${clave}`, opciones);
   if (!f.nombre.trim()) e.nombre = t('nombreObligatorio');
   else if (f.nombre.trim().length > 100) e.nombre = t('maximo', { max: 100 });
-  if (f.pregunta.trim().length > 200) e.pregunta = t('maximo', { max: 200 });
   if (f.notas.trim().length > 500) e.notas = t('maximo', { max: 500 });
+  if (tipo === 'HITO') return e; // Un hito solo tiene nombre y notas.
+  if (f.pregunta.trim().length > 200) e.pregunta = t('maximo', { max: 200 });
   if (tipo === 'MEDIBLE') {
     if (!f.unidad.trim()) e.unidad = t('unidad');
     else if (f.unidad.trim().length > 30) e.unidad = t('maximo', { max: 30 });
@@ -35,8 +40,10 @@ function validar(f, tipo) {
 }
 
 /**
- * Sub-metas (HU-A): crear una sub-meta (primero se elige Sí/No o medible) o editar una existente.
- * Rutas: /metas/:codigoMeta/submetas/nueva y /submetas/:codigoSubMeta/editar.
+ * HU28: agregar un paso al camino de una meta (primero se elige hito, hábito Sí/No o hábito medible,
+ * con ideas según el tipo de meta) o editar uno existente. El formulario pide lo esencial; la pregunta
+ * del día y las notas van en "Más opciones".
+ * Rutas: /metas/:codigoMeta/submetas/nueva[?tipo=HITO|SI_NO|MEDIBLE] y /submetas/:codigoSubMeta/editar.
  */
 export default function SubMetaFormPage() {
   const { t } = useTranslation();
@@ -62,19 +69,20 @@ export default function SubMetaFormPage() {
       else setCarga({ fase: 'error', mensaje: error.message });
     };
     if (editando) {
-      obtenerEstadisticas(codigoSubMeta).then((est) => {
+      obtenerPaso(codigoSubMeta).then((respuesta) => {
         if (!activo) return;
-        const s = est.subMeta;
-        setCarga({ fase: 'lista', subMeta: s, nombreMeta: est.nombreMeta, codigoMeta: s.codigoMeta, soloLectura: est.soloLectura });
+        const s = respuesta.paso;
+        const sinDias = !s.dias.length || s.dias.length === 7;
+        setCarga({ fase: 'lista', subMeta: s, nombreMeta: respuesta.nombreMeta, codigoMeta: s.codigoMeta, soloLectura: !respuesta.puedeEditar });
         setFormulario({
           nombre: s.nombre, pregunta: s.pregunta ?? '', unidad: s.unidad ?? '',
           objetivo: s.objetivo !== null ? String(Number(s.objetivo)) : '', tipoObjetivo: s.tipoObjetivo ?? 'AL_MENOS',
-          modoDias: s.dias.length === 7 ? 'todos' : 'especificos', dias: s.dias.length === 7 ? [1, 2, 3, 4, 5] : s.dias, notas: s.notas ?? '',
+          modoDias: sinDias ? 'todos' : 'especificos', dias: sinDias ? [1, 2, 3, 4, 5] : s.dias, notas: s.notas ?? '',
         });
       }).catch(fallar);
     } else {
       obtenerCamino(codigoMeta).then((camino) => activo && setCarga({
-        fase: 'lista', nombreMeta: camino.nombre, codigoMeta: camino.codigoMeta, soloLectura: !camino.puedeEditar,
+        fase: 'lista', nombreMeta: camino.nombre, codigoMeta: camino.codigoMeta, tipoMeta: camino.tipo, soloLectura: !camino.puedeEditar,
       })).catch(fallar);
     }
     return () => {
@@ -84,6 +92,13 @@ export default function SubMetaFormPage() {
 
   const tipo = editando ? carga.subMeta?.tipo : parametros.get('tipo');
   const volverA = carga.codigoMeta ? `/metas/${carga.codigoMeta}` : '/metas';
+
+  // Ideas según el tipo de meta: al elegir una, el formulario empieza con su tipo y su nombre.
+  const ideas = carga.tipoMeta ? t(`ideasCamino.${carga.tipoMeta}`, { returnObjects: true }) : [];
+  const usarIdea = (tipoIdea, nombre) => {
+    setFormulario((f) => ({ ...f, nombre }));
+    setParametros({ tipo: tipoIdea });
+  };
 
   const cambiar = (campo, valor) => {
     setFormulario((f) => ({ ...f, [campo]: valor }));
@@ -104,14 +119,15 @@ export default function SubMetaFormPage() {
       setErrorServidor([t('subMetaForm.validacion.revisa', { count: Object.keys(e).length })]);
       return;
     }
+    const esHito = tipo === 'HITO';
     const datos = {
       nombre: formulario.nombre.trim(),
-      pregunta: formulario.pregunta.trim() || null,
+      pregunta: esHito ? null : formulario.pregunta.trim() || null,
       tipo,
       unidad: tipo === 'MEDIBLE' ? formulario.unidad.trim() : null,
       objetivo: tipo === 'MEDIBLE' ? Number(String(formulario.objetivo).replace(',', '.')) : null,
       tipoObjetivo: tipo === 'MEDIBLE' ? formulario.tipoObjetivo : null,
-      dias: formulario.modoDias === 'todos' ? [1, 2, 3, 4, 5, 6, 7] : formulario.dias,
+      dias: esHito || formulario.modoDias === 'todos' ? [1, 2, 3, 4, 5, 6, 7] : formulario.dias,
       notas: formulario.notas.trim() || null,
     };
     setGuardando(true);
@@ -150,33 +166,50 @@ export default function SubMetaFormPage() {
       );
     }
 
-    // Paso 1 (solo al crear): elegir el tipo.
-    if (!editando && tipo !== 'SI_NO' && tipo !== 'MEDIBLE') {
+    // Paso 1 (solo al crear): elegir hito o hábito, o empezar con una idea para este tipo de meta.
+    if (!editando && !TIPOS_PASO.includes(tipo)) {
+      const opcion = (valor, Icono, colorIcono, titulo, texto) => (
+        <button
+          type="button"
+          onClick={() => setParametros({ tipo: valor })}
+          className="flex items-start gap-4 rounded-2xl border border-zinc-200 bg-white p-5 text-left hover:border-violet-400"
+        >
+          <span className={`flex size-12 shrink-0 items-center justify-center rounded-xl ${colorIcono}`}><Icono className="size-6" strokeWidth={2.5} aria-hidden="true" /></span>
+          <span>
+            <span className="block text-lg font-extrabold">{titulo}</span>
+            <span className="block text-[15px] leading-6 text-gray-600">{texto}</span>
+          </span>
+        </button>
+      );
       return (
         <div className="flex flex-col gap-3">
           <p className="text-[15px] text-gray-600"><Trans i18nKey="subMetaForm.comoMedir" values={{ meta: carga.nombreMeta }} components={{ b: <strong className="text-gray-900" /> }} /></p>
-          <button
-            type="button"
-            onClick={() => setParametros({ tipo: 'SI_NO' })}
-            className="flex items-start gap-4 rounded-2xl border border-zinc-200 bg-white p-5 text-left hover:border-violet-400"
-          >
-            <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"><Check className="size-6" strokeWidth={2.5} aria-hidden="true" /></span>
-            <span>
-              <span className="block text-lg font-extrabold">{t('subMetaForm.siNo')}</span>
-              <span className="block text-[15px] leading-6 text-gray-600">{t('subMetaForm.siNoTexto')}</span>
-            </span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setParametros({ tipo: 'MEDIBLE' })}
-            className="flex items-start gap-4 rounded-2xl border border-zinc-200 bg-white p-5 text-left hover:border-violet-400"
-          >
-            <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-800"><ChartColumn className="size-6" aria-hidden="true" /></span>
-            <span>
-              <span className="block text-lg font-extrabold">{t('subMetaForm.medible')}</span>
-              <span className="block text-[15px] leading-6 text-gray-600">{t('subMetaForm.medibleTexto')}</span>
-            </span>
-          </button>
+          <h2 className="mt-1 text-sm font-extrabold uppercase tracking-wide text-gray-600">{t('subMetaPaso.grupoHito')}</h2>
+          {opcion('HITO', Flag, 'bg-violet-600 text-white', t('subMetaPaso.hito'), t('subMetaPaso.hitoTexto'))}
+          <h2 className="mt-2 text-sm font-extrabold uppercase tracking-wide text-gray-600">{t('subMetaPaso.grupoHabito')}</h2>
+          {opcion('SI_NO', Check, 'bg-emerald-50 text-emerald-700', t('subMetaPaso.habitoSiNo'), t('subMetaForm.siNoTexto'))}
+          {opcion('MEDIBLE', ChartColumn, 'bg-violet-100 text-violet-800', t('subMetaPaso.habitoMedible'), t('subMetaForm.medibleTexto'))}
+          {Array.isArray(ideas) && ideas.length > 0 && (
+            <section aria-labelledby="titulo-ideas" className="mt-2 flex flex-col gap-2.5 rounded-2xl bg-violet-50 p-5">
+              <h2 id="titulo-ideas" className="flex items-center gap-2 text-base font-extrabold text-violet-900">
+                <Lightbulb className="size-5" aria-hidden="true" /> {t('subMetaPaso.ideas')}
+              </h2>
+              <p className="text-sm text-gray-700">{t('subMetaPaso.ideasTexto')}</p>
+              <div className="flex flex-wrap gap-2">
+                {ideas.map(([tipoIdea, nombre]) => (
+                  <button
+                    key={nombre}
+                    type="button"
+                    onClick={() => usarIdea(tipoIdea, nombre)}
+                    className="flex items-center gap-1.5 rounded-xl border border-violet-200 bg-white px-3 py-2 text-sm font-bold text-violet-900 hover:border-violet-400"
+                  >
+                    {tipoIdea === 'HITO' ? <Flag className="size-4" aria-hidden="true" /> : <Check className="size-4" aria-hidden="true" />}
+                    {nombre}
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       );
     }
@@ -212,8 +245,13 @@ export default function SubMetaFormPage() {
           </div>
         )}
         <div className="flex flex-col gap-5 rounded-2xl border border-zinc-200 bg-white p-5 sm:p-7">
-          {campo('nombre', t('subMetaForm.nombre'), false, { maxLength: 100, placeholder: tipo === 'MEDIBLE' ? t('subMetaForm.nombrePlaceholderMedible') : t('subMetaForm.nombrePlaceholderSiNo') })}
-          {campo('pregunta', t('subMetaForm.pregunta'), true, { maxLength: 200, placeholder: tipo === 'MEDIBLE' ? t('subMetaForm.preguntaPlaceholderMedible') : t('subMetaForm.preguntaPlaceholderSiNo') })}
+          {campo('nombre', t('subMetaForm.nombre'), false, {
+            maxLength: 100,
+            placeholder: {
+              HITO: t('subMetaPaso.nombrePlaceholderHito'),
+              MEDIBLE: t('subMetaForm.nombrePlaceholderMedible'),
+            }[tipo] ?? t('subMetaForm.nombrePlaceholderSiNo'),
+          })}
 
           {tipo === 'MEDIBLE' && (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -243,6 +281,7 @@ export default function SubMetaFormPage() {
             </p>
           )}
 
+          {tipo !== 'HITO' && (
           <fieldset className="flex flex-col gap-2" aria-describedby={errores.dias ? 'error-dias' : undefined}>
             <legend className="mb-1.5 text-sm font-extrabold">{t('subMetaForm.queDias')}</legend>
             <div className="flex gap-1 self-start rounded-xl bg-slate-100 p-1">
@@ -271,15 +310,27 @@ export default function SubMetaFormPage() {
             )}
             {errores.dias && <span id="error-dias" className="text-[13px] font-bold text-red-700">{errores.dias}</span>}
           </fieldset>
+          )}
 
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="notas" className="text-sm font-extrabold">{t('subMetaForm.notas')} <span className="font-semibold text-gray-600">{t('subMetaForm.opcional')}</span></label>
-            <textarea id="notas" rows={2} maxLength={500} value={formulario.notas} onChange={(e) => cambiar('notas', e.target.value)} className="resize-y rounded-xl border border-zinc-200 px-3.5 py-3 text-[15px] outline-none focus:ring-2 focus:ring-violet-300" />
-          </div>
+          {/* HU28: lo opcional va plegado para que agregar un paso sea rápido. Se abre solo si ya tiene datos o errores. */}
+          <details
+            open={Boolean(formulario.pregunta || formulario.notas || errores.pregunta || errores.notas)}
+            className="group rounded-xl border border-zinc-200 px-4 py-3"
+          >
+            <summary className="cursor-pointer text-sm font-extrabold text-violet-800">{t('subMetaPaso.masOpciones')}</summary>
+            <div className="mt-4 flex flex-col gap-4">
+              {tipo !== 'HITO' && campo('pregunta', t('subMetaForm.pregunta'), true, { maxLength: 200, placeholder: tipo === 'MEDIBLE' ? t('subMetaForm.preguntaPlaceholderMedible') : t('subMetaForm.preguntaPlaceholderSiNo') })}
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="notas" className="text-sm font-extrabold">{t('subMetaForm.notas')} <span className="font-semibold text-gray-600">{t('subMetaForm.opcional')}</span></label>
+                <textarea id="notas" rows={2} maxLength={500} value={formulario.notas} onChange={(e) => cambiar('notas', e.target.value)} className="resize-y rounded-xl border border-zinc-200 px-3.5 py-3 text-[15px] outline-none focus:ring-2 focus:ring-violet-300" />
+              </div>
+            </div>
+          </details>
 
           <p className="flex items-start gap-2.5 rounded-xl bg-violet-50 p-4 text-[15px] text-gray-700">
             <Info className="mt-0.5 size-5 shrink-0 text-violet-700" aria-hidden="true" />
-            {tipo === 'MEDIBLE'
+            {tipo === 'HITO' && <span>{t('subMetaPaso.resumenHito')}</span>}
+            {tipo === 'HITO' ? null : tipo === 'MEDIBLE'
               ? (
                 <span>
                   <Trans
@@ -320,15 +371,17 @@ export default function SubMetaFormPage() {
   };
 
   let titulo = t('subMetaForm.tituloNueva');
-  if (editando) titulo = t('subMetaForm.tituloEditar');
+  if (editando) titulo = tipo === 'HITO' ? t('subMetaPaso.tituloEditarHito') : t('subMetaPaso.tituloEditarHabito');
+  else if (tipo === 'HITO') titulo = t('subMetaPaso.tituloHito');
   else if (tipo === 'SI_NO') titulo = t('subMetaForm.tituloSiNo');
   else if (tipo === 'MEDIBLE') titulo = t('subMetaForm.tituloMedible');
+  const nombreTipo = { HITO: t('subMetaPaso.hito'), MEDIBLE: t('subMetaPaso.habitoMedible') }[tipo] ?? t('subMetaPaso.habitoSiNo');
 
   return (
     <div className="min-h-screen bg-slate-50 text-gray-900">
       <Encabezado />
       <main className="mx-auto flex w-full max-w-[720px] flex-col gap-5 px-4 pb-16 pt-6 sm:pt-8">
-        {!editando && (tipo === 'SI_NO' || tipo === 'MEDIBLE') ? (
+        {!editando && TIPOS_PASO.includes(tipo) ? (
           <button type="button" onClick={() => setParametros({})} className="inline-flex items-center gap-1 self-start text-[15px] font-bold text-violet-700 hover:underline">
             <ChevronLeft className="size-[18px]" aria-hidden="true" /> {t('subMetaForm.cambiarTipo')}
           </button>
@@ -341,7 +394,7 @@ export default function SubMetaFormPage() {
           <h1 className="text-2xl font-extrabold sm:text-3xl">{titulo}</h1>
           {carga.nombreMeta && (
             <p className="mt-1 text-[15px] text-gray-600">
-              {editando ? `${tipo === 'MEDIBLE' ? t('subMetaForm.medible') : t('subMetaForm.siNo')} · ` : ''}{t('subMetaForm.meta', { meta: carga.nombreMeta })}
+              {editando ? `${nombreTipo} · ` : ''}{t('subMetaForm.meta', { meta: carga.nombreMeta })}
               {editando && t('subMetaForm.tipoNoCambia')}
             </p>
           )}

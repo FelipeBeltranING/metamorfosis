@@ -1,5 +1,7 @@
 package com.metamorfosis.backend.controller;
 
+import com.metamorfosis.backend.dto.LogroHitoResponse;
+import com.metamorfosis.backend.dto.PasoResponse;
 import com.metamorfosis.backend.dto.CaminoResponse;
 import com.metamorfosis.backend.dto.DiaResponse;
 import com.metamorfosis.backend.dto.EstadisticasResponse;
@@ -19,7 +21,10 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-/** Sub-metas: el camino de cada meta (sub-metas diarias, registro del día y estadísticas). */
+/**
+ * El camino de cada meta: HU28 (trazarlo con hitos y hábitos), HU5 (registrar el avance: hitos logrados
+ * y días de los hábitos) y HU29 (avance de la meta y constancia de cada hábito).
+ */
 @RestController
 @RequestMapping("/api")
 public class SubMetaController {
@@ -35,7 +40,7 @@ public class SubMetaController {
         this.caminoService = caminoService;
     }
 
-    /** HU3: constancia y sub-metas de hoy de cada meta activa, para las tarjetas de "Mis metas". */
+    /** HU3: avance (HU29), constancia y hábitos de hoy de cada meta activa, para las tarjetas de "Mis metas". */
     @GetMapping("/metas/camino-hoy")
     public ResponseEntity<List<ResumenCaminoResponse>> resumenes(@AuthenticationPrincipal Integer codigoUsuario) {
         return ResponseEntity.ok(caminoService.resumenes(codigoUsuario));
@@ -52,6 +57,13 @@ public class SubMetaController {
     public ResponseEntity<SubMetaResponse> crear(@PathVariable Integer codigoMeta, @RequestBody SubMetaRequest pedido,
                                                  @AuthenticationPrincipal Integer codigoUsuario) {
         return ResponseEntity.status(HttpStatus.CREATED).body(subMetaService.crear(codigoMeta, pedido, codigoUsuario));
+    }
+
+    /** HU28: un paso del camino, para editarlo. */
+    @GetMapping("/submetas/{codigoSubMeta}")
+    public ResponseEntity<PasoResponse> paso(@PathVariable Integer codigoSubMeta,
+                                             @AuthenticationPrincipal Integer codigoUsuario) {
+        return ResponseEntity.ok(caminoService.paso(codigoSubMeta, codigoUsuario));
     }
 
     @PutMapping("/submetas/{codigoSubMeta}")
@@ -84,6 +96,21 @@ public class SubMetaController {
         return ResponseEntity.noContent().build();
     }
 
+    /** HU5: marca el hito como logrado (sin cuerpo). Responde el hito y el avance de la meta (HU29). */
+    @PutMapping("/submetas/{codigoSubMeta}/logro")
+    public ResponseEntity<LogroHitoResponse> lograrHito(@PathVariable Integer codigoSubMeta,
+                                                        @AuthenticationPrincipal Integer codigoUsuario) {
+        return ResponseEntity.ok(subMetaService.lograrHito(codigoSubMeta, codigoUsuario));
+    }
+
+    /** HU5: devuelve el hito a pendiente. */
+    @DeleteMapping("/submetas/{codigoSubMeta}/logro")
+    public ResponseEntity<LogroHitoResponse> deshacerHito(@PathVariable Integer codigoSubMeta,
+                                                          @AuthenticationPrincipal Integer codigoUsuario) {
+        return ResponseEntity.ok(subMetaService.deshacerHito(codigoSubMeta, codigoUsuario));
+    }
+
+    /** HU29: constancia, rachas e historial de un hábito. */
     @GetMapping("/submetas/{codigoSubMeta}/estadisticas")
     public ResponseEntity<EstadisticasResponse> estadisticas(@PathVariable Integer codigoSubMeta,
                                                              @AuthenticationPrincipal Integer codigoUsuario) {
