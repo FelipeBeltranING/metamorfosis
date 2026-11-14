@@ -5,11 +5,14 @@ import {
 import {
   desactivarCodigoMeta, generarCodigoMeta, mostrarCodigo, verCodigoMeta,
 } from '../services/invitacionService';
+import { useTranslation } from 'react-i18next';
+import { localeActual } from '../i18n';
 
-const FECHA = new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'short' });
+const fechaCorta = (fecha) => new Intl.DateTimeFormat(localeActual(), { day: 'numeric', month: 'short' }).format(fecha).replace('.', '');
 
 /** Código para unirse a la meta: crearlo, copiarlo, cambiarlo o desactivarlo (solo el creador). */
 export default function CodigoInvitacion({ codigoMeta }) {
+  const { t } = useTranslation();
   const [estado, setEstado] = useState({ fase: 'cargando' });
   const [ocupado, setOcupado] = useState('');
   const [copiado, setCopiado] = useState(false);
@@ -25,8 +28,8 @@ export default function CodigoInvitacion({ codigoMeta }) {
 
   useEffect(() => {
     if (!copiado) return undefined;
-    const t = setTimeout(() => setCopiado(false), 2500);
-    return () => clearTimeout(t);
+    const temporizador = setTimeout(() => setCopiado(false), 2500);
+    return () => clearTimeout(temporizador);
   }, [copiado]);
 
   const ejecutar = async (que, accion) => {
@@ -47,7 +50,7 @@ export default function CodigoInvitacion({ codigoMeta }) {
       await navigator.clipboard.writeText(mostrarCodigo(estado.codigo));
       setCopiado(true);
     } catch {
-      setError('No se pudo copiar. Selecciona el código y cópialo a mano.');
+      setError(t('codigo.errorCopiar'));
     }
   };
 
@@ -56,12 +59,12 @@ export default function CodigoInvitacion({ codigoMeta }) {
       <div className="flex items-start gap-3">
         <KeyRound className="mt-0.5 size-5 shrink-0 text-violet-600" aria-hidden="true" />
         <div>
-          <h3 className="text-sm font-bold text-gray-900">Invitar con un código</h3>
-          <p className="text-[13px] leading-5 text-gray-600">Compártelo por mensaje: quien lo escriba en «Unirme con código» entra directo a la meta.</p>
+          <h3 className="text-sm font-bold text-gray-900">{t('codigo.titulo')}</h3>
+          <p className="text-[13px] leading-5 text-gray-600">{t('codigo.texto')}</p>
         </div>
       </div>
 
-      {estado.fase === 'cargando' && <LoaderCircle className="size-5 animate-spin text-gray-400" aria-label="Cargando código" />}
+      {estado.fase === 'cargando' && <LoaderCircle className="size-5 animate-spin text-gray-400" aria-label={t('codigo.cargando')} />}
       {estado.fase === 'error' && <p role="alert" className="text-sm font-semibold text-red-600">{estado.mensaje}</p>}
 
       {estado.fase === 'listo' && !estado.codigo && (
@@ -72,14 +75,14 @@ export default function CodigoInvitacion({ codigoMeta }) {
           className="flex h-10 items-center justify-center gap-2 self-start rounded-xl border border-violet-300 bg-white px-4 text-sm font-bold text-violet-700 hover:bg-violet-50 disabled:opacity-60"
         >
           {ocupado === 'crear' && <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />}
-          Crear código
+          {t('codigo.crear')}
         </button>
       )}
 
       {estado.fase === 'listo' && estado.codigo && (
         <>
           <div className="flex flex-wrap items-center gap-3">
-            <output aria-label="Código para unirse" className="select-all rounded-xl bg-violet-50 px-4 py-2.5 font-mono text-2xl font-extrabold tracking-[0.15em] text-violet-800">
+            <output aria-label={t('codigo.etiqueta')} className="select-all rounded-xl bg-violet-50 px-4 py-2.5 font-mono text-2xl font-extrabold tracking-[0.15em] text-violet-800">
               {mostrarCodigo(estado.codigo)}
             </output>
             <button
@@ -88,11 +91,11 @@ export default function CodigoInvitacion({ codigoMeta }) {
               className="flex h-10 items-center gap-1.5 rounded-xl bg-violet-600 px-4 text-sm font-bold text-white hover:bg-violet-700"
             >
               {copiado ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
-              {copiado ? 'Copiado' : 'Copiar'}
+              {copiado ? t('codigo.copiado') : t('codigo.copiar')}
             </button>
           </div>
           <p className="text-[13px] text-gray-500">
-            Sirve hasta el {FECHA.format(new Date(estado.expira)).replace('.', '')}.
+            {t('codigo.sirveHasta', { fecha: fechaCorta(new Date(estado.expira)) })}
           </p>
           <div className="flex flex-wrap gap-x-4 gap-y-1">
             <button
@@ -102,7 +105,7 @@ export default function CodigoInvitacion({ codigoMeta }) {
               className="flex items-center gap-1.5 text-sm font-bold text-gray-700 hover:underline disabled:opacity-60"
             >
               {ocupado === 'cambiar' ? <LoaderCircle className="size-4 animate-spin" aria-hidden="true" /> : <RefreshCw className="size-4" aria-hidden="true" />}
-              Cambiar código
+              {t('codigo.cambiar')}
             </button>
             <button
               type="button"
@@ -110,7 +113,7 @@ export default function CodigoInvitacion({ codigoMeta }) {
               disabled={ocupado !== ''}
               className="text-sm font-bold text-red-600 hover:underline disabled:opacity-60"
             >
-              Desactivar
+              {t('codigo.desactivar')}
             </button>
           </div>
         </>
