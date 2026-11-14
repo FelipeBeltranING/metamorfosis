@@ -1,0 +1,38 @@
+{
+  "reporte": {
+    "tipos": {
+      "general": "Cumplimiento general",
+      "por-tipo": "Cumplimiento por tipo de meta",
+      "por-plazo": "Metas por plazo y estado",
+      "por-mes": "Metas cumplidas por mes"
+    },
+    "tabla": {
+      "estado": "Estado",
+      "metas": "Metas",
+      "cumplidas": "Cumplidas",
+      "activas": "Activas",
+      "total": "Total",
+      "tipo": "Tipo",
+      "porcentaje": "% cumplido",
+      "plazo": "Plazo",
+      "mes": "Mes",
+      "metasCumplidas": "Metas cumplidas"
+    },
+    "verTabla": "Ver datos en tabla",
+    "porTipoDescripcion": "Porcentaje de metas cumplidas de cada tipo",
+    "porPlazoDescripcion": "Activas y cumplidas en cada plazo",
+    "porMesDescripcion": "Últimos 6 meses, según la fecha de cumplimiento",
+    "porMesEtiqueta": "Metas cumplidas por mes en los últimos 6 meses",
+    "generalDescripcion": "{{cumplidas}} de {{total}} metas cumplidas",
+    "generalEtiqueta": "Cumplimiento general: {{porcentaje}} %",
+    "cumplido": "cumplido",
+    "cumplidasValor": "Cumplidas: {{valor}}",
+    "activasValor": "Activas: {{valor}}",
+    "titulo": "Mi reporte",
+    "subtitulo": "Así vas con tus metas.",
+    "sinDatos": "Aún no hay datos para tu reporte",
+    "sinDatosTexto": "Crea tu primera meta y aquí verás cómo avanzas.",
+    "crearPrimera": "Crear mi primera meta",
+    "selector": "Tipo de reporte"
+  }
+}
