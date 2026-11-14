@@ -748,7 +748,7 @@ HU['HU08'] = dict(
                 ('m', 'sol', 'correo', 'enviar(correo con «Autorizar» y «No fui yo»)'),
                 ('m', 'sol', 'log', 'registrar(null, SOLICITAR_REGISTRO, USUARIO, …, EXITO)'),
                 ('r', 'sol', 'ctl', 'SolicitudRegistroResponse(email, vence, sesion)'),
-                ('r', 'ctl', 'ui', '201 → «Revisa tu correo» (consulta el estado cada pocos segundos)'),
+                ('r', 'ctl', 'ui', '202 Accepted → «Revisa tu correo» (consulta el estado cada pocos segundos)'),
             ]),
             ('[el correo ya tiene cuenta]', [
                 ('r', 'sol', 'ctl', 'EmailYaRegistradoException'),
