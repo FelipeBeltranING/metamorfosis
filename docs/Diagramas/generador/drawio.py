@@ -89,6 +89,14 @@ COLORES_CLASE = {
     'Component': ('#d5e8d4', '#82b366'),
     'Interface': ('#fff2cc', '#d6b656'),
     'Class': ('#ffffff', '#000000'),
+    # Frontend (React): componentes, módulos, librerías y archivos de textos.
+    'componente React': ('#e0f7fa', '#0097a7'),
+    'module': ('#e0f7fa', '#0097a7'),
+    'library': ('#f5f5f5', '#666666'),
+    'resource': ('#f5f5f5', '#666666'),
+    'Spring': ('#f5f5f5', '#666666'),
+    'textos': ('#f5f5f5', '#666666'),
+    'utility': ('#ffffff', '#000000'),
 }
 
 ESTILOS_RELACION = {
@@ -182,6 +190,8 @@ CAPA_BASE = {
     'Service': 1, 'Component': 1, 'Aspect': 1, 'Class': 1, 'Configuration': 1,
     'DTO': 2, 'Repository': 2, 'Interface': 2, 'Annotation': 2,
     'Entity': 3, 'Embeddable': 4, 'Enumeration': 4,
+    # Frontend arriba (pantalla → módulos → librerías); clases de Spring y utilidades más abajo.
+    'componente React': -3, 'module': -2, 'library': -1, 'Spring': 2, 'utility': 3, 'resource': 3, 'textos': -1,
 }
 
 

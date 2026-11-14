@@ -8,6 +8,7 @@ Uso (desde la raíz del repositorio):
 2. arma cada diagrama con especificaciones.py,
 3. valida que cada archivo sea XML bien formado,
 4. escribe docs/Diagramas/Clases/HUxx_clases.drawio y docs/Diagramas/Secuencia/HUxx_secuencia.drawio.
+   Si la HU tiene otros flujos (secuencias_extra), cada uno va en HUxx_secuencia_<sufijo>.drawio.
 
 Si el código cambia (un método se renombra o desaparece) el paso 2 falla y avisa qué diagrama revisar.
 """
@@ -36,6 +37,7 @@ def main():
     destino_secuencia.mkdir(parents=True, exist_ok=True)
 
     errores = []
+    total = 0
     for clave, datos in sorted(esp.HU.items()):
         titulo = f'{clave.replace("HU0", "HU")} · {datos["nombre"]}'
         try:
@@ -49,21 +51,32 @@ def main():
                 if nombre.endswith('Repository') and entidad in presentes and (nombre, entidad) not in ya:
                     relaciones.append((nombre, entidad, 'usa', 'gestiona', None))
             xml_clases = drawio.diagrama_clases(f'Diagrama de clases · {titulo}', filas, relaciones)
-            xml_secuencia = drawio.diagrama_secuencia(f'Diagrama de secuencia · {titulo}', datos['participantes'],
-                                                      datos['pasos'])
-            for xml in (xml_clases, xml_secuencia):
+            xml_secuencia = None
+            if datos.get('pasos'):
+                xml_secuencia = drawio.diagrama_secuencia(f'Diagrama de secuencia · {titulo}', datos['participantes'],
+                                                          datos['pasos'])
+            extras = {}
+            for extra in datos.get('secuencias_extra', []):
+                extras[extra['sufijo']] = drawio.diagrama_secuencia(
+                    f'Diagrama de secuencia · {titulo} · {extra["nombre"]}', extra['participantes'], extra['pasos'])
+            for xml in (xml_clases, *([xml_secuencia] if xml_secuencia else []), *extras.values()):
                 ET.fromstring(xml)  # falla si el XML no está bien formado
         except Exception as error:  # noqa: BLE001 - se reportan todos juntos
             errores.append(f'{clave}: {error}')
             continue
         (destino_clases / f'{clave}_clases.drawio').write_text(xml_clases, encoding='utf-8')
-        (destino_secuencia / f'{clave}_secuencia.drawio').write_text(xml_secuencia, encoding='utf-8')
-        print(f'{clave}: {len(filas)} filas de clases, {len(datos["pasos"])} pasos de secuencia')
+        if xml_secuencia:
+            (destino_secuencia / f'{clave}_secuencia.drawio').write_text(xml_secuencia, encoding='utf-8')
+        for sufijo, xml in extras.items():
+            (destino_secuencia / f'{clave}_secuencia_{sufijo}.drawio').write_text(xml, encoding='utf-8')
+        total += 1 + bool(xml_secuencia) + len(extras)
+        otros = f' (+{len(extras)} secuencias de otros flujos)' if extras else ''
+        print(f'{clave}: {len(filas)} filas de clases, {len(datos.get("pasos", []))} pasos de secuencia{otros}')
 
     if errores:
         print('\nERRORES:\n' + '\n'.join(errores))
         sys.exit(1)
-    print(f'\n{len(esp.HU)} HU → {2 * len(esp.HU)} archivos .drawio')
+    print(f'\n{len(esp.HU)} HU → {total} archivos .drawio')
 
 
 if __name__ == '__main__':
