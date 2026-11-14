@@ -16,6 +16,7 @@ import { REGEX_EMAIL, TEXTO_USUARIO_MAX } from '../constants/validaciones';
 function avisoInicial(estadoNavegacion) {
   if (estadoNavegacion?.cuentaCreada) return 'cuentaCreada';
   if (estadoNavegacion?.sesionCerrada) return 'sesionCerrada';
+  if (estadoNavegacion?.contrasenaCambiada) return 'contrasenaCambiada';
   return null;
 }
 
@@ -32,7 +33,8 @@ export default function LoginPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [parametros] = useSearchParams();
-  const [formulario, setFormulario] = useState({ email: '', password: '' });
+  // HU33: al volver de cambiar la contraseña olvidada, el correo ya viene puesto.
+  const [formulario, setFormulario] = useState({ email: location.state?.email ?? '', password: '' });
   const [errores, setErrores] = useState({});
   const [errorServidor, setErrorServidor] = useState('');
   const [enviando, setEnviando] = useState(false);
@@ -118,6 +120,14 @@ export default function LoginPage() {
           deshabilitado={enviando}
           autoComplete="current-password"
         />
+
+        <Link
+          to="/recuperar-contrasena"
+          state={{ email: formulario.email.trim() }}
+          className="-mt-1.5 self-end text-sm font-bold text-violet-600 hover:underline"
+        >
+          {t('auth.login.olvidaste')}
+        </Link>
 
         <button
           type="submit"
