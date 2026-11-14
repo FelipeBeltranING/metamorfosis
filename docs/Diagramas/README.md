@@ -14,7 +14,7 @@ Dos diagramas por historia de usuario, en draw.io (se abren y se editan en [app.
 | HU5 | Registrar mi avance (hitos logrados y días de los hábitos) | [clases](Clases/HU05_clases.drawio) | [secuencia](Secuencia/HU05_secuencia.drawio) · [registrar el día de un hábito](Secuencia/HU05_secuencia_habito.drawio) |
 | HU6 | Marcar meta como cumplida | [clases](Clases/HU06_clases.drawio) | [secuencia](Secuencia/HU06_secuencia.drawio) |
 | HU7 | Ver reporte general | [clases](Clases/HU07_clases.drawio) | [secuencia](Secuencia/HU07_secuencia.drawio) |
-| HU8 | Registrarse (con autorización por correo) | [clases](Clases/HU08_clases.drawio) | [secuencia](Secuencia/HU08_secuencia.drawio) |
+| HU8 | Registrarse (con autorización por correo) | [clases](Clases/HU08_clases.drawio) | [secuencia](Secuencia/HU08_secuencia.drawio) · [«No fui yo»](Secuencia/HU08_secuencia_no_fui_yo.drawio) |
 | HU9 | Iniciar sesión | [clases](Clases/HU09_clases.drawio) | [secuencia](Secuencia/HU09_secuencia.drawio) |
 | HU10 | Cerrar sesión | [clases](Clases/HU10_clases.drawio) | [secuencia](Secuencia/HU10_secuencia.drawio) |
 | HU11 | Recibir insignia | [clases](Clases/HU11_clases.drawio) | [secuencia](Secuencia/HU11_secuencia.drawio) |

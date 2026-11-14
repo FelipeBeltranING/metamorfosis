@@ -2051,3 +2051,38 @@ HU['HU23'].setdefault('secuencias_extra', []).append(dict(
         ('r', 'ui', 'u', '«¡Perfil actualizado!»: el encabezado, Mi perfil y el perfil público muestran las iniciales'),
     ],
 ))
+
+HU['HU08'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='no_fui_yo',
+    nombre='«No fui yo»: anular la solicitud',
+    participantes=[('u', 'Dueño del correo', 'actor'), ('ui', 'RechazarRegistroPage', 'boundary'),
+                   ('svc', 'authService.js', 'module'), ('ctl', 'AuthController', 'RestController'),
+                   ('srv', 'SolicitudRegistroService', 'Service'), ('sr', 'SolicitudRegistroRepository', 'Repository'),
+                   ('sol', 'solicitud : SolicitudRegistro', 'Entity'), LOG],
+    pasos=[
+        ('m', 'u', 'ui', 'recibió un correo de registro que no pidió y pulsa «No fui yo» → /registro/rechazar?token=…'),
+        ('r', 'ui', 'u', '«¿No pediste crear una cuenta?» con el botón «Anular solicitud»'),
+        ('m', 'u', 'ui', 'pulsa «Anular solicitud»'),
+        ('m', 'ui', 'svc', 'rechazarRegistro(token)'),
+        ('m', 'svc', 'ctl', 'POST /api/auth/registro/rechazar { token }  (público)'),
+        ('m', 'ctl', 'srv', 'rechazar(token)'),
+        ('m', 'srv', 'sr', 'findByTokenHash(hash(token))'),
+        ('r', 'sr', 'srv', 'Optional<SolicitudRegistro>'),
+        ('alt', [
+            ('[existe y estaVigente(ahora)]', [
+                ('m', 'srv', 'sol', 'bloquear(ahora + 24 h)  [borra el token: el enlace deja de servir]'),
+                ('m', 'srv', 'sr', 'save(solicitud)'),
+                ('m', 'srv', 'log', 'registrar(null, RECHAZAR_REGISTRO, USUARIO, null, EXITO, null)'),
+                ('r', 'srv', 'ctl', 'void'),
+                ('r', 'ctl', 'svc', '204 No Content'),
+                ('r', 'ui', 'u', '«Listo, anulamos la solicitud»: ese correo no recibe más enlaces por 24 horas'),
+            ]),
+            ('[enlace vencido o ya usado]', [
+                ('r', 'srv', 'ctl', 'SolicitudInvalidaException'),
+                ('r', 'ctl', 'svc', '410 Gone'),
+                ('r', 'ui', 'u', '«Este enlace ya no sirve»'),
+            ]),
+        ]),
+        ('nota', 'ui', 'Sin sesión no pasa por @Auditar: SolicitudRegistroService registra la acción a mano'),
+    ],
+))
