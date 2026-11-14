@@ -1882,3 +1882,47 @@ HU['HU14'].setdefault('secuencias_extra', []).append(dict(
         ('nota', 'ui', 'Enlace vencido, ya usado o cancelado: InvitacionNoValidaException → 410 Gone → EnlaceNoValido'),
     ],
 ))
+
+HU['HU14'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='codigo',
+    nombre='Unirse con un código',
+    participantes=[('u', 'Invitado', 'actor'), ('ui', 'MisMetasPage · UnirseConCodigoModal', 'boundary'),
+                   ('svc', 'invitacionService.js', 'module'), ('ctl', 'InvitacionController', 'RestController'), ASP,
+                   ('srv', 'CodigoUnionService', 'Service'), ('mr', 'MetaRepository', 'Repository'),
+                   ('ur', 'UsuarioRepository', 'Repository'), ('meta', 'meta : Meta', 'Entity'), LOG],
+    pasos=[
+        ('m', 'u', 'ui', 'Mis metas → «Unirme con código», escribe «abcd-efgh» y pulsa «Unirme»'),
+        ('m', 'ui', 'svc', 'unirseConCodigo("abcd-efgh")'),
+        ('m', 'svc', 'ctl', 'POST /api/metas/unirse { codigo }'),
+        NOTA_TOKEN,
+        *auditado('unirse(pedido, codigoUsuario)', 'UNIRSE_CON_CODIGO', 'META', [
+            ('m', 'srv', 'srv', 'normalizar("abcd-efgh") → "ABCDEFGH"'),
+            ('m', 'srv', 'srv', 'revisarIntentos(codigoUsuario)  [máximo 10 códigos errados en 15 min]'),
+            ('m', 'srv', 'mr', 'findByCodigoUnion("ABCDEFGH")'),
+            ('r', 'mr', 'srv', 'meta'),
+            ('m', 'srv', 'meta', 'codigoUnionVigente(ahora)'),
+            ('r', 'meta', 'srv', 'true'),
+            ('alt', [
+                ('[código vigente, meta ACTIVA, aún no participa y hay cupo (máximo 10)]', [
+                    ('m', 'srv', 'meta', 'participacionDeUsuario(codigoUsuario)'),
+                    ('r', 'meta', 'srv', 'Optional.empty()'),
+                    ('m', 'srv', 'ur', 'findById(codigoUsuario)'),
+                    ('r', 'ur', 'srv', 'usuario'),
+                    ('m', 'srv', 'meta', 'unirse(usuario)  [participación ACEPTADA]'),
+                    ('m', 'srv', 'mr', 'save(meta)'),
+                ]),
+                ('[código mal escrito o vencido]', [
+                    ('m', 'srv', 'srv', 'registrarFallo(codigoUsuario)'),
+                    ('r', 'srv', 'asp', 'ValidacionException("Ese código no existe o ya venció…")'),
+                    ('m', 'asp', 'log', 'registrar(…, UNIRSE_CON_CODIGO, …, ERROR, motivo)'),
+                    ('r', 'ctl', 'svc', '400 ErrorResponse'),
+                    ('r', 'ui', 'u', 'el error aparece en la ventana'),
+                ]),
+            ]),
+        ], 'MetaResponse.desde(meta, codigoUsuario)'),
+        ('r', 'ctl', 'svc', '200 OK + MetaResponse'),
+        ('r', 'svc', 'ui', 'meta'),
+        ('r', 'ui', 'u', 'abre Tu camino de la meta con el aviso «Te uniste a la meta»'),
+        ('nota', 'ui', 'Si ya participa: 409 «Ya participas en esta meta». Con 10 intentos errados: 429 por unos minutos'),
+    ],
+))

@@ -20,7 +20,7 @@ Dos diagramas por historia de usuario, en draw.io (se abren y se editan en [app.
 | HU11 | Recibir insignia | [clases](Clases/HU11_clases.drawio) | [secuencia](Secuencia/HU11_secuencia.drawio) |
 | HU12 | Ver galería de insignias | [clases](Clases/HU12_clases.drawio) | [secuencia](Secuencia/HU12_secuencia.drawio) |
 | HU13 | Invitar a una meta | [clases](Clases/HU13_clases.drawio) | [secuencia](Secuencia/HU13_secuencia.drawio) · [código para unirse](Secuencia/HU13_secuencia_codigo.drawio) |
-| HU14 | Responder invitación | [clases](Clases/HU14_clases.drawio) | [secuencia](Secuencia/HU14_secuencia.drawio) · [responder desde el correo](Secuencia/HU14_secuencia_correo.drawio) |
+| HU14 | Responder invitación | [clases](Clases/HU14_clases.drawio) | [secuencia](Secuencia/HU14_secuencia.drawio) · [responder desde el correo](Secuencia/HU14_secuencia_correo.drawio) · [unirse con un código](Secuencia/HU14_secuencia_codigo.drawio) |
 | HU15 | Logro de meta compartida | [clases](Clases/HU15_clases.drawio) | [secuencia](Secuencia/HU15_secuencia.drawio) |
 | HU16 | Cambiar idioma (español / inglés) | [clases](Clases/HU16_clases.drawio) | [secuencia](Secuencia/HU16_secuencia.drawio) |
 | HU19 | Personalizar mi perfil público | [clases](Clases/HU19_clases.drawio) | [secuencia](Secuencia/HU19_secuencia.drawio) |
