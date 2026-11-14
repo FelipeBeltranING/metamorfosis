@@ -56,3 +56,13 @@ HU20 Personalizar mi avatar · sección Tu avatar (peinados y accesorios), Mi pe
 
 Historico/Sub-metas (antes del rediseño): las capturas de las sub-metas solo con hábitos y el
 porcentaje de constancia; quedan como referencia del cambio.
+
+Mockups de la HU32 Cambiar contraseña (14 de noviembre de 2026)
+================================================================
+Capturas de la rama hu32-cambiar-contrasena contra el backend real y una base local. Escritorio a
+1280 × 640 px; celular (_movil) a 390 px; todo a doble resolución.
+
+HU32 Cambiar contraseña    · botón en Editar perfil, formulario, requisitos mientras se escribe, errores,
+                             contraseña actual incorrecta, contraseña cambiada, el otro dispositivo
+                             vuelve a Iniciar sesión, demasiados intentos, correo de aviso, en inglés,
+                             tema oscuro, celular
