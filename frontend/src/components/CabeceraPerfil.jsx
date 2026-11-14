@@ -1,4 +1,5 @@
 import { CalendarDays, Mail, Quote } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { PORTADA_POR_VALOR } from '../constants/portadas';
 import { iniciales, mesYAnio } from '../utils/perfil';
 
@@ -10,12 +11,13 @@ import { iniciales, mesYAnio } from '../utils/perfil';
 export default function CabeceraPerfil({
   nombre, apellido, foto, email, fechaRegistro, frase, portada, acciones, extraNombre, compacta = false,
 }) {
+  const { t } = useTranslation();
   const estiloPortada = PORTADA_POR_VALOR[portada]?.estilo ?? null;
   const nombreCompleto = [nombre, apellido].filter(Boolean).join(' ');
   const tamano = compacta ? 'size-16 text-2xl' : 'size-16 text-2xl sm:size-20 sm:text-3xl';
 
   return (
-    <section aria-label="Datos personales" className="overflow-hidden rounded-2xl border border-zinc-200 bg-white">
+    <section aria-label={t('perfil.datosPersonales')} className="overflow-hidden rounded-2xl border border-zinc-200 bg-white">
       {estiloPortada && <div className={compacta ? 'h-20' : 'h-24 sm:h-32'} style={estiloPortada} aria-hidden="true" />}
       <div className={`flex flex-col items-center gap-4 p-5 text-center ${compacta ? '' : 'sm:flex-row sm:items-end sm:p-6 sm:text-left'}`}>
         <div className={`shrink-0 rounded-full ${estiloPortada ? `-mt-14 ring-4 ring-[color:var(--tarjeta,#fff)] ${compacta ? '' : 'sm:-mt-16 sm:self-start'}` : ''}`}>
@@ -47,7 +49,7 @@ export default function CabeceraPerfil({
           {fechaRegistro && (
             <p className={`flex items-center justify-center gap-2 text-sm text-gray-600 ${compacta ? '' : 'sm:justify-start'}`}>
               <CalendarDays className="size-4 shrink-0 text-gray-400" aria-hidden="true" />
-              {`Miembro desde ${mesYAnio(fechaRegistro)}`}
+              {t('perfil.miembroDesde', { fecha: mesYAnio(fechaRegistro) })}
             </p>
           )}
         </div>

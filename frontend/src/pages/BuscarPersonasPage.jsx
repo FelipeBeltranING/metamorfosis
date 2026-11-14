@@ -3,6 +3,7 @@ import {
   ChevronRight, Lock, Search, UsersRound,
 } from 'lucide-react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Encabezado from '../components/Encabezado';
 import EstadoError from '../components/EstadoError';
 import AvatarUsuario from '../components/AvatarUsuario';
@@ -32,6 +33,7 @@ function Esqueleto() {
  * cada resultado. El texto vive en la URL (?nombre=) para mantenerse al recargar o al volver.
  */
 export default function BuscarPersonasPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const nombre = searchParams.get('nombre') ?? '';
@@ -78,12 +80,12 @@ export default function BuscarPersonasPage() {
     <div className="min-h-screen bg-slate-50 text-gray-900">
       <Encabezado />
       <main className="mx-auto w-full max-w-[860px] px-4 pb-16 pt-6 sm:pt-12" aria-busy={estado.fase === 'cargando'}>
-        <h1 className="text-2xl font-bold sm:text-3xl">Personas</h1>
-        <p className="mb-6 mt-1 text-gray-600">Busca a otras personas por su nombre o apellido y mira su perfil.</p>
+        <h1 className="text-2xl font-bold sm:text-3xl">{t('personas.titulo')}</h1>
+        <p className="mb-6 mt-1 text-gray-600">{t('personas.subtitulo')}</p>
 
         <form role="search" className="mb-5" onSubmit={(evento) => evento.preventDefault()}>
           <label htmlFor="buscar-personas" className="mb-2 block text-sm font-bold text-gray-700">
-            Nombre o apellido
+            {t('personas.etiqueta')}
           </label>
           <div className="relative">
             <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-gray-400" aria-hidden="true" />
@@ -92,7 +94,7 @@ export default function BuscarPersonasPage() {
               type="search"
               value={texto}
               onChange={(evento) => setTexto(evento.target.value)}
-              placeholder="Por ejemplo, Laura"
+              placeholder={t('personas.placeholder')}
               autoComplete="off"
               aria-describedby="ayuda-busqueda"
               className="h-12 w-full rounded-xl border border-zinc-300 bg-white pl-12 pr-4 text-base text-gray-900 placeholder:text-gray-400 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-200"
@@ -102,32 +104,32 @@ export default function BuscarPersonasPage() {
             id="ayuda-busqueda"
             className={`mt-2 text-sm ${estado.fase === 'corto' ? 'font-bold text-amber-700' : 'text-gray-500'}`}
           >
-            {estado.fase === 'corto' ? 'Escribe al menos 2 letras para buscar' : 'No importan las mayúsculas ni las tildes.'}
+            {estado.fase === 'corto' ? t('personas.corto') : t('personas.ayuda')}
           </p>
         </form>
 
         {estado.fase === 'inicial' && (
           <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-zinc-300 bg-white p-8 text-center">
             <UsersRound className="size-10 text-violet-300" aria-hidden="true" />
-            <p className="text-gray-600">Escribe un nombre para empezar.</p>
+            <p className="text-gray-600">{t('personas.empezar')}</p>
           </div>
         )}
 
         {estado.fase === 'cargando' && <Esqueleto />}
 
         {estado.fase === 'error' && (
-          <EstadoError titulo="No pudimos buscar" mensaje={estado.mensaje} onReintentar={() => setIntento((n) => n + 1)} />
+          <EstadoError titulo={t('personas.errorBuscar')} mensaje={estado.mensaje} onReintentar={() => setIntento((n) => n + 1)} />
         )}
 
         {estado.fase === 'lista' && (
           <>
             <p role="status" className="mb-3 text-sm font-semibold text-gray-600">
-              {estado.personas.length === 1 ? '1 persona' : `${estado.personas.length} personas`}
+              {t('personas.cantidad', { count: estado.personas.length })}
             </p>
             {estado.personas.length === 0 ? (
               <div className="flex flex-col items-center gap-2 rounded-2xl border border-zinc-200 bg-white p-8 text-center">
-                <p className="font-bold text-gray-900">{`No encontramos personas con «${letrasUtiles(nombre)}»`}</p>
-                <p className="text-sm text-gray-600">Revisa cómo se escribe o prueba solo con el apellido.</p>
+                <p className="font-bold text-gray-900">{t('personas.sinResultados', { texto: letrasUtiles(nombre) })}</p>
+                <p className="text-sm text-gray-600">{t('personas.sinResultadosAyuda')}</p>
               </div>
             ) : (
               <ul className="flex flex-col gap-2">
@@ -145,10 +147,10 @@ export default function BuscarPersonasPage() {
                         {persona.privado && (
                           <span className="flex shrink-0 items-center gap-1.5 rounded-lg bg-slate-100 px-2.5 py-1 text-sm font-semibold text-gray-700">
                             <Lock className="size-4" aria-hidden="true" />
-                            Perfil privado
+                            {t('personas.privado')}
                           </span>
                         )}
-                        <span className="sr-only">Ver perfil</span>
+                        <span className="sr-only">{t('personas.verPerfil')}</span>
                         <ChevronRight className="size-5 shrink-0 text-gray-400" aria-hidden="true" />
                       </Link>
                     </li>

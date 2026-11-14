@@ -3,6 +3,7 @@ import {
   Award, ChartColumn, CircleCheck, Lock, PencilLine, Target, TrendingUp,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Trans, useTranslation } from 'react-i18next';
 import Encabezado from '../components/Encabezado';
 import CabeceraPerfil from '../components/CabeceraPerfil';
 import EstadoError from '../components/EstadoError';
@@ -16,7 +17,7 @@ import { obtenerPerfil } from '../services/perfilService';
 import { formatearFecha } from '../utils/fechas';
 import { EVENTO_CUENTA, datosPerfil, obtenerSesion } from '../services/sesionService';
 
-const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((t) => [t.valor, t]));
+const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((x) => [x.valor, x]));
 const TARJETA = 'rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6';
 const ENLACE = 'rounded-md text-sm font-bold text-violet-700 hover:text-violet-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300';
 
@@ -74,6 +75,7 @@ export function EsqueletoPerfil() {
  * insignias ganadas (HU11) y las tres últimas metas cumplidas. Es de solo lectura.
  */
 export default function PerfilPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [estado, setEstado] = useState({ fase: 'cargando' });
   const [intento, setIntento] = useState(0);
@@ -98,13 +100,13 @@ export default function PerfilPage() {
     <div className="min-h-screen bg-slate-50 text-gray-900">
       <Encabezado />
       <main className="mx-auto w-full max-w-[860px] px-4 pb-16 pt-6 sm:pt-12" aria-busy={estado.fase === 'cargando'}>
-        <h1 className="mb-6 text-2xl font-bold sm:text-3xl">Mi perfil</h1>
+        <h1 className="mb-6 text-2xl font-bold sm:text-3xl">{t('perfil.titulo')}</h1>
 
         {estado.fase === 'cargando' && <EsqueletoPerfil />}
 
         {estado.fase === 'error' && (
           <EstadoError
-            titulo="No pudimos cargar tu perfil"
+            titulo={t('perfil.errorCargar')}
             mensaje={estado.mensaje}
             onReintentar={() => {
               setEstado({ fase: 'cargando' });
@@ -124,6 +126,7 @@ export default function PerfilPage() {
  * perfil, sin enlaces a pantallas propias y con los textos en tercera persona.
  */
 export function ContenidoPerfil({ perfil, publico = false }) {
+  const { t } = useTranslation();
   const {
     resumen, insignias, ultimasCumplidas, personalizacion,
   } = perfil;
@@ -157,7 +160,7 @@ export function ContenidoPerfil({ perfil, publico = false }) {
             className="flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-violet-300 bg-violet-50 px-4 text-[15px] font-bold text-violet-700 hover:bg-violet-100"
           >
             <PencilLine className="size-[18px]" aria-hidden="true" />
-            Editar perfil
+            {t('perfil.editarPerfil')}
           </Link>
         )}
       />
@@ -166,12 +169,12 @@ export function ContenidoPerfil({ perfil, publico = false }) {
       {!publico && <TarjetaPrivacidad inicial={perfil.perfilPrivado} />}
 
       {privadoAjeno && (
-        <section aria-label="Perfil privado" className={`${TARJETA} flex flex-col items-center gap-3 text-center`}>
+        <section aria-label={t('perfil.perfilPrivado')} className={`${TARJETA} flex flex-col items-center gap-3 text-center`}>
           <div className="flex size-14 items-center justify-center rounded-2xl bg-violet-50">
             <Lock className="size-7 text-violet-600" aria-hidden="true" />
           </div>
-          <p className="text-lg font-bold text-gray-900">Este perfil es privado</p>
-          <p className="text-sm text-gray-600">{`${perfil.nombre} decidió no mostrar sus metas ni sus insignias.`}</p>
+          <p className="text-lg font-bold text-gray-900">{t('perfil.esPrivado')}</p>
+          <p className="text-sm text-gray-600">{t('perfil.decidioOcultar', { nombre: perfil.nombre })}</p>
         </section>
       )}
 
@@ -184,13 +187,13 @@ export function ContenidoPerfil({ perfil, publico = false }) {
       <section aria-labelledby="perfil-resumen" className={TARJETA}>
         <TituloBloque
           id="perfil-resumen"
-          titulo="Resumen de metas"
-          enlace={publico ? null : <Link to="/reporte" className={ENLACE}>Ver mi reporte</Link>}
+          titulo={t('perfil.resumen')}
+          enlace={publico ? null : <Link to="/reporte" className={ENLACE}>{t('perfil.verReporte')}</Link>}
         />
         <div className="grid gap-3 sm:grid-cols-3">
-          <Cifra Icono={Target} valor={resumen.metasActivas} etiqueta="Metas activas" />
-          <Cifra Icono={CircleCheck} valor={resumen.metasCumplidas} etiqueta="Metas cumplidas" />
-          <Cifra Icono={TrendingUp} valor={`${resumen.porcentajeCumplimiento} %`} etiqueta="Cumplimiento" />
+          <Cifra Icono={Target} valor={resumen.metasActivas} etiqueta={t('perfil.metasActivas')} />
+          <Cifra Icono={CircleCheck} valor={resumen.metasCumplidas} etiqueta={t('perfil.metasCumplidas')} />
+          <Cifra Icono={TrendingUp} valor={`${resumen.porcentajeCumplimiento} %`} etiqueta={t('perfil.cumplimiento')} />
         </div>
       </section>
 
@@ -198,21 +201,18 @@ export function ContenidoPerfil({ perfil, publico = false }) {
       <section aria-labelledby="perfil-insignias" className={TARJETA}>
         <TituloBloque
           id="perfil-insignias"
-          titulo={publico ? 'Insignias' : 'Mis insignias'}
-          detalle={`${insignias.length} de ${perfil.totalInsignias} insignias`}
-          enlace={publico ? null : <Link to="/insignias" className={ENLACE}>Ver galería</Link>}
+          titulo={publico ? t('perfil.insignias') : t('perfil.misInsignias')}
+          detalle={t('perfil.deInsignias', { ganadas: insignias.length, total: perfil.totalInsignias })}
+          enlace={publico ? null : <Link to="/insignias" className={ENLACE}>{t('perfil.verGaleria')}</Link>}
         />
         {insignias.length === 0 ? (
           <div className="flex items-center gap-4 rounded-xl bg-slate-50 p-4">
             <Award className="size-8 shrink-0 text-gray-300" aria-hidden="true" />
             {publico ? (
-              <p className="text-sm text-gray-600">Aún no tiene insignias.</p>
+              <p className="text-sm text-gray-600">{t('perfil.sinInsigniasPublico')}</p>
             ) : (
               <p className="text-sm text-gray-600">
-                Aún no tienes insignias. Cumple tu primera meta para ganar
-                {' '}
-                <strong className="font-semibold text-gray-800">Primer paso</strong>
-                .
+                <Trans i18nKey="perfil.sinInsignias" components={{ b: <strong className="font-semibold text-gray-800" /> }} />
               </p>
             )}
           </div>
@@ -239,9 +239,9 @@ export function ContenidoPerfil({ perfil, publico = false }) {
       <section aria-labelledby="perfil-cumplidas" className={TARJETA}>
         <TituloBloque
           id="perfil-cumplidas"
-          titulo="Últimas metas cumplidas"
+          titulo={t('perfil.ultimasCumplidas')}
           enlace={!publico && resumen.metasCumplidas > 0
-            ? <Link to="/metas?estado=CUMPLIDA" className={ENLACE}>Ver todas</Link>
+            ? <Link to="/metas?estado=CUMPLIDA" className={ENLACE}>{t('perfil.verTodas')}</Link>
             : null}
         />
         {ultimasCumplidas.length > 0 && (
@@ -266,7 +266,7 @@ export function ContenidoPerfil({ perfil, publico = false }) {
                       </Link>
                     )}
                     <p className="text-sm text-gray-500">
-                      {`${tipo.etiqueta} · Cumplida el ${formatearFecha(meta.fechaCumplida)}`}
+                      {t('perfil.tipoCumplida', { tipo: tipo.etiqueta, fecha: formatearFecha(meta.fechaCumplida) })}
                     </p>
                   </div>
                   {/* HU25: sigue en su perfil, pero no se muestra a otros usuarios. */}
@@ -278,22 +278,22 @@ export function ContenidoPerfil({ perfil, publico = false }) {
           </ul>
         )}
         {publico && ultimasCumplidas.length === 0 && (
-          <p className="text-sm text-gray-600">Todavía no tiene metas cumplidas para mostrar.</p>
+          <p className="text-sm text-gray-600">{t('perfil.sinCumplidasPublico')}</p>
         )}
         {!publico && ultimasCumplidas.length === 0 && resumen.totalMetas > 0 && (
-          <p className="text-sm text-gray-600">Aún no has cumplido metas. ¡La primera está cerca!</p>
+          <p className="text-sm text-gray-600">{t('perfil.sinCumplidas')}</p>
         )}
         {!publico && resumen.totalMetas === 0 && (
           <div className="flex flex-col items-center gap-4 py-4 text-center">
             <div className="flex size-14 items-center justify-center rounded-2xl bg-violet-50">
               <ChartColumn className="size-7 text-violet-600" aria-hidden="true" />
             </div>
-            <p className="text-sm text-gray-600">Todavía no tienes metas. Crea la primera y aquí verás tus logros.</p>
+            <p className="text-sm text-gray-600">{t('perfil.sinMetas')}</p>
             <Link
               to="/metas/nueva"
               className="flex h-12 items-center rounded-xl bg-violet-600 px-6 font-bold text-white hover:bg-violet-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
             >
-              Crear mi primera meta
+              {t('perfil.crearPrimera')}
             </Link>
           </div>
         )}

@@ -1,0 +1,63 @@
+{
+  "perfil": {
+    "titulo": "Mi perfil",
+    "errorCargar": "No pudimos cargar tu perfil",
+    "editarPerfil": "Editar perfil",
+    "perfilPrivado": "Perfil privado",
+    "esPrivado": "Este perfil es privado",
+    "decidioOcultar": "{{nombre}} decidió no mostrar sus metas ni sus insignias.",
+    "resumen": "Resumen de metas",
+    "verReporte": "Ver mi reporte",
+    "metasActivas": "Metas activas",
+    "metasCumplidas": "Metas cumplidas",
+    "cumplimiento": "Cumplimiento",
+    "insignias": "Insignias",
+    "misInsignias": "Mis insignias",
+    "deInsignias": "{{ganadas}} de {{total}} insignias",
+    "verGaleria": "Ver galería",
+    "sinInsigniasPublico": "Aún no tiene insignias.",
+    "sinInsignias": "Aún no tienes insignias. Cumple tu primera meta para ganar <b>Primer paso</b>.",
+    "ultimasCumplidas": "Últimas metas cumplidas",
+    "verTodas": "Ver todas",
+    "tipoCumplida": "{{tipo}} · Cumplida el {{fecha}}",
+    "sinCumplidasPublico": "Todavía no tiene metas cumplidas para mostrar.",
+    "sinCumplidas": "Aún no has cumplido metas. ¡La primera está cerca!",
+    "sinMetas": "Todavía no tienes metas. Crea la primera y aquí verás tus logros.",
+    "crearPrimera": "Crear mi primera meta",
+    "datosPersonales": "Datos personales",
+    "miembroDesde": "Miembro desde {{fecha}}",
+    "destacadas": "Metas destacadas",
+    "cumplidaEl": "Cumplida el {{fecha}}",
+    "enCurso": "En curso · {{tipo}}"
+  },
+  "privacidad": {
+    "privado": "Tu perfil ahora es privado.",
+    "publico": "Tu perfil vuelve a ser público.",
+    "titulo": "Perfil privado",
+    "ayuda": "Si lo activas, las demás personas solo verán tu cabecera: foto, nombre, frase, portada y desde cuándo eres miembro."
+  },
+  "perfilPublico": {
+    "buscarPersonas": "Buscar personas",
+    "perfilDe": "Perfil de {{nombre}}",
+    "perfil": "Perfil",
+    "errorCargar": "No pudimos cargar el perfil",
+    "noExiste": "Esta persona no existe",
+    "noExisteTexto": "Puede que el enlace esté mal o que la cuenta ya no exista."
+  },
+  "personas": {
+    "titulo": "Personas",
+    "subtitulo": "Busca a otras personas por su nombre o apellido y mira su perfil.",
+    "etiqueta": "Nombre o apellido",
+    "placeholder": "Por ejemplo, Laura",
+    "corto": "Escribe al menos 2 letras para buscar",
+    "ayuda": "No importan las mayúsculas ni las tildes.",
+    "empezar": "Escribe un nombre para empezar.",
+    "errorBuscar": "No pudimos buscar",
+    "cantidad_one": "{{count}} persona",
+    "cantidad_other": "{{count}} personas",
+    "sinResultados": "No encontramos personas con «{{texto}}»",
+    "sinResultadosAyuda": "Revisa cómo se escribe o prueba solo con el apellido.",
+    "privado": "Perfil privado",
+    "verPerfil": "Ver perfil"
+  }
+}

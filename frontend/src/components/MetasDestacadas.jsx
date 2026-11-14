@@ -1,21 +1,23 @@
 import { CircleCheck, Pin, Target } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { TIPOS } from '../constants/opcionesMeta';
 import { formatearFecha } from '../utils/fechas';
 
-const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((t) => [t.valor, t]));
+const TIPO_POR_VALOR = Object.fromEntries(TIPOS.map((x) => [x.valor, x]));
 
 /**
  * HU19: las metas que la persona fijó en su perfil (máximo tres). En Mi perfil abren el camino;
  * en el perfil de otra persona no son enlaces (su camino no se puede abrir).
  */
 export default function MetasDestacadas({ metas, publico = false, compacta = false }) {
+  const { t } = useTranslation();
   if (!metas?.length) return null;
   return (
     <section aria-labelledby="perfil-destacadas" className={compacta ? '' : 'rounded-2xl border border-zinc-200 bg-white p-5 sm:p-6'}>
       <h2 id="perfil-destacadas" className={`flex items-center gap-2 font-bold text-gray-900 ${compacta ? 'mb-2 text-sm' : 'mb-4 text-lg'}`}>
         <Pin className={compacta ? 'size-4 text-violet-600' : 'size-5 text-violet-600'} aria-hidden="true" />
-        Metas destacadas
+        {t('perfil.destacadas')}
       </h2>
       <ul className={`grid gap-3 ${compacta ? '' : 'sm:grid-cols-3'}`}>
         {metas.map((meta) => {
@@ -37,7 +39,7 @@ export default function MetasDestacadas({ metas, publico = false, compacta = fal
                 {nombre}
                 <p className={`mt-1 flex items-center gap-1.5 text-[13px] font-semibold ${cumplida ? 'text-emerald-700' : 'text-violet-700'}`}>
                   {cumplida ? <CircleCheck className="size-3.5" aria-hidden="true" /> : <Target className="size-3.5" aria-hidden="true" />}
-                  {cumplida ? `Cumplida el ${formatearFecha(meta.fechaCumplida)}` : `En curso · ${tipo.etiqueta}`}
+                  {cumplida ? t('perfil.cumplidaEl', { fecha: formatearFecha(meta.fechaCumplida) }) : t('perfil.enCurso', { tipo: tipo.etiqueta })}
                 </p>
               </div>
             </li>

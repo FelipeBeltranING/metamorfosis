@@ -1,18 +1,15 @@
 import { useState } from 'react';
 import { Lock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { cambiarPrivacidad } from '../services/perfilService';
-
-const AVISOS = {
-  privado: 'Tu perfil ahora es privado.',
-  publico: 'Tu perfil vuelve a ser público.',
-};
 
 /**
  * HU26: interruptor Perfil privado de Mi perfil. Se guarda al instante; si falla, vuelve a su
  * estado anterior y muestra el error. Con el perfil privado los demás solo ven la cabecera.
  */
 export default function TarjetaPrivacidad({ inicial = false }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [privado, setPrivado] = useState(Boolean(inicial));
   const [guardando, setGuardando] = useState(false);
@@ -27,7 +24,7 @@ export default function TarjetaPrivacidad({ inicial = false }) {
     try {
       const { privado: guardado } = await cambiarPrivacidad(!anterior);
       setPrivado(guardado);
-      setAviso({ tipo: 'ok', texto: guardado ? AVISOS.privado : AVISOS.publico });
+      setAviso({ tipo: 'ok', texto: guardado ? t('privacidad.privado') : t('privacidad.publico') });
     } catch (error) {
       setPrivado(anterior);
       if (error.estado === 401) navigate('/login', { replace: true });
@@ -44,9 +41,9 @@ export default function TarjetaPrivacidad({ inicial = false }) {
           <Lock className="size-6 text-violet-600" aria-hidden="true" />
         </div>
         <div className="min-w-0 flex-1">
-          <h2 id="perfil-privacidad" className="text-lg font-bold text-gray-900">Perfil privado</h2>
+          <h2 id="perfil-privacidad" className="text-lg font-bold text-gray-900">{t('privacidad.titulo')}</h2>
           <p id="perfil-privacidad-ayuda" className="text-sm text-gray-600">
-            Si lo activas, las demás personas solo verán tu cabecera: foto, nombre, frase, portada y desde cuándo eres miembro.
+            {t('privacidad.ayuda')}
           </p>
         </div>
         <button
