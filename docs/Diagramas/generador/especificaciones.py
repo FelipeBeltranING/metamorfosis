@@ -1967,3 +1967,58 @@ HU['HU28'].setdefault('secuencias_extra', []).append(dict(
         ('nota', 'ui', 'Hábito Sí/No: solo nombre y días (tipo SI_NO, sin unidad ni objetivo)'),
     ],
 ))
+
+HU['HU28'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='editar_eliminar',
+    nombre='Editar y eliminar un paso',
+    participantes=[U, ('ui', 'CaminoMetaPage · MenuSubMeta', 'boundary'), ('form', 'SubMetaFormPage', 'boundary'),
+                   ('modal', 'EliminarSubMetaModal', 'boundary'), ('svc', 'subMetaService.js', 'module'),
+                   ('ctl', 'SubMetaController', 'RestController'), ASP, ('srv', 'SubMetaService', 'Service'),
+                   ('sr', 'SubMetaRepository', 'Repository'), ('sm', 'paso : SubMeta', 'Entity'), LOG],
+    pasos=[
+        ('m', 'u', 'ui', 'menú ⋯ del hábito «Leer» → «Editar»'),
+        ('m', 'ui', 'form', 'abre /submetas/{codigoSubMeta}/editar'),
+        ('m', 'form', 'svc', 'obtenerPaso(codigoSubMeta)'),
+        ('m', 'svc', 'ctl', 'GET /api/submetas/{codigoSubMeta}'),
+        ('r', 'ctl', 'svc', '200 PasoResponse (CaminoService.paso)'),
+        ('r', 'form', 'u', 'formulario con los datos actuales (el tipo no se puede cambiar)'),
+        ('m', 'u', 'form', 'cambia el objetivo a 20 páginas y pulsa «Guardar paso»'),
+        ('m', 'form', 'svc', 'editarSubMeta(codigoSubMeta, datos)'),
+        ('m', 'svc', 'ctl', 'PUT /api/submetas/{codigoSubMeta}'),
+        NOTA_TOKEN,
+        *auditado('editar(codigoSubMeta, pedido, codigoUsuario)', 'EDITAR_SUB_META', 'SUB_META', [
+            ('m', 'srv', 'sr', 'findById(codigoSubMeta)'),
+            ('r', 'sr', 'srv', 'paso'),
+            ('alt', [
+                ('[es el creador, meta ACTIVA, mismo tipo y datos válidos]', [
+                    ('m', 'srv', 'sr', 'existsByMetaCodigoMetaAndNombreIgnoreCaseAndCodigoSubMetaNot(…)'),
+                    ('r', 'sr', 'srv', 'false'),
+                    ('m', 'srv', 'sm', 'actualizar(nombre, pregunta, unidad, 20, AL_MENOS, días, notas)'),
+                    ('m', 'srv', 'sr', 'save(paso)'),
+                ]),
+                ('[intenta cambiar el tipo del paso]', [
+                    ('r', 'srv', 'asp', 'ValidacionException("El tipo de una sub-meta no se puede cambiar")'),
+                    ('m', 'asp', 'log', 'registrar(…, EDITAR_SUB_META, …, ERROR, motivo)'),
+                    ('r', 'ctl', 'svc', '400 ErrorResponse'),
+                ]),
+            ]),
+        ], 'SubMetaResponse'),
+        ('r', 'ctl', 'svc', '200 OK + SubMetaResponse'),
+        ('r', 'form', 'u', 'vuelve a Tu camino con el paso actualizado'),
+        ('m', 'u', 'ui', 'menú ⋯ de otro paso → «Eliminar»'),
+        ('m', 'ui', 'modal', 'abrir(paso)'),
+        ('r', 'modal', 'u', '«¿Eliminar este paso?»: también se borran sus días registrados'),
+        ('m', 'u', 'modal', 'confirma'),
+        ('m', 'modal', 'svc', 'eliminarSubMeta(codigoSubMeta)'),
+        ('m', 'svc', 'ctl', 'DELETE /api/submetas/{codigoSubMeta}'),
+        *auditado('eliminar(codigoSubMeta, codigoUsuario)', 'ELIMINAR_SUB_META', 'SUB_META', [
+            ('m', 'srv', 'sr', 'findById(codigoSubMeta)'),
+            ('r', 'sr', 'srv', 'paso (es el creador y la meta está ACTIVA)'),
+            ('m', 'srv', 'sr', 'delete(paso)  [ON DELETE CASCADE: registro_sub_meta]'),
+        ], 'void'),
+        ('r', 'ctl', 'svc', '204 No Content'),
+        ('m', 'ui', 'ui', 'recargar() Tu camino'),
+        ('r', 'ui', 'u', 'el paso desaparece y el avance y la constancia se recalculan'),
+        ('nota', 'ui', 'Si no es el creador: 403. Si la meta ya está cumplida: 400 «su camino es solo de lectura»'),
+    ],
+))
