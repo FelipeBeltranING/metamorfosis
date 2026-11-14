@@ -32,7 +32,7 @@ Dos diagramas por historia de usuario, en draw.io (se abren y se editan en [app.
 | HU25 | Ocultar metas del perfil | [clases](Clases/HU25_clases.drawio) | [secuencia](Secuencia/HU25_secuencia.drawio) |
 | HU26 | Perfil privado | [clases](Clases/HU26_clases.drawio) | [secuencia](Secuencia/HU26_secuencia.drawio) |
 | HU27 | Filtrar metas por estado, tipo y plazo | [clases](Clases/HU27_clases.drawio) | [secuencia](Secuencia/HU27_secuencia.drawio) |
-| HU28 | Trazar el camino de una meta (hitos y hábitos) | [clases](Clases/HU28_clases.drawio) | [secuencia](Secuencia/HU28_secuencia.drawio) |
+| HU28 | Trazar el camino de una meta (hitos y hábitos) | [clases](Clases/HU28_clases.drawio) | [secuencia](Secuencia/HU28_secuencia.drawio) · [agregar un hábito](Secuencia/HU28_secuencia_habito.drawio) |
 | HU29 | Ver cuánto me falta y qué tan constante soy | [clases](Clases/HU29_clases.drawio) | [secuencia](Secuencia/HU29_secuencia.drawio) |
 | HU30 | Elegir la apariencia de la app | [clases](Clases/HU30_clases.drawio) | [secuencia](Secuencia/HU30_secuencia.drawio) |
 

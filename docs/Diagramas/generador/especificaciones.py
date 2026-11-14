@@ -1926,3 +1926,44 @@ HU['HU14'].setdefault('secuencias_extra', []).append(dict(
         ('nota', 'ui', 'Si ya participa: 409 «Ya participas en esta meta». Con 10 intentos errados: 429 por unos minutos'),
     ],
 ))
+
+HU['HU28'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='habito',
+    nombre='Agregar un hábito',
+    participantes=[U, ('ui', 'SubMetaFormPage', 'boundary'), ('svc', 'subMetaService.js', 'module'),
+                   ('ctl', 'SubMetaController', 'RestController'), ASP, ('srv', 'SubMetaService', 'Service'),
+                   ('mr', 'MetaRepository', 'Repository'), ('sr', 'SubMetaRepository', 'Repository'),
+                   ('sm', 'hábito : SubMeta', 'Entity'), LOG],
+    pasos=[
+        ('m', 'u', 'ui', '«+ Agregar paso» → Hábito: «Leer», ¿cuánto? al menos 15 páginas, de lunes a viernes'),
+        ('m', 'u', 'ui', 'pulsa «Guardar paso»  (pregunta del día y notas van en «Más opciones»)'),
+        ('m', 'ui', 'svc', 'crearSubMeta(codigoMeta, { nombre, tipo: MEDIBLE, unidad, objetivo: 15, tipoObjetivo: AL_MENOS, dias })'),
+        ('m', 'svc', 'ctl', 'POST /api/metas/{codigoMeta}/submetas'),
+        NOTA_TOKEN,
+        *auditado('crear(codigoMeta, pedido, codigoUsuario)', 'CREAR_SUB_META', 'SUB_META', [
+            ('m', 'srv', 'mr', 'findById(codigoMeta)'),
+            ('r', 'mr', 'srv', 'meta (es el creador y está ACTIVA)'),
+            ('m', 'srv', 'srv', 'validar(pedido, MEDIBLE): nombre, unidad, objetivo (> 0, ≤ 1.000.000), al menos / como máximo y días'),
+            ('alt', [
+                ('[datos válidos y el nombre no se repite en la meta]', [
+                    ('m', 'srv', 'sr', 'existsByMetaCodigoMetaAndNombreIgnoreCase(codigoMeta, "Leer")'),
+                    ('r', 'sr', 'srv', 'false'),
+                    ('m', 'srv', 'sm', '«create» new SubMeta(meta, MEDIBLE, hoy)'),
+                    ('m', 'srv', 'sm', 'actualizar(nombre, pregunta, "páginas", 15, AL_MENOS, días L-V, notas)'),
+                    ('m', 'srv', 'sr', 'save(hábito)'),
+                    ('r', 'sr', 'srv', 'hábito'),
+                ]),
+                ('[falta la unidad o el objetivo no es válido]', [
+                    ('r', 'srv', 'asp', 'ValidacionException(["Escribe en qué lo mides (la unidad)", …])'),
+                    ('m', 'asp', 'log', 'registrar(…, CREAR_SUB_META, …, ERROR, motivo)'),
+                    ('r', 'ctl', 'svc', '400 ErrorResponse con la lista de errores'),
+                    ('r', 'ui', 'u', 'cada error junto a su campo'),
+                ]),
+            ]),
+        ], 'SubMetaResponse'),
+        ('r', 'ctl', 'svc', '201 Created + SubMetaResponse'),
+        ('r', 'svc', 'ui', 'paso creado'),
+        ('r', 'ui', 'u', 'vuelve a Tu camino: el hábito aparece en «Hoy» los días que toca (se registra en la HU5)'),
+        ('nota', 'ui', 'Hábito Sí/No: solo nombre y días (tipo SI_NO, sin unidad ni objetivo)'),
+    ],
+))
