@@ -5,6 +5,8 @@ import {
   ArrowLeft, Camera, CircleAlert, CircleCheck, LoaderCircle, Lock, Trash2,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import i18n, { localeActual } from '../i18n';
 import Encabezado from '../components/Encabezado';
 import MensajeError from '../components/MensajeError';
 import AvatarUsuario from '../components/AvatarUsuario';
@@ -33,11 +35,11 @@ const FOTO_MAX_MB = 2;
 
 /** Mensaje de error si el archivo no sirve como foto, o null. */
 function problemaConArchivo(archivo) {
-  const ayuda = `Usa JPG, PNG o WebP de máximo ${FOTO_MAX_MB} MB.`;
-  if (!TIPOS_FOTO.includes(archivo.type)) return `${archivo.name} no es una imagen válida. ${ayuda}`;
+  const ayuda = i18n.t('editarPerfil.fotoAyuda', { max: FOTO_MAX_MB });
+  if (!TIPOS_FOTO.includes(archivo.type)) return i18n.t('editarPerfil.fotoNoValida', { archivo: archivo.name, ayuda });
   if (archivo.size > FOTO_MAX_MB * 1024 * 1024) {
-    const megas = (archivo.size / (1024 * 1024)).toLocaleString('es-CO', { maximumFractionDigits: 1 });
-    return `La imagen pesa ${megas} MB. ${ayuda}`;
+    const megas = (archivo.size / (1024 * 1024)).toLocaleString(localeActual(), { maximumFractionDigits: 1 });
+    return i18n.t('editarPerfil.fotoPesada', { megas, ayuda });
   }
   return null;
 }
@@ -73,8 +75,8 @@ function validar({ nombre, apellido }) {
   const errores = {};
   for (const [campo, valor] of [['nombre', nombre], ['apellido', apellido]]) {
     const limpio = limpiar(valor);
-    if (!limpio) errores[campo] = `Escribe tu ${campo}.`;
-    else if (limpio.length > TEXTO_MAX) errores[campo] = `Máximo ${TEXTO_MAX} caracteres (llevas ${limpio.length}).`;
+    if (!limpio) errores[campo] = i18n.t(campo === 'nombre' ? 'editarPerfil.escribeNombre' : 'editarPerfil.escribeApellido');
+    else if (limpio.length > TEXTO_MAX) errores[campo] = i18n.t('editarPerfil.maximo', { max: TEXTO_MAX, largo: limpio.length });
   }
   return errores;
 }
@@ -84,14 +86,14 @@ function erroresDelServidor(error) {
   const campos = {};
   const generales = [];
   for (const mensaje of error.errores ?? []) {
-    if (/frase/i.test(mensaje)) campos.frase = mensaje; // HU19: perfil público
-    else if (/portada/i.test(mensaje)) campos.portada = mensaje;
-    else if (/insignia/i.test(mensaje)) campos.insigniaDestacada = mensaje;
-    else if (/destacar/i.test(mensaje)) campos.metasDestacadas = mensaje;
-    else if (/apellido/i.test(mensaje)) campos.apellido = mensaje;
-    else if (/nombre/i.test(mensaje)) campos.nombre = mensaje;
-    else if (/foto/i.test(mensaje)) campos.foto = mensaje;
-    else if (/modo|acento/i.test(mensaje)) campos.apariencia = mensaje;
+    if (/frase|quote|motto/i.test(mensaje)) campos.frase = mensaje; // HU19: perfil público
+    else if (/portada|cover/i.test(mensaje)) campos.portada = mensaje;
+    else if (/insignia|badge/i.test(mensaje)) campos.insigniaDestacada = mensaje;
+    else if (/destacar|feature/i.test(mensaje)) campos.metasDestacadas = mensaje;
+    else if (/apellido|last name/i.test(mensaje)) campos.apellido = mensaje;
+    else if (/nombre|name/i.test(mensaje)) campos.nombre = mensaje;
+    else if (/foto|photo/i.test(mensaje)) campos.foto = mensaje;
+    else if (/modo|acento|mode|accent/i.test(mensaje)) campos.apariencia = mensaje;
     else generales.push(mensaje);
   }
   return { campos, general: generales[0] ?? (Object.keys(campos).length ? '' : error.message) };
@@ -122,6 +124,7 @@ function CampoPerfil({
 
 /** HU-23: editar nombre, apellido y foto de la cuenta. El correo se muestra, no se edita. HU19: apariencia. */
 export default function EditarPerfilPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [carga, setCarga] = useState({ fase: 'cargando' });
   const [intento, setIntento] = useState(0);
@@ -239,10 +242,10 @@ export default function EditarPerfilPage() {
     evento.preventDefault();
     const encontrados = validar(formulario);
     if (limpiar(perfilPublico.frase).length > MAXIMO_FRASE) {
-      encontrados.frase = `La frase puede tener hasta ${MAXIMO_FRASE} caracteres.`;
+      encontrados.frase = t('editarPerfil.fraseLarga', { max: MAXIMO_FRASE });
     }
     setErrores((actuales) => ({ ...encontrados, foto: actuales.foto, apariencia: actuales.apariencia }));
-    setErrorGeneral(Object.keys(encontrados).length ? 'No se guardaron los cambios. Revisa los campos marcados.' : '');
+    setErrorGeneral(Object.keys(encontrados).length ? t('editarPerfil.noGuardado') : '');
     if (Object.keys(encontrados).length || !hayCambios) return;
 
     setGuardando(true);
@@ -274,7 +277,7 @@ export default function EditarPerfilPage() {
       }
       const { campos, general } = erroresDelServidor(error);
       setErrores(campos);
-      setErrorGeneral(general || 'No se guardaron los cambios. Revisa los campos marcados.');
+      setErrorGeneral(general || t('editarPerfil.noGuardado'));
     } finally {
       setGuardando(false);
     }
@@ -286,15 +289,15 @@ export default function EditarPerfilPage() {
       <main className="mx-auto flex max-w-[720px] flex-col gap-5 px-4 pb-12 pt-6 sm:pt-10">
         <Link to="/metas" className="inline-flex items-center gap-1 self-start text-[15px] font-bold text-violet-700 hover:underline">
           <ArrowLeft className="size-[18px]" aria-hidden="true" />
-          Volver
+          {t('editarPerfil.volver')}
         </Link>
         <div>
-          <h1 className="text-[26px] font-extrabold sm:text-3xl">Editar perfil</h1>
-          <p className="mt-1 text-[15px] text-gray-600 sm:text-base">Así te verán en Metamorfosis y en las metas que compartes.</p>
+          <h1 className="text-[26px] font-extrabold sm:text-3xl">{t('editarPerfil.titulo')}</h1>
+          <p className="mt-1 text-[15px] text-gray-600 sm:text-base">{t('editarPerfil.subtitulo')}</p>
         </div>
 
         {carga.fase === 'cargando' && (
-          <div className="flex flex-col gap-5" aria-busy="true" aria-label="Cargando tu perfil">
+          <div className="flex flex-col gap-5" aria-busy="true" aria-label={t('editarPerfil.cargando')}>
             <div className="h-40 animate-pulse rounded-2xl bg-white" />
             <div className="h-64 animate-pulse rounded-2xl bg-white" />
           </div>
@@ -304,15 +307,15 @@ export default function EditarPerfilPage() {
           <div role="alert" className="flex flex-col gap-4 rounded-2xl bg-red-50 p-5 text-red-700 sm:flex-row sm:items-center sm:p-6">
             <CircleAlert className="size-6 shrink-0" aria-hidden="true" />
             <div className="flex flex-1 flex-col gap-1">
-              <p className="font-bold">No pudimos cargar tu perfil</p>
-              <p>{carga.mensaje || 'Comprueba tu conexión e inténtalo de nuevo.'}</p>
+              <p className="font-bold">{t('editarPerfil.errorCargar')}</p>
+              <p>{carga.mensaje || t('editarPerfil.revisaConexion')}</p>
             </div>
             <button
               type="button"
               onClick={() => { setCarga({ fase: 'cargando' }); setIntento((n) => n + 1); }}
               className="h-11 rounded-xl bg-white px-5 font-bold text-red-700 hover:bg-red-100"
             >
-              Reintentar
+              {t('editarPerfil.reintentar')}
             </button>
           </div>
         )}
@@ -328,20 +331,20 @@ export default function EditarPerfilPage() {
 
             <section aria-labelledby="titulo-foto-perfil" className="flex flex-col items-center gap-4 rounded-2xl border border-zinc-200 bg-white p-5 text-center sm:flex-row sm:gap-6 sm:p-7 sm:text-left">
               {fotoMostrada ? (
-                <img src={fotoMostrada} alt="Tu foto de perfil" className="size-28 shrink-0 rounded-full object-cover" />
+                <img src={fotoMostrada} alt={t('editarPerfil.tuFoto')} className="size-28 shrink-0 rounded-full object-cover" />
               ) : (
                 <AvatarUsuario iniciales={inicialesDe(formulario.nombre, formulario.apellido) || inicialesDe(cuenta.nombre, cuenta.apellido)} clase="size-28 text-4xl" />
               )}
               <div className="flex w-full flex-col gap-2.5">
-                <h2 id="titulo-foto-perfil" className="text-lg font-extrabold">Foto de perfil</h2>
+                <h2 id="titulo-foto-perfil" className="text-lg font-extrabold">{t('editarPerfil.foto')}</h2>
                 {errores.foto ? (
                   <MensajeError id="error-foto" texto={errores.foto} />
                 ) : (
                   <p className="text-sm text-gray-600">
-                    {fotoPendiente?.tipo === 'nueva' && 'Foto nueva lista: se guarda al pulsar Guardar cambios. '}
-                    {fotoPendiente?.tipo === 'quitar' && 'Se quitará al pulsar Guardar cambios. '}
-                    {!fotoMostrada && !fotoPendiente && 'Aún no tienes foto: se muestran tus iniciales. '}
-                    JPG, PNG o WebP, máximo {FOTO_MAX_MB} MB.
+                    {fotoPendiente?.tipo === 'nueva' && t('editarPerfil.fotoNueva')}
+                    {fotoPendiente?.tipo === 'quitar' && t('editarPerfil.fotoQuitar')}
+                    {!fotoMostrada && !fotoPendiente && t('editarPerfil.sinFoto')}
+                    {t('editarPerfil.formatos', { max: FOTO_MAX_MB })}
                   </p>
                 )}
                 <input
@@ -365,7 +368,7 @@ export default function EditarPerfilPage() {
                     }`}
                   >
                     <Camera className="size-[18px]" aria-hidden="true" />
-                    {fotoMostrada ? 'Cambiar foto' : errores.foto ? 'Elegir otra foto' : 'Subir foto'}
+                    {fotoMostrada ? t('editarPerfil.cambiarFoto') : errores.foto ? t('editarPerfil.elegirOtra') : t('editarPerfil.subirFoto')}
                   </button>
                   {fotoMostrada && (
                     <button
@@ -374,7 +377,7 @@ export default function EditarPerfilPage() {
                       className="flex h-11 items-center justify-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 font-bold text-red-700 hover:bg-red-50"
                     >
                       <Trash2 className="size-[18px]" aria-hidden="true" />
-                      Quitar foto
+                      {t('editarPerfil.quitarFoto')}
                     </button>
                   )}
                 </div>
@@ -382,11 +385,11 @@ export default function EditarPerfilPage() {
             </section>
 
             <section aria-labelledby="titulo-datos" className="flex flex-col gap-4 rounded-2xl border border-zinc-200 bg-white p-5 sm:p-7">
-              <h2 id="titulo-datos" className="text-lg font-extrabold">Tus datos</h2>
+              <h2 id="titulo-datos" className="text-lg font-extrabold">{t('editarPerfil.tusDatos')}</h2>
               <div className="grid gap-4 sm:grid-cols-2">
                 <CampoPerfil
                   id="nombre"
-                  etiqueta="Nombre"
+                  etiqueta={t('editarPerfil.nombre')}
                   valor={formulario.nombre}
                   onChange={cambiar('nombre')}
                   error={errores.nombre}
@@ -394,7 +397,7 @@ export default function EditarPerfilPage() {
                 />
                 <CampoPerfil
                   id="apellido"
-                  etiqueta="Apellido"
+                  etiqueta={t('editarPerfil.apellido')}
                   valor={formulario.apellido}
                   onChange={cambiar('apellido')}
                   error={errores.apellido}
@@ -402,7 +405,7 @@ export default function EditarPerfilPage() {
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="correo" className="text-sm font-bold text-gray-700">Correo</label>
+                <label htmlFor="correo" className="text-sm font-bold text-gray-700">{t('editarPerfil.correo')}</label>
                 <div className="relative">
                   <input
                     id="correo"
@@ -413,7 +416,7 @@ export default function EditarPerfilPage() {
                   />
                   <Lock className="absolute right-3.5 top-1/2 size-[18px] -translate-y-1/2 text-gray-500" aria-hidden="true" />
                 </div>
-                <p id="ayuda-correo" className="text-[13px] text-gray-600">Es el correo con el que inicias sesión, por eso no se cambia aquí.</p>
+                <p id="ayuda-correo" className="text-[13px] text-gray-600">{t('editarPerfil.correoAyuda')}</p>
               </div>
             </section>
 
@@ -449,7 +452,7 @@ export default function EditarPerfilPage() {
                 to="/metas"
                 className="flex h-12 items-center justify-center rounded-xl border border-zinc-200 bg-white px-6 font-bold text-gray-700 hover:bg-gray-50"
               >
-                Cancelar
+                {t('editarPerfil.cancelar')}
               </Link>
               <button
                 type="submit"
@@ -457,7 +460,7 @@ export default function EditarPerfilPage() {
                 className="flex h-12 items-center justify-center gap-2 rounded-xl bg-violet-600 px-6 font-bold text-white hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {guardando && <LoaderCircle className="size-5 animate-spin" aria-hidden="true" />}
-                {guardando ? 'Guardando...' : 'Guardar cambios'}
+                {guardando ? t('editarPerfil.guardando') : t('editarPerfil.guardar')}
               </button>
             </div>
           </form>
@@ -480,7 +483,7 @@ export default function EditarPerfilPage() {
           className="fixed bottom-6 left-1/2 z-40 flex w-[calc(100%-2rem)] max-w-md -translate-x-1/2 items-center gap-2.5 rounded-xl bg-emerald-400 px-5 py-3.5 text-[15px] font-bold text-emerald-950 shadow-lg"
         >
           <CircleCheck className="size-6 shrink-0" aria-hidden="true" />
-          ¡Perfil actualizado!
+          {t('editarPerfil.actualizado')}
         </p>
       )}
     </div>
