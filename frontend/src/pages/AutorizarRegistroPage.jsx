@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { CircleCheck, LoaderCircle } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { Trans, useTranslation } from 'react-i18next';
+import i18n from '../i18n';
 import LayoutAuth from '../components/LayoutAuth';
 import EnlaceNoValido from '../components/EnlaceNoValido';
 import { autorizarRegistro } from '../services/authService';
@@ -22,6 +24,7 @@ function avisarOtrasPestanas() {
  * donde se pidió el registro avanza sola al formulario. Si se prefiere, se puede seguir aquí.
  */
 export default function AutorizarRegistroPage() {
+  const { t } = useTranslation();
   const [parametros] = useSearchParams();
   const token = parametros.get('token') ?? '';
   const [estado, setEstado] = useState(() => (token ? { fase: 'autorizando' } : { fase: 'invalido' }));
@@ -37,7 +40,7 @@ export default function AutorizarRegistroPage() {
       })
       .catch((e) => activo && setEstado({
         fase: 'invalido',
-        mensaje: e.estado === 410 ? e.message : 'No pudimos autorizar el registro. Intenta de nuevo.',
+        mensaje: e.estado === 410 ? e.message : i18n.t('auth.autorizar.error'),
       }));
     return () => {
       activo = false;
@@ -46,10 +49,10 @@ export default function AutorizarRegistroPage() {
 
   if (estado.fase === 'autorizando') {
     return (
-      <LayoutAuth titulo="Autorizando..." subtitulo="Un momento, estamos confirmando tu correo.">
+      <LayoutAuth titulo={t('auth.autorizar.autorizandoTitulo')} subtitulo={t('auth.autorizar.autorizandoSubtitulo')}>
         <p role="status" className="flex items-center justify-center gap-2 py-8 text-sm text-gray-600">
           <LoaderCircle className="size-5 animate-spin text-violet-600" aria-hidden="true" />
-          Autorizando tu registro...
+          {t('auth.autorizar.autorizando')}
         </p>
       </LayoutAuth>
     );
@@ -57,21 +60,20 @@ export default function AutorizarRegistroPage() {
 
   if (estado.fase === 'invalido') {
     return (
-      <LayoutAuth titulo="Enlace no válido" subtitulo="Este enlace ya no se puede usar.">
+      <LayoutAuth titulo={t('auth.autorizar.invalidoTitulo')} subtitulo={t('auth.autorizar.invalidoSubtitulo')}>
         <EnlaceNoValido mensaje={estado.mensaje} />
       </LayoutAuth>
     );
   }
 
   return (
-    <LayoutAuth titulo="¡Correo autorizado!" subtitulo="Ya puedes terminar tu registro.">
+    <LayoutAuth titulo={t('auth.autorizar.listoTitulo')} subtitulo={t('auth.autorizar.listoSubtitulo')}>
       <div className="flex flex-col items-center text-center">
         <div className="flex size-16 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
           <CircleCheck className="size-8" aria-hidden="true" />
         </div>
         <p className="mt-4 text-[15px] leading-6 text-gray-600">
-          Vuelve a la página donde empezaste el registro: <strong className="text-gray-900">se
-          abrirá el formulario sola</strong>. Puedes cerrar esta pestaña.
+          <Trans i18nKey="auth.autorizar.listoTexto" components={{ b: <strong className="text-gray-900" /> }} />
         </p>
         {estado.email && (
           <p className="mt-2 break-all text-sm text-gray-500">{estado.email}</p>
@@ -80,7 +82,7 @@ export default function AutorizarRegistroPage() {
           to={`/registro/completar?token=${encodeURIComponent(token)}`}
           className="mt-6 flex h-[46px] w-full items-center justify-center rounded-xl border border-zinc-200 font-bold text-gray-700 hover:bg-gray-50"
         >
-          Prefiero continuar aquí
+          {t('auth.autorizar.continuarAqui')}
         </Link>
       </div>
     </LayoutAuth>

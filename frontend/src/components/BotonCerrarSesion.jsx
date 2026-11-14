@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { LoaderCircle, LogOut, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { cerrarSesionRemota } from '../services/authService';
 import { cerrarSesion, obtenerSesion } from '../services/sesionService';
 
@@ -10,6 +11,7 @@ import { cerrarSesion, obtenerSesion } from '../services/sesionService';
  * En el celular solo se ve el ícono.
  */
 export default function BotonCerrarSesion() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [confirmando, setConfirmando] = useState(false);
   const [cerrando, setCerrando] = useState(false);
@@ -54,11 +56,11 @@ export default function BotonCerrarSesion() {
         ref={boton}
         type="button"
         onClick={() => setConfirmando(true)}
-        aria-label="Cerrar sesión"
+        aria-label={t('auth.cerrarSesion.boton')}
         className="flex items-center gap-2 rounded-lg px-2.5 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300 sm:px-3 sm:text-base"
       >
         <LogOut className="size-5" aria-hidden="true" />
-        <span className="hidden sm:inline">Cerrar sesión</span>
+        <span className="hidden sm:inline">{t('auth.cerrarSesion.boton')}</span>
       </button>
 
       {confirmando && (
@@ -83,15 +85,15 @@ export default function BotonCerrarSesion() {
                 type="button"
                 onClick={cerrarConfirmacion}
                 disabled={cerrando}
-                aria-label="Cerrar ventana"
+                aria-label={t('auth.cerrarSesion.cerrarVentana')}
                 className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 disabled:opacity-50"
               >
                 <X className="size-5" aria-hidden="true" />
               </button>
             </div>
-            <h2 id="titulo-cerrar-sesion" className="text-xl font-bold text-gray-900">¿Cerrar sesión?</h2>
+            <h2 id="titulo-cerrar-sesion" className="text-xl font-bold text-gray-900">{t('auth.cerrarSesion.titulo')}</h2>
             <p id="descripcion-cerrar-sesion" className="mt-3 text-sm leading-6 text-gray-600">
-              Tendrás que volver a ingresar con tu correo y contraseña para ver tus metas.
+              {t('auth.cerrarSesion.texto')}
             </p>
             <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
               <button
@@ -101,7 +103,7 @@ export default function BotonCerrarSesion() {
                 disabled={cerrando}
                 className="h-11 rounded-xl border border-gray-200 px-5 font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-50"
               >
-                Cancelar
+                {t('comun.cancelar')}
               </button>
               <button
                 type="button"
@@ -110,7 +112,7 @@ export default function BotonCerrarSesion() {
                 className="flex h-11 items-center justify-center gap-2 rounded-xl bg-violet-600 px-5 font-semibold text-white hover:bg-violet-700 disabled:opacity-60"
               >
                 {cerrando && <LoaderCircle className="size-5 animate-spin" aria-hidden="true" />}
-                {cerrando ? 'Cerrando sesión...' : 'Cerrar sesión'}
+                {cerrando ? t('auth.cerrarSesion.cerrando') : t('auth.cerrarSesion.boton')}
               </button>
             </div>
           </section>

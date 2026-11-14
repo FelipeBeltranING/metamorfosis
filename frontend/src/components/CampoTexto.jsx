@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import MensajeError from './MensajeError';
 
 export default function CampoTexto({
   id, etiqueta, tipo = 'text', valor, onChange, placeholder, error,
   deshabilitado = false, autoComplete, maxLength,
 }) {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
   const esContrasena = tipo === 'password';
 
@@ -35,7 +37,7 @@ export default function CampoTexto({
             type="button"
             onClick={() => setVisible((v) => !v)}
             disabled={deshabilitado}
-            aria-label={visible ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+            aria-label={visible ? t('auth.campos.ocultarPassword') : t('auth.campos.mostrarPassword')}
             aria-pressed={visible}
             className="absolute inset-y-0 right-1 flex w-11 items-center justify-center text-gray-400 hover:text-gray-600 disabled:cursor-not-allowed"
           >

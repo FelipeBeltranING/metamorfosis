@@ -3,19 +3,14 @@ import { CircleCheck, LoaderCircle } from 'lucide-react';
 import {
   Link, useLocation, useNavigate, useSearchParams,
 } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
 import LayoutAuth from '../components/LayoutAuth';
 import CampoTexto from '../components/CampoTexto';
 import AlertaFormulario from '../components/AlertaFormulario';
 import { iniciarSesion } from '../services/authService';
 import { guardarSesion } from '../services/sesionService';
 import { REGEX_EMAIL, TEXTO_USUARIO_MAX } from '../constants/validaciones';
-
-const MENSAJE_CREDENCIALES = 'Correo o contraseña incorrectos.';
-
-const AVISOS = {
-  cuentaCreada: '¡Cuenta creada! Ya puedes iniciar sesión.',
-  sesionCerrada: 'Sesión cerrada.',
-};
 
 /** Qué aviso mostrar al llegar (viene en el estado de navegación). */
 function avisoInicial(estadoNavegacion) {
@@ -27,12 +22,13 @@ function avisoInicial(estadoNavegacion) {
 /** Validación del cliente. Las claves coinciden con los id de los campos. */
 function validar({ email, password }) {
   const errores = {};
-  if (!REGEX_EMAIL.test(email.trim())) errores.email = 'Ingresa un correo válido';
-  if (!password) errores.password = 'La contraseña es obligatoria';
+  if (!REGEX_EMAIL.test(email.trim())) errores.email = i18n.t('auth.validacion.emailInvalido');
+  if (!password) errores.password = i18n.t('auth.validacion.passwordObligatoria');
   return errores;
 }
 
 export default function LoginPage() {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const [parametros] = useSearchParams();
@@ -81,7 +77,7 @@ export default function LoginPage() {
       else navigate('/metas', { replace: true, state: { sesionIniciada: true } });
     } catch (error) {
       if (error.estado === 401) {
-        setErrorServidor(MENSAJE_CREDENCIALES);
+        setErrorServidor(t('auth.login.credenciales'));
       } else if (error.estado === 429) {
         // HU9: demasiados intentos fallidos; el servidor dice cuántos minutos esperar.
         setErrorServidor(error.message);
@@ -94,17 +90,17 @@ export default function LoginPage() {
   };
 
   return (
-    <LayoutAuth titulo="Iniciar sesión" subtitulo="Bienvenido de nuevo. Ingresa a tu cuenta.">
+    <LayoutAuth titulo={t('auth.login.titulo')} subtitulo={t('auth.login.subtitulo')}>
       <AlertaFormulario texto={errorServidor} />
 
       <form onSubmit={enviar} noValidate className="flex flex-col gap-4">
         <CampoTexto
           id="email"
-          etiqueta="Correo electrónico"
+          etiqueta={t('auth.campos.email')}
           tipo="email"
           valor={formulario.email}
           onChange={(v) => actualizar('email', v)}
-          placeholder="nombre@correo.com"
+          placeholder={t('auth.campos.emailPlaceholder')}
           error={errores.email}
           deshabilitado={enviando}
           autoComplete="email"
@@ -113,11 +109,11 @@ export default function LoginPage() {
 
         <CampoTexto
           id="password"
-          etiqueta="Contraseña"
+          etiqueta={t('auth.campos.password')}
           tipo="password"
           valor={formulario.password}
           onChange={(v) => actualizar('password', v)}
-          placeholder="Tu contraseña"
+          placeholder={t('auth.login.passwordPlaceholder')}
           error={errores.password}
           deshabilitado={enviando}
           autoComplete="current-password"
@@ -131,16 +127,16 @@ export default function LoginPage() {
           {enviando ? (
             <>
               <LoaderCircle className="size-[18px] animate-spin" aria-hidden="true" />
-              Iniciando sesión...
+              {t('auth.login.enviando')}
             </>
           ) : (
-            'Iniciar sesión'
+            t('auth.login.boton')
           )}
         </button>
 
         <p className="text-center text-sm text-gray-500">
-          ¿No tienes cuenta?{' '}
-          <Link to="/registro" className="font-bold text-violet-600 hover:underline">Regístrate</Link>
+          {t('auth.login.sinCuenta')}{' '}
+          <Link to="/registro" className="font-bold text-violet-600 hover:underline">{t('auth.login.registrate')}</Link>
         </p>
       </form>
 
@@ -150,7 +146,7 @@ export default function LoginPage() {
           className="fixed bottom-10 left-1/2 flex w-[calc(100%-2rem)] max-w-[440px] -translate-x-1/2 items-center gap-3 rounded-xl bg-emerald-400 px-4 py-3 text-sm font-bold text-gray-900 shadow-lg"
         >
           <CircleCheck className="size-[18px] shrink-0" aria-hidden="true" />
-          {AVISOS[aviso]}
+          {t(`auth.login.${aviso}`)}
         </div>
       )}
     </LayoutAuth>

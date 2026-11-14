@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { LoaderCircle, MailCheck } from 'lucide-react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import i18n from '../i18n';
 import LayoutAuth from '../components/LayoutAuth';
 import CampoTexto from '../components/CampoTexto';
 import AlertaFormulario from '../components/AlertaFormulario';
@@ -12,11 +14,11 @@ const FORMULARIO_VACIO = { nombre: '', apellido: '', password: '' };
 
 function validar({ nombre, apellido, password }) {
   const errores = {};
-  if (!nombre.trim()) errores.nombre = 'El nombre es obligatorio';
-  if (!apellido.trim()) errores.apellido = 'El apellido es obligatorio';
-  if (password.length < 8) errores.password = 'Mínimo 8 caracteres';
+  if (!nombre.trim()) errores.nombre = i18n.t('auth.validacion.nombreObligatorio');
+  if (!apellido.trim()) errores.apellido = i18n.t('auth.validacion.apellidoObligatorio');
+  if (password.length < 8) errores.password = i18n.t('auth.validacion.passwordMinimo');
   else if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/\d/.test(password)) {
-    errores.password = 'Debe incluir mayúscula, minúscula y número';
+    errores.password = i18n.t('auth.validacion.passwordFormato');
   }
   return errores;
 }
@@ -26,6 +28,7 @@ function validar({ nombre, apellido, password }) {
  * Solo si el enlace es válido se muestra el formulario, con el email ya autorizado.
  */
 export default function RegistroPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [parametros] = useSearchParams();
   const token = parametros.get('token') ?? '';
@@ -44,7 +47,7 @@ export default function RegistroPage() {
       .then((datos) => activo && setSolicitud({ fase: 'lista', email: datos.email }))
       .catch((e) => activo && setSolicitud({
         fase: 'invalido',
-        mensaje: e.estado === 410 ? e.message : 'No pudimos comprobar el enlace. Intenta de nuevo.',
+        mensaje: e.estado === 410 ? e.message : i18n.t('auth.registro.errorComprobar'),
       }));
     return () => {
       activo = false;
@@ -82,7 +85,7 @@ export default function RegistroPage() {
       if (error.estado === 410) {
         setSolicitud({ fase: 'invalido', mensaje: error.message });
       } else if (error.estado === 409) {
-        setErrorServidor('Este correo ya está registrado. Inicia sesión o usa otro correo.');
+        setErrorServidor(t('auth.registro.yaRegistrado'));
       } else {
         const detalle = error.errores?.length ? `: ${error.errores.join(', ')}` : '';
         setErrorServidor(`${error.message}${detalle}`);
@@ -94,10 +97,10 @@ export default function RegistroPage() {
 
   if (solicitud.fase === 'cargando') {
     return (
-      <LayoutAuth titulo="Crear cuenta" subtitulo="Comprobando tu enlace...">
+      <LayoutAuth titulo={t('auth.registro.titulo')} subtitulo={t('auth.registro.comprobandoSubtitulo')}>
         <p role="status" className="flex items-center justify-center gap-2 py-8 text-sm text-gray-600">
           <LoaderCircle className="size-5 animate-spin text-violet-600" aria-hidden="true" />
-          Comprobando el enlace...
+          {t('auth.registro.comprobando')}
         </p>
       </LayoutAuth>
     );
@@ -105,24 +108,24 @@ export default function RegistroPage() {
 
   if (solicitud.fase === 'invalido') {
     return (
-      <LayoutAuth titulo="Enlace no válido" subtitulo="Para registrarte necesitas un enlace vigente.">
+      <LayoutAuth titulo={t('auth.registro.invalidoTitulo')} subtitulo={t('auth.registro.invalidoSubtitulo')}>
         <EnlaceNoValido mensaje={solicitud.mensaje} />
       </LayoutAuth>
     );
   }
 
   return (
-    <LayoutAuth titulo="Completa tu registro" subtitulo="Tu correo ya está autorizado. Solo faltan tus datos.">
+    <LayoutAuth titulo={t('auth.registro.completaTitulo')} subtitulo={t('auth.registro.completaSubtitulo')}>
       <AlertaFormulario texto={errorServidor} />
 
       <form onSubmit={enviar} noValidate className="flex flex-col gap-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <CampoTexto
             id="nombre"
-            etiqueta="Nombre"
+            etiqueta={t('auth.campos.nombre')}
             valor={formulario.nombre}
             onChange={(v) => actualizar('nombre', v)}
-            placeholder="Ej. Laura"
+            placeholder={t('auth.campos.nombrePlaceholder')}
             error={errores.nombre}
             deshabilitado={enviando}
             autoComplete="given-name"
@@ -130,10 +133,10 @@ export default function RegistroPage() {
           />
           <CampoTexto
             id="apellido"
-            etiqueta="Apellido"
+            etiqueta={t('auth.campos.apellido')}
             valor={formulario.apellido}
             onChange={(v) => actualizar('apellido', v)}
-            placeholder="Ej. Gómez"
+            placeholder={t('auth.campos.apellidoPlaceholder')}
             error={errores.apellido}
             deshabilitado={enviando}
             autoComplete="family-name"
@@ -142,21 +145,21 @@ export default function RegistroPage() {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <span className="text-sm font-bold text-gray-900">Correo electrónico</span>
+          <span className="text-sm font-bold text-gray-900">{t('auth.campos.email')}</span>
           <p className="flex h-[46px] items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 text-[15px] text-gray-900">
             <MailCheck className="size-[18px] shrink-0 text-emerald-700" aria-hidden="true" />
             <span className="truncate">{solicitud.email}</span>
-            <span className="ml-auto shrink-0 text-xs font-bold text-emerald-700">Autorizado</span>
+            <span className="ml-auto shrink-0 text-xs font-bold text-emerald-700">{t('auth.registro.autorizado')}</span>
           </p>
         </div>
 
         <CampoTexto
           id="password"
-          etiqueta="Contraseña"
+          etiqueta={t('auth.campos.password')}
           tipo="password"
           valor={formulario.password}
           onChange={(v) => actualizar('password', v)}
-          placeholder="Mínimo 8 caracteres"
+          placeholder={t('auth.registro.passwordPlaceholder')}
           error={errores.password}
           deshabilitado={enviando}
           autoComplete="new-password"
@@ -170,16 +173,16 @@ export default function RegistroPage() {
           {enviando ? (
             <>
               <LoaderCircle className="size-[18px] animate-spin" aria-hidden="true" />
-              Creando cuenta...
+              {t('auth.registro.enviando')}
             </>
           ) : (
-            'Crear cuenta'
+            t('auth.registro.boton')
           )}
         </button>
 
         <p className="text-center text-sm text-gray-500">
-          ¿Ya tienes una cuenta?{' '}
-          <Link to="/login" className="font-bold text-violet-600 hover:underline">Inicia sesión</Link>
+          {t('auth.solicitar.yaTienesCuenta')}{' '}
+          <Link to="/login" className="font-bold text-violet-600 hover:underline">{t('auth.solicitar.iniciaSesion')}</Link>
         </p>
       </form>
     </LayoutAuth>
