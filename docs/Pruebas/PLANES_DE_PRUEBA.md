@@ -653,7 +653,7 @@ Servicios: `POST /api/metas/{codigoMeta}/submetas` (201) y `GET`, `PUT` y `DELET
 | Paso que no existe | `GET /api/submetas/999999` | 404 «No se encontró el paso 999999» |
 | Cambiar el tipo al editar | `PUT` del hito con `tipo: MEDIBLE` | 400 «El tipo de un paso no se puede cambiar» |
 | Eliminar un paso | `DELETE /api/submetas/{codigo}` | 204 |
-| Otro usuario agrega pasos | Beto en la meta de Ana | 403 «Solo el creador de la meta puede cambiar su camino» |
+| Beto no puede agregar pasos | Beto en la meta de Ana | 403 «Solo el creador de la meta puede cambiar su camino» |
 | Interfaz: camino vacío | Abrir una meta sin pasos | Invita a trazar el camino |
 
 **Caja blanca.** Sobre `SubMetaService` (crear, editar y validar).
