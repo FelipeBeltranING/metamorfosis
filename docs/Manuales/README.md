@@ -8,4 +8,4 @@ documentos en línea, con portada, índice con enlaces a cada sección y captura
 | Manual de usuario | Cuenta, Mis metas, trazar el camino (hitos y hábitos), registrar el avance, constancia y reportes, metas compartidas y logros, perfil y avatar, insignias, preguntas frecuentes | [Abrir](https://claude.ai/artifact/N8gD7S7bq4FrhUtDyTXxAS) |
 | Manual técnico | Arquitectura de dos niveles, tecnologías, estructura del código, modelo de datos y migraciones, API REST, seguridad, auditoría y logs, idiomas, accesibilidad y build, pruebas, instalación y despliegue | [Abrir](https://claude.ai/artifact/2jEExzZAJu5fuJyShgmRuZ) |
 
-Para adjuntarlos a la entrega se exportan a PDF desde el mismo documento (menú de exportar).
+Los PDF exportados el 15 de noviembre de 2026 están en esta carpeta: `Manual_de_usuario_Metamorfosis.pdf` (23 páginas) y `Manual_tecnico_Metamorfosis.pdf` (16 páginas).
