@@ -56,3 +56,17 @@ HU20 Personalizar mi avatar · sección Tu avatar (peinados y accesorios), Mi pe
 
 Historico/Sub-metas (antes del rediseño): las capturas de las sub-metas solo con hábitos y el
 porcentaje de constancia; quedan como referencia del cambio.
+
+Mockups de la HU32 Cambiar contraseña y la HU33 Recuperar contraseña (14 de noviembre de 2026)
+==============================================================================================
+Capturas de la rama hu32-cambiar-contrasena contra el backend real y una base local. Escritorio a
+1280 × 640 px; celular (_movil) a 390 px; todo a doble resolución.
+
+HU32 Cambiar contraseña    · dentro de la app, solo la nueva y su confirmación: botón en Editar perfil,
+                             formulario, requisitos mientras se escribe, errores, igual a la actual,
+                             contraseña cambiada, el otro dispositivo vuelve a Iniciar sesión, correo
+                             de aviso, en inglés, tema oscuro, celular
+HU33 Recuperar contraseña  · sin sesión, con un código de 6 dígitos por correo: «¿Olvidaste tu
+                             contraseña?» en Iniciar sesión, pedir el código, el correo con el código,
+                             escribir el código, errores, código incorrecto, contraseña cambiada en
+                             Iniciar sesión, código vencido o ya usado, en inglés, celular

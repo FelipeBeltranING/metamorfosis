@@ -2,6 +2,7 @@ package com.metamorfosis.backend.config;
 
 import com.metamorfosis.backend.exception.TokenInvalidoException;
 import com.metamorfosis.backend.repository.TokenRevocadoRepository;
+import com.metamorfosis.backend.repository.UsuarioRepository;
 import com.metamorfosis.backend.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,10 +25,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final TokenRevocadoRepository tokenRevocadoRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public JwtAuthFilter(JwtService jwtService, TokenRevocadoRepository tokenRevocadoRepository) {
+    public JwtAuthFilter(JwtService jwtService, TokenRevocadoRepository tokenRevocadoRepository,
+                         UsuarioRepository usuarioRepository) {
         this.jwtService = jwtService;
         this.tokenRevocadoRepository = tokenRevocadoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -49,6 +53,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         codigoUsuario, request.getMethod(), request.getRequestURI());
                 return;
             }
+            if (emitidoAntesDelCambioDeContrasena(token, codigoUsuario)) {
+                log.warn("Acceso rechazado: token anterior al cambio de contraseña (usuario {}) en {} {}",
+                        codigoUsuario, request.getMethod(), request.getRequestURI());
+                return;
+            }
             SecurityContextHolder.getContext().setAuthentication(
                     new UsernamePasswordAuthenticationToken(codigoUsuario, null, List.of()));
         } catch (TokenInvalidoException e) {
@@ -56,5 +65,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             log.warn("Acceso rechazado: token inválido o expirado en {} {}",
                     request.getMethod(), request.getRequestURI());
         }
+    }
+
+    /**
+     * HU32: al cambiar la contraseña se cierran las demás sesiones. Un token emitido antes del cambio
+     * ya no sirve; el que se entrega al cambiarla se emite en el mismo segundo o después.
+     */
+    private boolean emitidoAntesDelCambioDeContrasena(String token, Integer codigoUsuario) {
+        return usuarioRepository.contrasenaCambiadaEn(codigoUsuario)
+                .map(cambio -> jwtService.extraerEmision(token).isBefore(cambio))
+                .orElse(false);
     }
 }

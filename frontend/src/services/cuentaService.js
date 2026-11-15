@@ -46,3 +46,31 @@ export const cambiarApariencia = (apariencia) => pedir('/apariencia', { method: 
 
 /** HU20: guarda el avatar: { piel, peinado, colorPelo, ojos, boca, accesorio } (accesorio puede ser null). */
 export const cambiarAvatar = (avatar) => pedir('/avatar', { method: 'PUT', body: avatar });
+
+/**
+ * HU32: cambia la contraseña (solo la nueva y su confirmación). Devuelve { token }: el token nuevo
+ * de esta sesión (las demás se cierran en el servidor). Un 400 trae `errores`.
+ */
+export async function cambiarContrasena({ nueva, confirmacion }) {
+  const encabezados = cabeceras({ 'Content-Type': 'application/json' });
+  let respuesta;
+  try {
+    respuesta = await fetch(`${API_URL}/api/usuarios/me/contrasena`, {
+      method: 'PUT',
+      headers: encabezados,
+      body: JSON.stringify({ nueva, confirmacion }),
+    });
+  } catch {
+    throw new Error(t('errores.sinConexion'));
+  }
+  if (respuesta.status === 401) throw errorSesionExpirada();
+  const datos = await respuesta.json().catch(() => null);
+  if (!respuesta.ok) {
+    const error = new Error(datos?.mensaje ?? t('errores.inesperado'));
+    error.estado = respuesta.status;
+    error.errores = datos?.errores ?? [];
+    throw error;
+  }
+  if (!datos || typeof datos.token !== 'string') throw new Error(t('errores.respuestaInesperada'));
+  return datos;
+}

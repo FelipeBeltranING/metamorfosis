@@ -1,6 +1,8 @@
 package com.metamorfosis.backend.controller;
 
 import com.metamorfosis.backend.dto.RegistroRequest;
+import com.metamorfosis.backend.dto.RestablecerContrasenaRequest;
+import com.metamorfosis.backend.dto.SolicitarCodigoRequest;
 import com.metamorfosis.backend.dto.SolicitudRegistroRequest;
 import com.metamorfosis.backend.dto.SolicitudRegistroResponse;
 import com.metamorfosis.backend.dto.TokenRequest;
@@ -10,6 +12,7 @@ import com.metamorfosis.backend.dto.EstadoSolicitudResponse;
 import com.metamorfosis.backend.dto.LoginRequest;
 import com.metamorfosis.backend.dto.LoginResponse;
 import com.metamorfosis.backend.service.AuthService;
+import com.metamorfosis.backend.service.RecuperacionContrasenaService;
 import com.metamorfosis.backend.service.SolicitudRegistroService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +30,13 @@ public class AuthController {
 
     private final AuthService authService;
     private final SolicitudRegistroService solicitudRegistroService;
+    private final RecuperacionContrasenaService recuperacionContrasenaService;
 
-    public AuthController(AuthService authService, SolicitudRegistroService solicitudRegistroService) {
+    public AuthController(AuthService authService, SolicitudRegistroService solicitudRegistroService,
+                          RecuperacionContrasenaService recuperacionContrasenaService) {
         this.authService = authService;
         this.solicitudRegistroService = solicitudRegistroService;
+        this.recuperacionContrasenaService = recuperacionContrasenaService;
     }
 
     /** HU8 paso 1: envía al email el correo para autorizar el registro (202). */
@@ -69,6 +75,20 @@ public class AuthController {
     public ResponseEntity<UsuarioResponse> registrar(@RequestBody RegistroRequest solicitud) {
         UsuarioResponse respuesta = authService.registrar(solicitud);
         return ResponseEntity.status(HttpStatus.CREATED).body(respuesta);
+    }
+
+    /** HU33: manda el código al correo si tiene cuenta. Responde 202 en los dos casos (no revela si existe). */
+    @PostMapping("/contrasena/codigo")
+    public ResponseEntity<Void> solicitarCodigoContrasena(@RequestBody SolicitarCodigoRequest pedido) {
+        recuperacionContrasenaService.solicitarCodigo(pedido);
+        return ResponseEntity.accepted().build();
+    }
+
+    /** HU33: con el código correcto cambia la contraseña olvidada. */
+    @PostMapping("/contrasena/restablecer")
+    public ResponseEntity<Void> restablecerContrasena(@RequestBody RestablecerContrasenaRequest pedido) {
+        recuperacionContrasenaService.restablecer(pedido);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/login")

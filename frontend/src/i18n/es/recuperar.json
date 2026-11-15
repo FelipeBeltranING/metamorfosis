@@ -1,0 +1,19 @@
+{
+  "recuperar": {
+    "titulo": "¿Olvidaste tu contraseña?",
+    "subtitulo": "Escribe el correo de tu cuenta y te enviaremos un código para cambiarla.",
+    "enviarCodigo": "Enviar código",
+    "enviando": "Enviando...",
+    "volverLogin": "Volver a Iniciar sesión",
+    "tituloCodigo": "Cambia tu contraseña",
+    "subtituloCodigo": "Escribe el código que te llegó y tu contraseña nueva.",
+    "enviado": "Si hay una cuenta con ese correo, le enviamos un código de 6 dígitos a",
+    "reenviado": "Te enviamos un código nuevo a",
+    "revisaSpam": "Vence en 15 minutos; si no lo ves, revisa el correo no deseado.",
+    "codigo": "Código de 6 dígitos",
+    "faltaCodigo": "Escribe el código de 6 dígitos que te llegó al correo.",
+    "reenviar": "Enviar otro código",
+    "reenviarEn": "Enviar otro código en {{segundos}} s",
+    "otroCorreo": "Usar otro correo"
+  }
+}

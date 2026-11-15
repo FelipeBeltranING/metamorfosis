@@ -1,0 +1,19 @@
+{
+  "recuperar": {
+    "titulo": "Forgot your password?",
+    "subtitulo": "Enter your account email and we'll send you a code to change it.",
+    "enviarCodigo": "Send code",
+    "enviando": "Sending...",
+    "volverLogin": "Back to Sign in",
+    "tituloCodigo": "Change your password",
+    "subtituloCodigo": "Enter the code you received and your new password.",
+    "enviado": "If there's an account with that email, we sent a 6-digit code to",
+    "reenviado": "We sent a new code to",
+    "revisaSpam": "It expires in 15 minutes; if you don't see it, check your spam folder.",
+    "codigo": "6-digit code",
+    "faltaCodigo": "Enter the 6-digit code you received by email.",
+    "reenviar": "Send another code",
+    "reenviarEn": "Send another code in {{segundos}} s",
+    "otroCorreo": "Use another email"
+  }
+}
