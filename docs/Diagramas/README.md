@@ -4,6 +4,7 @@ Dos diagramas por historia de usuario, en draw.io (se abren y se editan en [app.
 
 - **Clases** (`Clases/HUxx_clases.drawio`): las clases que participan en la HU, con sus atributos y métodos **tal como están en el código** y sus relaciones (asociación, dependencia, composición, realización, herencia). Colores por capa: controlador azul, servicio verde, repositorio amarillo, DTO morado, entidad rojo, aspecto naranja.
 - **Secuencia** (`Secuencia/HUxx_secuencia.drawio`): desde la acción del usuario en la pantalla hasta la base de datos y de vuelta. Caso positivo completo y un fragmento `alt` con el error principal de la HU. Las llamadas auditadas pasan por `AuditoriaAspect`, que guarda la fila en `log_actividad` (RQ8).
+- **Otros flujos** (`Secuencia/HUxx_secuencia_<flujo>.drawio`): cuando una HU tiene otro camino que no cabe en su secuencia principal (responder desde el correo, unirse con un código, registrar el día de un hábito…), va en su propia secuencia, enlazada en la misma fila de la tabla.
 
 | HU | Historia | Clases | Secuencia |
 |---|---|---|---|
@@ -11,32 +12,34 @@ Dos diagramas por historia de usuario, en draw.io (se abren y se editan en [app.
 | HU2 | Editar meta | [clases](Clases/HU02_clases.drawio) | [secuencia](Secuencia/HU02_secuencia.drawio) |
 | HU3 | Ver mis metas | [clases](Clases/HU03_clases.drawio) | [secuencia](Secuencia/HU03_secuencia.drawio) |
 | HU4 | Eliminar meta | [clases](Clases/HU04_clases.drawio) | [secuencia](Secuencia/HU04_secuencia.drawio) |
-| HU5 | Registrar mi avance (hitos logrados y días de los hábitos) | [clases](Clases/HU05_clases.drawio) | [secuencia](Secuencia/HU05_secuencia.drawio) |
+| HU5 | Registrar mi avance (hitos logrados y días de los hábitos) | [clases](Clases/HU05_clases.drawio) | [secuencia](Secuencia/HU05_secuencia.drawio) · [registrar el día de un hábito](Secuencia/HU05_secuencia_habito.drawio) |
 | HU6 | Marcar meta como cumplida | [clases](Clases/HU06_clases.drawio) | [secuencia](Secuencia/HU06_secuencia.drawio) |
 | HU7 | Ver reporte general | [clases](Clases/HU07_clases.drawio) | [secuencia](Secuencia/HU07_secuencia.drawio) |
-| HU8 | Registrarse (con autorización por correo) | [clases](Clases/HU08_clases.drawio) | [secuencia](Secuencia/HU08_secuencia.drawio) |
+| HU8 | Registrarse (con autorización por correo) | [clases](Clases/HU08_clases.drawio) | [secuencia](Secuencia/HU08_secuencia.drawio) · [«No fui yo»](Secuencia/HU08_secuencia_no_fui_yo.drawio) |
 | HU9 | Iniciar sesión | [clases](Clases/HU09_clases.drawio) | [secuencia](Secuencia/HU09_secuencia.drawio) |
 | HU10 | Cerrar sesión | [clases](Clases/HU10_clases.drawio) | [secuencia](Secuencia/HU10_secuencia.drawio) |
 | HU11 | Recibir insignia | [clases](Clases/HU11_clases.drawio) | [secuencia](Secuencia/HU11_secuencia.drawio) |
 | HU12 | Ver galería de insignias | [clases](Clases/HU12_clases.drawio) | [secuencia](Secuencia/HU12_secuencia.drawio) |
-| HU13 | Invitar a una meta | [clases](Clases/HU13_clases.drawio) | [secuencia](Secuencia/HU13_secuencia.drawio) |
-| HU14 | Responder invitación | [clases](Clases/HU14_clases.drawio) | [secuencia](Secuencia/HU14_secuencia.drawio) |
+| HU13 | Invitar a una meta | [clases](Clases/HU13_clases.drawio) | [secuencia](Secuencia/HU13_secuencia.drawio) · [código para unirse](Secuencia/HU13_secuencia_codigo.drawio) |
+| HU14 | Responder invitación | [clases](Clases/HU14_clases.drawio) | [secuencia](Secuencia/HU14_secuencia.drawio) · [responder desde el correo](Secuencia/HU14_secuencia_correo.drawio) · [unirse con un código](Secuencia/HU14_secuencia_codigo.drawio) |
 | HU15 | Logro de meta compartida | [clases](Clases/HU15_clases.drawio) | [secuencia](Secuencia/HU15_secuencia.drawio) |
+| HU16 | Cambiar idioma (español / inglés) | [clases](Clases/HU16_clases.drawio) | [secuencia](Secuencia/HU16_secuencia.drawio) |
 | HU19 | Personalizar mi perfil público | [clases](Clases/HU19_clases.drawio) | [secuencia](Secuencia/HU19_secuencia.drawio) |
 | HU20 | Personalizar mi avatar | [clases](Clases/HU20_clases.drawio) | [secuencia](Secuencia/HU20_secuencia.drawio) |
 | HU21 | Compartir logro | [clases](Clases/HU21_clases.drawio) | [secuencia](Secuencia/HU21_secuencia.drawio) |
 | HU22 | Ver mi perfil | [clases](Clases/HU22_clases.drawio) | [secuencia](Secuencia/HU22_secuencia.drawio) |
-| HU23 | Editar perfil y foto | [clases](Clases/HU23_clases.drawio) | [secuencia](Secuencia/HU23_secuencia.drawio) |
+| HU23 | Editar perfil y foto | [clases](Clases/HU23_clases.drawio) | [secuencia](Secuencia/HU23_secuencia.drawio) · [quitar la foto](Secuencia/HU23_secuencia_quitar_foto.drawio) |
 | HU24 | Consultar el perfil de otros | [clases](Clases/HU24_clases.drawio) | [secuencia](Secuencia/HU24_secuencia.drawio) |
 | HU25 | Ocultar metas del perfil | [clases](Clases/HU25_clases.drawio) | [secuencia](Secuencia/HU25_secuencia.drawio) |
 | HU26 | Perfil privado | [clases](Clases/HU26_clases.drawio) | [secuencia](Secuencia/HU26_secuencia.drawio) |
 | HU27 | Filtrar metas por estado, tipo y plazo | [clases](Clases/HU27_clases.drawio) | [secuencia](Secuencia/HU27_secuencia.drawio) |
-| HU28 | Trazar el camino de una meta (hitos y hábitos) | [clases](Clases/HU28_clases.drawio) | [secuencia](Secuencia/HU28_secuencia.drawio) |
+| HU28 | Trazar el camino de una meta (hitos y hábitos) | [clases](Clases/HU28_clases.drawio) | [secuencia](Secuencia/HU28_secuencia.drawio) · [agregar un hábito](Secuencia/HU28_secuencia_habito.drawio) · [editar y eliminar un paso](Secuencia/HU28_secuencia_editar_eliminar.drawio) |
 | HU29 | Ver cuánto me falta y qué tan constante soy | [clases](Clases/HU29_clases.drawio) | [secuencia](Secuencia/HU29_secuencia.drawio) |
 | HU30 | Elegir la apariencia de la app | [clases](Clases/HU30_clases.drawio) | [secuencia](Secuencia/HU30_secuencia.drawio) |
 
-**No tienen diagramas:** HU16 (internacionalización, transversal: ver el README del repositorio), HU17 y HU18 (retiradas) y HU31 (opcional, no implementada).
-**HU30** es la que el equipo había dejado como "HU sin número - Apariencia de la app": se numera para que tenga el mismo sustento que las demás.
+**No tienen diagramas:** HU17 y HU18 (retiradas) y HU31 (opcional, no implementada).
+**HU16** es transversal (toca casi todas las pantallas): su diagrama de clases muestra también la parte del frontend (selector, i18next, archivos de textos y la cabecera Accept-Language), porque ahí está la mayor parte de la HU.
+**HU30** es la que el equipo había dejado como "HU sin número - Apariencia de la app": se numera para que tenga el mismo sustento que las demás (sus mockups están en `Mockups por HU/HU30 Apariencia de la app`).
 
 ## Cómo se generan
 

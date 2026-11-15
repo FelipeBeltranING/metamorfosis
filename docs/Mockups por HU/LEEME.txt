@@ -45,7 +45,7 @@ HU28 Trazar el camino   · elegir hito o hábito con ideas según el tipo de met
                           nuevo hábito medible con «Más opciones», camino vacío, celular
 HU29 Avance y constancia · Mis metas con el avance real, estadísticas del hábito, historial desplegado,
                           celular
-HU sin número - Apariencia de la app (HU30) · cómo se ve la app para uno mismo (modo claro, oscuro
+HU30 Apariencia de la app · cómo se ve la app para uno mismo (modo claro, oscuro
                           o automático y color de acento): tema Noche en las pantallas principales,
                           los 4 temas comparados y la sección Apariencia de Editar perfil
 

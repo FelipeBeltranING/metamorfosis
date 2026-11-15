@@ -6,6 +6,8 @@ extraer_modelo.py). Si un método pedido no existe en el código, el generador f
 puede quedar distinto al código sin que se note.
 
 Secuencias: caso positivo completo y un fragmento alt con el error principal de la HU.
+Si la HU tiene otro flujo que no cabe en esa secuencia (por ejemplo, unirse con un código además de
+aceptar en la app), va en secuencias_extra: una lista de dict(sufijo, nombre, participantes, pasos).
 """
 import json
 from pathlib import Path
@@ -28,8 +30,9 @@ def _es_dependencia(atributo):
     return tipo in ('PasswordEncoder', 'Clock')
 
 
-def C(nombre, metodos=(), atributos=None):
-    """Una clase del código. atributos=None: todos; [] ninguno; lista: solo esos nombres."""
+def C(nombre, metodos=(), atributos=None, estereotipo=None):
+    """Una clase del código. atributos=None: todos; [] ninguno; lista: solo esos nombres.
+    estereotipo: para mostrarla con otro (por ejemplo «utility» en una clase de métodos estáticos)."""
     def construir():
         if nombre not in MODELO:
             raise KeyError(f'La clase {nombre} no está en el código')
@@ -56,7 +59,8 @@ def C(nombre, metodos=(), atributos=None):
             for firma in encontrados:
                 anotacion = d['auditar'].get(m)
                 lista_met.append(firma + (f'  «@Auditar({anotacion})»' if anotacion else ''))
-        return {'nombre': nombre, 'estereotipo': d['estereotipo'], 'atributos': lista_atr, 'metodos': lista_met}
+        return {'nombre': nombre, 'estereotipo': estereotipo or d['estereotipo'], 'atributos': lista_atr,
+                'metodos': lista_met}
     return construir
 
 
@@ -448,8 +452,7 @@ HU['HU05'] = dict(
     participantes=[U, ('ui', 'CaminoMetaPage', 'boundary'), ('svc', 'subMetaService.js', 'module'),
                    ('ctl', 'SubMetaController', 'RestController'), ASP, ('srv', 'SubMetaService', 'Service'),
                    ('mr', 'MetaRepository', 'Repository'), ('sm', 'hito : SubMeta', 'Entity'),
-                   ('sr', 'SubMetaRepository', 'Repository'), ('rd', 'RegistroDiaService', 'Service'),
-                   ('rr', 'RegistroSubMetaRepository', 'Repository'), LOG],
+                   ('sr', 'SubMetaRepository', 'Repository'), LOG],
     pasos=[
         ('m', 'u', 'ui', 'marca la casilla del hito «Terminar el libro 3»'),
         ('m', 'ui', 'svc', 'lograrHito(codigoSubMeta)'),
@@ -483,16 +486,6 @@ HU['HU05'] = dict(
             ('[avance.logrados < avance.total]', [('r', 'ui', 'u', 'aviso «¡Hito logrado! Vas en 75 %»')]),
             ('[todos los hitos logrados]', [('r', 'ui', 'u', '«¡Lograste todos los hitos!» + botón Marcar meta como cumplida (HU6)')]),
         ]),
-        ('m', 'u', 'ui', 'toca la casilla de hoy del hábito «Leer 15 páginas» y escribe 20'),
-        ('m', 'ui', 'svc', 'registrarDia(codigoSubMeta, hoy, 20)'),
-        ('m', 'svc', 'ctl', 'PUT /api/submetas/{codigoSubMeta}/registros/{fecha}'),
-        ('m', 'ctl', 'rd', 'registrar(codigoSubMeta, fecha, pedido, codigoUsuario)'),
-        ('m', 'rd', 'rd', 'validarFecha (no futura, que toque ese día) y validarValor'),
-        ('m', 'rd', 'rr', 'findBySubMetaCodigoSubMetaAndUsuarioCodigoUsuarioAndFecha(…)'),
-        ('m', 'rd', 'rr', 'save(registro)  [crea o corrige el valor del día]'),
-        ('r', 'rd', 'ctl', 'DiaResponse(fecha, registrado, valor, cumplido)'),
-        ('r', 'ctl', 'svc', '200 OK'),
-        ('r', 'ui', 'u', 'la casilla queda verde y sube la constancia'),
     ],
 )
 
@@ -1371,15 +1364,15 @@ HU['HU13'] = dict(
                     ('m', 'srv', 'correo', 'enviar(PlantillaInvitacion con «Aceptar» y «Rechazar»)'),
                 ]),
                 ('[ya participa o ya está invitado]', [
-                    ('r', 'srv', 'asp', 'ValidacionException("Esa persona ya participa en la meta…")'),
+                    ('r', 'srv', 'asp', 'ConflictoException("Laura Gómez ya participa en esta meta")'),
                     ('m', 'asp', 'log', 'registrar(…, INVITAR_META, …, ERROR, motivo)'),
-                    ('r', 'ctl', 'svc', '400 ErrorResponse (mensaje dentro del diálogo)'),
+                    ('r', 'ctl', 'svc', '409 ErrorResponse (mensaje dentro del diálogo)'),
                 ]),
             ]),
         ], 'InvitacionEnviadaResponse'),
         ('r', 'ctl', 'svc', '201 Created'),
         ('r', 'ui', 'u', 'el botón pasa a «Invitación enviada»'),
-        ('nota', 'ui', 'Alternativa: el creador genera un código para unirse (CodigoUnionService.generar)'),
+        ('nota', 'ui', 'Alternativa: el creador comparte un código para unirse (ver HU13_secuencia_codigo)'),
     ],
 )
 
@@ -1434,7 +1427,7 @@ HU['HU14'] = dict(
                     ('m', 'srv', 'pr', 'save(participación)'),
                 ]),
                 ('[la meta ya se cumplió]', [
-                    ('r', 'srv', 'asp', 'ValidacionException("La meta ya se cumplió…")'),
+                    ('r', 'srv', 'asp', 'ValidacionException("Esta meta ya se cumplió: ya no se pueden unir más personas")'),
                     ('m', 'asp', 'log', 'registrar(…, RESPONDER_INVITACION, …, ERROR, motivo)'),
                     ('r', 'ctl', 'svc', '400 ErrorResponse'),
                 ]),
@@ -1442,7 +1435,7 @@ HU['HU14'] = dict(
         ], 'InvitacionRespondidaResponse'),
         ('r', 'ctl', 'svc', '200 OK'),
         ('r', 'ui', 'u', '«Te uniste a la meta»: ya aparece en Mis metas'),
-        ('nota', 'ui', 'Desde el correo: ResponderInvitacionPage → /api/invitaciones/correo/aceptar o /rechazar con el token'),
+        ('nota', 'ui', 'Otros flujos: responder desde el correo (HU14_secuencia_correo) y unirse con un código (HU14_secuencia_codigo)'),
     ],
 )
 
@@ -1488,7 +1481,7 @@ HU['HU21'] = dict(
                     ('m', 'srv', 'lr', 'save(new LogroCompartido(meta, usuario, token))'),
                 ]),
                 ('[la meta sigue activa]', [
-                    ('r', 'srv', 'asp', 'ValidacionException("Solo se comparten metas cumplidas")'),
+                    ('r', 'srv', 'asp', 'ValidacionException("Solo se puede compartir una meta cumplida")'),
                     ('m', 'asp', 'log', 'registrar(…, COMPARTIR_LOGRO, …, ERROR, motivo)'),
                     ('r', 'ctl', 'svc', '400 ErrorResponse'),
                 ]),
@@ -1672,3 +1665,458 @@ HU['HU30'] = dict(
 )
 
 NOMBRES_ARCHIVO = {clave: f'{clave}_{datos["nombre"]}' for clave, datos in HU.items()}
+
+
+# ================================ Idioma (HU16) ===============================================
+
+HU['HU16'] = dict(
+    nombre='Cambiar idioma (español / inglés)',
+    filas=[
+        [S('SelectorIdioma', 'componente React', ['- actual: "es" | "en"'],
+           ['+ onChange(e): i18n.changeLanguage(e.target.value)']),
+         S('i18n/index.js', 'module', ['+ CLAVE_IDIOMA = "metamorfosis.idioma"', '+ IDIOMAS: es (es-CO), en (en-US)'],
+           ['+ idiomaActual(): "es" | "en"', '+ localeActual(): "es-CO" | "en-US"',
+            '+ cabeceraIdioma(): { Accept-Language }', '+ t(clave, valores): String']),
+         S('i18next', 'library', ['LanguageDetector: localStorage → navegador → html'],
+           ['+ changeLanguage(idioma): Promise', '+ on("languageChanged", alCambiarIdioma)']),
+         S('es/*.json · en/*.json', 'textos', ['15 archivos por idioma: auth, metas, camino, perfil, reporte…'], []),
+         S('metaService.js · authService.js · logroService.js', 'module', [],
+           ['+ cabeceras(): Accept-Language + Authorization'])],
+        [S('IdiomaConfig', 'Configuration', [], ['~ localeResolver(): LocaleResolver']),
+         S('AcceptHeaderLocaleResolver', 'Spring', ['- supportedLocales: [es, en]', '- defaultLocale: es'],
+           ['+ resolveLocale(peticion): Locale']),
+         S('LocaleContextHolder', 'Spring', [], ['+ getLocale(): Locale$'])],
+        [C('ManejadorExcepciones', ['validacion', 'conflicto', 'permisoDenegado']),
+         C('TraductorMensajes', ['traducir'], ['ESPANOL', 'INGLES', 'IDIOMAS', 'exactas', 'plantillas']),
+         S('mensajes_en.txt', 'resource', ['«mensaje en español» => «English message»', 'plantillas con {0}, {1}…'], []),
+         C('ErrorResponse')],
+        [C('InvitacionService', ['invitar']), C('SolicitudRegistroService', ['solicitar']),
+         C('PlantillaInvitacion', ['asunto', 'html', 'texto'], estereotipo='utility'),
+         C('PlantillaAutorizacion', ['asunto', 'html', 'texto'], estereotipo='utility'),
+         C('CorreoService', ['enviar'])],
+    ],
+    relaciones=[
+        ('SelectorIdioma', 'i18next', 'usa', 'changeLanguage', None),
+        ('SelectorIdioma', 'i18n/index.js', 'usa', 'IDIOMAS, idiomaActual', None),
+        ('i18n/index.js', 'i18next', 'usa', 'configura', None),
+        ('i18n/index.js', 'es/*.json · en/*.json', 'usa', 'carga los textos', None),
+        ('metaService.js · authService.js · logroService.js', 'i18n/index.js', 'usa', 'cabeceraIdioma()', None),
+        ('metaService.js · authService.js · logroService.js', 'AcceptHeaderLocaleResolver', 'usa',
+         'HTTP Accept-Language: en', None),
+        ('IdiomaConfig', 'AcceptHeaderLocaleResolver', 'usa', '«create» @Bean', None),
+        ('IdiomaConfig', 'TraductorMensajes', 'usa', 'IDIOMAS, ESPANOL', None),
+        ('AcceptHeaderLocaleResolver', 'LocaleContextHolder', 'usa', 'idioma de la petición', None),
+        ('ManejadorExcepciones', 'TraductorMensajes', 'asoc', 'traductor', None),
+        ('ManejadorExcepciones', 'LocaleContextHolder', 'usa', 'getLocale()', None),
+        ('ManejadorExcepciones', 'ErrorResponse', 'usa', 'devuelve traducido', None),
+        ('TraductorMensajes', 'mensajes_en.txt', 'usa', 'lee al iniciar', None),
+        ('InvitacionService', 'LocaleContextHolder', 'usa', 'idioma de quien invita', None),
+        ('SolicitudRegistroService', 'LocaleContextHolder', 'usa', 'idioma de quien pide el registro', None),
+        ('InvitacionService', 'PlantillaInvitacion', 'usa', 'asunto/html/texto(…, idioma)', None),
+        ('SolicitudRegistroService', 'PlantillaAutorizacion', 'usa', 'asunto/html/texto(…, idioma)', None),
+        ('InvitacionService', 'CorreoService', 'asoc', 'correoService', None),
+        ('SolicitudRegistroService', 'CorreoService', 'asoc', 'correoService', None),
+    ],
+    participantes=[U, ('ui', 'Encabezado · SelectorIdioma', 'boundary'), ('i18n', 'i18next · i18n/index.js', 'module'),
+                   ('nav', 'localStorage', 'API del navegador'), ('pant', 'InvitarPersonasModal', 'boundary'),
+                   ('svc', 'metaService.js', 'module'), ('res', 'AcceptHeaderLocaleResolver', 'Spring MVC'),
+                   ('ctl', 'InvitacionController', 'RestController'), ('srv', 'InvitacionService', 'Service'),
+                   ('man', 'ManejadorExcepciones', 'ControllerAdvice'), ('tr', 'TraductorMensajes', 'Component')],
+    pasos=[
+        ('m', 'u', 'ui', 'elige «EN · English» en el selector del encabezado'),
+        ('m', 'ui', 'i18n', 'changeLanguage("en")'),
+        ('m', 'i18n', 'nav', 'setItem("metamorfosis.idioma", "en")'),
+        ('m', 'i18n', 'i18n', 'languageChanged → <html lang="en"> y título de la pestaña'),
+        ('r', 'i18n', 'ui', 'useTranslation() vuelve a pintar con los textos de en/*.json'),
+        ('r', 'ui', 'u', 'la app queda en inglés al instante (fechas y números con en-US)'),
+        ('nota', 'nav', 'Al volver a abrir la app, LanguageDetector lee localStorage; si no hay, usa el idioma del navegador'),
+        ('m', 'u', 'pant', '«Invite people» → busca a Laura y pulsa «Invite»'),
+        ('m', 'pant', 'svc', 'invitarAMeta(codigoMeta, codigoLaura)'),
+        ('m', 'svc', 'i18n', 'cabeceraIdioma()'),
+        ('r', 'i18n', 'svc', '{ Accept-Language: "en" }'),
+        ('m', 'svc', 'res', 'POST /api/metas/{codigoMeta}/invitaciones  (Accept-Language: en)'),
+        ('m', 'res', 'res', 'resolveLocale(petición) → en  [solo es o en; otro idioma → es]'),
+        ('m', 'res', 'ctl', 'LocaleContextHolder = en → invitar(codigoMeta, pedido, codigoUsuario)'),
+        ('m', 'ctl', 'srv', 'invitar(codigoMeta, pedido, codigoUsuario)  (HU13)'),
+        ('alt', [
+            ('[Laura ya participa en la meta]', [
+                ('r', 'srv', 'man', 'ConflictoException("Laura Gómez ya participa en esta meta")'),
+                ('m', 'man', 'tr', 'traducir(mensaje, LocaleContextHolder.getLocale() = en)'),
+                ('r', 'tr', 'man', '"Laura Gómez is already taking part in this goal"  (plantilla {0} de mensajes_en.txt)'),
+                ('r', 'man', 'svc', '409 ErrorResponse con el mensaje en inglés'),
+                ('r', 'pant', 'u', 'el error aparece en inglés dentro de la ventana'),
+            ]),
+            ('[Laura se puede invitar]', [
+                ('m', 'srv', 'srv', 'enviarCorreo(…, idioma = en) → PlantillaInvitacion.asunto/html/texto en inglés'),
+                ('r', 'srv', 'ctl', 'InvitacionEnviadaResponse'),
+                ('r', 'ctl', 'svc', '201 Created'),
+                ('r', 'pant', 'u', '«Invitation sent»: Laura recibe el correo en inglés'),
+            ]),
+        ]),
+    ],
+)
+
+
+# ================================ Otros flujos (secuencias_extra) ===========================
+
+HU['HU05'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='habito',
+    nombre='Registrar el día de un hábito',
+    participantes=[U, ('ui', 'CaminoMetaPage · RegistrarValorModal', 'boundary'), ('svc', 'subMetaService.js', 'module'),
+                   ('ctl', 'SubMetaController', 'RestController'), ASP, ('srv', 'RegistroDiaService', 'Service'),
+                   ('sr', 'SubMetaRepository', 'Repository'), ('mr', 'MetaRepository', 'Repository'),
+                   ('sm', 'hábito : SubMeta', 'Entity'), ('rr', 'RegistroSubMetaRepository', 'Repository'), LOG],
+    pasos=[
+        ('m', 'u', 'ui', 'toca el día de hoy del hábito «Leer» (al menos 15 páginas)'),
+        ('r', 'ui', 'u', 'ventana «¿Cuántas páginas hiciste?»'),
+        ('m', 'u', 'ui', 'escribe 20 y pulsa «Guardar»'),
+        ('m', 'ui', 'svc', 'registrarDia(codigoSubMeta, "2026-11-14", 20)'),
+        ('m', 'svc', 'ctl', 'PUT /api/submetas/{codigoSubMeta}/registros/2026-11-14 { valor: 20 }'),
+        NOTA_TOKEN,
+        *auditado('registrar(codigoSubMeta, fecha, pedido, codigoUsuario)', 'REGISTRAR_DIA', 'SUB_META', [
+            ('m', 'srv', 'sr', 'findById(codigoSubMeta)'),
+            ('r', 'sr', 'srv', 'hábito'),
+            ('m', 'srv', 'mr', 'esParticipanteAceptado(codigoMeta, codigoUsuario)'),
+            ('r', 'mr', 'srv', 'true'),
+            ('m', 'srv', 'sm', 'tocaEl(fecha)  [meta ACTIVA, es hábito, el día ya llegó y no es antes de crearlo]'),
+            ('r', 'sm', 'srv', 'true'),
+            ('alt', [
+                ('[el valor es válido (≥ 0, máximo 2 decimales; Sí/No solo 0 o 1)]', [
+                    ('m', 'srv', 'rr', 'findBySubMetaCodigoSubMetaAndUsuarioCodigoUsuarioAndFecha(codigoSubMeta, codigoUsuario, fecha)'),
+                    ('r', 'rr', 'srv', 'Optional.empty() → «create» new RegistroSubMeta(hábito, usuario, fecha, 20)'),
+                    ('m', 'srv', 'rr', 'save(registro)  [si ya había registro ese día: cambiarValor(20)]'),
+                    ('m', 'srv', 'sm', 'cumple(20)'),
+                    ('r', 'sm', 'srv', 'true  (20 ≥ 15)'),
+                ]),
+                ('[día futuro, no toca ese día o valor no válido]', [
+                    ('r', 'srv', 'asp', 'ValidacionException("No puedes registrar días que aún no llegan")'),
+                    ('m', 'asp', 'log', 'registrar(…, REGISTRAR_DIA, …, ERROR, motivo)'),
+                    ('r', 'ctl', 'svc', '400 ErrorResponse'),
+                    ('r', 'ui', 'u', 'el error aparece en la ventana; no se guarda'),
+                ]),
+            ]),
+        ], 'DiaResponse(fecha, toca = true, valor = 20, cumplido = true)'),
+        ('r', 'ctl', 'svc', '200 OK + DiaResponse'),
+        ('r', 'svc', 'ui', 'día registrado'),
+        ('m', 'ui', 'ui', 'recargar() → GET /api/metas/{codigoMeta}/camino (HU29)'),
+        ('r', 'ui', 'u', 'aviso «Registro guardado»: el día queda cumplido y la constancia se recalcula'),
+        ('nota', 'ui', 'Hábito Sí/No: un toque guarda 1 (hecho), otro 0 (no hecho) y otro quita el registro con DELETE …/registros/{fecha}'),
+    ],
+))
+
+HU['HU13'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='codigo',
+    nombre='Código para unirse',
+    participantes=[('u', 'Creador', 'actor'), ('ui', 'InvitarPersonasModal · CodigoInvitacion', 'boundary'),
+                   ('svc', 'invitacionService.js', 'module'), ('ctl', 'InvitacionController', 'RestController'), ASP,
+                   ('srv', 'CodigoUnionService', 'Service'), ('mr', 'MetaRepository', 'Repository'),
+                   ('meta', 'meta : Meta', 'Entity'), LOG, ('nav', 'navigator.clipboard', 'API del navegador')],
+    pasos=[
+        ('m', 'u', 'ui', 'menú ⋯ → «Invitar personas»'),
+        ('m', 'ui', 'svc', 'verCodigoMeta(codigoMeta)'),
+        ('m', 'svc', 'ctl', 'GET /api/metas/{codigoMeta}/codigo'),
+        NOTA_TOKEN,
+        ('m', 'ctl', 'srv', 'verCodigo(codigoMeta, codigoUsuario)'),
+        ('m', 'srv', 'mr', 'findById(codigoMeta)'),
+        ('r', 'mr', 'srv', 'meta (es el creador)'),
+        ('m', 'srv', 'meta', 'codigoUnionVigente(ahora)'),
+        ('r', 'meta', 'srv', 'false'),
+        ('r', 'srv', 'ctl', 'CodigoUnionResponse.NINGUNO'),
+        ('r', 'ctl', 'svc', '200 OK { codigo: null }'),
+        ('r', 'ui', 'u', 'sección «Código para unirse» con el botón «Crear código»'),
+        ('m', 'u', 'ui', 'pulsa «Crear código»'),
+        ('m', 'ui', 'svc', 'generarCodigoMeta(codigoMeta)'),
+        ('m', 'svc', 'ctl', 'POST /api/metas/{codigoMeta}/codigo'),
+        *auditado('generar(codigoMeta, codigoUsuario)', 'GENERAR_CODIGO_META', 'META', [
+            ('m', 'srv', 'mr', 'findById(codigoMeta)'),
+            ('r', 'mr', 'srv', 'meta'),
+            ('alt', [
+                ('[es el creador y la meta está ACTIVA]', [
+                    ('loop', [
+                        ('[mientras otra meta tenga ese código]', [
+                            ('m', 'srv', 'srv', 'nuevoCodigo()  [8 caracteres, sin 0, O, 1, I ni L]'),
+                            ('m', 'srv', 'mr', 'findByCodigoUnion(codigo)'),
+                            ('r', 'mr', 'srv', 'Optional.empty()'),
+                        ]),
+                    ]),
+                    ('m', 'srv', 'meta', 'activarCodigoUnion(codigo, ahora + 7 días)  [el anterior deja de servir]'),
+                    ('m', 'srv', 'mr', 'save(meta)'),
+                ]),
+                ('[no es el creador]', [
+                    ('r', 'srv', 'asp', 'PermisoDenegadoException("Solo el creador puede manejar el código de la meta")'),
+                    ('m', 'asp', 'log', 'registrar(…, GENERAR_CODIGO_META, …, ERROR, motivo)'),
+                    ('r', 'ctl', 'svc', '403 ErrorResponse'),
+                ]),
+            ]),
+        ], 'CodigoUnionResponse(codigo, expira)'),
+        ('r', 'ctl', 'svc', '201 Created'),
+        ('r', 'svc', 'ui', 'código'),
+        ('r', 'ui', 'u', 'muestra «ABCD-EFGH» y hasta cuándo sirve'),
+        ('m', 'u', 'ui', 'pulsa «Copiar»'),
+        ('m', 'ui', 'nav', 'writeText("ABCD-EFGH")'),
+        ('r', 'ui', 'u', 'aviso «Código copiado»: lo comparte por WhatsApp u otro medio (se usa en HU14)'),
+        ('nota', 'ui', '«Cambiar código» vuelve a llamar a generar; «Desactivar» → DELETE /api/metas/{codigoMeta}/codigo → desactivarCodigoUnion()'),
+    ],
+))
+
+HU['HU14'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='correo',
+    nombre='Responder desde el correo',
+    participantes=[('u', 'Invitado', 'actor'), ('ui', 'ResponderInvitacionPage', 'boundary'),
+                   ('svc', 'invitacionService.js', 'module'), ('ctl', 'InvitacionController', 'RestController'), ASP,
+                   ('srv', 'InvitacionService', 'Service'), ('pr', 'ParticipacionRepository', 'Repository'),
+                   ('p', 'participación : Participacion', 'Entity'), LOG],
+    pasos=[
+        ('m', 'u', 'ui', 'pulsa «Aceptar» en el correo → /invitaciones/responder?token=…&accion=aceptar'),
+        ('m', 'ui', 'svc', 'consultarInvitacionCorreo(token)'),
+        ('m', 'svc', 'ctl', 'GET /api/invitaciones/correo?token=…  (público)'),
+        ('m', 'ctl', 'srv', 'consultarPorToken(token)'),
+        ('m', 'srv', 'pr', 'findByTokenHash(hash(token))'),
+        ('r', 'pr', 'srv', 'participación PENDIENTE y vigente (7 días)'),
+        ('r', 'srv', 'ctl', 'InvitacionCorreoResponse(meta, invitador, paraEmail = l***@gmail.com)'),
+        ('r', 'ctl', 'svc', '200 OK'),
+        ('r', 'ui', 'u', '«Daniel Santos te invitó a Leer 20 libros» con el botón «Aceptar invitación»'),
+        ('opt', [
+            ('[no ha iniciado sesión]', [
+                ('r', 'ui', 'u', '«Inicia sesión para aceptar» → /login?volver=… y, al entrar (HU9), vuelve a esta página'),
+            ]),
+        ]),
+        ('m', 'u', 'ui', 'pulsa «Aceptar invitación»'),
+        ('m', 'ui', 'svc', 'aceptarInvitacionCorreo(token)'),
+        ('m', 'svc', 'ctl', 'POST /api/invitaciones/correo/aceptar { token }  (Bearer token)'),
+        NOTA_TOKEN,
+        *auditado('aceptarPorToken(token, codigoUsuario)', 'RESPONDER_INVITACION', 'META', [
+            ('m', 'srv', 'pr', 'findByTokenHash(hash(token))'),
+            ('r', 'pr', 'srv', 'participación PENDIENTE y vigente'),
+            ('alt', [
+                ('[la invitación es de esta cuenta y la meta sigue ACTIVA]', [
+                    ('m', 'srv', 'p', 'responder(true)  [ACEPTADA, borra el token]'),
+                    ('m', 'srv', 'pr', 'save(participación)'),
+                ]),
+                ('[la invitación es para otra cuenta (correo reenviado)]', [
+                    ('r', 'srv', 'asp', 'PermisoDenegadoException("Esta invitación es para otra cuenta (l***@gmail.com)…")'),
+                    ('m', 'asp', 'log', 'registrar(…, RESPONDER_INVITACION, …, ERROR, motivo)'),
+                    ('r', 'ctl', 'svc', '403 ErrorResponse'),
+                    ('r', 'ui', 'u', '«Inicia sesión con esa cuenta para aceptarla»'),
+                ]),
+            ]),
+        ], 'InvitacionRespondidaResponse(codigoMeta, nombre, aceptada = true)'),
+        ('r', 'ctl', 'svc', '200 OK'),
+        ('r', 'ui', 'u', 'abre Tu camino de la meta compartida (/metas/{codigoMeta})'),
+        ('m', 'u', 'ui', 'o bien: «Rechazar» en el correo (no pide sesión) y confirma'),
+        ('m', 'ui', 'svc', 'rechazarInvitacionCorreo(token)'),
+        ('m', 'svc', 'ctl', 'POST /api/invitaciones/correo/rechazar { token }  (público)'),
+        ('m', 'ctl', 'srv', 'rechazarPorToken(token)'),
+        ('m', 'srv', 'pr', 'findByTokenHash(hash(token))'),
+        ('m', 'srv', 'p', 'responder(false)  [RECHAZADA, borra el token]'),
+        ('m', 'srv', 'pr', 'save(participación)'),
+        ('m', 'srv', 'log', 'registrar(codigoInvitado, RESPONDER_INVITACION, META, codigo, EXITO, {aceptada: false, desde: correo})'),
+        ('r', 'ctl', 'svc', '204 No Content'),
+        ('r', 'ui', 'u', '«Rechazaste la invitación»'),
+        ('nota', 'ui', 'Enlace vencido, ya usado o cancelado: InvitacionNoValidaException → 410 Gone → EnlaceNoValido'),
+    ],
+))
+
+HU['HU14'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='codigo',
+    nombre='Unirse con un código',
+    participantes=[('u', 'Invitado', 'actor'), ('ui', 'MisMetasPage · UnirseConCodigoModal', 'boundary'),
+                   ('svc', 'invitacionService.js', 'module'), ('ctl', 'InvitacionController', 'RestController'), ASP,
+                   ('srv', 'CodigoUnionService', 'Service'), ('mr', 'MetaRepository', 'Repository'),
+                   ('ur', 'UsuarioRepository', 'Repository'), ('meta', 'meta : Meta', 'Entity'), LOG],
+    pasos=[
+        ('m', 'u', 'ui', 'Mis metas → «Unirme con código», escribe «abcd-efgh» y pulsa «Unirme»'),
+        ('m', 'ui', 'svc', 'unirseConCodigo("abcd-efgh")'),
+        ('m', 'svc', 'ctl', 'POST /api/metas/unirse { codigo }'),
+        NOTA_TOKEN,
+        *auditado('unirse(pedido, codigoUsuario)', 'UNIRSE_CON_CODIGO', 'META', [
+            ('m', 'srv', 'srv', 'normalizar("abcd-efgh") → "ABCDEFGH"'),
+            ('m', 'srv', 'srv', 'revisarIntentos(codigoUsuario)  [máximo 10 códigos errados en 15 min]'),
+            ('m', 'srv', 'mr', 'findByCodigoUnion("ABCDEFGH")'),
+            ('r', 'mr', 'srv', 'meta'),
+            ('m', 'srv', 'meta', 'codigoUnionVigente(ahora)'),
+            ('r', 'meta', 'srv', 'true'),
+            ('alt', [
+                ('[código vigente, meta ACTIVA, aún no participa y hay cupo (máximo 10)]', [
+                    ('m', 'srv', 'meta', 'participacionDeUsuario(codigoUsuario)'),
+                    ('r', 'meta', 'srv', 'Optional.empty()'),
+                    ('m', 'srv', 'ur', 'findById(codigoUsuario)'),
+                    ('r', 'ur', 'srv', 'usuario'),
+                    ('m', 'srv', 'meta', 'unirse(usuario)  [participación ACEPTADA]'),
+                    ('m', 'srv', 'mr', 'save(meta)'),
+                ]),
+                ('[código mal escrito o vencido]', [
+                    ('m', 'srv', 'srv', 'registrarFallo(codigoUsuario)'),
+                    ('r', 'srv', 'asp', 'ValidacionException("Ese código no existe o ya venció…")'),
+                    ('m', 'asp', 'log', 'registrar(…, UNIRSE_CON_CODIGO, …, ERROR, motivo)'),
+                    ('r', 'ctl', 'svc', '400 ErrorResponse'),
+                    ('r', 'ui', 'u', 'el error aparece en la ventana'),
+                ]),
+            ]),
+        ], 'MetaResponse.desde(meta, codigoUsuario)'),
+        ('r', 'ctl', 'svc', '200 OK + MetaResponse'),
+        ('r', 'svc', 'ui', 'meta'),
+        ('r', 'ui', 'u', 'abre Tu camino de la meta con el aviso «Te uniste a la meta»'),
+        ('nota', 'ui', 'Si ya participa: 409 «Ya participas en esta meta». Con 10 intentos errados: 429 por unos minutos'),
+    ],
+))
+
+HU['HU28'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='habito',
+    nombre='Agregar un hábito',
+    participantes=[U, ('ui', 'SubMetaFormPage', 'boundary'), ('svc', 'subMetaService.js', 'module'),
+                   ('ctl', 'SubMetaController', 'RestController'), ASP, ('srv', 'SubMetaService', 'Service'),
+                   ('mr', 'MetaRepository', 'Repository'), ('sr', 'SubMetaRepository', 'Repository'),
+                   ('sm', 'hábito : SubMeta', 'Entity'), LOG],
+    pasos=[
+        ('m', 'u', 'ui', '«+ Agregar paso» → Hábito: «Leer», ¿cuánto? al menos 15 páginas, de lunes a viernes'),
+        ('m', 'u', 'ui', 'pulsa «Guardar paso»  (pregunta del día y notas van en «Más opciones»)'),
+        ('m', 'ui', 'svc', 'crearSubMeta(codigoMeta, { nombre, tipo: MEDIBLE, unidad, objetivo: 15, tipoObjetivo: AL_MENOS, dias })'),
+        ('m', 'svc', 'ctl', 'POST /api/metas/{codigoMeta}/submetas'),
+        NOTA_TOKEN,
+        *auditado('crear(codigoMeta, pedido, codigoUsuario)', 'CREAR_SUB_META', 'SUB_META', [
+            ('m', 'srv', 'mr', 'findById(codigoMeta)'),
+            ('r', 'mr', 'srv', 'meta (es el creador y está ACTIVA)'),
+            ('m', 'srv', 'srv', 'validar(pedido, MEDIBLE): nombre, unidad, objetivo (> 0, ≤ 1.000.000), al menos / como máximo y días'),
+            ('alt', [
+                ('[datos válidos y el nombre no se repite en la meta]', [
+                    ('m', 'srv', 'sr', 'existsByMetaCodigoMetaAndNombreIgnoreCase(codigoMeta, "Leer")'),
+                    ('r', 'sr', 'srv', 'false'),
+                    ('m', 'srv', 'sm', '«create» new SubMeta(meta, MEDIBLE, hoy)'),
+                    ('m', 'srv', 'sm', 'actualizar(nombre, pregunta, "páginas", 15, AL_MENOS, días L-V, notas)'),
+                    ('m', 'srv', 'sr', 'save(hábito)'),
+                    ('r', 'sr', 'srv', 'hábito'),
+                ]),
+                ('[falta la unidad o el objetivo no es válido]', [
+                    ('r', 'srv', 'asp', 'ValidacionException(["Escribe en qué lo mides (la unidad)", …])'),
+                    ('m', 'asp', 'log', 'registrar(…, CREAR_SUB_META, …, ERROR, motivo)'),
+                    ('r', 'ctl', 'svc', '400 ErrorResponse con la lista de errores'),
+                    ('r', 'ui', 'u', 'cada error junto a su campo'),
+                ]),
+            ]),
+        ], 'SubMetaResponse'),
+        ('r', 'ctl', 'svc', '201 Created + SubMetaResponse'),
+        ('r', 'svc', 'ui', 'paso creado'),
+        ('r', 'ui', 'u', 'vuelve a Tu camino: el hábito aparece en «Hoy» los días que toca (se registra en la HU5)'),
+        ('nota', 'ui', 'Hábito Sí/No: solo nombre y días (tipo SI_NO, sin unidad ni objetivo)'),
+    ],
+))
+
+HU['HU28'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='editar_eliminar',
+    nombre='Editar y eliminar un paso',
+    participantes=[U, ('ui', 'CaminoMetaPage · MenuSubMeta', 'boundary'), ('form', 'SubMetaFormPage', 'boundary'),
+                   ('modal', 'EliminarSubMetaModal', 'boundary'), ('svc', 'subMetaService.js', 'module'),
+                   ('ctl', 'SubMetaController', 'RestController'), ASP, ('srv', 'SubMetaService', 'Service'),
+                   ('sr', 'SubMetaRepository', 'Repository'), ('sm', 'paso : SubMeta', 'Entity'), LOG],
+    pasos=[
+        ('m', 'u', 'ui', 'menú ⋯ del hábito «Leer» → «Editar»'),
+        ('m', 'ui', 'form', 'abre /submetas/{codigoSubMeta}/editar'),
+        ('m', 'form', 'svc', 'obtenerPaso(codigoSubMeta)'),
+        ('m', 'svc', 'ctl', 'GET /api/submetas/{codigoSubMeta}'),
+        ('r', 'ctl', 'svc', '200 PasoResponse (CaminoService.paso)'),
+        ('r', 'form', 'u', 'formulario con los datos actuales (el tipo no se puede cambiar)'),
+        ('m', 'u', 'form', 'cambia el objetivo a 20 páginas y pulsa «Guardar paso»'),
+        ('m', 'form', 'svc', 'editarSubMeta(codigoSubMeta, datos)'),
+        ('m', 'svc', 'ctl', 'PUT /api/submetas/{codigoSubMeta}'),
+        NOTA_TOKEN,
+        *auditado('editar(codigoSubMeta, pedido, codigoUsuario)', 'EDITAR_SUB_META', 'SUB_META', [
+            ('m', 'srv', 'sr', 'findById(codigoSubMeta)'),
+            ('r', 'sr', 'srv', 'paso'),
+            ('alt', [
+                ('[es el creador, meta ACTIVA, mismo tipo y datos válidos]', [
+                    ('m', 'srv', 'sr', 'existsByMetaCodigoMetaAndNombreIgnoreCaseAndCodigoSubMetaNot(…)'),
+                    ('r', 'sr', 'srv', 'false'),
+                    ('m', 'srv', 'sm', 'actualizar(nombre, pregunta, unidad, 20, AL_MENOS, días, notas)'),
+                    ('m', 'srv', 'sr', 'save(paso)'),
+                ]),
+                ('[intenta cambiar el tipo del paso]', [
+                    ('r', 'srv', 'asp', 'ValidacionException("El tipo de una sub-meta no se puede cambiar")'),
+                    ('m', 'asp', 'log', 'registrar(…, EDITAR_SUB_META, …, ERROR, motivo)'),
+                    ('r', 'ctl', 'svc', '400 ErrorResponse'),
+                ]),
+            ]),
+        ], 'SubMetaResponse'),
+        ('r', 'ctl', 'svc', '200 OK + SubMetaResponse'),
+        ('r', 'form', 'u', 'vuelve a Tu camino con el paso actualizado'),
+        ('m', 'u', 'ui', 'menú ⋯ de otro paso → «Eliminar»'),
+        ('m', 'ui', 'modal', 'abrir(paso)'),
+        ('r', 'modal', 'u', '«¿Eliminar este paso?»: también se borran sus días registrados'),
+        ('m', 'u', 'modal', 'confirma'),
+        ('m', 'modal', 'svc', 'eliminarSubMeta(codigoSubMeta)'),
+        ('m', 'svc', 'ctl', 'DELETE /api/submetas/{codigoSubMeta}'),
+        *auditado('eliminar(codigoSubMeta, codigoUsuario)', 'ELIMINAR_SUB_META', 'SUB_META', [
+            ('m', 'srv', 'sr', 'findById(codigoSubMeta)'),
+            ('r', 'sr', 'srv', 'paso (es el creador y la meta está ACTIVA)'),
+            ('m', 'srv', 'sr', 'delete(paso)  [ON DELETE CASCADE: registro_sub_meta]'),
+        ], 'void'),
+        ('r', 'ctl', 'svc', '204 No Content'),
+        ('m', 'ui', 'ui', 'recargar() Tu camino'),
+        ('r', 'ui', 'u', 'el paso desaparece y el avance y la constancia se recalculan'),
+        ('nota', 'ui', 'Si no es el creador: 403. Si la meta ya está cumplida: 400 «su camino es solo de lectura»'),
+    ],
+))
+
+HU['HU23'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='quitar_foto',
+    nombre='Quitar la foto',
+    participantes=[U, ('ui', 'EditarPerfilPage', 'boundary'), ('svc', 'cuentaService.js', 'module'),
+                   ('ctl', 'CuentaController', 'RestController'), ASP, ('srv', 'CuentaService', 'Service'),
+                   ('ur', 'UsuarioRepository', 'Repository'), ('usr', 'usuario : Usuario', 'Entity'), LOG],
+    pasos=[
+        ('m', 'u', 'ui', 'pulsa «Quitar foto»'),
+        ('r', 'ui', 'u', 'la vista previa muestra las iniciales (aún no se guarda)'),
+        ('m', 'u', 'ui', 'pulsa «Guardar cambios»'),
+        ('m', 'ui', 'svc', 'quitarFoto()'),
+        ('m', 'svc', 'ctl', 'DELETE /api/usuarios/me/foto'),
+        NOTA_TOKEN,
+        *auditado('quitarFoto(codigoUsuario)', 'QUITAR_FOTO_PERFIL', 'USUARIO', [
+            ('m', 'srv', 'ur', 'findById(codigoUsuario)'),
+            ('r', 'ur', 'srv', 'usuario'),
+            ('opt', [
+                ('[tenía foto]', [
+                    ('m', 'srv', 'usr', 'setFotoPerfil(null)'),
+                    ('m', 'srv', 'ur', 'save(usuario)'),
+                ]),
+            ]),
+        ], 'CuentaResponse.desde(usuario)  (foto = null)'),
+        ('r', 'ctl', 'svc', '200 OK + CuentaResponse'),
+        ('r', 'svc', 'ui', 'cuenta'),
+        ('r', 'ui', 'u', '«¡Perfil actualizado!»: el encabezado, Mi perfil y el perfil público muestran las iniciales'),
+    ],
+))
+
+HU['HU08'].setdefault('secuencias_extra', []).append(dict(
+    sufijo='no_fui_yo',
+    nombre='«No fui yo»: anular la solicitud',
+    participantes=[('u', 'Dueño del correo', 'actor'), ('ui', 'RechazarRegistroPage', 'boundary'),
+                   ('svc', 'authService.js', 'module'), ('ctl', 'AuthController', 'RestController'),
+                   ('srv', 'SolicitudRegistroService', 'Service'), ('sr', 'SolicitudRegistroRepository', 'Repository'),
+                   ('sol', 'solicitud : SolicitudRegistro', 'Entity'), LOG],
+    pasos=[
+        ('m', 'u', 'ui', 'recibió un correo de registro que no pidió y pulsa «No fui yo» → /registro/rechazar?token=…'),
+        ('r', 'ui', 'u', '«¿No pediste crear una cuenta?» con el botón «Anular solicitud»'),
+        ('m', 'u', 'ui', 'pulsa «Anular solicitud»'),
+        ('m', 'ui', 'svc', 'rechazarRegistro(token)'),
+        ('m', 'svc', 'ctl', 'POST /api/auth/registro/rechazar { token }  (público)'),
+        ('m', 'ctl', 'srv', 'rechazar(token)'),
+        ('m', 'srv', 'sr', 'findByTokenHash(hash(token))'),
+        ('r', 'sr', 'srv', 'Optional<SolicitudRegistro>'),
+        ('alt', [
+            ('[existe y estaVigente(ahora)]', [
+                ('m', 'srv', 'sol', 'bloquear(ahora + 24 h)  [borra el token: el enlace deja de servir]'),
+                ('m', 'srv', 'sr', 'save(solicitud)'),
+                ('m', 'srv', 'log', 'registrar(null, RECHAZAR_REGISTRO, USUARIO, null, EXITO, null)'),
+                ('r', 'srv', 'ctl', 'void'),
+                ('r', 'ctl', 'svc', '204 No Content'),
+                ('r', 'ui', 'u', '«Listo, anulamos la solicitud»: ese correo no recibe más enlaces por 24 horas'),
+            ]),
+            ('[enlace vencido o ya usado]', [
+                ('r', 'srv', 'ctl', 'SolicitudInvalidaException'),
+                ('r', 'ctl', 'svc', '410 Gone'),
+                ('r', 'ui', 'u', '«Este enlace ya no sirve»'),
+            ]),
+        ]),
+        ('nota', 'ui', 'Sin sesión no pasa por @Auditar: SolicitudRegistroService registra la acción a mano'),
+    ],
+))
