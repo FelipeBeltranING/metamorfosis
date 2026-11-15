@@ -1,0 +1,3 @@
+# Informes pesados: se generan de nuevo con Newman y Lighthouse (ver README).
+datos/lighthouse/
+datos/newman.json

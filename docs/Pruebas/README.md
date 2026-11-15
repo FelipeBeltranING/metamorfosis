@@ -11,8 +11,9 @@ npx newman@6.2.1 run docs/Pruebas/postman/Metamorfosis.postman_collection.json \
 ```
 El backend debe correr con `APP_JWT_SECRET=secreto-de-pruebas-newman-32-bytes!!` para el caso del token vencido.
 
-## Evidencia (14 nov 2026, PostgreSQL 16 limpio, rama hu20-mascota)
-- `evidencia/newman-salida.txt` y `evidencia/newman-junit.xml`: **93 peticiones, 147 aserciones, 0 fallos**.
+## Evidencia (14 nov 2026, PostgreSQL 16 local, rama auditoria-final)
+- `evidencia/newman-salida.txt` y `evidencia/newman-junit.xml`: **106 peticiones, 165 aserciones, 0 fallos**.
+- La carpeta de la HU20 prueba el avatar (`PUT /api/usuarios/me/avatar`), que reemplazó a la mascota.
 
 ## HU10 · Cerrar sesión (plan de pruebas del Sprint 1, sección 8.8)
 

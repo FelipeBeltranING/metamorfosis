@@ -1,0 +1,278 @@
+[
+  {
+    "nombre": "login",
+    "ruta": "/login",
+    "formFactor": "mobile",
+    "final": "http://localhost:5174/login",
+    "rendimiento": 91,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": []
+  },
+  {
+    "nombre": "login",
+    "ruta": "/login",
+    "formFactor": "desktop",
+    "final": "http://localhost:5174/login",
+    "rendimiento": 85,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": []
+  },
+  {
+    "nombre": "registro",
+    "ruta": "/registro",
+    "formFactor": "mobile",
+    "final": "http://localhost:5174/registro",
+    "rendimiento": 93,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": []
+  },
+  {
+    "nombre": "registro",
+    "ruta": "/registro",
+    "formFactor": "desktop",
+    "final": "http://localhost:5174/registro",
+    "rendimiento": 81,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": []
+  },
+  {
+    "nombre": "recuperar",
+    "ruta": "/recuperar-contrasena",
+    "formFactor": "mobile",
+    "final": "http://localhost:5174/recuperar-contrasena",
+    "rendimiento": 94,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": []
+  },
+  {
+    "nombre": "recuperar",
+    "ruta": "/recuperar-contrasena",
+    "formFactor": "desktop",
+    "final": "http://localhost:5174/recuperar-contrasena",
+    "rendimiento": 85,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": []
+  },
+  {
+    "nombre": "mis-metas",
+    "ruta": "/metas",
+    "formFactor": "mobile",
+    "final": "http://localhost:5174/metas",
+    "rendimiento": 88,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": [
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "mis-metas",
+    "ruta": "/metas",
+    "formFactor": "desktop",
+    "final": "http://localhost:5174/metas",
+    "rendimiento": 74,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": [
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "nueva-meta",
+    "ruta": "/metas/nueva",
+    "formFactor": "mobile",
+    "final": "http://localhost:5174/metas/nueva",
+    "rendimiento": 91,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": [
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "nueva-meta",
+    "ruta": "/metas/nueva",
+    "formFactor": "desktop",
+    "final": "http://localhost:5174/metas/nueva",
+    "rendimiento": 87,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": [
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "camino-meta",
+    "ruta": "/metas/22",
+    "formFactor": "mobile",
+    "final": "http://localhost:5174/metas/22",
+    "rendimiento": 95,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": [
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "camino-meta",
+    "ruta": "/metas/22",
+    "formFactor": "desktop",
+    "final": "http://localhost:5174/metas/22",
+    "rendimiento": 76,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": [
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "reporte",
+    "ruta": "/reporte",
+    "formFactor": "mobile",
+    "final": "http://localhost:5174/reporte",
+    "rendimiento": 95,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": [
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "reporte",
+    "ruta": "/reporte",
+    "formFactor": "desktop",
+    "final": "http://localhost:5174/reporte",
+    "rendimiento": 90,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": [
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "perfil",
+    "ruta": "/perfil",
+    "formFactor": "mobile",
+    "final": "http://localhost:5174/perfil",
+    "rendimiento": 96,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 83,
+    "fallas": [
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "perfil",
+    "ruta": "/perfil",
+    "formFactor": "desktop",
+    "final": "http://localhost:5174/perfil",
+    "rendimiento": 75,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 83,
+    "fallas": [
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "insignias",
+    "ruta": "/insignias",
+    "formFactor": "mobile",
+    "final": "http://localhost:5174/insignias",
+    "rendimiento": 93,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": [
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "insignias",
+    "ruta": "/insignias",
+    "formFactor": "desktop",
+    "final": "http://localhost:5174/insignias",
+    "rendimiento": 84,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": [
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "personas",
+    "ruta": "/usuarios",
+    "formFactor": "mobile",
+    "final": "http://localhost:5174/usuarios",
+    "rendimiento": 93,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": [
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "personas",
+    "ruta": "/usuarios",
+    "formFactor": "desktop",
+    "final": "http://localhost:5174/usuarios",
+    "rendimiento": 84,
+    "accesibilidad": 100,
+    "practicas": 100,
+    "seo": 82,
+    "fallas": [
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "editar-perfil",
+    "ruta": "/perfil/editar",
+    "formFactor": "mobile",
+    "final": "http://localhost:5174/perfil/editar",
+    "rendimiento": 85,
+    "accesibilidad": 96,
+    "practicas": 100,
+    "seo": 83,
+    "fallas": [
+      "color-contrast",
+      "label-content-name-mismatch"
+    ]
+  },
+  {
+    "nombre": "editar-perfil",
+    "ruta": "/perfil/editar",
+    "formFactor": "desktop",
+    "final": "http://localhost:5174/perfil/editar",
+    "rendimiento": 70,
+    "accesibilidad": 96,
+    "practicas": 100,
+    "seo": 83,
+    "fallas": [
+      "color-contrast",
+      "label-content-name-mismatch"
+    ]
+  }
+]
