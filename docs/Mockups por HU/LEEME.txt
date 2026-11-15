@@ -1,61 +1,58 @@
 Mockups actuales de Metamorfosis
 ================================
-Capturas de la versión actual del frontend (main, commit 8794481) con datos de prueba.
-Fecha simulada: lunes 2 de noviembre de 2026.
+Capturas de la app real (frontend en local) con datos de prueba. Las del camino con hitos y hábitos,
+del avatar y las que cambiaron con ellos se tomaron el 14 de noviembre de 2026 con ejemplos de
+Laura Gómez y Andrés Rojas, con Chrome headless (puppeteer-core) para que se puedan repetir.
 
 - Escritorio: 1280 px de ancho, página completa.
 - Celular: archivos terminados en _movil (390 px, a doble resolución).
-- Las carpetas van por HU. "Sub-metas" reúne el camino, las sub-metas y sus estadísticas.
+- Las carpetas van por HU. Los diagramas de clases y de secuencia vigentes están en docs/Diagramas
+  (draw.io); aquí solo hay pantallas.
+- El botón azul redondo de la esquina es el complemento de accesibilidad (Sienna).
 
 HU1  Crear meta         · formulario, errores, meta creada
 HU2  Editar meta
-HU3  Mis metas          · con metas, sin metas, cargando
-HU4  Eliminar meta      · menú de la meta, confirmación
+HU3  Mis metas          · con metas (avance de cada meta), sin metas, cargando, celular
+HU4  Eliminar meta      · menú de la meta, confirmación (dice cuántos pasos y días se borran)
+HU05 Registrar mi avance · Tu camino con hitos y hábitos, hito logrado con su aviso, todos los hitos
+                          logrados (propone cumplir la meta), registrar valor, celular
 HU6  Marcar cumplida    · confirmación, meta cumplida
 HU7  Reporte            · general, por tipo, por plazo, por mes, sin datos
 HU8  Registro           · pedir correo, revisa tu correo, autorizado, completar datos, no fui yo
 HU9  Iniciar sesión     · vacío, errores, credenciales incorrectas
 HU10 Cerrar sesión      · confirmación
 HU11 Insignias          · aviso de insignia ganada
+HU12 Galería de insignias · galería, insignias en el perfil, nueva, celular, cargando, error
 HU13 Invitar a una meta  · menú, ventana de invitar, buscar, invitación enviada, código, tarjetas y
                           Tu camino compartidos, meta cumplida sin invitar, correo de invitación, celular
 HU14 Responder invitación · aviso en Mis metas, menú de la cuenta, Invitaciones, aceptada, sin invitaciones,
                           enlace del correo (sin sesión, con sesión, rechazar, rechazada, vencido),
                           unirse con código, código no válido, celular
+HU15 Logro de meta compartida · hito logrado por el compañero, su perfil y sus metas cumplidas
 HU19 Personalizar perfil · lo que ven los demás: frase, lienzo de portada, insignia y metas
                           destacadas; sección Tu perfil público con vista previa, Mi perfil, perfil
                           de otra persona, perfil privado, catálogo de lienzos, celular y tema oscuro
+HU20 Personalizar mi avatar · sección Tu avatar (peinados y accesorios), Mi perfil y perfil de otra
+                          persona con el avatar asomado sobre la portada, celular
 HU21 Compartir logro    · botón en cumplidas, imagen para compartir, página pública
 HU22 Mi perfil          · menú de la cuenta, perfil
 HU23 Editar perfil      · formulario, errores, recorte de foto, guardado, perfil con foto
+HU24 Buscar personas    · buscar, perfil de otra persona, sin resultados, celular, no existe
+HU25 Ocultar meta del perfil · menú, oculta, mostrar, perfil, celular, error
+HU26 Perfil privado     · interruptor, privado, lo que ven los demás, búsqueda, celular, error
 HU27 Filtrar metas      · cumplidas, todas, sin resultados
+HU28 Trazar el camino   · elegir hito o hábito con ideas según el tipo de meta, nuevo hito,
+                          nuevo hábito medible con «Más opciones», camino vacío, celular
+HU29 Avance y constancia · Mis metas con el avance real, estadísticas del hábito, historial desplegado,
+                          celular
 HU30 Apariencia de la app · cómo se ve la app para uno mismo (modo claro, oscuro
                           o automático y color de acento): tema Noche en las pantallas principales,
                           los 4 temas comparados y la sección Apariencia de Editar perfil
-Sub-metas               · tu camino, registrar valor, menú, eliminar, camino vacío,
-                          elegir tipo, nueva medible, nueva Sí/No, errores, editar,
-                          estadísticas medible y Sí/No, camino de una meta cumplida
 
-Mockups del rediseño del camino y de la HU20 (14 de noviembre de 2026)
-=======================================================================
-Capturas de la versión con hitos y mascota (rama hu20-mascota) contra una base local con datos de
-ejemplo (Laura Gómez y Andrés Rojas). Escritorio a 1280 px; celular (_movil) a 390 px y doble resolución.
-Se toman con Chrome headless (puppeteer-core) para que se puedan repetir.
-
-HU28 Trazar el camino      · elegir hito o hábito con ideas según el tipo de meta, nuevo hito,
-                             nuevo hábito medible con «Más opciones», camino vacío, celular
-HU05 Registrar mi avance   · Tu camino con hitos y hábitos, hito logrado con su aviso, todos los hitos
-                             logrados (propone cumplir la meta), registrar valor, celular
-HU29 Avance y constancia   · Mis metas con el avance real, estadísticas del hábito, historial desplegado,
-                             celular
-HU15 Logro de meta compartida · hito logrado por el compañero, la meta cumplida en el perfil y en las
-                             cumplidas del compañero
-HU20 Personalizar mi avatar · sección Tu avatar (peinados y accesorios), Mi perfil y perfil de otra
-                             persona con el avatar asomado sobre la portada, celular. Reemplaza a las
-                             capturas de la mascota (la HU20 cambió de mascota a avatar).
-
-Historico/Sub-metas (antes del rediseño): las capturas de las sub-metas solo con hábitos y el
-porcentaje de constancia; quedan como referencia del cambio.
+Historico/ guarda lo que ya no corresponde a la app y queda como referencia del cambio:
+- Sub-metas: el camino de antes del rediseño (solo hábitos y porcentaje de constancia).
+- Diagramas PNG anteriores: diagramas de clases y de secuencia viejos que estaban junto a los
+  mockups; los vigentes son los .drawio de docs/Diagramas.
 
 Mockups de la HU32 Cambiar contraseña y la HU33 Recuperar contraseña (14 de noviembre de 2026)
 ==============================================================================================

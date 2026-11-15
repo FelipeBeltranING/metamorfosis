@@ -83,7 +83,7 @@
   "cumplirMeta": {
     "cerrarVentana": "Close window",
     "titulo": "Mark this goal as achieved?",
-    "texto": "<b>{{nombre}}</b> will be marked as achieved with today's date and moved to your achieved goals. You won't be able to edit it or add sub-goals, and its sub-goals will stop being logged; their history and statistics are kept. This action can't be undone.",
+    "texto": "<b>{{nombre}}</b> will be marked as achieved with today's date and moved to your achieved goals. You won't be able to edit it or change its path, and its habits will stop being logged; its milestones, history and statistics are kept. This action can't be undone.",
     "cancelar": "Cancel",
     "marcando": "Marking...",
     "marcar": "Mark as achieved"

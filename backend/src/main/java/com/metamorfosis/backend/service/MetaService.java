@@ -1,5 +1,7 @@
 package com.metamorfosis.backend.service;
 
+import com.metamorfosis.backend.config.CalendarioUsuario;
+
 import com.metamorfosis.backend.auditoria.Auditar;
 import com.metamorfosis.backend.auditoria.ContextoAuditoria;
 import com.metamorfosis.backend.dto.CrearMetaRequest;
@@ -37,12 +39,14 @@ public class MetaService {
     private final MetaRepository metaRepository;
     private final UsuarioRepository usuarioRepository;
     private final InsigniaService insigniaService;
+    private final CalendarioUsuario calendario;
 
     public MetaService(MetaRepository metaRepository, UsuarioRepository usuarioRepository,
-                       InsigniaService insigniaService) {
+                       InsigniaService insigniaService, CalendarioUsuario calendario) {
         this.metaRepository = metaRepository;
         this.usuarioRepository = usuarioRepository;
         this.insigniaService = insigniaService;
+        this.calendario = calendario;
     }
 
     /** Crea la meta, la participación del creador y su primer registro en una sola transacción. */
@@ -157,7 +161,8 @@ public class MetaService {
             return new MetaCumplidaResponse(MetaResponse.desde(meta), List.of());
         }
 
-        LocalDate hoy = LocalDate.now();
+        // El día del usuario (zona de la app), igual que al registrar hábitos y lograr hitos.
+        LocalDate hoy = calendario.hoy();
         meta.marcarCumplida(codigoUsuario, hoy);
         MetaResponse respuesta = MetaResponse.desde(metaRepository.save(meta));
 

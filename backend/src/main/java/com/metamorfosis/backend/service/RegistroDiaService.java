@@ -98,10 +98,10 @@ public class RegistroDiaService {
             throw new ValidacionException(List.of("No puedes registrar días que aún no llegan"));
         }
         if (fecha.isBefore(subMeta.getFechaCreacion())) {
-            throw new ValidacionException(List.of("Ese día la sub-meta todavía no existía"));
+            throw new ValidacionException(List.of("Ese día el hábito todavía no existía"));
         }
         if (!subMeta.tocaEl(fecha)) {
-            throw new ValidacionException(List.of("Esta sub-meta no toca ese día"));
+            throw new ValidacionException(List.of("Este hábito no toca ese día"));
         }
     }
 
@@ -110,7 +110,7 @@ public class RegistroDiaService {
         if (valor.signum() < 0) throw new ValidacionException(List.of("El valor no puede ser negativo"));
         if (subMeta.getTipo() == TipoSubMeta.SI_NO) {
             if (valor.compareTo(BigDecimal.ZERO) != 0 && valor.compareTo(BigDecimal.ONE) != 0) {
-                throw new ValidacionException(List.of("En una sub-meta Sí / No el valor es 1 (hecho) o 0 (no hecho)"));
+                throw new ValidacionException(List.of("En un hábito Sí / No el valor es 1 (hecho) o 0 (no hecho)"));
             }
             return valor.signum() == 0 ? BigDecimal.ZERO : BigDecimal.ONE;
         }

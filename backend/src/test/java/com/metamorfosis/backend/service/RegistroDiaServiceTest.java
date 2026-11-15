@@ -122,7 +122,7 @@ class RegistroDiaServiceTest {
 
         ValidacionException e = assertThrows(ValidacionException.class,
                 () -> servicio.registrar(5, HOY, new RegistrarDiaRequest(BigDecimal.ONE), USUARIO));
-        assertEquals(List.of("Esta sub-meta no toca ese día"), e.getErrores());
+        assertEquals(List.of("Este hábito no toca ese día"), e.getErrores());
     }
 
     @Test

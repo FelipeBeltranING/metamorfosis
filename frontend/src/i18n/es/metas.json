@@ -83,7 +83,7 @@
   "cumplirMeta": {
     "cerrarVentana": "Cerrar ventana",
     "titulo": "¿Marcar esta meta como cumplida?",
-    "texto": "<b>{{nombre}}</b> quedará como cumplida con la fecha de hoy y pasará a tus metas cumplidas. Ya no podrás editarla ni agregarle sub-metas, y sus sub-metas dejarán de registrarse; su historial y estadísticas se conservan. Esta acción no se puede deshacer.",
+    "texto": "<b>{{nombre}}</b> quedará como cumplida con la fecha de hoy y pasará a tus metas cumplidas. Ya no podrás editarla ni cambiar su camino, y sus hábitos dejarán de registrarse; sus hitos, su historial y sus estadísticas se conservan. Esta acción no se puede deshacer.",
     "cancelar": "Cancelar",
     "marcando": "Marcando...",
     "marcar": "Marcar como cumplida"
