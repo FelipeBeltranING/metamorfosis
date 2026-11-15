@@ -36,6 +36,8 @@ Dos diagramas por historia de usuario, en draw.io (se abren y se editan en [app.
 | HU28 | Trazar el camino de una meta (hitos y hábitos) | [clases](Clases/HU28_clases.drawio) | [secuencia](Secuencia/HU28_secuencia.drawio) · [agregar un hábito](Secuencia/HU28_secuencia_habito.drawio) · [editar y eliminar un paso](Secuencia/HU28_secuencia_editar_eliminar.drawio) |
 | HU29 | Ver cuánto me falta y qué tan constante soy | [clases](Clases/HU29_clases.drawio) | [secuencia](Secuencia/HU29_secuencia.drawio) |
 | HU30 | Elegir la apariencia de la app | [clases](Clases/HU30_clases.drawio) | [secuencia](Secuencia/HU30_secuencia.drawio) |
+| HU32 | Cambiar la contraseña dentro de la app | [clases](Clases/HU32_clases.drawio) | [secuencia](Secuencia/HU32_secuencia.drawio) |
+| HU33 | Recuperar la contraseña olvidada con un código | [clases](Clases/HU33_clases.drawio) | [secuencia](Secuencia/HU33_secuencia.drawio) |
 
 **No tienen diagramas:** HU17 y HU18 (retiradas) y HU31 (opcional, no implementada).
 **HU16** es transversal (toca casi todas las pantallas): su diagrama de clases muestra también la parte del frontend (selector, i18next, archivos de textos y la cabecera Accept-Language), porque ahí está la mayor parte de la HU.

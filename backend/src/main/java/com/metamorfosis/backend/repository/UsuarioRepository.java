@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     Optional<Usuario> findByEmail(String email);
     Optional<Usuario> findByEmailIgnoreCase(String email);
     boolean existsByEmailIgnoreCase(String email);
+
+    /** HU32: cuándo cambió la contraseña (UTC); vacío si nunca la ha cambiado. Lo consulta el filtro del JWT. */
+    @Query("select u.contrasenaCambiadaEn from Usuario u where u.codigoUsuario = :codigoUsuario")
+    Optional<LocalDateTime> contrasenaCambiadaEn(@Param("codigoUsuario") Integer codigoUsuario);
 
     /**
      * HU24: personas cuyo "nombre apellido" contiene el patrón, sin mayúsculas ni tildes (el patrón

@@ -129,3 +129,14 @@ Puedes destacar hasta {0} metas => You can feature up to {0} goals
 Solo puedes destacar metas tuyas que se vean en tu perfil => You can only feature your own goals that are visible on your profile
 Elige una portada válida => Choose a valid cover
 Escribe al menos 2 letras para buscar => Type at least 2 letters to search
+
+# Cambiar la contraseña (HU32)
+Escribe la contraseña nueva => Enter the new password
+Las contraseñas nuevas no coinciden => The new passwords don't match
+La contraseña nueva debe ser distinta de la actual => The new password must be different from the current one
+
+# Recuperar la contraseña olvidada (HU33)
+Escribe el código de 6 dígitos que te llegó al correo => Enter the 6-digit code you received by email
+El código no es correcto o ya venció. Pide uno nuevo. => The code is incorrect or has expired. Ask for a new one.
+Escribiste mal el código demasiadas veces. Pide uno nuevo. => You entered the wrong code too many times. Ask for a new one.
+El código no es correcto. Te quedan {0} intento(s) => The code is incorrect. You have {0} attempt(s) left

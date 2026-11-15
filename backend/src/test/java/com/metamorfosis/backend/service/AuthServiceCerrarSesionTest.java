@@ -68,7 +68,8 @@ class AuthServiceCerrarSesionTest {
     @Test
     void cb1ElControladorRevisaLaCabecera() {
         AuthService mock = mock(AuthService.class);
-        AuthController controlador = new AuthController(mock, solicitudRegistroService);
+        AuthController controlador = new AuthController(mock, solicitudRegistroService,
+                mock(RecuperacionContrasenaService.class));
 
         TokenInvalidoException nula = assertThrows(TokenInvalidoException.class, () -> controlador.cerrarSesion(null));
         assertEquals("Falta el token de autorización", nula.getMessage());

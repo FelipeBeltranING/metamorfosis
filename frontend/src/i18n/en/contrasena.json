@@ -1,0 +1,28 @@
+{
+  "contrasena": {
+    "titulo": "Change password",
+    "subtitulo": "Enter the new password twice to confirm it.",
+    "volver": "Back to Edit profile",
+    "nueva": "New password",
+    "confirmar": "Repeat the new password",
+    "requisitos": "The new password must have:",
+    "req8": "At least 8 characters",
+    "reqMayuscula": "An uppercase letter",
+    "reqMinuscula": "A lowercase letter",
+    "reqNumero": "A number",
+    "cumplido": "(done)",
+    "pendiente": "(missing)",
+    "aviso": "When you change it, we'll sign you out on your other devices and send you an email.",
+    "guardar": "Change password",
+    "cambiando": "Changing…",
+    "cancelar": "Cancel",
+    "faltaNueva": "Enter the new password.",
+    "noCumple": "The new password doesn't meet the requirements yet.",
+    "noCoinciden": "The new passwords don't match.",
+    "noCambiada": "The password wasn't changed. Check the highlighted fields.",
+    "listoTitulo": "Done! Your password changed",
+    "listoTexto": "We signed you out on your other devices and sent you an email. You're still signed in on this one.",
+    "irEditar": "Back to Edit profile",
+    "irMetas": "Go to my goals"
+  }
+}

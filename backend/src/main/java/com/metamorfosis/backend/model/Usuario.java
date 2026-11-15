@@ -2,6 +2,7 @@ package com.metamorfosis.backend.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "usuario")
@@ -23,6 +24,10 @@ public class Usuario {
 
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
+
+    /** HU32: cuándo cambió la contraseña por última vez (UTC). Los tokens emitidos antes ya no sirven. */
+    @Column(name = "contrasena_cambiada_en")
+    private LocalDateTime contrasenaCambiadaEn;
 
     /** HU-23: foto de perfil como data URL (data:image/jpeg;base64,...), o null si no tiene. */
     @Column(name = "foto_perfil", columnDefinition = "text")
@@ -86,6 +91,14 @@ public class Usuario {
     public void setEmail(String email) { this.email = email; }
     public String getPasswordHash() { return passwordHash; }
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+
+    public LocalDateTime getContrasenaCambiadaEn() { return contrasenaCambiadaEn; }
+
+    /** HU32: pone la contraseña nueva (ya cifrada) y anota cuándo cambió, para cerrar las demás sesiones. */
+    public void cambiarContrasena(String nuevoHash, LocalDateTime ahoraUtc) {
+        this.passwordHash = nuevoHash;
+        this.contrasenaCambiadaEn = ahoraUtc;
+    }
     public String getFotoPerfil() { return fotoPerfil; }
     public void setFotoPerfil(String fotoPerfil) { this.fotoPerfil = fotoPerfil; }
     public Boolean getPerfilPrivado() { return perfilPrivado; }

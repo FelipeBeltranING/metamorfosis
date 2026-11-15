@@ -2,7 +2,7 @@ import {
   useCallback, useEffect, useRef, useState,
 } from 'react';
 import {
-  ArrowLeft, Camera, CircleAlert, CircleCheck, LoaderCircle, Lock, Trash2,
+  ArrowLeft, Camera, CircleAlert, CircleCheck, KeyRound, LoaderCircle, Lock, Trash2,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -427,6 +427,19 @@ export default function EditarPerfilPage() {
                   <Lock className="absolute right-3.5 top-1/2 size-[18px] -translate-y-1/2 text-gray-500" aria-hidden="true" />
                 </div>
                 <p id="ayuda-correo" className="text-[13px] text-gray-600">{t('editarPerfil.correoAyuda')}</p>
+              </div>
+              <div className="flex flex-col gap-3 border-t border-zinc-100 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-0.5">
+                  <p className="text-sm font-bold text-gray-700">{t('editarPerfil.contrasena')}</p>
+                  <p className="text-[13px] text-gray-600">{t('editarPerfil.contrasenaAyuda')}</p>
+                </div>
+                <Link
+                  to="/perfil/contrasena"
+                  className="flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-violet-300 bg-violet-50 px-4 font-bold text-violet-700 hover:bg-violet-100"
+                >
+                  <KeyRound className="size-[18px]" aria-hidden="true" />
+                  {t('editarPerfil.cambiarContrasena')}
+                </Link>
               </div>
             </section>
 

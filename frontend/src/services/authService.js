@@ -113,3 +113,19 @@ export async function iniciarSesion({ email, password }) {
 export function cerrarSesionRemota(token) {
   return post('/api/auth/logout', null, token);
 }
+
+/**
+ * HU33 paso 1: pide el código para cambiar la contraseña olvidada. 202 sin cuerpo, haya o no una
+ * cuenta con ese correo (el servidor no lo revela).
+ */
+export function solicitarCodigoContrasena(email) {
+  return post('/api/auth/contrasena/codigo', { email });
+}
+
+/**
+ * HU33 paso 2: cambia la contraseña con el código del correo. 204 sin cuerpo; 400 = código incorrecto
+ * (con los intentos que quedan), vencido o la contraseña nueva no sirve.
+ */
+export function restablecerContrasena({ email, codigo, nueva, confirmacion }) {
+  return post('/api/auth/contrasena/restablecer', { email, codigo, nueva, confirmacion });
+}

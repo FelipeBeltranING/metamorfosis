@@ -2,9 +2,12 @@ package com.metamorfosis.backend.controller;
 
 import com.metamorfosis.backend.dto.AparienciaRequest;
 import com.metamorfosis.backend.dto.AvatarPerfil;
+import com.metamorfosis.backend.dto.CambiarContrasenaRequest;
+import com.metamorfosis.backend.dto.ContrasenaCambiadaResponse;
 import com.metamorfosis.backend.dto.CuentaResponse;
 import com.metamorfosis.backend.dto.EditarCuentaRequest;
 import com.metamorfosis.backend.dto.FotoPerfilRequest;
+import com.metamorfosis.backend.service.ContrasenaService;
 import com.metamorfosis.backend.service.CuentaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,9 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class CuentaController {
 
     private final CuentaService cuentaService;
+    private final ContrasenaService contrasenaService;
 
-    public CuentaController(CuentaService cuentaService) {
+    public CuentaController(CuentaService cuentaService, ContrasenaService contrasenaService) {
         this.cuentaService = cuentaService;
+        this.contrasenaService = contrasenaService;
     }
 
     /** Nombre, apellido, correo, foto y apariencia (HU19), para el encabezado y Editar perfil. */
@@ -50,6 +55,13 @@ public class CuentaController {
     public ResponseEntity<CuentaResponse> cambiarAvatar(@RequestBody AvatarPerfil pedido,
                                                         @AuthenticationPrincipal Integer codigoUsuario) {
         return ResponseEntity.ok(cuentaService.cambiarAvatar(codigoUsuario, pedido));
+    }
+
+    /** HU32: cambia la contraseña; responde un token nuevo para esta sesión (las demás se cierran). */
+    @PutMapping("/contrasena")
+    public ResponseEntity<ContrasenaCambiadaResponse> cambiarContrasena(@RequestBody CambiarContrasenaRequest pedido,
+                                                                        @AuthenticationPrincipal Integer codigoUsuario) {
+        return ResponseEntity.ok(contrasenaService.cambiar(codigoUsuario, pedido));
     }
 
     @PutMapping("/foto")

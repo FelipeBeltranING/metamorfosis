@@ -2,6 +2,7 @@ package com.metamorfosis.backend.config;
 
 import com.metamorfosis.backend.i18n.TraductorMensajes;
 import com.metamorfosis.backend.repository.TokenRevocadoRepository;
+import com.metamorfosis.backend.repository.UsuarioRepository;
 import com.metamorfosis.backend.service.JwtService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -31,11 +32,12 @@ public class SeguridadConfig {
     @Bean
     SecurityFilterChain filtros(HttpSecurity http, JwtService jwtService,
                                 TokenRevocadoRepository tokenRevocadoRepository,
+                                UsuarioRepository usuarioRepository,
                                 TraductorMensajes traductor, LocaleResolver localeResolver) throws Exception {
         http.csrf(csrf -> csrf.disable())                     // API stateless sin cookies de sesión
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .cors(c -> {})
-            .addFilterBefore(new JwtAuthFilter(jwtService, tokenRevocadoRepository),
+            .addFilterBefore(new JwtAuthFilter(jwtService, tokenRevocadoRepository, usuarioRepository),
                     UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling(e -> e.authenticationEntryPoint((peticion, respuesta, error) -> {
                 respuesta.setStatus(401);

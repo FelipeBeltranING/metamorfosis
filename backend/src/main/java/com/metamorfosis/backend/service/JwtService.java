@@ -70,6 +70,15 @@ public class JwtService {
         return LocalDateTime.ofInstant(expiracionToken.toInstant(), ZoneOffset.UTC);
     }
 
+    /** Fecha de emisión del token en UTC, en segundos enteros (HU32: cerrar las sesiones viejas). */
+    public LocalDateTime extraerEmision(String token) {
+        Date emision = parsear(token).getIssuedAt();
+        if (emision == null) {
+            throw new TokenInvalidoException(MENSAJE_INVALIDO);
+        }
+        return LocalDateTime.ofInstant(emision.toInstant(), ZoneOffset.UTC);
+    }
+
     /** Código del usuario dueño del token (HU10). */
     public Integer extraerCodigoUsuario(String token) {
         try {

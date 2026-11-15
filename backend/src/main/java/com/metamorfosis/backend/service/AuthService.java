@@ -44,7 +44,6 @@ public class AuthService {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
     private static final String MENSAJE_CREDENCIALES = "Email o contraseña incorrectos";
     private static final String MENSAJE_SESION_CERRADA = "La sesión ya fue cerrada";
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$");
 
     public AuthService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder,
                        JwtService jwtService, TokenRevocadoRepository tokenRevocadoRepository,
@@ -239,8 +238,8 @@ public class AuthService {
         
         if (solicitud.password() == null || solicitud.password().isBlank()) {
             errores.add("La contraseña es obligatoria");
-        } else if (!PASSWORD_PATTERN.matcher(solicitud.password()).matches()) {
-            errores.add("La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
+        } else if (!ReglaContrasena.cumple(solicitud.password())) {
+            errores.add(ReglaContrasena.MENSAJE);
         }
 
         if (!errores.isEmpty()) {

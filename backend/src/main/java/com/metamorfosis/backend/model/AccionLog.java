@@ -37,6 +37,9 @@ public enum AccionLog {
     QUITAR_FOTO_PERFIL, // HU23
     CAMBIAR_APARIENCIA, // HU19: tema, modo o color de acento
     CAMBIAR_AVATAR,     // HU20: armar o cambiar el avatar
+    CAMBIAR_CONTRASENA, // HU32: cambiar la contraseña desde la cuenta
+    SOLICITAR_CODIGO_CONTRASENA, // HU33: pedir el código para cambiar la contraseña olvidada
+    RESTABLECER_CONTRASENA,      // HU33: cambiar la contraseña olvidada con el código
     CAMBIAR_MASCOTA,    // HU20 antes del avatar: solo para leer registros viejos (la bitácora no se reescribe)
     INVITAR_META,       // HU13: invitar a una persona a la meta
     VER_INVITACIONES,   // HU14: invitaciones pendientes
