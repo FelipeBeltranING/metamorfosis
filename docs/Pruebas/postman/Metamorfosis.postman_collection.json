@@ -3095,7 +3095,7 @@
     },
     {
       "name": "HU23, HU30 y HU20 · Mi cuenta",
-      "description": "GET/PUT /api/usuarios/me, /foto, /apariencia, /mascota",
+      "description": "GET/PUT /api/usuarios/me, /foto, /apariencia, /avatar",
       "item": [
         {
           "name": "Ver mi cuenta",
@@ -3130,7 +3130,7 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('responde 200', () => pm.response.to.have.status(200));",
-                  "pm.test('mascota por defecto o elegida', () => pm.expect(pm.response.json().mascota).to.be.a('string'));"
+                  "pm.test('avatar por defecto o elegido', () => pm.expect(pm.response.json().avatar.peinado).to.be.a('string'));"
                 ]
               }
             }
@@ -3345,7 +3345,7 @@
           ]
         },
         {
-          "name": "Elegir la luciérnaga",
+          "name": "Armar el avatar",
           "request": {
             "method": "PUT",
             "header": [
@@ -3363,7 +3363,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/usuarios/me/mascota",
+              "raw": "{{baseUrl}}/api/usuarios/me/avatar",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -3371,12 +3371,12 @@
                 "api",
                 "usuarios",
                 "me",
-                "mascota"
+                "avatar"
               ]
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"mascota\": \"LUCIERNAGA\"\n}",
+              "raw": "{\n  \"piel\": \"c99c62\",\n  \"peinado\": \"curlyBob\",\n  \"colorPelo\": \"3a1a00\",\n  \"ojos\": \"winking\",\n  \"boca\": \"openedSmile\",\n  \"accesorio\": null\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3391,14 +3391,14 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('responde 200', () => pm.response.to.have.status(200));",
-                  "pm.test('guardada', () => pm.expect(pm.response.json().mascota).to.eql('LUCIERNAGA'));"
+                  "pm.test('guardado', () => pm.expect(pm.response.json().avatar.peinado).to.eql('curlyBob'));"
                 ]
               }
             }
           ]
         },
         {
-          "name": "Mascota que no existe",
+          "name": "Pieza de avatar que no existe",
           "request": {
             "method": "PUT",
             "header": [
@@ -3416,7 +3416,7 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/usuarios/me/mascota",
+              "raw": "{{baseUrl}}/api/usuarios/me/avatar",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -3424,12 +3424,12 @@
                 "api",
                 "usuarios",
                 "me",
-                "mascota"
+                "avatar"
               ]
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"mascota\": \"DRAGON\"\n}",
+              "raw": "{\n  \"piel\": \"c99c62\",\n  \"peinado\": \"cresta-de-dragon\",\n  \"colorPelo\": \"3a1a00\",\n  \"ojos\": \"winking\",\n  \"boca\": \"openedSmile\",\n  \"accesorio\": null\n}",
               "options": {
                 "raw": {
                   "language": "json"

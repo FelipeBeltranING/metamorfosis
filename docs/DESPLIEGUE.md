@@ -4,7 +4,7 @@
 | --- | --- | --- |
 | Base de datos | Supabase (ya existe) | — |
 | Backend Spring Boot | Render, plan Free, con Docker (`backend/Dockerfile`) | `https://metamorfosis-api.onrender.com` |
-| Frontend React | Vercel, plan Hobby (`frontend/vercel.json`) | `https://metamorfosis.vercel.app` |
+| Frontend React | Vercel, plan Hobby (`frontend/vercel.json`) | `https://metamorfosis-mu.vercel.app` |
 
 El orden importa: primero el backend (el frontend necesita su URL) y luego el frontend
 (el backend necesita la URL de Vercel para CORS y para los enlaces de los correos).
