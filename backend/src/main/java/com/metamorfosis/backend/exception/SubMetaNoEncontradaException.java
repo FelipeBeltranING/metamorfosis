@@ -4,6 +4,6 @@ package com.metamorfosis.backend.exception;
 public class SubMetaNoEncontradaException extends RuntimeException {
 
     public SubMetaNoEncontradaException(Integer codigoSubMeta) {
-        super("No se encontró la sub-meta " + codigoSubMeta);
+        super("No se encontró el paso " + codigoSubMeta);
     }
 }

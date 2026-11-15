@@ -76,6 +76,5 @@ Antes de medir o de una sesión con usuarios, abrir la app y esperar a que cargu
 1. **PageSpeed Insights** (pagespeed.web.dev): pegar la URL de Vercel; anotar Accesibilidad en móvil y en escritorio.
    Para las pantallas con sesión: Chrome → DevTools → Lighthouse sobre la URL desplegada, con la sesión iniciada.
 2. **WAVE** (wave.webaim.org): cada pantalla pública por URL; las de sesión con la extensión de WAVE para Chrome.
-3. **SUS**: enviar la URL de Vercel a los usuarios reales, pedir que hagan las tareas del guion y que llenen el cuestionario.
 
 Evidencia: capturas con la URL visible y el puntaje (debe ser superior a 70).

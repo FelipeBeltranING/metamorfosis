@@ -1,6 +1,7 @@
 package com.metamorfosis.backend.service;
 
 import com.metamorfosis.backend.auditoria.ContextoAuditoria;
+import com.metamorfosis.backend.config.CalendarioUsuario;
 import com.metamorfosis.backend.dto.InsigniaResponse;
 import com.metamorfosis.backend.dto.MetaCumplidaResponse;
 import com.metamorfosis.backend.dto.MetaResponse;
@@ -19,9 +20,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.lang.reflect.Field;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +46,7 @@ class MetaServiceMarcarCumplidaTest {
     @Mock private MetaRepository metaRepository;
     @Mock private UsuarioRepository usuarioRepository;
     @Mock private InsigniaService insigniaService;
+    @Spy private CalendarioUsuario calendario = new CalendarioUsuario(Clock.systemDefaultZone());
 
     @InjectMocks
     private MetaService metaService;

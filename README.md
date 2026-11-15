@@ -27,7 +27,7 @@ del flujo de desarrollo (no hay un rol de documentador dedicado).
 | Web y móvil | React con diseño responsive (probado en 375 px y 1280 px) |
 | Dos niveles | Cliente-servidor: el servidor ejecuta la API (Spring Boot) y la base de datos (PostgreSQL); cualquier otro equipo o celular entra por el navegador. Ver [docs/DESPLIEGUE.md](docs/DESPLIEGUE.md) |
 | ORM | JPA / Hibernate con migraciones Flyway (`backend/src/main/resources/db/migration`) |
-| Accesibilidad y usabilidad > 70 (online) | PageSpeed Insights y WAVE sobre la URL pública; cuestionario SUS |
+| Accesibilidad y usabilidad > 70 (online) | Puntaje de PageSpeed Insights (Lighthouse) sobre la URL pública, con WAVE como respaldo |
 | Complemento de accesibilidad | Widget Sienna (botón flotante) y `eslint-plugin-jsx-a11y` en el linter |
 | Manual técnico y de usuario | Anexos de la entrega final |
 | Minificar y ofuscar el cliente | `npm run build`: Vite minifica y `javascript-obfuscator` ofusca; sin source maps |
@@ -79,8 +79,8 @@ npm run dev                     # app en http://localhost:5173
 El despliegue en Render (backend) y Vercel (frontend) está en [docs/DESPLIEGUE.md](docs/DESPLIEGUE.md).
 
 ## Estado
-Entrega final (24 de octubre – 18 de noviembre de 2026). El plan de cierre, con lo que falta, está en
-[docs/PLAN_ENTREGA_FINAL.md](docs/PLAN_ENTREGA_FINAL.md).
+Entrega final (24 de octubre – 18 de noviembre de 2026). La planeación (backlog, sprints y HU) se
+gestiona en Jira; el responsable es Samuel, gerente de proyecto.
 
 ## Créditos
 Los avatares (HU20) usan las ilustraciones «Big Smile» de Ashley Seo, con licencia

@@ -74,10 +74,10 @@ public class SubMetaService {
         SubMeta subMeta = buscar(codigoSubMeta);
         exigirCreadorYActiva(subMeta.getMeta(), codigoUsuario);
         if (pedido == null) {
-            throw new ValidacionException(List.of("Faltan los datos de la sub-meta"));
+            throw new ValidacionException(List.of("Faltan los datos del paso"));
         }
         if (pedido.tipo() != null && pedido.tipo() != subMeta.getTipo()) {
-            throw new ValidacionException(List.of("El tipo de una sub-meta no se puede cambiar"));
+            throw new ValidacionException(List.of("El tipo de un paso no se puede cambiar"));
         }
         Datos datos = validar(pedido, subMeta.getTipo(), subMeta.getMeta().getCodigoMeta(), codigoSubMeta);
         datos.aplicarA(subMeta);
@@ -156,7 +156,7 @@ public class SubMetaService {
 
     private void exigirCreadorYActiva(Meta meta, Integer codigoUsuario) {
         if (!meta.getCreador().getCodigoUsuario().equals(codigoUsuario)) {
-            throw new PermisoDenegadoException("Solo el creador de la meta puede cambiar sus sub-metas");
+            throw new PermisoDenegadoException("Solo el creador de la meta puede cambiar su camino");
         }
         if (meta.getEstado() != EstadoMeta.ACTIVA) {
             throw new ValidacionException(List.of(MENSAJE_SOLO_LECTURA));
