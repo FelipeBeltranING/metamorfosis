@@ -29,9 +29,11 @@ repartieron entre junio y noviembre para que la gráfica por mes muestre una ten
 | 9 Logs | `09_logs_archivo_aplicacion.png` | `backend/logs/metamorfosis.log`: INFO de arranque y Flyway, WARN del filtro JWT |
 | 10 Pruebas | `10_pruebas_mvnw_verify.png` | `mvnw clean verify` (15 nov): **253 pruebas en 29 clases, 0 fallos**, BUILD SUCCESS |
 | 10 Pruebas | `10_pruebas_cobertura_jacoco.png` | Informe de JaCoCo (15 nov): 69 % de instrucciones, 58 % de ramas |
-| 10 Pruebas | `10_pruebas_frontend_vitest.png` | `npm run test:cobertura` (15 nov): **32 pruebas, 0 fallos**; cobertura de `src/utils` 95 % |
+| 10 Pruebas | `10_pruebas_frontend_vitest.png` | `npm run test:cobertura` (15 nov): **52 pruebas, 0 fallos**; cobertura de `src/utils` 95 % |
 | 10 Pruebas | `10_pruebas_frontend_cobertura.png` | Informe HTML de cobertura de Vitest |
 | 11 Idiomas | `11_idioma_espanol.png`, `11_idioma_ingles*.png` | La app en español y en inglés (Mis metas, reporte, inicio de sesión) |
+| 11 Idiomas | `11_despliegue_login_es.png`, `11_despliegue_login_en.png` | App desplegada en Vercel (15 nov): inicio de sesión con el navegador en español y en inglés, sin iniciar sesión |
+| 11 Idiomas | `11_api_mensajes_es_en.png` | La API responde en el idioma de `Accept-Language` (15 nov); salida completa en `datos/api-idiomas.txt` |
 
 `datos/` tiene las salidas completas: `newman-salida.txt`, `mvnw-verify.txt`, `vitest-salida.txt`, `log_actividad_tras_newman.txt`
 (conteo de filas del log de auditoría después de correr la colección), `npm-lint.txt`, `npm-build.txt` y

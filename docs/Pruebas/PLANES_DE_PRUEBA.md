@@ -9,7 +9,7 @@ Las salidas completas están en `docs/Evidencias entrega final/datos/`.
 
 ## 10. Evidencia de la ejecución de pruebas
 
-Cada HU se prueba con casos de caja negra, caja blanca e integración, y el responsable de cada HU los diseña y ejecuta. Daniel, como QA, define el formato y consolida la evidencia del equipo. En la entrega final las pruebas quedaron automatizadas en tres suites que se repiten con un solo comando: las pruebas unitarias de caja blanca del backend (JUnit 5 y Mockito), las pruebas de caja negra e integración de los web services (colección de Postman ejecutada con Newman contra la API y PostgreSQL) y las pruebas unitarias y de componentes del frontend (Vitest y React Testing Library). Lo que no está automatizado, como el recorrido visual de cada pantalla, se prueba a mano en el navegador.
+Cada HU se prueba con casos de caja negra, caja blanca e integración, y el responsable de cada HU los diseña y ejecuta. Daniel, como QA, define el formato y consolida la evidencia del equipo. En la entrega final las pruebas quedaron automatizadas en tres suites que se repiten con un solo comando: las pruebas unitarias de caja blanca del backend (JUnit 5 y Mockito), las pruebas de caja negra e integración de los web services (colección de Postman ejecutada con Newman contra la API y PostgreSQL) y las pruebas unitarias y de componentes del frontend (Vitest y React Testing Library), que incluyen la paridad de las traducciones. Lo que no está automatizado, como el recorrido visual de cada pantalla, se prueba a mano en el navegador.
 
 ### 10.1 Herramientas
 
@@ -20,7 +20,7 @@ Cada HU se prueba con casos de caja negra, caja blanca e integración, y el resp
 | Cobertura del backend | JaCoCo 0.8.13 | Instrucciones, ramas y líneas cubiertas | `mvnw verify` (informe en `backend/target/site/jacoco/index.html`) |
 | Web services (caja negra e integración) | Postman y Newman | Filtro JWT, controlador, servicio y PostgreSQL: código HTTP, mensaje y datos de cada respuesta | `newman run docs/Pruebas/postman/Metamorfosis.postman_collection.json -e docs/Pruebas/postman/local.postman_environment.json` |
 | Log de auditoría | Consulta SQL a `log_actividad` | Que cada acción deja su fila EXITO o ERROR | `select accion, resultado, count(*) from log_actividad group by 1, 2` |
-| Unitarias y de componentes del frontend | Vitest, React Testing Library y jsdom | Utilidades de `src/utils` y los componentes de HU6 y HU27 | `npm test` / `npm run test:cobertura` |
+| Unitarias y de componentes del frontend | Vitest, React Testing Library y jsdom | Utilidades de `src/utils`, los componentes de HU6 y HU27 y la paridad de las traducciones | `npm test` / `npm run test:cobertura` |
 | Interfaz | Prueba manual en el navegador | Recorrido de cada pantalla en 375 px y 1280 px y con teclado | — |
 | Accesibilidad | ESLint con `eslint-plugin-jsx-a11y`, Lighthouse y PageSpeed Insights | Reglas del linter y puntaje de accesibilidad (sección 6) | `npm run lint` |
 
@@ -33,7 +33,7 @@ Cada HU se prueba con casos de caja negra, caja blanca e integración, y el resp
 | Pruebas JUnit del backend | 253 pruebas en 29 clases | 0 fallos (`mvnw clean verify`, BUILD SUCCESS) |
 | Cobertura del backend (JaCoCo) | 13.700 instrucciones, 1.038 ramas | 69,3 % de instrucciones, 58,4 % de ramas y 70,0 % de líneas |
 | Colección de Postman | 162 peticiones, 291 aserciones, 23 carpetas | 0 fallos (Newman) |
-| Pruebas del frontend | 32 pruebas en 2 archivos | 0 fallos (Vitest); cobertura de `src/utils`: 95,0 % de sentencias y 93,7 % de ramas |
+| Pruebas del frontend | 52 pruebas en 3 archivos | 0 fallos (Vitest); cobertura de `src/utils`: 95,0 % de sentencias y 93,7 % de ramas |
 | Linter y build del frontend | `npm run lint` y `npm run build` | 0 errores y build correcto |
 | Requisitos: accesibilidad, ofuscación y logs | Ver secciones 6, 7 y 9 | Medidos el 14 de noviembre de 2026 |
 
@@ -73,7 +73,8 @@ Cada HU se prueba con casos de caja negra, caja blanca e integración, y el resp
 | **Total JUnit** | | **253** |
 | `frontend/src/utils/utilidades.test.js` (Vitest) | HU5, HU7, HU8, HU12, HU13, HU22, HU27, HU28, HU32, HU33 | 23 |
 | `frontend/src/components/componentes.test.jsx` (Vitest y React Testing Library) | HU6, HU27 | 9 |
-| **Total frontend** | | **32** |
+| `frontend/src/i18n/traducciones.test.js` (Vitest) | Internacionalización | 20 |
+| **Total frontend** | | **52** |
 
 ### 10.4 Limitaciones conocidas
 
@@ -83,9 +84,57 @@ El aspecto de auditoría (`AuditoriaAspect`) no tiene prueba JUnit propia; se ve
 
 ---
 
-## 11. Nota para la sección de internacionalización
+## 11. Internacionalización (opcional)
 
-**Pruebas.** Los mensajes traducidos y los correos en los dos idiomas se prueban con `TraductorMensajesTest` (8 pruebas), `PlantillasCorreoTest` (4), `PlantillaContrasenaCambiadaTest` (3) y `PlantillaCodigoRecuperacionTest` (3). Las pruebas del frontend corren en español.
+La HU16 («Como usuario quiero poder cambiar el idioma de la app, para usarla en mi idioma preferido») quedó como Won't have en el Sprint 0 y se implementó en la entrega final. La aplicación funciona en español, el idioma por defecto, y en inglés: se traducen la interfaz, los mensajes que devuelve la API y los correos que envía el sistema. El cambio de idioma se aplica al instante, sin recargar la página, y está disponible en la versión desplegada (https://metamorfosis-mu.vercel.app).
+
+### 11.1 Alcance
+
+| Parte | Qué se traduce y cómo |
+|---|---|
+| Interfaz | 952 textos en 17 archivos por idioma (`frontend/src/i18n/es` y `frontend/src/i18n/en`), uno por parte de la app (auth, metas, camino, reporte, perfil…). Se cargan con i18next y react-i18next. |
+| Plurales y valores variables | Claves con plural de i18next (`_one` / `_other`), por ejemplo «1 meta» y «3 metas», y valores variables como `{{nombre}}` o `{{count}}`. |
+| Fechas y números | `Intl.DateTimeFormat` e `Intl.NumberFormat` con la región del idioma: es-CO o en-US («1 nov 2026» / «Nov 1, 2026»). Los nombres de días y meses también están en los archivos de traducción. |
+| Mensajes de la API | Los servicios escriben sus mensajes en español; antes de responder, `TraductorMensajes` los traduce al idioma de la cabecera `Accept-Language` con `i18n/mensajes_en.txt` (121 mensajes, 15 con partes variables como nombres o números). Se aplica a los errores de `ManejadorExcepciones` y al 401 de `SeguridadConfig`. |
+| Correos | Las cuatro plantillas (autorización del registro, invitación a una meta, aviso de contraseña cambiada y código de recuperación) tienen sus textos en español y en inglés; el correo sale en el idioma de la petición que lo origina. |
+| Datos del catálogo | Los nombres y descripciones de las insignias vienen del servidor en español; el frontend los traduce por su ícono y, si no hay traducción, muestra el texto del servidor. |
+| Accesibilidad | Al cambiar de idioma se actualizan el atributo `lang` del documento y el título de la página, para que los lectores de pantalla pronuncien en el idioma correcto; cada opción del selector declara su propio `lang`. |
+
+### 11.2 Selección del idioma
+
+El selector de idioma está en el encabezado de la app en escritorio, dentro del menú de la cuenta en el celular y en el encabezado de las pantallas de inicio de sesión y registro. La elección se guarda en el navegador (clave `metamorfosis.idioma` de localStorage). Si no hay una elección guardada, se usa el idioma del navegador y, si no es español ni inglés, el español. Las variantes regionales cuentan como su idioma: es-CO o es-MX se tratan como español.
+
+Cada petición del frontend a la API envía el idioma activo en la cabecera `Accept-Language`. En el backend, `IdiomaConfig` resuelve el idioma con `AcceptHeaderLocaleResolver`: acepta español e inglés y, sin cabecera o con otro idioma, responde en español.
+
+### 11.3 Componentes
+
+| Componente | Archivo | Responsabilidad |
+|---|---|---|
+| Configuración de i18next | `frontend/src/i18n/index.js` | Carga los archivos de los dos idiomas, detecta el idioma, actualiza `lang` y el título y arma la cabecera `Accept-Language`. |
+| Selector de idioma | `frontend/src/components/SelectorIdioma.jsx` | Lista desplegable ES · Español / EN · English; el cambio se aplica al instante. |
+| Textos de la interfaz | `frontend/src/i18n/es/*.json` y `frontend/src/i18n/en/*.json` | 952 textos por idioma. |
+| Resolución del idioma | `backend/.../config/IdiomaConfig.java` | Idioma de cada petición a partir de `Accept-Language`. |
+| Traducción de mensajes | `backend/.../i18n/TraductorMensajes.java` | Traduce mensajes exactos y plantillas con partes variables; sin traducción, deja el español. |
+| Diccionario | `backend/src/main/resources/i18n/mensajes_en.txt` | Una línea por mensaje: «español => inglés». |
+| Plantillas de correo | `backend/.../service/correo/Plantilla*.java` | Asunto, HTML y texto plano de cada correo en los dos idiomas. |
+
+### 11.4 Pruebas
+
+| Prueba | Qué comprueba | Resultado |
+|---|---|---|
+| `TraductorMensajesTest` (8) | Mensajes fijos y con partes variables, listas de errores, región del idioma, idioma no soportado y mensaje sin traducción | 8 de 8 pasan |
+| `PlantillasCorreoTest` (4) | Correos de autorización e invitación en inglés y en español (también sin idioma) | 4 de 4 pasan |
+| `PlantillaContrasenaCambiadaTest` (3) y `PlantillaCodigoRecuperacionTest` (3) | Correos de HU32 y HU33 en los dos idiomas, con el nombre escapado en el HTML | 6 de 6 pasan |
+| `traducciones.test.js` (Vitest, 20) | Los dos idiomas tienen los mismos 17 archivos y las mismas claves, ningún texto en inglés está vacío y las listas de días y meses tienen el mismo largo | 20 de 20 pasan |
+| API con `Accept-Language` es y en | 401 «Autenticación requerida» / «Authentication required» y los errores de validación en cada idioma | Comprobado |
+| App desplegada en Vercel | La pantalla de inicio de sesión se muestra en el idioma del navegador | Comprobado |
+| Prueba manual en el navegador | Mis metas, el reporte y el inicio de sesión en inglés | Comprobado (14 nov) |
+
+### 11.5 Cómo agregar otro idioma
+
+El diseño permite sumar un idioma sin tocar las pantallas. En el frontend hay que crear la carpeta `frontend/src/i18n/<código>` con los mismos 17 archivos, agregar el idioma a la lista `IDIOMAS` de `index.js` y extender la prueba de paridad al nuevo idioma. En el backend hay que agregar el `Locale` a `TraductorMensajes.IDIOMAS`, crear `i18n/mensajes_<código>.txt` y sumar los textos del idioma en las cuatro plantillas de correo, que hoy eligen entre español e inglés.
+
+**Evidencia (15 de noviembre de 2026).** Pantalla de inicio de sesión de la app desplegada con el navegador en español y en inglés; respuestas de la API con `Accept-Language` es y en; y, del 14 de noviembre, Mis metas en español y en inglés y el reporte en inglés. Archivos en `docs/Evidencias entrega final/` (`11_*.png` y `datos/api-idiomas.txt`).
 
 ---
 

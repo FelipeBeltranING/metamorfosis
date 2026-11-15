@@ -2,17 +2,20 @@
  RUN  v3.2.4 C:/Users/Lenovo/Documents/GitHub/metamorfosis/frontend
       Coverage enabled with v8
 
-stdout | src/utils/utilidades.test.js
+stdout | src/i18n/traducciones.test.js
 
 stdout | src/components/componentes.test.jsx
 
- ✓ src/utils/utilidades.test.js (23 tests) 57ms
- ✓ src/components/componentes.test.jsx (9 tests) 795ms
+stdout | src/utils/utilidades.test.js
 
- Test Files  2 passed (2)
-      Tests  32 passed (32)
-   Start at  01:34:23
-   Duration  5.98s (transform 276ms, setup 2.06s, collect 1.36s, tests 852ms, environment 4.25s, prepare 684ms)
+ ✓ src/i18n/traducciones.test.js (20 tests) 18ms
+ ✓ src/utils/utilidades.test.js (23 tests) 54ms
+ ✓ src/components/componentes.test.jsx (9 tests) 744ms
+
+ Test Files  3 passed (3)
+      Tests  52 passed (52)
+   Start at  09:03:27
+   Duration  4.59s (transform 273ms, setup 2.20s, collect 1.43s, tests 816ms, environment 3.94s, prepare 736ms)
 
  % Coverage report from v8
 ------------------|---------|----------|---------|---------|-------------------
