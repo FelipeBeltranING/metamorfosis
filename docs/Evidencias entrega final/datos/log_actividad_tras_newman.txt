@@ -1,0 +1,67 @@
+-- Consulta a log_actividad en la base local de pruebas (PostgreSQL 16 en Docker), 15 nov 2026,
+-- después de correr dos veces la colección de Postman con Newman (por eso los conteos son pares).
+-- select accion, resultado, count(*) from log_actividad group by 1,2 order by 1,2;
+           accion            | resultado | count 
+-----------------------------+-----------+-------
+ BUSCAR_USUARIOS             | ERROR     |     2
+ BUSCAR_USUARIOS             | EXITO     |     2
+ CAMBIAR_APARIENCIA          | ERROR     |     2
+ CAMBIAR_APARIENCIA          | EXITO     |     6
+ CAMBIAR_AVATAR              | ERROR     |     2
+ CAMBIAR_AVATAR              | EXITO     |     2
+ CAMBIAR_CONTRASENA          | ERROR     |     6
+ CAMBIAR_CONTRASENA          | EXITO     |     4
+ CAMBIAR_FOTO_PERFIL         | ERROR     |     6
+ CAMBIAR_FOTO_PERFIL         | EXITO     |     2
+ CAMBIAR_PRIVACIDAD          | EXITO     |     4
+ CAMBIAR_VISIBILIDAD         | ERROR     |     6
+ CAMBIAR_VISIBILIDAD         | EXITO     |     4
+ CERRAR_SESION               | ERROR     |     6
+ CERRAR_SESION               | EXITO     |     4
+ COMPARTIR_LOGRO             | ERROR     |     4
+ COMPARTIR_LOGRO             | EXITO     |     6
+ CREAR_META                  | ERROR     |     2
+ CREAR_META                  | EXITO     |     4
+ CREAR_SUB_META              | ERROR     |    10
+ CREAR_SUB_META              | EXITO     |    10
+ DESACTIVAR_CODIGO_META      | EXITO     |     4
+ DESHACER_HITO               | EXITO     |     2
+ EDITAR_META                 | ERROR     |     4
+ EDITAR_META                 | EXITO     |     2
+ EDITAR_PERFIL               | ERROR     |     4
+ EDITAR_PERFIL               | EXITO     |     2
+ EDITAR_PERFIL_PUBLICO       | ERROR     |     8
+ EDITAR_PERFIL_PUBLICO       | EXITO     |     6
+ EDITAR_SUB_META             | ERROR     |     2
+ ELIMINAR_META               | ERROR     |     4
+ ELIMINAR_META               | EXITO     |     2
+ ELIMINAR_SUB_META           | EXITO     |     4
+ GENERAR_CODIGO_META         | EXITO     |     4
+ INICIAR_SESION              | ERROR     |     4
+ INICIAR_SESION              | EXITO     |    12
+ INVITAR_META                | ERROR     |    10
+ INVITAR_META                | EXITO     |     2
+ LISTAR_METAS                | EXITO     |     8
+ LOGRAR_HITO                 | ERROR     |     4
+ LOGRAR_HITO                 | EXITO     |     6
+ MARCAR_CUMPLIDA             | ERROR     |     2
+ MARCAR_CUMPLIDA             | EXITO     |     4
+ QUITAR_FOTO_PERFIL          | EXITO     |     2
+ QUITAR_REGISTRO             | EXITO     |     2
+ REGISTRAR_DIA               | ERROR     |    12
+ REGISTRAR_DIA               | EXITO     |     4
+ RESPONDER_INVITACION        | ERROR     |     6
+ RESPONDER_INVITACION        | EXITO     |     2
+ RESTABLECER_CONTRASENA      | ERROR     |     2
+ SOLICITAR_CODIGO_CONTRASENA | ERROR     |     2
+ SOLICITAR_CODIGO_CONTRASENA | EXITO     |     2
+ SOLICITAR_REGISTRO          | EXITO     |     2
+ UNIRSE_CON_CODIGO           | ERROR     |     6
+ VER_INSIGNIAS               | EXITO     |     2
+ VER_INVITACIONES            | EXITO     |     2
+ VER_PERFIL                  | EXITO     |     4
+ VER_PERFIL_PUBLICO          | ERROR     |     2
+ VER_PERFIL_PUBLICO          | EXITO     |     4
+ VER_REPORTE                 | EXITO     |     2
+(60 rows)
+

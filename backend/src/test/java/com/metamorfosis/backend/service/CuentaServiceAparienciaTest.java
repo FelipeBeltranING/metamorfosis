@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-/** HU19: caja blanca de CuentaService.cambiarApariencia. */
+/** HU30: caja blanca de CuentaService.cambiarApariencia (elegir la apariencia de la app). */
 @ExtendWith(MockitoExtension.class)
 class CuentaServiceAparienciaTest {
 

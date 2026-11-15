@@ -292,6 +292,294 @@
               }
             }
           ]
+        },
+        {
+          "name": "Sin token · HU29 Tu camino",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/1/camino",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "1",
+                "camino"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 401', () => pm.response.to.have.status(401));",
+                  "pm.test('mensaje: Autenticación requerida', () => pm.expect(pm.response.json().mensaje).to.eql(\"Autenticaci\\u00f3n requerida\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sin token · HU13 invitar",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/1/invitaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "1",
+                "invitaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigoUsuario\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 401', () => pm.response.to.have.status(401));",
+                  "pm.test('mensaje: Autenticación requerida', () => pm.expect(pm.response.json().mensaje).to.eql(\"Autenticaci\\u00f3n requerida\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sin token · HU14 mis invitaciones",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/invitaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "invitaciones"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 401', () => pm.response.to.have.status(401));",
+                  "pm.test('mensaje: Autenticación requerida', () => pm.expect(pm.response.json().mensaje).to.eql(\"Autenticaci\\u00f3n requerida\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sin token · HU21 compartir",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/1/compartir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "1",
+                "compartir"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 401', () => pm.response.to.have.status(401));",
+                  "pm.test('mensaje: Autenticación requerida', () => pm.expect(pm.response.json().mensaje).to.eql(\"Autenticaci\\u00f3n requerida\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sin token · HU23 mi cuenta",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 401', () => pm.response.to.have.status(401));",
+                  "pm.test('mensaje: Autenticación requerida', () => pm.expect(pm.response.json().mensaje).to.eql(\"Autenticaci\\u00f3n requerida\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sin token · HU19 perfil público",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me/perfil-publico",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-publico"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"frase\": \"x\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 401', () => pm.response.to.have.status(401));",
+                  "pm.test('mensaje: Autenticación requerida', () => pm.expect(pm.response.json().mensaje).to.eql(\"Autenticaci\\u00f3n requerida\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sin token · HU32 cambiar la contraseña",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me/contrasena",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "contrasena"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nueva\": \"x\",\n  \"confirmacion\": \"x\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 401', () => pm.response.to.have.status(401));",
+                  "pm.test('mensaje: Autenticación requerida', () => pm.expect(pm.response.json().mensaje).to.eql(\"Autenticaci\\u00f3n requerida\"));"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -969,7 +1257,114 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 400', () => pm.response.to.have.status(400));"
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Ya tienes un paso con este nombre en esta meta', () => pm.expect(pm.response.json().errores).to.include(\"Ya tienes un paso con este nombre en esta meta\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Objetivo en cero",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/submetas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "submetas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Correr\",\n  \"tipo\": \"MEDIBLE\",\n  \"unidad\": \"km\",\n  \"objetivo\": 0,\n  \"tipoObjetivo\": \"AL_MENOS\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: El objetivo debe ser mayor que 0', () => pm.expect(pm.response.json().errores).to.include(\"El objetivo debe ser mayor que 0\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Día de la semana inválido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/submetas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "submetas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Meditar\",\n  \"tipo\": \"SI_NO\",\n  \"dias\": [\n    8\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Los días van del 1 (lunes) al 7 (domingo)', () => pm.expect(pm.response.json().errores).to.include(\"Los d\\u00edas van del 1 (lunes) al 7 (domingo)\"));"
                 ]
               }
             }
@@ -1009,6 +1404,188 @@
                 "exec": [
                   "pm.test('responde 200', () => pm.response.to.have.status(200));",
                   "pm.test('trae la meta', () => pm.expect(pm.response.json().nombreMeta).to.eql('Leer 15 libros (Newman)'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Paso que no existe",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/submetas/999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "submetas",
+                "999999"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 404', () => pm.response.to.have.status(404));",
+                  "pm.test('mensaje: No se encontró el paso 999999', () => pm.expect(pm.response.json().mensaje).to.eql(\"No se encontr\\u00f3 el paso 999999\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "El tipo de un paso no se cambia",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/submetas/{{codigoHito}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "submetas",
+                "{{codigoHito}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Terminar el libro 1\",\n  \"tipo\": \"MEDIBLE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: El tipo de un paso no se puede cambiar', () => pm.expect(pm.response.json().errores).to.include(\"El tipo de un paso no se puede cambiar\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Agregar un hito para borrarlo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/submetas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "submetas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Hito temporal\",\n  \"tipo\": \"HITO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 201', () => pm.response.to.have.status(201));",
+                  "pm.environment.set('codigoHitoBorrar', pm.response.json().codigoSubMeta);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Eliminar un paso",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/submetas/{{codigoHitoBorrar}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "submetas",
+                "{{codigoHitoBorrar}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 204', () => pm.response.to.have.status(204));"
                 ]
               }
             }
@@ -1060,7 +1637,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 403', () => pm.response.to.have.status(403));"
+                  "pm.test('responde 403', () => pm.response.to.have.status(403));",
+                  "pm.test('mensaje: Solo el creador de la meta puede cambiar su camino', () => pm.expect(pm.response.json().mensaje).to.eql(\"Solo el creador de la meta puede cambiar su camino\"));"
                 ]
               }
             }
@@ -1196,7 +1774,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 400', () => pm.response.to.have.status(400));"
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Solo los hitos se marcan como logrados; los hábitos se registran por día', () => pm.expect(pm.response.json().errores).to.include(\"Solo los hitos se marcan como logrados; los h\\u00e1bitos se registran por d\\u00eda\"));"
                 ]
               }
             }
@@ -1312,7 +1891,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 400', () => pm.response.to.have.status(400));"
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Un hito no se registra por día: se marca como logrado', () => pm.expect(pm.response.json().errores).to.include(\"Un hito no se registra por d\\u00eda: se marca como logrado\"));"
                 ]
               }
             }
@@ -1365,7 +1945,355 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 400', () => pm.response.to.have.status(400));"
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: No puedes registrar días que aún no llegan', () => pm.expect(pm.response.json().errores).to.include(\"No puedes registrar d\\u00edas que a\\u00fan no llegan\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Valor negativo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/submetas/{{codigoHabito}}/registros/{{hoy}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "submetas",
+                "{{codigoHabito}}",
+                "registros",
+                "{{hoy}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": -1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: El valor no puede ser negativo', () => pm.expect(pm.response.json().errores).to.include(\"El valor no puede ser negativo\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Beto no participa: no registra",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenB}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/submetas/{{codigoHabito}}/registros/{{hoy}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "submetas",
+                "{{codigoHabito}}",
+                "registros",
+                "{{hoy}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 403', () => pm.response.to.have.status(403));",
+                  "pm.test('mensaje: Solo los participantes de la meta pueden registrar su día', () => pm.expect(pm.response.json().mensaje).to.eql(\"Solo los participantes de la meta pueden registrar su d\\u00eda\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Quitar el registro de hoy",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/submetas/{{codigoHabito}}/registros/{{hoy}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "submetas",
+                "{{codigoHabito}}",
+                "registros",
+                "{{hoy}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 204', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Registrar de nuevo 20 páginas",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/submetas/{{codigoHabito}}/registros/{{hoy}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "submetas",
+                "{{codigoHabito}}",
+                "registros",
+                "{{hoy}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('cumple el objetivo', () => pm.expect(pm.response.json().cumplido).to.be.true);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Agregar un hábito Sí / No",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/submetas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "submetas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Leer antes de dormir\",\n  \"tipo\": \"SI_NO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 201', () => pm.response.to.have.status(201));",
+                  "pm.environment.set('codigoSiNo', pm.response.json().codigoSubMeta);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sí / No con valor 2",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/submetas/{{codigoSiNo}}/registros/{{hoy}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "submetas",
+                "{{codigoSiNo}}",
+                "registros",
+                "{{hoy}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: En un hábito Sí / No el valor es 1 (hecho) o 0 (no hecho)', () => pm.expect(pm.response.json().errores).to.include(\"En un h\\u00e1bito S\\u00ed / No el valor es 1 (hecho) o 0 (no hecho)\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Borrar el hábito Sí / No",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/submetas/{{codigoSiNo}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "submetas",
+                "{{codigoSiNo}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 204', () => pm.response.to.have.status(204));"
                 ]
               }
             }
@@ -1572,7 +2500,48 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 400', () => pm.response.to.have.status(400));"
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Un hito no tiene estadísticas por día', () => pm.expect(pm.response.json().errores).to.include(\"Un hito no tiene estad\\u00edsticas por d\\u00eda\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Beto no participa: no ve el camino",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenB}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/camino",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "camino"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 403', () => pm.response.to.have.status(403));",
+                  "pm.test('mensaje: No participas en esta meta', () => pm.expect(pm.response.json().mensaje).to.eql(\"No participas en esta meta\"));"
                 ]
               }
             }
@@ -1584,6 +2553,218 @@
       "name": "HU13 · Invitar a una meta",
       "description": "POST /api/metas/{codigo}/invitaciones y código para unirse",
       "item": [
+        {
+          "name": "Pedido sin persona",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/invitaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "invitaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Elige a quién quieres invitar', () => pm.expect(pm.response.json().errores).to.include(\"Elige a qui\\u00e9n quieres invitar\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Beto no es el creador: no invita",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenB}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/invitaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "invitaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigoUsuario\": \"{{codigoA}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 403', () => pm.response.to.have.status(403));",
+                  "pm.test('mensaje: Solo el creador puede invitar personas a la meta', () => pm.expect(pm.response.json().mensaje).to.eql(\"Solo el creador puede invitar personas a la meta\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Invitarse a sí misma",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/invitaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "invitaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigoUsuario\": \"{{codigoA}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: No puedes invitarte a ti mismo', () => pm.expect(pm.response.json().errores).to.include(\"No puedes invitarte a ti mismo\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Persona que no existe",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/invitaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "invitaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigoUsuario\": 999999\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 404', () => pm.response.to.have.status(404));",
+                  "pm.test('mensaje: No existe el usuario con código 999999', () => pm.expect(pm.response.json().mensaje).to.eql(\"No existe el usuario con c\\u00f3digo 999999\"));"
+                ]
+              }
+            }
+          ]
+        },
         {
           "name": "Ana invita a Beto",
           "request": {
@@ -1630,7 +2811,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 201', () => pm.response.to.have.status(201));"
+                  "pm.test('responde 201', () => pm.response.to.have.status(201));",
+                  "pm.test('queda PENDIENTE', () => pm.expect(pm.response.json().participante.estado).to.eql('PENDIENTE'));"
                 ]
               }
             }
@@ -1682,7 +2864,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 409', () => pm.response.to.have.status(409));"
+                  "pm.test('responde 409', () => pm.response.to.have.status(409));",
+                  "pm.test('mensaje: Beto Newman ya tiene una invitación pendiente a esta meta', () => pm.expect(pm.response.json().mensaje).to.eql(\"Beto Newman ya tiene una invitaci\\u00f3n pendiente a esta meta\"));"
                 ]
               }
             }
@@ -1722,7 +2905,9 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('responde 201', () => pm.response.to.have.status(201));",
-                  "pm.test('trae un código', () => pm.expect(pm.response.json().codigo).to.be.a('string'));"
+                  "const r = pm.response.json();",
+                  "pm.test('código de 8 caracteres sin ambiguos', () => pm.expect(r.codigo).to.match(/^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{8}$/));",
+                  "pm.test('vence en 7 días', () => { const dias = (new Date(r.expira + 'Z') - Date.now()) / 86400000; pm.expect(dias).to.be.within(6.9, 7.1); });"
                 ]
               }
             }
@@ -1762,6 +2947,46 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('responde 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Beto no maneja el código",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenB}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/codigo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "codigo"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 403', () => pm.response.to.have.status(403));",
+                  "pm.test('mensaje: Solo el creador puede manejar el código de la meta', () => pm.expect(pm.response.json().mensaje).to.eql(\"Solo el creador puede manejar el c\\u00f3digo de la meta\"));"
                 ]
               }
             }
@@ -1851,7 +3076,60 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 400', () => pm.response.to.have.status(400));"
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Ese código no existe o ya venció. Revisa que esté bien escrito.', () => pm.expect(pm.response.json().errores).to.include(\"Ese c\\u00f3digo no existe o ya venci\\u00f3. Revisa que est\\u00e9 bien escrito.\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unirse sin código",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenB}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/unirse",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "unirse"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Escribe el código que te compartieron', () => pm.expect(pm.response.json().errores).to.include(\"Escribe el c\\u00f3digo que te compartieron\"));"
                 ]
               }
             }
@@ -1896,6 +3174,198 @@
                 "exec": [
                   "pm.test('responde 200', () => pm.response.to.have.status(200));",
                   "pm.test('incluye la meta', () => pm.expect(pm.response.json().map(i => i.codigoMeta)).to.include(pm.environment.get('codigoMeta')));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Responder sin decir si acepta",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenB}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/invitaciones/{{codigoMeta}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "invitaciones",
+                "{{codigoMeta}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Indica si aceptas o rechazas la invitación', () => pm.expect(pm.response.json().errores).to.include(\"Indica si aceptas o rechazas la invitaci\\u00f3n\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ana no tiene invitación a su propia meta",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/invitaciones/{{codigoMeta}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "invitaciones",
+                "{{codigoMeta}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"aceptar\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 404', () => pm.response.to.have.status(404));",
+                  "pm.test('mensaje: No tienes una invitación pendiente a esta meta', () => pm.expect(pm.response.json().mensaje).to.eql(\"No tienes una invitaci\\u00f3n pendiente a esta meta\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Enlace del correo que no existe (sin sesión)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/invitaciones/correo?token=enlace-falso",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "invitaciones",
+                "correo"
+              ],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "enlace-falso"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 410', () => pm.response.to.have.status(410));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Rechazar desde el correo con un enlace falso (sin sesión)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/invitaciones/correo/rechazar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "invitaciones",
+                "correo",
+                "rechazar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"enlace-falso\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 410', () => pm.response.to.have.status(410));"
                 ]
               }
             }
@@ -1953,6 +3423,58 @@
           ]
         },
         {
+          "name": "Aceptar otra vez",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenB}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/invitaciones/{{codigoMeta}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "invitaciones",
+                "{{codigoMeta}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"aceptar\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 404', () => pm.response.to.have.status(404));",
+                  "pm.test('mensaje: No tienes una invitación pendiente a esta meta', () => pm.expect(pm.response.json().mensaje).to.eql(\"No tienes una invitaci\\u00f3n pendiente a esta meta\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "name": "Beto ya la ve en Mis metas",
           "request": {
             "method": "GET",
@@ -1985,6 +3507,137 @@
                 "exec": [
                   "pm.test('responde 200', () => pm.response.to.have.status(200));",
                   "pm.test('está en su lista', () => pm.expect(pm.response.json().map(m => m.codigoMeta)).to.include(pm.environment.get('codigoMeta')));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ana genera otro código",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/codigo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "codigo"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 201', () => pm.response.to.have.status(201));",
+                  "pm.environment.set('codigoUnion', pm.response.json().codigo);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Beto ya participa: no se une con el código",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenB}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/unirse",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "unirse"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"{{codigoUnion}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 409', () => pm.response.to.have.status(409));",
+                  "pm.test('mensaje: Ya participas en esta meta', () => pm.expect(pm.response.json().mensaje).to.eql(\"Ya participas en esta meta\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ana desactiva el código",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/codigo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "codigo"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 204', () => pm.response.to.have.status(204));"
                 ]
               }
             }
@@ -2189,7 +3842,60 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 400', () => pm.response.to.have.status(400));"
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Indica si la meta queda oculta', () => pm.expect(pm.response.json().errores).to.include(\"Indica si la meta queda oculta\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Meta que no existe",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/999999/visibilidad",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "999999",
+                "visibilidad"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"oculta\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 404', () => pm.response.to.have.status(404));"
                 ]
               }
             }
@@ -2201,6 +3907,46 @@
       "name": "HU6, HU11 y HU15 · Cumplir la meta",
       "description": "PATCH /api/metas/{codigo}/cumplida",
       "item": [
+        {
+          "name": "HU21 antes de cumplirla: una meta activa no se comparte",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/compartir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "compartir"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Solo se puede compartir una meta cumplida', () => pm.expect(pm.response.json().errores).to.include(\"Solo se puede compartir una meta cumplida\"));"
+                ]
+              }
+            }
+          ]
+        },
         {
           "name": "Beto no es el creador",
           "request": {
@@ -2234,7 +3980,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 403', () => pm.response.to.have.status(403));"
+                  "pm.test('responde 403', () => pm.response.to.have.status(403));",
+                  "pm.test('mensaje: Solo el creador puede marcar la meta como cumplida', () => pm.expect(pm.response.json().mensaje).to.eql(\"Solo el creador puede marcar la meta como cumplida\"));"
                 ]
               }
             }
@@ -2406,7 +4153,62 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 400', () => pm.response.to.have.status(400));"
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: La meta ya está cumplida: su camino es solo de lectura', () => pm.expect(pm.response.json().errores).to.include(\"La meta ya est\\u00e1 cumplida: su camino es solo de lectura\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Tampoco se registran días",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/submetas/{{codigoHabito}}/registros/{{hoy}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "submetas",
+                "{{codigoHabito}}",
+                "registros",
+                "{{hoy}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: La meta ya está cumplida: su camino es solo de lectura', () => pm.expect(pm.response.json().errores).to.include(\"La meta ya est\\u00e1 cumplida: su camino es solo de lectura\"));"
                 ]
               }
             }
@@ -2452,7 +4254,90 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('responde 201', () => pm.response.to.have.status(201));",
-                  "pm.environment.set('tokenLogro', pm.response.json().token);"
+                  "const r = pm.response.json();",
+                  "pm.test('token de 10 caracteres sin ambiguos', () => pm.expect(r.token).to.match(/^[ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789]{10}$/));",
+                  "pm.test('URL del enlace', () => pm.expect(r.url).to.match(new RegExp('/logros/' + r.token + '$')));",
+                  "pm.environment.set('tokenLogro', r.token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Compartir otra vez reutiliza el enlace",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/compartir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "compartir"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 201', () => pm.response.to.have.status(201));",
+                  "pm.test('mismo token', () => pm.expect(pm.response.json().token).to.eql(pm.environment.get('tokenLogro')));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Beto también puede compartirlo (participa)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenB}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMeta}}/compartir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMeta}}",
+                "compartir"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 201', () => pm.response.to.have.status(201));",
+                  "pm.test('su propio enlace', () => pm.expect(pm.response.json().token).to.not.eql(pm.environment.get('tokenLogro')));"
                 ]
               }
             }
@@ -2487,7 +4372,9 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('responde 200', () => pm.response.to.have.status(200));",
-                  "pm.test('nombre de la meta', () => pm.expect(pm.response.json().nombreMeta).to.eql('Leer 15 libros (Newman)'));"
+                  "const r = pm.response.json();",
+                  "pm.test('nombre de la meta', () => pm.expect(r.nombreMeta).to.eql('Leer 15 libros (Newman)'));",
+                  "pm.test('nombre visible sin apellido completo', () => pm.expect(r.nombreVisible).to.eql('Ana N.'));"
                 ]
               }
             }
@@ -2521,7 +4408,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 404', () => pm.response.to.have.status(404));"
+                  "pm.test('responde 404', () => pm.response.to.have.status(404));",
+                  "pm.test('mensaje: Este logro no existe o el enlace no es válido', () => pm.expect(pm.response.json().mensaje).to.eql(\"Este logro no existe o el enlace no es v\\u00e1lido\"));"
                 ]
               }
             }
@@ -2656,7 +4544,9 @@
                   "pm.test('responde 200', () => pm.response.to.have.status(200));",
                   "const r = pm.response.json();",
                   "pm.test('catálogo de 6', () => pm.expect(r.total).to.eql(6));",
-                  "pm.test('ganó al menos una', () => pm.expect(r.ganadas).to.be.at.least(1));"
+                  "pm.test('ganó al menos una', () => pm.expect(r.ganadas).to.be.at.least(1));",
+                  "pm.environment.set('insigniaGanada', r.insignias.find(i => i.obtenida).codigoInsignia);",
+                  "pm.environment.set('insigniaPendiente', r.insignias.find(i => !i.obtenida).codigoInsignia);"
                 ]
               }
             }
@@ -3085,7 +4975,314 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 400', () => pm.response.to.have.status(400));"
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: La frase puede tener hasta 100 caracteres', () => pm.expect(pm.response.json().errores).to.include(\"La frase puede tener hasta 100 caracteres\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Portada que no existe",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me/perfil-publico",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-publico"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"frase\": \"Paso a paso\",\n  \"portada\": \"ARCOIRIS\",\n  \"codigoInsigniaDestacada\": null,\n  \"metasDestacadas\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Elige una portada válida', () => pm.expect(pm.response.json().errores).to.include(\"Elige una portada v\\u00e1lida\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Insignia que no ganó",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me/perfil-publico",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-publico"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"frase\": \"Paso a paso\",\n  \"portada\": \"AURORA\",\n  \"codigoInsigniaDestacada\": \"{{insigniaPendiente}}\",\n  \"metasDestacadas\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Elige una insignia que hayas ganado', () => pm.expect(pm.response.json().errores).to.include(\"Elige una insignia que hayas ganado\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cuatro metas destacadas",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me/perfil-publico",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-publico"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"frase\": \"Paso a paso\",\n  \"portada\": \"AURORA\",\n  \"codigoInsigniaDestacada\": null,\n  \"metasDestacadas\": [\n    1,\n    2,\n    3,\n    4\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Puedes destacar hasta 3 metas', () => pm.expect(pm.response.json().errores).to.include(\"Puedes destacar hasta 3 metas\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Destacar la insignia y la meta cumplida",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me/perfil-publico",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-publico"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"frase\": \"Paso a paso\",\n  \"portada\": \"AURORA\",\n  \"codigoInsigniaDestacada\": \"{{insigniaGanada}}\",\n  \"metasDestacadas\": [\n    \"{{codigoMeta}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', () => pm.response.to.have.status(200));",
+                  "const p = pm.response.json().personalizacion;",
+                  "pm.test('insignia destacada', () => pm.expect(p.insigniaDestacada.codigoInsignia).to.eql(pm.environment.get('insigniaGanada')));",
+                  "pm.test('una meta destacada', () => pm.expect(p.metasDestacadas.length).to.eql(1));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sin cuerpo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me/perfil-publico",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-publico"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('mensaje: Solicitud mal formada', () => pm.expect(pm.response.json().mensaje).to.eql(\"Solicitud mal formada\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Dejar el perfil como estaba",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me/perfil-publico",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "perfil-publico"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"frase\": \"\",\n  \"portada\": \"NINGUNA\",\n  \"codigoInsigniaDestacada\": null,\n  \"metasDestacadas\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', () => pm.response.to.have.status(200));"
                 ]
               }
             }
@@ -3167,7 +5364,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Ana\",\n  \"apellido\": \"Newman\"\n}",
+              "raw": "{\n  \"nombre\": \"  Ana  \",\n  \"apellido\": \"Newman\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -3181,7 +5378,112 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 200', () => pm.response.to.have.status(200));"
+                  "pm.test('responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('sin espacios de más', () => pm.expect(pm.response.json().nombre).to.eql('Ana'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Nombre y apellido vacíos",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \" \",\n  \"apellido\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('los dos errores', () => pm.expect(pm.response.json().errores).to.eql(['Escribe tu nombre', 'Escribe tu apellido']));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Apellido de 51 caracteres",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana\",\n  \"apellido\": \"nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: El apellido puede tener máximo 50 caracteres', () => pm.expect(pm.response.json().errores).to.include(\"El apellido puede tener m\\u00e1ximo 50 caracteres\"));"
                 ]
               }
             }
@@ -3233,7 +5535,216 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 400', () => pm.response.to.have.status(400));"
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: La foto debe ser una imagen JPG, PNG o WebP', () => pm.expect(pm.response.json().errores).to.include(\"La foto debe ser una imagen JPG, PNG o WebP\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sin foto",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me/foto",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "foto"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Elige una foto', () => pm.expect(pm.response.json().errores).to.include(\"Elige una foto\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Foto de más de 512 KB",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me/foto",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "foto"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"foto\": \"{{fotoPesada}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: La foto pesa demasiado; elige una más liviana', () => pm.expect(pm.response.json().errores).to.include(\"La foto pesa demasiado; elige una m\\u00e1s liviana\"));"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('fotoPesada', 'data:image/png;base64,iVBORw0KGgo' + 'A'.repeat(720000));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Foto PNG válida",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me/foto",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "foto"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"foto\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('foto guardada', () => pm.expect(pm.response.json().foto).to.eql(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Quitar la foto",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me/foto",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "foto"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('sin foto', () => pm.expect(pm.response.json().foto).to.be.null);"
                 ]
               }
             }
@@ -3338,7 +5849,61 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 400', () => pm.response.to.have.status(400));"
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('dice qué falla', () => pm.expect(pm.response.json().errores).to.eql(['Elige un modo válido', 'Elige un color de acento válido']));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Apariencia en minúsculas y con espacios",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me/apariencia",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "apariencia"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"modo\": \" oscuro \",\n  \"acento\": \"coral\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('se normaliza', () => pm.expect(pm.response.json().apariencia).to.eql({ modo: 'OSCURO', acento: 'CORAL' }));"
                 ]
               }
             }
@@ -3443,7 +6008,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 400', () => pm.response.to.have.status(400));"
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('solo el peinado falla', () => pm.expect(pm.response.json().errores).to.eql(['Elige un peinado válido']));"
                 ]
               }
             }
@@ -3553,6 +6119,99 @@
                 "exec": [
                   "pm.test('responde 201', () => pm.response.to.have.status(201));",
                   "pm.environment.set('codigoMetaBorrar', pm.response.json().codigoMeta);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HU25: Beto no participa, no la oculta",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenB}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMetaBorrar}}/visibilidad",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMetaBorrar}}",
+                "visibilidad"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"oculta\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 403', () => pm.response.to.have.status(403));",
+                  "pm.test('mensaje: Solo los participantes de la meta pueden ocultarla', () => pm.expect(pm.response.json().mensaje).to.eql(\"Solo los participantes de la meta pueden ocultarla\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "HU21: Beto no participa, no comparte",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenB}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{codigoMetaBorrar}}/compartir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{codigoMetaBorrar}}",
+                "compartir"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 403', () => pm.response.to.have.status(403));",
+                  "pm.test('mensaje: Solo un participante de la meta puede compartir el logro', () => pm.expect(pm.response.json().mensaje).to.eql(\"Solo un participante de la meta puede compartir el logro\"));"
                 ]
               }
             }
@@ -4493,6 +7152,59 @@
           ]
         },
         {
+          "name": "Sin la contraseña nueva",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenA}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/me/contrasena",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "me",
+                "contrasena"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nueva\": \"\",\n  \"confirmacion\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: Escribe la contraseña nueva', () => pm.expect(pm.response.json().errores).to.include(\"Escribe la contrase\\u00f1a nueva\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "name": "Cambiar la contraseña",
           "request": {
             "method": "PUT",
@@ -4663,7 +7375,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 401', () => pm.response.to.have.status(401));"
+                  "pm.test('responde 401', () => pm.response.to.have.status(401));",
+                  "pm.test('mensaje: Email o contraseña incorrectos', () => pm.expect(pm.response.json().mensaje).to.eql(\"Email o contrase\\u00f1a incorrectos\"));"
                 ]
               }
             }
@@ -4866,7 +7579,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('responde 400', () => pm.response.to.have.status(400));"
+                  "pm.test('responde 400', () => pm.response.to.have.status(400));",
+                  "pm.test('error: El formato del email no es válido', () => pm.expect(pm.response.json().errores).to.include(\"El formato del email no es v\\u00e1lido\"));"
                 ]
               }
             }
