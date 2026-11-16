@@ -35,7 +35,7 @@ public enum AccionLog {
     EDITAR_PERFIL,      // HU23: nombre y apellido
     CAMBIAR_FOTO_PERFIL, // HU23
     QUITAR_FOTO_PERFIL, // HU23
-    CAMBIAR_APARIENCIA, // HU19: tema, modo o color de acento
+    CAMBIAR_APARIENCIA, // HU30: tema, modo o color de acento
     CAMBIAR_AVATAR,     // HU20: armar o cambiar el avatar
     CAMBIAR_CONTRASENA, // HU32: cambiar la contraseña desde la cuenta
     SOLICITAR_CODIGO_CONTRASENA, // HU33: pedir el código para cambiar la contraseña olvidada

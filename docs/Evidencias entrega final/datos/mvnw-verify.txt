@@ -5,21 +5,28 @@
 [INFO]   from pom.xml
 [INFO] --------------------------------[ jar ]---------------------------------
 [INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ backend ---
+[INFO] Deleting C:\Users\Lenovo\Documents\GitHub\metamorfosis\backend\target
+[INFO] 
 [INFO] --- jacoco:0.8.13:prepare-agent (preparar-agente) @ backend ---
-[INFO] argLine set to -javaagent:C:\\Users\\david\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.13\\org.jacoco.agent-0.8.13-runtime.jar=destfile=C:\\Users\\david\\OneDrive\\Documents\\GitHub\\metamorfosis\\backend\\target\\jacoco.exec
+[INFO] argLine set to -javaagent:C:\\Users\\Lenovo\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.13\\org.jacoco.agent-0.8.13-runtime.jar=destfile=C:\\Users\\Lenovo\\Documents\\GitHub\\metamorfosis\\backend\\target\\jacoco.exec
 [INFO] 
 [INFO] --- resources:3.5.0:resources (default-resources) @ backend ---
 [INFO] Copying 3 resources from src\main\resources to target\classes
 [INFO] Copying 30 resources from src\main\resources to target\classes
 [INFO] 
 [INFO] --- compiler:3.15.0:compile (default-compile) @ backend ---
-[INFO] Nothing to compile - all classes are up to date.
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 163 source files with javac [debug parameters release 21] to target\classes
 [INFO] 
 [INFO] --- resources:3.5.0:testResources (default-testResources) @ backend ---
-[INFO] skip non existing resourceDirectory C:\Users\david\OneDrive\Documents\GitHub\metamorfosis\backend\src\test\resources
+[INFO] skip non existing resourceDirectory C:\Users\Lenovo\Documents\GitHub\metamorfosis\backend\src\test\resources
 [INFO] 
 [INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ backend ---
-[INFO] Nothing to compile - all classes are up to date.
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 36 source files with javac [debug parameters release 21] to target\test-classes
+[INFO] /C:/Users/Lenovo/Documents/GitHub/metamorfosis/backend/src/test/java/com/metamorfosis/backend/service/MetaServiceEliminarMetaTest.java: C:\Users\Lenovo\Documents\GitHub\metamorfosis\backend\src\test\java\com\metamorfosis\backend\service\MetaServiceEliminarMetaTest.java uses unchecked or unsafe operations.
+[INFO] /C:/Users/Lenovo/Documents/GitHub/metamorfosis/backend/src/test/java/com/metamorfosis/backend/service/MetaServiceEliminarMetaTest.java: Recompile with -Xlint:unchecked for details.
 [INFO] 
 [INFO] --- surefire:3.5.6:test (default-test) @ backend ---
 [INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
@@ -28,10 +35,10 @@
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
 [INFO] Running com.metamorfosis.backend.BackendApplicationTests
-20:04:27.647 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.metamorfosis.backend.BackendApplicationTests]: BackendApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-20:04:28.264 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.metamorfosis.backend.BackendApplication for test class com.metamorfosis.backend.BackendApplicationTests
-20:04:28.853 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.metamorfosis.backend.BackendApplicationTests]: BackendApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-20:04:28.857 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.metamorfosis.backend.BackendApplication for test class com.metamorfosis.backend.BackendApplicationTests
+09:37:00.307 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.metamorfosis.backend.BackendApplicationTests]: BackendApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+09:37:00.901 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.metamorfosis.backend.BackendApplication for test class com.metamorfosis.backend.BackendApplicationTests
+09:37:01.357 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.metamorfosis.backend.BackendApplicationTests]: BackendApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+09:37:01.361 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.metamorfosis.backend.BackendApplication for test class com.metamorfosis.backend.BackendApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -42,78 +49,84 @@
 
  :: Spring Boot ::                (v4.1.1)
 
-2026-11-14T20:04:30.477-05:00  WARN 10192 --- [backend] [           main] ory$DuplicateJsonObjectContextCustomizer : 
+2026-11-16T09:37:02.570-05:00  WARN 8120 --- [backend] [           main] ory$DuplicateJsonObjectContextCustomizer : 
 
 Found multiple occurrences of org.json.JSONObject on the class path:
 
-	jar:file:/C:/Users/david/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
-	jar:file:/C:/Users/david/.m2/repository/org/json/json/20231013/json-20231013.jar!/org/json/JSONObject.class
+	jar:file:/C:/Users/Lenovo/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+	jar:file:/C:/Users/Lenovo/.m2/repository/org/json/json/20231013/json-20231013.jar!/org/json/JSONObject.class
 
 You may wish to exclude one of them to ensure predictable runtime behavior
 
-2026-11-14T20:04:30.618-05:00  INFO 10192 --- [backend] [           main] c.m.backend.BackendApplicationTests      : Starting BackendApplicationTests using Java 21.0.12.1 with PID 10192 (started by david in C:\Users\david\OneDrive\Documents\GitHub\metamorfosis\backend)
-2026-11-14T20:04:30.630-05:00  INFO 10192 --- [backend] [           main] c.m.backend.BackendApplicationTests      : No active profile set, falling back to 1 default profile: "local"
-2026-11-14T20:04:34.408-05:00  INFO 10192 --- [backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-11-14T20:04:34.784-05:00  INFO 10192 --- [backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 340 ms. Found 14 JPA repository interfaces.
-2026-11-14T20:04:38.625-05:00  INFO 10192 --- [backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-11-14T20:04:41.220-05:00  INFO 10192 --- [backend] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@73dbb666
-2026-11-14T20:04:41.229-05:00  INFO 10192 --- [backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-11-14T20:04:41.465-05:00  INFO 10192 --- [backend] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:5432/postgres (PostgreSQL 17.11)
-2026-11-14T20:04:43.891-05:00  INFO 10192 --- [backend] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 28 migrations (execution time 00:00.783s)
-2026-11-14T20:04:45.728-05:00  INFO 10192 --- [backend] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 28
-2026-11-14T20:04:45.871-05:00  INFO 10192 --- [backend] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
-2026-11-14T20:04:47.082-05:00  INFO 10192 --- [backend] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
-2026-11-14T20:04:47.326-05:00  INFO 10192 --- [backend] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
-2026-11-14T20:04:49.203-05:00  INFO 10192 --- [backend] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-11-14T20:04:50.396-05:00  INFO 10192 --- [backend] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
-	Database JDBC URL [jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:5432/postgres]
+2026-11-16T09:37:02.606-05:00  INFO 8120 --- [backend] [           main] c.m.backend.BackendApplicationTests      : Starting BackendApplicationTests using Java 21.0.2 with PID 8120 (started by Lenovo in C:\Users\Lenovo\Documents\GitHub\metamorfosis\backend)
+2026-11-16T09:37:02.608-05:00  INFO 8120 --- [backend] [           main] c.m.backend.BackendApplicationTests      : No active profile set, falling back to 1 default profile: "local"
+2026-11-16T09:37:05.094-05:00  INFO 8120 --- [backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-11-16T09:37:05.309-05:00  INFO 8120 --- [backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 181 ms. Found 14 JPA repository interfaces.
+2026-11-16T09:37:07.443-05:00  INFO 8120 --- [backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-11-16T09:37:08.090-05:00  INFO 8120 --- [backend] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@29cd7b9e
+2026-11-16T09:37:08.096-05:00  INFO 8120 --- [backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-11-16T09:37:08.269-05:00  INFO 8120 --- [backend] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://127.0.0.1:55432/metamorfosis (PostgreSQL 16.16)
+2026-11-16T09:37:08.773-05:00  INFO 8120 --- [backend] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 28 migrations (execution time 00:00.278s)
+2026-11-16T09:37:08.827-05:00  INFO 8120 --- [backend] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 28
+2026-11-16T09:37:08.835-05:00  INFO 8120 --- [backend] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-11-16T09:37:09.176-05:00  INFO 8120 --- [backend] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-11-16T09:37:09.374-05:00  INFO 8120 --- [backend] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-11-16T09:37:11.471-05:00  INFO 8120 --- [backend] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-11-16T09:37:11.814-05:00  INFO 8120 --- [backend] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:postgresql://127.0.0.1:55432/metamorfosis]
 	Database driver: PostgreSQL JDBC Driver
 	Database dialect: PostgreSQLDialect
-	Database version: 17.11
-	Default catalog/schema: postgres/public
+	Database version: 16.16
+	Default catalog/schema: metamorfosis/public
 	Autocommit mode: undefined/unknown
 	Isolation level: READ_COMMITTED [default READ_COMMITTED]
 	JDBC fetch size: none
 	Pool: DataSourceConnectionProvider
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2026-11-14T20:04:54.507-05:00  INFO 10192 --- [backend] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-11-14T20:04:55.459-05:00  INFO 10192 --- [backend] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-11-14T20:04:55.706-05:00  INFO 10192 --- [backend] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-11-14T20:05:01.101-05:00  WARN 10192 --- [backend] [           main] .s.a.UserDetailsServiceAutoConfiguration : 
+2026-11-16T09:37:15.045-05:00  INFO 8120 --- [backend] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-16T09:37:15.185-05:00  INFO 8120 --- [backend] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-11-16T09:37:15.395-05:00  INFO 8120 --- [backend] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-11-16T09:37:19.666-05:00  WARN 8120 --- [backend] [           main] .s.a.UserDetailsServiceAutoConfiguration : 
 
-Using generated security password: 37663716-5dc6-4cf8-9cd5-6341b9601333
+Using generated security password: 61f0b1b5-e400-4402-b32b-e0723fe3c26c
 
 This generated password is for development use only. Your security configuration must be updated before running your application in production.
 
-2026-11-14T20:05:01.135-05:00  INFO 10192 --- [backend] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2026-11-14T20:05:02.811-05:00  INFO 10192 --- [backend] [           main] c.m.backend.BackendApplicationTests      : Started BackendApplicationTests in 33.686 seconds (process running for 40.517)
+2026-11-16T09:37:19.701-05:00  INFO 8120 --- [backend] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-11-16T09:37:21.496-05:00  INFO 8120 --- [backend] [           main] c.m.backend.BackendApplicationTests      : Started BackendApplicationTests in 19.923 seconds (process running for 25.179)
 Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
-WARNING: A Java agent has been loaded dynamically (C:\Users\david\.m2\repository\net\bytebuddy\byte-buddy-agent\1.18.11\byte-buddy-agent-1.18.11.jar)
+WARNING: A Java agent has been loaded dynamically (C:\Users\Lenovo\.m2\repository\net\bytebuddy\byte-buddy-agent\1.18.11\byte-buddy-agent-1.18.11.jar)
 WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
 WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
 WARNING: Dynamic loading of agents will be disallowed by default in a future release
 OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
-[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 37.59 s -- in com.metamorfosis.backend.BackendApplicationTests
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 22.79 s -- in com.metamorfosis.backend.BackendApplicationTests
 [INFO] Running com.metamorfosis.backend.config.JwtAuthFilterTest
-2026-11-14T20:05:05.951-05:00  WARN 10192 --- [backend] [           main] c.m.backend.config.JwtAuthFilter         : Acceso rechazado: token anterior al cambio de contraseña (usuario 1) en GET /api/metas
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.322 s -- in com.metamorfosis.backend.config.JwtAuthFilterTest
+2026-11-16T09:37:24.251-05:00  WARN 8120 --- [backend] [           main] c.m.backend.config.JwtAuthFilter         : Acceso rechazado: token anterior al cambio de contraseña (usuario 1) en GET /api/metas
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.770 s -- in com.metamorfosis.backend.config.JwtAuthFilterTest
 [INFO] Running com.metamorfosis.backend.i18n.PlantillaCodigoRecuperacionTest
-[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.100 s -- in com.metamorfosis.backend.i18n.PlantillaCodigoRecuperacionTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.031 s -- in com.metamorfosis.backend.i18n.PlantillaCodigoRecuperacionTest
 [INFO] Running com.metamorfosis.backend.i18n.PlantillaContrasenaCambiadaTest
-[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.038 s -- in com.metamorfosis.backend.i18n.PlantillaContrasenaCambiadaTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.020 s -- in com.metamorfosis.backend.i18n.PlantillaContrasenaCambiadaTest
 [INFO] Running com.metamorfosis.backend.i18n.PlantillasCorreoTest
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.038 s -- in com.metamorfosis.backend.i18n.PlantillasCorreoTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s -- in com.metamorfosis.backend.i18n.PlantillasCorreoTest
 [INFO] Running com.metamorfosis.backend.i18n.TraductorMensajesTest
-[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.082 s -- in com.metamorfosis.backend.i18n.TraductorMensajesTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.059 s -- in com.metamorfosis.backend.i18n.TraductorMensajesTest
 [INFO] Running com.metamorfosis.backend.service.AuthServiceCerrarSesionTest
-[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.242 s -- in com.metamorfosis.backend.service.AuthServiceCerrarSesionTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.736 s -- in com.metamorfosis.backend.service.AuthServiceCerrarSesionTest
+[INFO] Running com.metamorfosis.backend.service.AuthServiceIniciarSesionTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.067 s -- in com.metamorfosis.backend.service.AuthServiceIniciarSesionTest
+[INFO] Running com.metamorfosis.backend.service.AuthServiceRegistrarTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.082 s -- in com.metamorfosis.backend.service.AuthServiceRegistrarTest
+[INFO] Running com.metamorfosis.backend.service.BloqueoLoginServiceTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.194 s -- in com.metamorfosis.backend.service.BloqueoLoginServiceTest
 [INFO] Running com.metamorfosis.backend.service.CalculoCaminoTest
-[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.082 s -- in com.metamorfosis.backend.service.CalculoCaminoTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.031 s -- in com.metamorfosis.backend.service.CalculoCaminoTest
 [INFO] Running com.metamorfosis.backend.service.CodigoUnionServiceTest
-[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.607 s -- in com.metamorfosis.backend.service.CodigoUnionServiceTest
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.229 s -- in com.metamorfosis.backend.service.CodigoUnionServiceTest
 [INFO] Running com.metamorfosis.backend.service.ContrasenaServiceTest
-2026-11-14T20:05:08.687-05:00  WARN 10192 --- [backend] [           main] c.m.backend.service.ContrasenaService    : No se pudo enviar el aviso de cambio de contraseña al usuario 1
+2026-11-16T09:37:25.885-05:00  WARN 8120 --- [backend] [           main] c.m.backend.service.ContrasenaService    : No se pudo enviar el aviso de cambio de contraseña al usuario 1
 
 com.metamorfosis.backend.exception.CorreoNoEnviadoException: Brevo no responde
 	at com.metamorfosis.backend.service.ContrasenaService.avisarPorCorreo(ContrasenaService.java:120) ~[classes/:na]
@@ -202,17 +215,19 @@ com.metamorfosis.backend.exception.CorreoNoEnviadoException: Brevo no responde
 	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507) ~[surefire-booter-3.5.6.jar:3.5.6]
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495) ~[surefire-booter-3.5.6.jar:3.5.6]
 
-[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.618 s -- in com.metamorfosis.backend.service.ContrasenaServiceTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.165 s -- in com.metamorfosis.backend.service.ContrasenaServiceTest
 [INFO] Running com.metamorfosis.backend.service.CuentaServiceAparienciaTest
-[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.135 s -- in com.metamorfosis.backend.service.CuentaServiceAparienciaTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.044 s -- in com.metamorfosis.backend.service.CuentaServiceAparienciaTest
 [INFO] Running com.metamorfosis.backend.service.CuentaServiceAvatarTest
-[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.081 s -- in com.metamorfosis.backend.service.CuentaServiceAvatarTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.031 s -- in com.metamorfosis.backend.service.CuentaServiceAvatarTest
+[INFO] Running com.metamorfosis.backend.service.CuentaServiceDatosYFotoTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.163 s -- in com.metamorfosis.backend.service.CuentaServiceDatosYFotoTest
 [INFO] Running com.metamorfosis.backend.service.InsigniaServiceGaleriaTest
-[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.861 s -- in com.metamorfosis.backend.service.InsigniaServiceGaleriaTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.356 s -- in com.metamorfosis.backend.service.InsigniaServiceGaleriaTest
 [INFO] Running com.metamorfosis.backend.service.InsigniaServiceTest
-[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.164 s -- in com.metamorfosis.backend.service.InsigniaServiceTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.040 s -- in com.metamorfosis.backend.service.InsigniaServiceTest
 [INFO] Running com.metamorfosis.backend.service.InvitacionServiceInvitarTest
-2026-11-14T20:05:10.393-05:00  WARN 10192 --- [backend] [           main] c.m.backend.service.InvitacionService    : No se pudo enviar el correo de invitación a la meta 10
+2026-11-16T09:37:26.722-05:00  WARN 8120 --- [backend] [           main] c.m.backend.service.InvitacionService    : No se pudo enviar el correo de invitación a la meta 10
 
 com.metamorfosis.backend.exception.CorreoNoEnviadoException: Brevo caído
 	at com.metamorfosis.backend.service.InvitacionService.enviarCorreo(InvitacionService.java:238) ~[classes/:na]
@@ -300,50 +315,60 @@ com.metamorfosis.backend.exception.CorreoNoEnviadoException: Brevo caído
 	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507) ~[surefire-booter-3.5.6.jar:3.5.6]
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495) ~[surefire-booter-3.5.6.jar:3.5.6]
 
-[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.457 s -- in com.metamorfosis.backend.service.InvitacionServiceInvitarTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.174 s -- in com.metamorfosis.backend.service.InvitacionServiceInvitarTest
 [INFO] Running com.metamorfosis.backend.service.InvitacionServiceResponderTest
-[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.295 s -- in com.metamorfosis.backend.service.InvitacionServiceResponderTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.059 s -- in com.metamorfosis.backend.service.InvitacionServiceResponderTest
+[INFO] Running com.metamorfosis.backend.service.LogroCompartidoServiceTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.159 s -- in com.metamorfosis.backend.service.LogroCompartidoServiceTest
+[INFO] Running com.metamorfosis.backend.service.MetaServiceCrearMetaTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.151 s -- in com.metamorfosis.backend.service.MetaServiceCrearMetaTest
+[INFO] Running com.metamorfosis.backend.service.MetaServiceEditarMetaTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.029 s -- in com.metamorfosis.backend.service.MetaServiceEditarMetaTest
+[INFO] Running com.metamorfosis.backend.service.MetaServiceEliminarMetaTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s -- in com.metamorfosis.backend.service.MetaServiceEliminarMetaTest
 [INFO] Running com.metamorfosis.backend.service.MetaServiceListarMetasTest
-[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.224 s -- in com.metamorfosis.backend.service.MetaServiceListarMetasTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 s -- in com.metamorfosis.backend.service.MetaServiceListarMetasTest
 [INFO] Running com.metamorfosis.backend.service.MetaServiceMarcarCumplidaTest
-[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.489 s -- in com.metamorfosis.backend.service.MetaServiceMarcarCumplidaTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.039 s -- in com.metamorfosis.backend.service.MetaServiceMarcarCumplidaTest
 [INFO] Running com.metamorfosis.backend.service.MetaServiceVisibilidadTest
-[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.202 s -- in com.metamorfosis.backend.service.MetaServiceVisibilidadTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.041 s -- in com.metamorfosis.backend.service.MetaServiceVisibilidadTest
 [INFO] Running com.metamorfosis.backend.service.PerfilServicePersonalizacionTest
-[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.166 s -- in com.metamorfosis.backend.service.PerfilServicePersonalizacionTest
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 s -- in com.metamorfosis.backend.service.PerfilServicePersonalizacionTest
 [INFO] Running com.metamorfosis.backend.service.PerfilServicePrivacidadTest
-[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.106 s -- in com.metamorfosis.backend.service.PerfilServicePrivacidadTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.038 s -- in com.metamorfosis.backend.service.PerfilServicePrivacidadTest
 [INFO] Running com.metamorfosis.backend.service.PerfilServicePublicoTest
-[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.106 s -- in com.metamorfosis.backend.service.PerfilServicePublicoTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.041 s -- in com.metamorfosis.backend.service.PerfilServicePublicoTest
 [INFO] Running com.metamorfosis.backend.service.PerfilServiceTest
-[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.440 s -- in com.metamorfosis.backend.service.PerfilServiceTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.048 s -- in com.metamorfosis.backend.service.PerfilServiceTest
 [INFO] Running com.metamorfosis.backend.service.RecuperacionContrasenaServiceTest
-[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.599 s -- in com.metamorfosis.backend.service.RecuperacionContrasenaServiceTest
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.283 s -- in com.metamorfosis.backend.service.RecuperacionContrasenaServiceTest
 [INFO] Running com.metamorfosis.backend.service.RegistroDiaServiceTest
 [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.425 s -- in com.metamorfosis.backend.service.RegistroDiaServiceTest
 [INFO] Running com.metamorfosis.backend.service.ReporteServiceTest
-[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.185 s -- in com.metamorfosis.backend.service.ReporteServiceTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.167 s -- in com.metamorfosis.backend.service.ReporteServiceTest
+[INFO] Running com.metamorfosis.backend.service.SolicitudRegistroServiceTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.228 s -- in com.metamorfosis.backend.service.SolicitudRegistroServiceTest
 [INFO] Running com.metamorfosis.backend.service.SubMetaServiceHitosTest
-[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.066 s -- in com.metamorfosis.backend.service.SubMetaServiceHitosTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.033 s -- in com.metamorfosis.backend.service.SubMetaServiceHitosTest
 [INFO] 
 [INFO] Results:
 [INFO] 
-[INFO] Tests run: 229, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 302, Failures: 0, Errors: 0, Skipped: 0
 [INFO] 
 [INFO] 
 [INFO] --- jar:3.5.1:jar (default-jar) @ backend ---
-[INFO] Building jar: C:\Users\david\OneDrive\Documents\GitHub\metamorfosis\backend\target\backend-0.0.1-SNAPSHOT.jar
+[INFO] Building jar: C:\Users\Lenovo\Documents\GitHub\metamorfosis\backend\target\backend-0.0.1-SNAPSHOT.jar
 [INFO] 
 [INFO] --- spring-boot:4.1.1:repackage (repackage) @ backend ---
-[INFO] Replacing main artifact C:\Users\david\OneDrive\Documents\GitHub\metamorfosis\backend\target\backend-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
-[INFO] The original artifact has been renamed to C:\Users\david\OneDrive\Documents\GitHub\metamorfosis\backend\target\backend-0.0.1-SNAPSHOT.jar.original
+[INFO] Replacing main artifact C:\Users\Lenovo\Documents\GitHub\metamorfosis\backend\target\backend-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to C:\Users\Lenovo\Documents\GitHub\metamorfosis\backend\target\backend-0.0.1-SNAPSHOT.jar.original
 [INFO] 
 [INFO] --- jacoco:0.8.13:report (informe-cobertura) @ backend ---
-[INFO] Loading execution data file C:\Users\david\OneDrive\Documents\GitHub\metamorfosis\backend\target\jacoco.exec
+[INFO] Loading execution data file C:\Users\Lenovo\Documents\GitHub\metamorfosis\backend\target\jacoco.exec
 [INFO] Analyzed bundle '' with 165 classes
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  01:07 min
-[INFO] Finished at: 2026-11-14T20:05:23-05:00
+[INFO] Total time:  01:01 min
+[INFO] Finished at: 2026-11-16T09:37:36-05:00
 [INFO] ------------------------------------------------------------------------

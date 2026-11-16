@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 ### Secretos locales ###
 src/main/resources/application-local.properties
+
+### Informe de cobertura de Vitest ###
+coverage
+

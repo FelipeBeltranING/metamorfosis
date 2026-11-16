@@ -2,6 +2,8 @@
 
 Capturas tomadas el **14 de noviembre de 2026** para llenar los recuadros "EVIDENCIA PENDIENTE" del documento
 *Entrega_final_-_Metamorfosis*. El prefijo de cada archivo es la sección del documento donde va.
+Las de pruebas (secciones 5 y 10) se volvieron a tomar el **15 de noviembre de 2026**, después de agregar las
+pruebas de HU21, HU23 y del frontend y de ampliar la colección de Postman.
 
 Todo se ejecutó en local: API Spring Boot y PostgreSQL 16 en Docker; el frontend es el build de producción.
 Los reportes y el resto de pantallas usan la cuenta de demostración `valentina.demo@metamorfosis.test`,
@@ -10,7 +12,7 @@ repartieron entre junio y noviembre para que la gráfica por mes muestre una ten
 
 | Sección del doc | Archivo | Qué muestra |
 |---|---|---|
-| 5 Web services | `05_web_services_newman.png` | Colección de Postman con Newman: 106 peticiones, 165 aserciones, **0 fallos**, en 23 carpetas (una por HU) |
+| 5 Web services | `05_web_services_newman.png` | Colección de Postman con Newman (15 nov): 162 peticiones, 291 aserciones, **0 fallos**, en 23 carpetas |
 | 6.1 Accesibilidad (online) | `06_pagespeed_online_login_movil.png`, `06_pagespeed_online_login_escritorio.png` | **PageSpeed Insights sobre la app publicada** (`https://metamorfosis-mu.vercel.app/login`): accesibilidad **100** en celular y escritorio. Informe: https://pagespeed.web.dev/analysis/https-metamorfosis-mu-vercel-app-login/y6bfj059k4 |
 | 6.1 Accesibilidad (online) | `06_pagespeed_online_login_*_auditorias.png` | Detalle de las auditorías de accesibilidad de ese informe |
 | 6.1 Accesibilidad | `06_lighthouse_resumen_11_pantallas.png` | Lighthouse 12.6 en 11 pantallas, en celular y escritorio: accesibilidad **mínima 96, promedio 99,6** |
@@ -25,11 +27,16 @@ repartieron entre junio y noviembre para que la gráfica por mes muestre una ten
 | 9 Logs | `09_logs_auditoria_registros.png` | Consulta a `log_actividad` con filas EXITO y ERROR de varias acciones |
 | 9 Logs | `09_logs_auditoria_resumen.png` | Conteo de EXITO y ERROR por acción |
 | 9 Logs | `09_logs_archivo_aplicacion.png` | `backend/logs/metamorfosis.log`: INFO de arranque y Flyway, WARN del filtro JWT |
-| 10 Pruebas | `10_pruebas_mvnw_verify.png` | `mvnw verify`: **229 pruebas, 0 fallos**, BUILD SUCCESS |
-| 10 Pruebas | `10_pruebas_cobertura_jacoco.png` | Informe de JaCoCo: 65 % de instrucciones, 52 % de ramas |
+| 10 Pruebas | `10_pruebas_mvnw_verify.png` | `mvnw clean verify` (16 nov): **302 pruebas en 36 clases, 0 fallos**, BUILD SUCCESS |
+| 10 Pruebas | `10_pruebas_cobertura_jacoco.png` | Informe de JaCoCo (16 nov): 78 % de instrucciones, 69 % de ramas y 80 % de líneas |
+| 10 Pruebas | `10_pruebas_frontend_vitest.png` | `npm run test:cobertura` (15 nov): **52 pruebas, 0 fallos**; cobertura de `src/utils` 95 % |
+| 10 Pruebas | `10_pruebas_frontend_cobertura.png` | Informe HTML de cobertura de Vitest |
 | 11 Idiomas | `11_idioma_espanol.png`, `11_idioma_ingles*.png` | La app en español y en inglés (Mis metas, reporte, inicio de sesión) |
+| 11 Idiomas | `11_despliegue_login_es.png`, `11_despliegue_login_en.png` | App desplegada en Vercel (15 nov): inicio de sesión con el navegador en español y en inglés, sin iniciar sesión |
+| 11 Idiomas | `11_api_mensajes_es_en.png` | La API responde en el idioma de `Accept-Language` (15 nov); salida completa en `datos/api-idiomas.txt` |
 
-`datos/` tiene las salidas completas: `newman-salida.txt`, `mvnw-verify.txt`, `npm-lint.txt`, `npm-build.txt` y
+`datos/` tiene las salidas completas: `newman-salida.txt`, `mvnw-verify.txt`, `vitest-salida.txt`, `log_actividad_tras_newman.txt`
+(conteo de filas del log de auditoría después de correr la colección), `npm-lint.txt`, `npm-build.txt` y
 `lighthouse-resumen.json` (los puntajes de las 22 mediciones). Los 22 informes HTML de Lighthouse y el JSON de Newman
 pesan unos 14 MB y no se suben al repositorio (`.gitignore`); quedan solo en el equipo que los generó.
 
@@ -39,4 +46,15 @@ pesan unos 14 MB y no se suben al repositorio (`.gitignore`); quedan solo en el 
   Chrome sobre `https://metamorfosis-mu.vercel.app`, con la sesión iniciada para las pantallas privadas.
 - La URL pública del frontend es `https://metamorfosis-mu.vercel.app`; `metamorfosis.vercel.app` es el sitio de
   otra persona (corregido en `docs/DESPLIEGUE.md`).
-- **SUS (6.2):** hay que aplicarlo a 5 personas reales.
+- **SUS (6.2):** hay que aplicarlo a 5 personas reales. La guía, las tareas, el cuestionario y la calculadora del
+  puntaje están en `docs/Pruebas/usabilidad/`.
+- **WAVE con la extensión:** la lista de pantallas y cómo nombrar las capturas está en
+  `docs/Pruebas/usabilidad/WAVE_lista_de_pantallas.md`.
+
+## Cómo se corrieron las pruebas del 15 de noviembre
+- Backend: JDK 21 y PostgreSQL 16 en Docker (`127.0.0.1:55432`), con `SPRING_DATASOURCE_URL`,
+  `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD`, `APP_JWT_SECRET` (el de `local.postman_environment.json`)
+  y `APP_CORREO_PROVEEDOR=consola` como variables de entorno, para no tocar la base de Supabase.
+  `mvnw clean verify` y luego la API con `PORT=8090`.
+- Postman: `datos_de_prueba.sql` en esa base y `newman run ... --env-var baseUrl=http://localhost:8090`.
+- Frontend: `npm run test:cobertura`, `npm run lint` y `npm run build`.
