@@ -7,11 +7,12 @@ Cada imagen junta, para su HU:
   3. Las filas del log de auditoría de sus acciones, de datos/log_actividad_tras_newman.txt.
 No ejecuta nada: solo da formato a esas salidas. Necesita Microsoft Edge para tomar la captura.
 
-Uso: python "docs/Evidencias entrega final/hu/generar_evidencias_hu.py"
+Uso: python "docs/Evidencias entrega final/hu/generar_evidencias_hu.py" [HU1 HU2 ...]
 """
 import html
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
@@ -20,6 +21,14 @@ EDGE = r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
 
 # HU: (clases JUnit, [(carpeta de Postman, filtro del nombre de la petición o None)], acciones del log)
 HU = {
+    # Sprint 1 (pruebas JUnit agregadas el 16 de noviembre de 2026)
+    'HU1': (['MetaServiceCrearMetaTest'], [('HU1 ', None), ('Seguridad', r'^Mis metas sin token')], ['CREAR_META']),
+    'HU2': (['MetaServiceEditarMetaTest'], [('HU2 ', None)], ['EDITAR_META']),
+    'HU3': (['MetaServiceListarMetasTest'], [('HU3 y HU27', r'^Mis metas'), ('Seguridad', r'^Mis metas sin token')], ['LISTAR_METAS']),
+    'HU4': (['MetaServiceEliminarMetaTest'], [('HU4 ', r'^(?!HU2[15])')], ['ELIMINAR_META']),
+    'HU8': (['AuthServiceRegistrarTest', 'SolicitudRegistroServiceTest'], [('HU8 ', None)], ['SOLICITAR_REGISTRO', 'REGISTRAR_USUARIO', 'RECHAZAR_REGISTRO']),
+    'HU9': (['AuthServiceIniciarSesionTest', 'BloqueoLoginServiceTest', 'JwtAuthFilterTest'], [('HU9 ', None), ('Seguridad', None)], ['INICIAR_SESION']),
+    'HU10': (['AuthServiceCerrarSesionTest'], [('HU10 ', None)], ['CERRAR_SESION']),
     'HU6': (['MetaServiceMarcarCumplidaTest'], [('HU6, HU11 y HU15', None), ('Seguridad', r'^Mis metas sin token')], ['MARCAR_CUMPLIDA']),
     'HU27': (['MetaServiceListarMetasTest'], [('HU3 y HU27', None)], ['LISTAR_METAS']),
     'HU7': (['ReporteServiceTest'], [('HU7 ', None)], ['VER_REPORTE']),
@@ -43,6 +52,11 @@ HU = {
     'HU32': (['ContrasenaServiceTest', 'JwtAuthFilterTest', 'PlantillaContrasenaCambiadaTest'], [('HU32', None), ('Seguridad', r'HU32')], ['CAMBIAR_CONTRASENA']),
     'HU33': (['RecuperacionContrasenaServiceTest', 'PlantillaCodigoRecuperacionTest'], [('HU33', None)], ['SOLICITAR_CODIGO_CONTRASENA', 'RESTABLECER_CONTRASENA']),
 }
+
+
+# Las HU del Sprint 1 tienen JUnit del 16 de noviembre; Postman y el log son de la ejecución del 15.
+FECHA = {hu: 'JUnit del 16 y Postman y log del 15 de noviembre de 2026'
+         for hu in ('HU1', 'HU2', 'HU3', 'HU4', 'HU8', 'HU9', 'HU10')}
 
 
 def leer(nombre):
@@ -110,7 +124,7 @@ body{{margin:0;background:#0c0c0c;color:#d4d4d4;font:13px/1.55 Consolas,monospac
 .bar{{background:#2d2d2d;color:#fff;padding:6px 12px;font:12px Segoe UI,sans-serif}}
 .c{{padding:8px 14px}} .t{{color:#9cdcfe;margin-top:6px}} .ok{{color:#6ccf6c}} .er{{color:#f48771}}
 .g{{color:#a0a0a0}} .g2{{color:#d4d4d4;white-space:pre}}</style>
-<div class="bar">Evidencia {hu} — ejecución del 15 de noviembre de 2026</div><div class="c">{"".join(bloques)}</div>'''
+<div class="bar">Evidencia {hu} — {FECHA.get(hu, 'ejecución del 15 de noviembre de 2026')}</div><div class="c">{"".join(bloques)}</div>'''
     fuente = AQUI / f'_{hu}.html'
     fuente.write_text(pagina, encoding='utf-8')
     salida = AQUI / f'16_evidencia_{hu}.png'
@@ -122,5 +136,8 @@ body{{margin:0;background:#0c0c0c;color:#d4d4d4;font:13px/1.55 Consolas,monospac
 
 if __name__ == '__main__':
     peticiones = newman_peticiones()
+    # Sin argumentos genera todas; con argumentos, solo esas HU (p. ej. HU1 HU2).
     for hu, (clases, filtros, acciones) in HU.items():
+        if sys.argv[1:] and hu not in sys.argv[1:]:
+            continue
         print(hu, imagen(hu, clases, filtros, acciones, peticiones))

@@ -28,10 +28,10 @@ Cada HU se prueba con casos de caja negra, caja blanca e integración, y el resp
 
 | Alcance | Casos | Estado |
 |---|---|---|
-| HU1 a HU5, HU8 y HU9 (Sprint 1) | 212 | Ejecutados en el Sprint 1, todos pasan (documento del Sprint 1) |
+| HU1 a HU4, HU8 y HU9 (Sprint 1) | Planes de las secciones 16.1 a 16.7 | Pasan. Automatizados el 16 de noviembre: 49 pruebas JUnit en 7 clases nuevas, más las carpetas de Postman de cada HU. La HU5 original se retiró (sección 16.5) |
 | HU10 (pendiente del Sprint 1) | 24 | Pasan. Automatizados: 6 de caja blanca (`AuthServiceCerrarSesionTest`) y 11 peticiones de la carpeta HU10 de Postman |
-| Pruebas JUnit del backend | 253 pruebas en 29 clases | 0 fallos (`mvnw clean verify`, BUILD SUCCESS) |
-| Cobertura del backend (JaCoCo) | 13.700 instrucciones, 1.038 ramas | 69,3 % de instrucciones, 58,4 % de ramas y 70,0 % de líneas |
+| Pruebas JUnit del backend | 302 pruebas en 36 clases | 0 fallos (`mvnw clean verify` del 16 de noviembre, BUILD SUCCESS) |
+| Cobertura del backend (JaCoCo) | 13.700 instrucciones, 1.038 ramas | 78,4 % de instrucciones, 68,6 % de ramas y 80,1 % de líneas |
 | Colección de Postman | 162 peticiones, 291 aserciones, 23 carpetas | 0 fallos (Newman) |
 | Pruebas del frontend | 52 pruebas en 3 archivos | 0 fallos (Vitest); cobertura de `src/utils`: 95,0 % de sentencias y 93,7 % de ramas |
 | Linter y build del frontend | `npm run lint` y `npm run build` | 0 errores y build correcto |
@@ -41,8 +41,15 @@ Cada HU se prueba con casos de caja negra, caja blanca e integración, y el resp
 
 | Suite | HU | Pruebas |
 |---|---|---|
+| `MetaServiceCrearMetaTest` | HU1 | 8 |
+| `MetaServiceEditarMetaTest` | HU2 | 8 |
+| `MetaServiceEliminarMetaTest` | HU4 | 5 |
+| `AuthServiceRegistrarTest` | HU8 | 8 |
+| `SolicitudRegistroServiceTest` | HU8 | 9 |
+| `AuthServiceIniciarSesionTest` | HU9 | 6 |
+| `BloqueoLoginServiceTest` | HU9 | 5 |
 | `MetaServiceMarcarCumplidaTest` | HU6, HU11, HU15 | 10 |
-| `MetaServiceListarMetasTest` | HU27 | 10 |
+| `MetaServiceListarMetasTest` | HU3, HU27 | 10 |
 | `MetaServiceVisibilidadTest` | HU25 | 11 |
 | `ReporteServiceTest` | HU7 | 9 |
 | `InsigniaServiceTest` | HU11 | 11 |
@@ -62,7 +69,7 @@ Cada HU se prueba con casos de caja negra, caja blanca e integración, y el resp
 | `RegistroDiaServiceTest` | HU5 | 6 |
 | `CalculoCaminoTest` | HU29 | 12 |
 | `ContrasenaServiceTest` | HU32 | 7 |
-| `JwtAuthFilterTest` | HU32 | 4 |
+| `JwtAuthFilterTest` | HU9, HU32 | 4 |
 | `PlantillaContrasenaCambiadaTest` | HU32, idiomas | 3 |
 | `RecuperacionContrasenaServiceTest` | HU33 | 13 |
 | `PlantillaCodigoRecuperacionTest` | HU33, idiomas | 3 |
@@ -70,7 +77,7 @@ Cada HU se prueba con casos de caja negra, caja blanca e integración, y el resp
 | `TraductorMensajesTest` | Internacionalización | 8 |
 | `PlantillasCorreoTest` | Internacionalización (HU8, HU13) | 4 |
 | `BackendApplicationTests` | Arranque y migraciones | 1 |
-| **Total JUnit** | | **253** |
+| **Total JUnit** | | **302** |
 | `frontend/src/utils/utilidades.test.js` (Vitest) | HU5, HU7, HU8, HU12, HU13, HU22, HU27, HU28, HU32, HU33 | 23 |
 | `frontend/src/components/componentes.test.jsx` (Vitest y React Testing Library) | HU6, HU27 | 9 |
 | `frontend/src/i18n/traducciones.test.js` (Vitest) | Internacionalización | 20 |
@@ -78,7 +85,7 @@ Cada HU se prueba con casos de caja negra, caja blanca e integración, y el resp
 
 ### 10.4 Limitaciones conocidas
 
-El aspecto de auditoría (`AuditoriaAspect`) no tiene prueba JUnit propia; se verifica con la consulta a `log_actividad` después de correr la colección de Postman. Los servicios de las HU del Sprint 1 (HU1, HU2, HU4, HU8 y HU9) se prueban con Postman y con los casos documentados en el Sprint 1. En el frontend se automatizaron las utilidades y dos componentes; el resto de pantallas se prueba a mano. La colección no cubre los casos que necesitan leer un correo real (el enlace de registro de HU8, el código de HU33) ni los que piden muchas cuentas (el máximo de 10 personas por meta); esos casos los cubren las pruebas JUnit.
+El aspecto de auditoría (`AuditoriaAspect`) no tiene prueba JUnit propia; se verifica con la consulta a `log_actividad` después de correr la colección de Postman. Las HU del Sprint 1 tienen sus pruebas JUnit desde el 16 de noviembre; la HU5 original no tiene pruebas porque su código se retiró. En el frontend se automatizaron las utilidades y dos componentes; el resto de pantallas se prueba a mano. La colección no cubre los casos que necesitan leer un correo real (el enlace de registro de HU8, el código de HU33) ni los que piden muchas cuentas (el máximo de 10 personas por meta); esos casos los cubren las pruebas JUnit.
 
 **Evidencia.** `docs/Evidencias entrega final/`: `10_pruebas_mvnw_verify.png`, `10_pruebas_cobertura_jacoco.png`, `05_web_services_newman.png`, `10_pruebas_frontend_vitest.png` y `10_pruebas_frontend_cobertura.png`; salidas completas en `datos/mvnw-verify.txt`, `datos/newman-salida.txt`, `datos/vitest-salida.txt` y `datos/log_actividad_tras_newman.txt`.
 

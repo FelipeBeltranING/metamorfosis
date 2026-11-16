@@ -65,3 +65,11 @@ Para exportar un diagrama a imagen con draw.io de escritorio:
 ## Histórico
 
 `Historico/` guarda los diagramas a mano del Sprint 1 (HU1 a HU5, HU8 a HU10 y HU21) tal como se entregaron. Varios quedaron desactualizados (la entidad `Registro` de la HU5 retirada, el registro sin autorización por correo de la HU8…); los vigentes son los de `Clases/` y `Secuencia/`.
+
+## Exportaciones en PNG
+
+`PNG/` tiene los diagramas de las HU del Sprint 1 (HU1 a HU4 y HU8 a HU10) exportados con draw.io de escritorio para el informe:
+
+```
+"C:\Program Files\draw.io\draw.io.exe" -x -f png -s 2 -b 20 -o PNG/HU01_clases.png Clases/HU01_clases.drawio
+```

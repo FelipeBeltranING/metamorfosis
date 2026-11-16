@@ -27,8 +27,8 @@ repartieron entre junio y noviembre para que la gráfica por mes muestre una ten
 | 9 Logs | `09_logs_auditoria_registros.png` | Consulta a `log_actividad` con filas EXITO y ERROR de varias acciones |
 | 9 Logs | `09_logs_auditoria_resumen.png` | Conteo de EXITO y ERROR por acción |
 | 9 Logs | `09_logs_archivo_aplicacion.png` | `backend/logs/metamorfosis.log`: INFO de arranque y Flyway, WARN del filtro JWT |
-| 10 Pruebas | `10_pruebas_mvnw_verify.png` | `mvnw clean verify` (15 nov): **253 pruebas en 29 clases, 0 fallos**, BUILD SUCCESS |
-| 10 Pruebas | `10_pruebas_cobertura_jacoco.png` | Informe de JaCoCo (15 nov): 69 % de instrucciones, 58 % de ramas |
+| 10 Pruebas | `10_pruebas_mvnw_verify.png` | `mvnw clean verify` (16 nov): **302 pruebas en 36 clases, 0 fallos**, BUILD SUCCESS |
+| 10 Pruebas | `10_pruebas_cobertura_jacoco.png` | Informe de JaCoCo (16 nov): 78 % de instrucciones, 69 % de ramas y 80 % de líneas |
 | 10 Pruebas | `10_pruebas_frontend_vitest.png` | `npm run test:cobertura` (15 nov): **52 pruebas, 0 fallos**; cobertura de `src/utils` 95 % |
 | 10 Pruebas | `10_pruebas_frontend_cobertura.png` | Informe HTML de cobertura de Vitest |
 | 11 Idiomas | `11_idioma_espanol.png`, `11_idioma_ingles*.png` | La app en español y en inglés (Mis metas, reporte, inicio de sesión) |
