@@ -3,7 +3,7 @@
 Dos diagramas por historia de usuario, en draw.io (se abren y se editan en [app.diagrams.net](https://app.diagrams.net) o en draw.io de escritorio):
 
 - **Clases** (`Clases/HUxx_clases.drawio`): las clases que participan en la HU, con sus atributos y métodos **tal como están en el código** y sus relaciones (asociación, dependencia, composición, realización, herencia). Colores por capa: controlador azul, servicio verde, repositorio amarillo, DTO morado, entidad rojo, aspecto naranja.
-- **Secuencia** (`Secuencia/HUxx_secuencia.drawio`): desde la acción del usuario en la pantalla hasta la base de datos y de vuelta. Caso positivo completo y un fragmento `alt` con el error principal de la HU. Las llamadas auditadas pasan por `AuditoriaAspect`, que guarda la fila en `log_actividad` (RQ8).
+- **Secuencia** (`Secuencia/HUxx_secuencia.drawio`): desde la acción del usuario en la pantalla hasta la base de datos y de vuelta. Solo el caso de éxito: el generador dibuja la rama exitosa de cada decisión y deja fuera las de error (que se cubren en el plan de pruebas). Los `loop` y `opt` sí se dibujan. Las llamadas auditadas pasan por `AuditoriaAspect`, que guarda la fila en `log_actividad` (RQ8).
 - **Otros flujos** (`Secuencia/HUxx_secuencia_<flujo>.drawio`): cuando una HU tiene otro camino que no cabe en su secuencia principal (responder desde el correo, unirse con un código, registrar el día de un hábito…), va en su propia secuencia, enlazada en la misma fila de la tabla.
 
 | HU | Historia | Clases | Secuencia |
