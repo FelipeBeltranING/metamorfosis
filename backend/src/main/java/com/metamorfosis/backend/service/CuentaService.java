@@ -89,7 +89,7 @@ public class CuentaService {
         return CuentaResponse.desde(usuario);
     }
 
-    /** HU19: guarda la apariencia (modo y color de acento). Los dos son obligatorios. */
+    /** HU30: guarda la apariencia (modo y color de acento). Los dos son obligatorios. */
     @Auditar(accion = AccionLog.CAMBIAR_APARIENCIA, entidad = EntidadLog.USUARIO)
     @Transactional
     public CuentaResponse cambiarApariencia(Integer codigoUsuario, AparienciaRequest pedido) {

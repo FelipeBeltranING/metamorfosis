@@ -1,0 +1,33 @@
+
+ RUN  v3.2.4 C:/Users/Lenovo/Documents/GitHub/metamorfosis/frontend
+      Coverage enabled with v8
+
+stdout | src/i18n/traducciones.test.js
+
+stdout | src/components/componentes.test.jsx
+
+stdout | src/utils/utilidades.test.js
+
+ ✓ src/i18n/traducciones.test.js (20 tests) 18ms
+ ✓ src/utils/utilidades.test.js (23 tests) 54ms
+ ✓ src/components/componentes.test.jsx (9 tests) 744ms
+
+ Test Files  3 passed (3)
+      Tests  52 passed (52)
+   Start at  09:03:27
+   Duration  4.59s (transform 273ms, setup 2.20s, collect 1.43s, tests 816ms, environment 3.94s, prepare 736ms)
+
+ % Coverage report from v8
+------------------|---------|----------|---------|---------|-------------------
+File              | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+------------------|---------|----------|---------|---------|-------------------
+All files         |   94.96 |    93.68 |   72.09 |   94.96 |                   
+ contrasena.js    |     100 |      100 |     100 |     100 |                   
+ fechas.js        |   88.37 |      100 |   85.71 |   88.37 | 5-9               
+ filtrosMetas.js  |     100 |      100 |     100 |     100 |                   
+ insignias.js     |   83.72 |    77.77 |      50 |   83.72 | 21,30-32,35-37    
+ participantes.js |     100 |      100 |     100 |     100 |                   
+ perfil.js        |     100 |      100 |     100 |     100 |                   
+ reporte.js       |     100 |    86.66 |   38.46 |     100 | 33-34             
+ subMetas.js      |   94.28 |    88.88 |      80 |   94.28 | 34-35             
+------------------|---------|----------|---------|---------|-------------------

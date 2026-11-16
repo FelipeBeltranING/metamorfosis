@@ -1,380 +1,618 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="Metamorfosis API" tests="106" time="3.796">
-  <testsuite name="HU9 · Iniciar sesión / Ana inicia sesión" id="f75adf9c-e8ed-472f-8e02-d688cd94f25b" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.180">
-    <testcase name="responde 200" time="0.180" classname="Hu9IniciarSesionAnaIniciaSesion"/>
-    <testcase name="trae token y usuario" time="0.180" classname="Hu9IniciarSesionAnaIniciaSesion"/>
+<testsuites name="Metamorfosis API" tests="162" time="4.292">
+  <testsuite name="HU9 · Iniciar sesión / Ana inicia sesión" id="d18a44df-240d-4d9d-8c97-5f9c0a063185" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.150">
+    <testcase name="responde 200" time="0.150" classname="Hu9IniciarSesionAnaIniciaSesion"/>
+    <testcase name="trae token y usuario" time="0.150" classname="Hu9IniciarSesionAnaIniciaSesion"/>
   </testsuite>
-  <testsuite name="HU9 · Iniciar sesión / Beto inicia sesión" id="ed0f093f-5bb5-44e7-b950-f6b82d8ea018" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.106">
-    <testcase name="responde 200" time="0.106" classname="Hu9IniciarSesionBetoIniciaSesion"/>
+  <testsuite name="HU9 · Iniciar sesión / Beto inicia sesión" id="bbb89cf2-82da-4ad7-a026-a37fd84851c8" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.114">
+    <testcase name="responde 200" time="0.114" classname="Hu9IniciarSesionBetoIniciaSesion"/>
   </testsuite>
-  <testsuite name="HU9 · Iniciar sesión / Contraseña incorrecta" id="fa3f8a14-8218-47ef-a568-c0aa0e19dd76" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.106">
-    <testcase name="responde 401" time="0.106" classname="Hu9IniciarSesionContrasenaIncorrecta"/>
-    <testcase name="mensaje: Email o contraseña incorrectos" time="0.106" classname="Hu9IniciarSesionContrasenaIncorrecta"/>
+  <testsuite name="HU9 · Iniciar sesión / Contraseña incorrecta" id="485f2d92-bb1f-45f1-a6f5-b1cc4153208e" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.101">
+    <testcase name="responde 401" time="0.101" classname="Hu9IniciarSesionContrasenaIncorrecta"/>
+    <testcase name="mensaje: Email o contraseña incorrectos" time="0.101" classname="Hu9IniciarSesionContrasenaIncorrecta"/>
   </testsuite>
-  <testsuite name="HU9 · Iniciar sesión / Beto vuelve a entrar (limpia el intento fallido)" id="98aabcd8-2013-473c-8942-260bd714ca30" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.110">
-    <testcase name="responde 200" time="0.110" classname="Hu9IniciarSesionBetoVuelveAEntrarLimpiaElIntentoFallido"/>
+  <testsuite name="HU9 · Iniciar sesión / Beto vuelve a entrar (limpia el intento fallido)" id="a055604d-8d98-4e84-98ba-ac0c0eeca2bc" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.106">
+    <testcase name="responde 200" time="0.106" classname="Hu9IniciarSesionBetoVuelveAEntrarLimpiaElIntentoFallido"/>
   </testsuite>
-  <testsuite name="HU9 · Iniciar sesión / Sin datos" id="e3eb783f-6f2b-44d1-b5c6-489fa7752d18" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.006">
-    <testcase name="responde 400" time="0.006" classname="Hu9IniciarSesionSinDatos"/>
+  <testsuite name="HU9 · Iniciar sesión / Sin datos" id="9ae82a5d-53ba-4c92-b047-b285016ce5f0" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="responde 400" time="0.005" classname="Hu9IniciarSesionSinDatos"/>
   </testsuite>
-  <testsuite name="Seguridad · rutas protegidas / Mis metas sin token" id="6cbb57c4-9ca9-4e45-87d3-5bd07d229f07" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.006">
-    <testcase name="responde 401" time="0.006" classname="SeguridadRutasProtegidasMisMetasSinToken"/>
-    <testcase name="mensaje: Autenticación requerida" time="0.006" classname="SeguridadRutasProtegidasMisMetasSinToken"/>
+  <testsuite name="Seguridad · rutas protegidas / Mis metas sin token" id="96e0f838-226a-4e79-8113-47f53e973039" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.005">
+    <testcase name="responde 401" time="0.005" classname="SeguridadRutasProtegidasMisMetasSinToken"/>
+    <testcase name="mensaje: Autenticación requerida" time="0.005" classname="SeguridadRutasProtegidasMisMetasSinToken"/>
   </testsuite>
-  <testsuite name="HU1 · Crear meta / Crear meta" id="915bf358-f1d6-4a21-8f38-e6d871d96081" timestamp="2026-11-15T01:03:46.364Z" tests="3" failures="0" errors="0" time="0.030">
-    <testcase name="responde 201" time="0.030" classname="Hu1CrearMetaCrearMeta"/>
-    <testcase name="queda ACTIVA" time="0.030" classname="Hu1CrearMetaCrearMeta"/>
-    <testcase name="cabecera Location" time="0.030" classname="Hu1CrearMetaCrearMeta"/>
+  <testsuite name="Seguridad · rutas protegidas / Sin token · HU29 Tu camino" id="c6a1215e-543d-4bed-8777-daa8bf2339e7" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.002">
+    <testcase name="responde 401" time="0.002" classname="SeguridadRutasProtegidasSinTokenHu29TuCamino"/>
+    <testcase name="mensaje: Autenticación requerida" time="0.002" classname="SeguridadRutasProtegidasSinTokenHu29TuCamino"/>
   </testsuite>
-  <testsuite name="HU1 · Crear meta / Nombre vacío" id="f6f84e78-b71c-42c0-9d78-5e725de343de" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.017">
-    <testcase name="responde 400" time="0.017" classname="Hu1CrearMetaNombreVacio"/>
-    <testcase name="dice qué campo falla" time="0.017" classname="Hu1CrearMetaNombreVacio"/>
+  <testsuite name="Seguridad · rutas protegidas / Sin token · HU13 invitar" id="89def9cb-f5be-4b42-af82-f41849f7ffc1" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.002">
+    <testcase name="responde 401" time="0.002" classname="SeguridadRutasProtegidasSinTokenHu13Invitar"/>
+    <testcase name="mensaje: Autenticación requerida" time="0.002" classname="SeguridadRutasProtegidasSinTokenHu13Invitar"/>
   </testsuite>
-  <testsuite name="HU3 y HU27 · Ver y filtrar mis metas / Mis metas (activas)" id="8e86246e-f96a-4979-afb5-838ca30b1d19" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.026">
-    <testcase name="responde 200" time="0.026" classname="Hu3YHu27VerYFiltrarMisMetasMisMetasActivas"/>
-    <testcase name="incluye la meta creada" time="0.026" classname="Hu3YHu27VerYFiltrarMisMetasMisMetasActivas"/>
+  <testsuite name="Seguridad · rutas protegidas / Sin token · HU14 mis invitaciones" id="114168be-e336-44e8-a4b6-3410431e2e29" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.004">
+    <testcase name="responde 401" time="0.004" classname="SeguridadRutasProtegidasSinTokenHu14MisInvitaciones"/>
+    <testcase name="mensaje: Autenticación requerida" time="0.004" classname="SeguridadRutasProtegidasSinTokenHu14MisInvitaciones"/>
   </testsuite>
-  <testsuite name="HU3 y HU27 · Ver y filtrar mis metas / Filtro estado=TODAS&amp;tipo=PERSONAL&amp;plazo=MEDIANO" id="daa49c3a-4ada-4e43-853e-ea70bc7a5a99" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.035">
-    <testcase name="responde 200" time="0.035" classname="Hu3YHu27VerYFiltrarMisMetasFiltroEstadoTodasAmpTipoPersonalAmpPlazoMediano"/>
-    <testcase name="todas son PERSONAL y MEDIANO" time="0.035" classname="Hu3YHu27VerYFiltrarMisMetasFiltroEstadoTodasAmpTipoPersonalAmpPlazoMediano"/>
+  <testsuite name="Seguridad · rutas protegidas / Sin token · HU21 compartir" id="4ab5e5a4-950c-4f0e-ac64-85b40c4bd2de" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.003">
+    <testcase name="responde 401" time="0.003" classname="SeguridadRutasProtegidasSinTokenHu21Compartir"/>
+    <testcase name="mensaje: Autenticación requerida" time="0.003" classname="SeguridadRutasProtegidasSinTokenHu21Compartir"/>
   </testsuite>
-  <testsuite name="HU3 y HU27 · Ver y filtrar mis metas / Filtro con valor inválido" id="f106849c-86db-41b8-8365-152630f9e267" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.011">
-    <testcase name="responde 400" time="0.011" classname="Hu3YHu27VerYFiltrarMisMetasFiltroConValorInvalido"/>
+  <testsuite name="Seguridad · rutas protegidas / Sin token · HU23 mi cuenta" id="b109ecf1-7972-473b-aba2-f148c88e5ab7" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.002">
+    <testcase name="responde 401" time="0.002" classname="SeguridadRutasProtegidasSinTokenHu23MiCuenta"/>
+    <testcase name="mensaje: Autenticación requerida" time="0.002" classname="SeguridadRutasProtegidasSinTokenHu23MiCuenta"/>
   </testsuite>
-  <testsuite name="HU2 · Editar meta / Editar" id="97a2720a-8f66-4750-b306-79d009f72025" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.035">
-    <testcase name="responde 200" time="0.035" classname="Hu2EditarMetaEditar"/>
-    <testcase name="nombre nuevo" time="0.035" classname="Hu2EditarMetaEditar"/>
+  <testsuite name="Seguridad · rutas protegidas / Sin token · HU19 perfil público" id="2b1f4352-947c-4f64-89a6-38018ee9185e" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.003">
+    <testcase name="responde 401" time="0.003" classname="SeguridadRutasProtegidasSinTokenHu19PerfilPublico"/>
+    <testcase name="mensaje: Autenticación requerida" time="0.003" classname="SeguridadRutasProtegidasSinTokenHu19PerfilPublico"/>
   </testsuite>
-  <testsuite name="HU2 · Editar meta / Beto no puede editar la meta de Ana" id="fcf5d07f-1881-4a57-8943-320e00e486bc" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.022">
-    <testcase name="responde 403" time="0.022" classname="Hu2EditarMetaBetoNoPuedeEditarLaMetaDeAna"/>
+  <testsuite name="Seguridad · rutas protegidas / Sin token · HU32 cambiar la contraseña" id="c2bf3c51-edbb-45b4-ad9e-4fe2303fed9f" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.004">
+    <testcase name="responde 401" time="0.004" classname="SeguridadRutasProtegidasSinTokenHu32CambiarLaContrasena"/>
+    <testcase name="mensaje: Autenticación requerida" time="0.004" classname="SeguridadRutasProtegidasSinTokenHu32CambiarLaContrasena"/>
   </testsuite>
-  <testsuite name="HU2 · Editar meta / Meta inexistente" id="af2f3162-7c8a-4069-a97c-af37e3584149" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.025">
-    <testcase name="responde 404" time="0.025" classname="Hu2EditarMetaMetaInexistente"/>
+  <testsuite name="HU1 · Crear meta / Crear meta" id="88d87d2b-40b6-4b62-a6f1-a60d4be14ec3" timestamp="2026-11-15T06:33:27.139Z" tests="3" failures="0" errors="0" time="0.081">
+    <testcase name="responde 201" time="0.081" classname="Hu1CrearMetaCrearMeta"/>
+    <testcase name="queda ACTIVA" time="0.081" classname="Hu1CrearMetaCrearMeta"/>
+    <testcase name="cabecera Location" time="0.081" classname="Hu1CrearMetaCrearMeta"/>
   </testsuite>
-  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Agregar hito 1" id="0ab20cf7-4d90-4296-9af4-a9a795910cf5" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.036">
-    <testcase name="responde 201" time="0.036" classname="Hu28TrazarElCaminoHitosYHabitosAgregarHito1"/>
-    <testcase name="es hito y sin días" time="0.036" classname="Hu28TrazarElCaminoHitosYHabitosAgregarHito1"/>
+  <testsuite name="HU1 · Crear meta / Nombre vacío" id="4a1c2efb-0033-488d-b846-75df41e792c9" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.047">
+    <testcase name="responde 400" time="0.047" classname="Hu1CrearMetaNombreVacio"/>
+    <testcase name="dice qué campo falla" time="0.047" classname="Hu1CrearMetaNombreVacio"/>
   </testsuite>
-  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Agregar hito 2" id="bf62cea6-b176-4ec4-bcdf-4479871a657c" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.032">
-    <testcase name="responde 201" time="0.032" classname="Hu28TrazarElCaminoHitosYHabitosAgregarHito2"/>
+  <testsuite name="HU3 y HU27 · Ver y filtrar mis metas / Mis metas (activas)" id="65739e07-2843-46a5-9184-0a1513add6e9" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.078">
+    <testcase name="responde 200" time="0.078" classname="Hu3YHu27VerYFiltrarMisMetasMisMetasActivas"/>
+    <testcase name="incluye la meta creada" time="0.078" classname="Hu3YHu27VerYFiltrarMisMetasMisMetasActivas"/>
   </testsuite>
-  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Agregar hábito medible" id="ce20b060-78ae-4e74-9c0e-ab18c1cca7d1" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.033">
-    <testcase name="responde 201" time="0.033" classname="Hu28TrazarElCaminoHitosYHabitosAgregarHabitoMedible"/>
+  <testsuite name="HU3 y HU27 · Ver y filtrar mis metas / Filtro estado=TODAS&amp;tipo=PERSONAL&amp;plazo=MEDIANO" id="9c3a4327-bd89-4dbd-889d-37913069b0af" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.050">
+    <testcase name="responde 200" time="0.050" classname="Hu3YHu27VerYFiltrarMisMetasFiltroEstadoTodasAmpTipoPersonalAmpPlazoMediano"/>
+    <testcase name="todas son PERSONAL y MEDIANO" time="0.050" classname="Hu3YHu27VerYFiltrarMisMetasFiltroEstadoTodasAmpTipoPersonalAmpPlazoMediano"/>
   </testsuite>
-  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Sin tipo" id="87ae8526-4705-410e-9461-cc3c5c5c5a90" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.026">
-    <testcase name="responde 400" time="0.026" classname="Hu28TrazarElCaminoHitosYHabitosSinTipo"/>
-    <testcase name="pide elegir" time="0.026" classname="Hu28TrazarElCaminoHitosYHabitosSinTipo"/>
+  <testsuite name="HU3 y HU27 · Ver y filtrar mis metas / Filtro con valor inválido" id="02d1e4da-c646-47c0-b7d2-3620c0bf4f63" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.012">
+    <testcase name="responde 400" time="0.012" classname="Hu3YHu27VerYFiltrarMisMetasFiltroConValorInvalido"/>
   </testsuite>
-  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Nombre repetido" id="4fe7ebb1-e35b-4d0d-b019-dcad64f0362d" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.032">
-    <testcase name="responde 400" time="0.032" classname="Hu28TrazarElCaminoHitosYHabitosNombreRepetido"/>
+  <testsuite name="HU2 · Editar meta / Editar" id="6b2f6db6-b727-4c60-b0c0-254088565b07" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.037">
+    <testcase name="responde 200" time="0.037" classname="Hu2EditarMetaEditar"/>
+    <testcase name="nombre nuevo" time="0.037" classname="Hu2EditarMetaEditar"/>
   </testsuite>
-  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Leer un paso" id="44ce2803-2b9d-41e8-8962-89687b9f9dfe" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.023">
-    <testcase name="responde 200" time="0.023" classname="Hu28TrazarElCaminoHitosYHabitosLeerUnPaso"/>
-    <testcase name="trae la meta" time="0.023" classname="Hu28TrazarElCaminoHitosYHabitosLeerUnPaso"/>
+  <testsuite name="HU2 · Editar meta / Beto no puede editar la meta de Ana" id="8e31066c-64e3-47db-8122-814ad6b63922" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.029">
+    <testcase name="responde 403" time="0.029" classname="Hu2EditarMetaBetoNoPuedeEditarLaMetaDeAna"/>
   </testsuite>
-  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Beto no puede agregar pasos" id="769a5ba9-0387-4317-b7de-86dc9e8d2ba3" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.023">
-    <testcase name="responde 403" time="0.023" classname="Hu28TrazarElCaminoHitosYHabitosBetoNoPuedeAgregarPasos"/>
+  <testsuite name="HU2 · Editar meta / Meta inexistente" id="bfc42bbd-de86-423f-9a6d-9f6d4fcefc6f" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.026">
+    <testcase name="responde 404" time="0.026" classname="Hu2EditarMetaMetaInexistente"/>
   </testsuite>
-  <testsuite name="HU5 · Registrar mi avance / Lograr el hito 1" id="a1797ad3-4c70-4d37-b692-c24ae752039e" timestamp="2026-11-15T01:03:46.364Z" tests="3" failures="0" errors="0" time="0.045">
-    <testcase name="responde 200" time="0.045" classname="Hu5RegistrarMiAvanceLograrElHito1"/>
-    <testcase name="queda logrado hoy" time="0.045" classname="Hu5RegistrarMiAvanceLograrElHito1"/>
-    <testcase name="avance 1 de 2 = 50 %" time="0.045" classname="Hu5RegistrarMiAvanceLograrElHito1"/>
+  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Agregar hito 1" id="d7c84047-d72e-477b-a8f2-1669caa53a87" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.040">
+    <testcase name="responde 201" time="0.040" classname="Hu28TrazarElCaminoHitosYHabitosAgregarHito1"/>
+    <testcase name="es hito y sin días" time="0.040" classname="Hu28TrazarElCaminoHitosYHabitosAgregarHito1"/>
   </testsuite>
-  <testsuite name="HU5 · Registrar mi avance / Deshacer el hito 1" id="14fb3926-17d0-4c99-b161-65c9cd759a02" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.040">
-    <testcase name="responde 200" time="0.040" classname="Hu5RegistrarMiAvanceDeshacerElHito1"/>
-    <testcase name="vuelve a pendiente" time="0.040" classname="Hu5RegistrarMiAvanceDeshacerElHito1"/>
+  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Agregar hito 2" id="1797b6a7-44ae-4728-a2c0-e43d64203a1e" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.030">
+    <testcase name="responde 201" time="0.030" classname="Hu28TrazarElCaminoHitosYHabitosAgregarHito2"/>
   </testsuite>
-  <testsuite name="HU5 · Registrar mi avance / Un hábito no se logra" id="ebe8fdbb-c03f-42ff-bcaf-5dfcbd35328a" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.023">
-    <testcase name="responde 400" time="0.023" classname="Hu5RegistrarMiAvanceUnHabitoNoSeLogra"/>
+  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Agregar hábito medible" id="d06ad076-4793-48c1-84bf-52105ca3ad10" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.025">
+    <testcase name="responde 201" time="0.025" classname="Hu28TrazarElCaminoHitosYHabitosAgregarHabitoMedible"/>
   </testsuite>
-  <testsuite name="HU5 · Registrar mi avance / Registrar 20 páginas hoy" id="cbf470ab-d61e-4b6b-a65a-a7851b2e2842" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.040">
-    <testcase name="responde 200" time="0.040" classname="Hu5RegistrarMiAvanceRegistrar20PaginasHoy"/>
-    <testcase name="cumple el objetivo" time="0.040" classname="Hu5RegistrarMiAvanceRegistrar20PaginasHoy"/>
+  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Sin tipo" id="3c27fe8c-0ec8-423f-ad63-739df45e486d" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.023">
+    <testcase name="responde 400" time="0.023" classname="Hu28TrazarElCaminoHitosYHabitosSinTipo"/>
+    <testcase name="pide elegir" time="0.023" classname="Hu28TrazarElCaminoHitosYHabitosSinTipo"/>
   </testsuite>
-  <testsuite name="HU5 · Registrar mi avance / Un hito no se registra por día" id="24aaf4b1-6d45-48c5-9766-14f109e6d809" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.029">
-    <testcase name="responde 400" time="0.029" classname="Hu5RegistrarMiAvanceUnHitoNoSeRegistraPorDia"/>
+  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Nombre repetido" id="e5604eb1-cd7c-4dab-939a-e8f89133c93d" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.023">
+    <testcase name="responde 400" time="0.023" classname="Hu28TrazarElCaminoHitosYHabitosNombreRepetido"/>
+    <testcase name="error: Ya tienes un paso con este nombre en esta meta" time="0.023" classname="Hu28TrazarElCaminoHitosYHabitosNombreRepetido"/>
   </testsuite>
-  <testsuite name="HU5 · Registrar mi avance / Día futuro" id="e8575042-b38c-4c1a-bbd5-4a3f57f2611a" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.031">
-    <testcase name="responde 400" time="0.031" classname="Hu5RegistrarMiAvanceDiaFuturo"/>
+  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Objetivo en cero" id="5b2fbe9a-f02f-42c1-bc70-415c87a94f4e" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.019">
+    <testcase name="responde 400" time="0.019" classname="Hu28TrazarElCaminoHitosYHabitosObjetivoEnCero"/>
+    <testcase name="error: El objetivo debe ser mayor que 0" time="0.019" classname="Hu28TrazarElCaminoHitosYHabitosObjetivoEnCero"/>
   </testsuite>
-  <testsuite name="HU5 · Registrar mi avance / Lograr el hito 1 otra vez" id="a56eb9eb-00e2-4e08-9340-b425f0455286" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.040">
-    <testcase name="responde 200" time="0.040" classname="Hu5RegistrarMiAvanceLograrElHito1OtraVez"/>
+  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Día de la semana inválido" id="fd3faff4-e8b0-47b9-a58a-76d1888a29db" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.022">
+    <testcase name="responde 400" time="0.022" classname="Hu28TrazarElCaminoHitosYHabitosDiaDeLaSemanaInvalido"/>
+    <testcase name="error: Los días van del 1 (lunes) al 7 (domingo)" time="0.022" classname="Hu28TrazarElCaminoHitosYHabitosDiaDeLaSemanaInvalido"/>
   </testsuite>
-  <testsuite name="HU29 · Avance y constancia / Tu camino" id="bc36b432-7b23-4f66-9fb5-cfc29d75a7e2" timestamp="2026-11-15T01:03:46.364Z" tests="4" failures="0" errors="0" time="0.035">
-    <testcase name="responde 200" time="0.035" classname="Hu29AvanceYConstanciaTuCamino"/>
-    <testcase name="2 hitos y 1 hábito" time="0.035" classname="Hu29AvanceYConstanciaTuCamino"/>
-    <testcase name="avance 50 %" time="0.035" classname="Hu29AvanceYConstanciaTuCamino"/>
-    <testcase name="constancia de hoy al 100 %" time="0.035" classname="Hu29AvanceYConstanciaTuCamino"/>
+  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Leer un paso" id="e2de9155-712a-4125-a1b8-3e80b3444e06" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.015">
+    <testcase name="responde 200" time="0.015" classname="Hu28TrazarElCaminoHitosYHabitosLeerUnPaso"/>
+    <testcase name="trae la meta" time="0.015" classname="Hu28TrazarElCaminoHitosYHabitosLeerUnPaso"/>
   </testsuite>
-  <testsuite name="HU29 · Avance y constancia / Resumen para las tarjetas" id="c9654102-d58e-4f63-9fb8-fec985a234c1" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.029">
-    <testcase name="responde 200" time="0.029" classname="Hu29AvanceYConstanciaResumenParaLasTarjetas"/>
-    <testcase name="trae el avance" time="0.029" classname="Hu29AvanceYConstanciaResumenParaLasTarjetas"/>
+  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Paso que no existe" id="4225160e-60d6-42d5-b102-e25ac47a82af" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.010">
+    <testcase name="responde 404" time="0.010" classname="Hu28TrazarElCaminoHitosYHabitosPasoQueNoExiste"/>
+    <testcase name="mensaje: No se encontró el paso 999999" time="0.010" classname="Hu28TrazarElCaminoHitosYHabitosPasoQueNoExiste"/>
   </testsuite>
-  <testsuite name="HU29 · Avance y constancia / Estadísticas del hábito" id="978ca0df-f80f-4484-8226-248ab30c7cbb" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.027">
-    <testcase name="responde 200" time="0.027" classname="Hu29AvanceYConstanciaEstadisticasDelHabito"/>
-    <testcase name="racha de 1 día" time="0.027" classname="Hu29AvanceYConstanciaEstadisticasDelHabito"/>
+  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / El tipo de un paso no se cambia" id="b90152d8-9ed3-4558-8824-fc2f58543c9f" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.020">
+    <testcase name="responde 400" time="0.020" classname="Hu28TrazarElCaminoHitosYHabitosElTipoDeUnPasoNoSeCambia"/>
+    <testcase name="error: El tipo de un paso no se puede cambiar" time="0.020" classname="Hu28TrazarElCaminoHitosYHabitosElTipoDeUnPasoNoSeCambia"/>
   </testsuite>
-  <testsuite name="HU29 · Avance y constancia / Un hito no tiene estadísticas por día" id="6b77f63c-8c09-4fe1-b672-a3e3658b62b5" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.021">
-    <testcase name="responde 400" time="0.021" classname="Hu29AvanceYConstanciaUnHitoNoTieneEstadisticasPorDia"/>
+  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Agregar un hito para borrarlo" id="4cffa1cf-b8bf-470f-8bf2-ebf135437b34" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.023">
+    <testcase name="responde 201" time="0.023" classname="Hu28TrazarElCaminoHitosYHabitosAgregarUnHitoParaBorrarlo"/>
   </testsuite>
-  <testsuite name="HU13 · Invitar a una meta / Ana invita a Beto" id="1d2c1ed5-f2aa-4f3e-bdbf-df230e51985e" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.043">
-    <testcase name="responde 201" time="0.043" classname="Hu13InvitarAUnaMetaAnaInvitaABeto"/>
+  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Eliminar un paso" id="85c73694-7e4e-4fd2-9a1e-c21b5ff4f176" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.020">
+    <testcase name="responde 204" time="0.020" classname="Hu28TrazarElCaminoHitosYHabitosEliminarUnPaso"/>
   </testsuite>
-  <testsuite name="HU13 · Invitar a una meta / Invitarlo dos veces" id="6aed1a32-ae63-4f85-a328-cb8eddf5eff5" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.028">
-    <testcase name="responde 409" time="0.028" classname="Hu13InvitarAUnaMetaInvitarloDosVeces"/>
+  <testsuite name="HU28 · Trazar el camino (hitos y hábitos) / Beto no puede agregar pasos" id="2c4af57d-ea8e-4e66-b178-34a2ca1afb99" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.016">
+    <testcase name="responde 403" time="0.016" classname="Hu28TrazarElCaminoHitosYHabitosBetoNoPuedeAgregarPasos"/>
+    <testcase name="mensaje: Solo el creador de la meta puede cambiar su camino" time="0.016" classname="Hu28TrazarElCaminoHitosYHabitosBetoNoPuedeAgregarPasos"/>
   </testsuite>
-  <testsuite name="HU13 · Invitar a una meta / Generar código para unirse" id="3cb69592-4b94-43b8-bbc2-fcaadcbfb027" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.033">
-    <testcase name="responde 201" time="0.033" classname="Hu13InvitarAUnaMetaGenerarCodigoParaUnirse"/>
-    <testcase name="trae un código" time="0.033" classname="Hu13InvitarAUnaMetaGenerarCodigoParaUnirse"/>
+  <testsuite name="HU5 · Registrar mi avance / Lograr el hito 1" id="a9c28874-2d85-4eca-9e86-a226b63dc11e" timestamp="2026-11-15T06:33:27.139Z" tests="3" failures="0" errors="0" time="0.023">
+    <testcase name="responde 200" time="0.023" classname="Hu5RegistrarMiAvanceLograrElHito1"/>
+    <testcase name="queda logrado hoy" time="0.023" classname="Hu5RegistrarMiAvanceLograrElHito1"/>
+    <testcase name="avance 1 de 2 = 50 %" time="0.023" classname="Hu5RegistrarMiAvanceLograrElHito1"/>
   </testsuite>
-  <testsuite name="HU13 · Invitar a una meta / Ver el código" id="3fd66838-a5d0-4dcc-b222-c8facf41ba7a" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.018">
-    <testcase name="responde 200" time="0.018" classname="Hu13InvitarAUnaMetaVerElCodigo"/>
+  <testsuite name="HU5 · Registrar mi avance / Deshacer el hito 1" id="2b001619-3df2-4ffa-a317-19ba643f4872" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.108">
+    <testcase name="responde 200" time="0.108" classname="Hu5RegistrarMiAvanceDeshacerElHito1"/>
+    <testcase name="vuelve a pendiente" time="0.108" classname="Hu5RegistrarMiAvanceDeshacerElHito1"/>
   </testsuite>
-  <testsuite name="HU13 · Invitar a una meta / Desactivar el código" id="a1a57328-b35b-4366-bdac-9e23bf165776" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.025">
+  <testsuite name="HU5 · Registrar mi avance / Un hábito no se logra" id="5bedf679-52ad-45ee-ad22-1b1f692e0677" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.019">
+    <testcase name="responde 400" time="0.019" classname="Hu5RegistrarMiAvanceUnHabitoNoSeLogra"/>
+    <testcase name="error: Solo los hitos se marcan como logrados; los hábitos se registran por día" time="0.019" classname="Hu5RegistrarMiAvanceUnHabitoNoSeLogra"/>
+  </testsuite>
+  <testsuite name="HU5 · Registrar mi avance / Registrar 20 páginas hoy" id="1163d4b0-455d-4da6-bdc0-11063d448e43" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.022">
+    <testcase name="responde 200" time="0.022" classname="Hu5RegistrarMiAvanceRegistrar20PaginasHoy"/>
+    <testcase name="cumple el objetivo" time="0.022" classname="Hu5RegistrarMiAvanceRegistrar20PaginasHoy"/>
+  </testsuite>
+  <testsuite name="HU5 · Registrar mi avance / Un hito no se registra por día" id="11036792-06d1-4988-b8e0-b3e97d40efe9" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.018">
+    <testcase name="responde 400" time="0.018" classname="Hu5RegistrarMiAvanceUnHitoNoSeRegistraPorDia"/>
+    <testcase name="error: Un hito no se registra por día: se marca como logrado" time="0.018" classname="Hu5RegistrarMiAvanceUnHitoNoSeRegistraPorDia"/>
+  </testsuite>
+  <testsuite name="HU5 · Registrar mi avance / Día futuro" id="ab3e63a5-8cb6-44e5-96a7-b40ae74e1f7e" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.018">
+    <testcase name="responde 400" time="0.018" classname="Hu5RegistrarMiAvanceDiaFuturo"/>
+    <testcase name="error: No puedes registrar días que aún no llegan" time="0.018" classname="Hu5RegistrarMiAvanceDiaFuturo"/>
+  </testsuite>
+  <testsuite name="HU5 · Registrar mi avance / Valor negativo" id="e7022cd4-016b-4175-afac-8960bd7bc831" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.016">
+    <testcase name="responde 400" time="0.016" classname="Hu5RegistrarMiAvanceValorNegativo"/>
+    <testcase name="error: El valor no puede ser negativo" time="0.016" classname="Hu5RegistrarMiAvanceValorNegativo"/>
+  </testsuite>
+  <testsuite name="HU5 · Registrar mi avance / Beto no participa: no registra" id="805ba835-84dc-4724-8b06-5c289c7a9a54" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.016">
+    <testcase name="responde 403" time="0.016" classname="Hu5RegistrarMiAvanceBetoNoParticipaNoRegistra"/>
+    <testcase name="mensaje: Solo los participantes de la meta pueden registrar su día" time="0.016" classname="Hu5RegistrarMiAvanceBetoNoParticipaNoRegistra"/>
+  </testsuite>
+  <testsuite name="HU5 · Registrar mi avance / Quitar el registro de hoy" id="85ad951b-19d9-40b0-b51b-d747831124bb" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.020">
+    <testcase name="responde 204" time="0.020" classname="Hu5RegistrarMiAvanceQuitarElRegistroDeHoy"/>
+  </testsuite>
+  <testsuite name="HU5 · Registrar mi avance / Registrar de nuevo 20 páginas" id="7910667a-e347-48cc-bcea-a62fb0d11249" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.027">
+    <testcase name="responde 200" time="0.027" classname="Hu5RegistrarMiAvanceRegistrarDeNuevo20Paginas"/>
+    <testcase name="cumple el objetivo" time="0.027" classname="Hu5RegistrarMiAvanceRegistrarDeNuevo20Paginas"/>
+  </testsuite>
+  <testsuite name="HU5 · Registrar mi avance / Agregar un hábito Sí / No" id="03b8fefb-e45a-474a-ad56-0c8cdbeeccb0" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.017">
+    <testcase name="responde 201" time="0.017" classname="Hu5RegistrarMiAvanceAgregarUnHabitoSiNo"/>
+  </testsuite>
+  <testsuite name="HU5 · Registrar mi avance / Sí / No con valor 2" id="437cfd80-8505-43d6-912e-3dc1abbac9ab" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.020">
+    <testcase name="responde 400" time="0.020" classname="Hu5RegistrarMiAvanceSiNoConValor2"/>
+    <testcase name="error: En un hábito Sí / No el valor es 1 (hecho) o 0 (no hecho)" time="0.020" classname="Hu5RegistrarMiAvanceSiNoConValor2"/>
+  </testsuite>
+  <testsuite name="HU5 · Registrar mi avance / Borrar el hábito Sí / No" id="221fb989-f420-4c9a-9167-9fd1d41a1612" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.020">
+    <testcase name="responde 204" time="0.020" classname="Hu5RegistrarMiAvanceBorrarElHabitoSiNo"/>
+  </testsuite>
+  <testsuite name="HU5 · Registrar mi avance / Lograr el hito 1 otra vez" id="6df2b9b8-5e44-4b04-969c-478fd38276fc" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.021">
+    <testcase name="responde 200" time="0.021" classname="Hu5RegistrarMiAvanceLograrElHito1OtraVez"/>
+  </testsuite>
+  <testsuite name="HU29 · Avance y constancia / Tu camino" id="6fbbf4d1-eda1-4ac0-92e4-07314e136749" timestamp="2026-11-15T06:33:27.139Z" tests="4" failures="0" errors="0" time="0.019">
+    <testcase name="responde 200" time="0.019" classname="Hu29AvanceYConstanciaTuCamino"/>
+    <testcase name="2 hitos y 1 hábito" time="0.019" classname="Hu29AvanceYConstanciaTuCamino"/>
+    <testcase name="avance 50 %" time="0.019" classname="Hu29AvanceYConstanciaTuCamino"/>
+    <testcase name="constancia de hoy al 100 %" time="0.019" classname="Hu29AvanceYConstanciaTuCamino"/>
+  </testsuite>
+  <testsuite name="HU29 · Avance y constancia / Resumen para las tarjetas" id="cdcf936f-1904-4b14-85e0-3ab34426e194" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.016">
+    <testcase name="responde 200" time="0.016" classname="Hu29AvanceYConstanciaResumenParaLasTarjetas"/>
+    <testcase name="trae el avance" time="0.016" classname="Hu29AvanceYConstanciaResumenParaLasTarjetas"/>
+  </testsuite>
+  <testsuite name="HU29 · Avance y constancia / Estadísticas del hábito" id="a4671837-87ec-4f3d-b477-9c505787fc4a" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.013">
+    <testcase name="responde 200" time="0.013" classname="Hu29AvanceYConstanciaEstadisticasDelHabito"/>
+    <testcase name="racha de 1 día" time="0.013" classname="Hu29AvanceYConstanciaEstadisticasDelHabito"/>
+  </testsuite>
+  <testsuite name="HU29 · Avance y constancia / Un hito no tiene estadísticas por día" id="6692f04a-f7c3-45ac-804e-402aef88cf8d" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.009">
+    <testcase name="responde 400" time="0.009" classname="Hu29AvanceYConstanciaUnHitoNoTieneEstadisticasPorDia"/>
+    <testcase name="error: Un hito no tiene estadísticas por día" time="0.009" classname="Hu29AvanceYConstanciaUnHitoNoTieneEstadisticasPorDia"/>
+  </testsuite>
+  <testsuite name="HU29 · Avance y constancia / Beto no participa: no ve el camino" id="b530039d-1d5b-4b47-aee2-e650074489e0" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.013">
+    <testcase name="responde 403" time="0.013" classname="Hu29AvanceYConstanciaBetoNoParticipaNoVeElCamino"/>
+    <testcase name="mensaje: No participas en esta meta" time="0.013" classname="Hu29AvanceYConstanciaBetoNoParticipaNoVeElCamino"/>
+  </testsuite>
+  <testsuite name="HU13 · Invitar a una meta / Pedido sin persona" id="ac77f8d7-e897-43c6-ba8b-067c621108ab" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.011">
+    <testcase name="responde 400" time="0.011" classname="Hu13InvitarAUnaMetaPedidoSinPersona"/>
+    <testcase name="error: Elige a quién quieres invitar" time="0.011" classname="Hu13InvitarAUnaMetaPedidoSinPersona"/>
+  </testsuite>
+  <testsuite name="HU13 · Invitar a una meta / Beto no es el creador: no invita" id="c227ba0e-075d-4f45-a167-b32090ea89a8" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.019">
+    <testcase name="responde 403" time="0.019" classname="Hu13InvitarAUnaMetaBetoNoEsElCreadorNoInvita"/>
+    <testcase name="mensaje: Solo el creador puede invitar personas a la meta" time="0.019" classname="Hu13InvitarAUnaMetaBetoNoEsElCreadorNoInvita"/>
+  </testsuite>
+  <testsuite name="HU13 · Invitar a una meta / Invitarse a sí misma" id="d6d23bd0-3e27-47d1-8fab-7a31b11e27a8" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.012">
+    <testcase name="responde 400" time="0.012" classname="Hu13InvitarAUnaMetaInvitarseASiMisma"/>
+    <testcase name="error: No puedes invitarte a ti mismo" time="0.012" classname="Hu13InvitarAUnaMetaInvitarseASiMisma"/>
+  </testsuite>
+  <testsuite name="HU13 · Invitar a una meta / Persona que no existe" id="87444a6d-4eb5-4008-a0e0-ba5519a1068d" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.014">
+    <testcase name="responde 404" time="0.014" classname="Hu13InvitarAUnaMetaPersonaQueNoExiste"/>
+    <testcase name="mensaje: No existe el usuario con código 999999" time="0.014" classname="Hu13InvitarAUnaMetaPersonaQueNoExiste"/>
+  </testsuite>
+  <testsuite name="HU13 · Invitar a una meta / Ana invita a Beto" id="63d10a5d-dcce-4dec-bb86-26dccc0db631" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.022">
+    <testcase name="responde 201" time="0.022" classname="Hu13InvitarAUnaMetaAnaInvitaABeto"/>
+    <testcase name="queda PENDIENTE" time="0.022" classname="Hu13InvitarAUnaMetaAnaInvitaABeto"/>
+  </testsuite>
+  <testsuite name="HU13 · Invitar a una meta / Invitarlo dos veces" id="a1b1bebd-fbf3-4539-b641-eae4d823b17e" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.017">
+    <testcase name="responde 409" time="0.017" classname="Hu13InvitarAUnaMetaInvitarloDosVeces"/>
+    <testcase name="mensaje: Beto Newman ya tiene una invitación pendiente a esta meta" time="0.017" classname="Hu13InvitarAUnaMetaInvitarloDosVeces"/>
+  </testsuite>
+  <testsuite name="HU13 · Invitar a una meta / Generar código para unirse" id="d542e2b3-b4cd-4ec2-a80a-a8fa0c72e75d" timestamp="2026-11-15T06:33:27.139Z" tests="3" failures="0" errors="0" time="0.016">
+    <testcase name="responde 201" time="0.016" classname="Hu13InvitarAUnaMetaGenerarCodigoParaUnirse"/>
+    <testcase name="código de 8 caracteres sin ambiguos" time="0.016" classname="Hu13InvitarAUnaMetaGenerarCodigoParaUnirse"/>
+    <testcase name="vence en 7 días" time="0.016" classname="Hu13InvitarAUnaMetaGenerarCodigoParaUnirse"/>
+  </testsuite>
+  <testsuite name="HU13 · Invitar a una meta / Ver el código" id="c18402dc-1aa5-4ee7-a61b-73ace4e17ab0" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.010">
+    <testcase name="responde 200" time="0.010" classname="Hu13InvitarAUnaMetaVerElCodigo"/>
+  </testsuite>
+  <testsuite name="HU13 · Invitar a una meta / Beto no maneja el código" id="032beb90-c415-4bd7-912e-b6a69b324ad7" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.010">
+    <testcase name="responde 403" time="0.010" classname="Hu13InvitarAUnaMetaBetoNoManejaElCodigo"/>
+    <testcase name="mensaje: Solo el creador puede manejar el código de la meta" time="0.010" classname="Hu13InvitarAUnaMetaBetoNoManejaElCodigo"/>
+  </testsuite>
+  <testsuite name="HU13 · Invitar a una meta / Desactivar el código" id="243d2614-4de2-4c59-9470-cbcba79de1c5" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.025">
     <testcase name="responde 204" time="0.025" classname="Hu13InvitarAUnaMetaDesactivarElCodigo"/>
   </testsuite>
-  <testsuite name="HU13 · Invitar a una meta / Unirse con un código que no existe" id="5788cde8-5aa3-4006-96ec-dbc24482e2f6" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.019">
-    <testcase name="responde 400" time="0.019" classname="Hu13InvitarAUnaMetaUnirseConUnCodigoQueNoExiste"/>
+  <testsuite name="HU13 · Invitar a una meta / Unirse con un código que no existe" id="3f836b77-e99a-4077-8626-aeb4a49ed0e7" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.011">
+    <testcase name="responde 400" time="0.011" classname="Hu13InvitarAUnaMetaUnirseConUnCodigoQueNoExiste"/>
+    <testcase name="error: Ese código no existe o ya venció. Revisa que esté bien escrito." time="0.011" classname="Hu13InvitarAUnaMetaUnirseConUnCodigoQueNoExiste"/>
   </testsuite>
-  <testsuite name="HU14 · Responder invitación / Beto ve su invitación" id="7d386fe9-1f48-46c1-94db-b49a5010ace4" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.026">
-    <testcase name="responde 200" time="0.026" classname="Hu14ResponderInvitacionBetoVeSuInvitacion"/>
-    <testcase name="incluye la meta" time="0.026" classname="Hu14ResponderInvitacionBetoVeSuInvitacion"/>
+  <testsuite name="HU13 · Invitar a una meta / Unirse sin código" id="38fcb323-d769-4b2d-adbe-20918c098b11" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.012">
+    <testcase name="responde 400" time="0.012" classname="Hu13InvitarAUnaMetaUnirseSinCodigo"/>
+    <testcase name="error: Escribe el código que te compartieron" time="0.012" classname="Hu13InvitarAUnaMetaUnirseSinCodigo"/>
   </testsuite>
-  <testsuite name="HU14 · Responder invitación / Beto acepta" id="2ce32e63-0548-42dd-9d48-19a82cf694a3" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.030">
+  <testsuite name="HU14 · Responder invitación / Beto ve su invitación" id="587c6c7c-8f70-447c-8570-29cb082352e7" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.017">
+    <testcase name="responde 200" time="0.017" classname="Hu14ResponderInvitacionBetoVeSuInvitacion"/>
+    <testcase name="incluye la meta" time="0.017" classname="Hu14ResponderInvitacionBetoVeSuInvitacion"/>
+  </testsuite>
+  <testsuite name="HU14 · Responder invitación / Responder sin decir si acepta" id="7870117e-c1fe-4e15-8160-c461a34d23f2" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.011">
+    <testcase name="responde 400" time="0.011" classname="Hu14ResponderInvitacionResponderSinDecirSiAcepta"/>
+    <testcase name="error: Indica si aceptas o rechazas la invitación" time="0.011" classname="Hu14ResponderInvitacionResponderSinDecirSiAcepta"/>
+  </testsuite>
+  <testsuite name="HU14 · Responder invitación / Ana no tiene invitación a su propia meta" id="782e89f8-ef14-4302-846f-1b46f3d204da" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.016">
+    <testcase name="responde 404" time="0.016" classname="Hu14ResponderInvitacionAnaNoTieneInvitacionASuPropiaMeta"/>
+    <testcase name="mensaje: No tienes una invitación pendiente a esta meta" time="0.016" classname="Hu14ResponderInvitacionAnaNoTieneInvitacionASuPropiaMeta"/>
+  </testsuite>
+  <testsuite name="HU14 · Responder invitación / Enlace del correo que no existe (sin sesión)" id="0e81074c-cd35-4b53-a62a-9033258221cb" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="responde 410" time="0.006" classname="Hu14ResponderInvitacionEnlaceDelCorreoQueNoExisteSinSesion"/>
+  </testsuite>
+  <testsuite name="HU14 · Responder invitación / Rechazar desde el correo con un enlace falso (sin sesión)" id="393e1e3e-b846-42ef-ab68-2927e5af4f74" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="responde 410" time="0.006" classname="Hu14ResponderInvitacionRechazarDesdeElCorreoConUnEnlaceFalsoSinSesion"/>
+  </testsuite>
+  <testsuite name="HU14 · Responder invitación / Beto acepta" id="f43022ed-46df-412f-a665-bde2da0fb35d" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.030">
     <testcase name="responde 200" time="0.030" classname="Hu14ResponderInvitacionBetoAcepta"/>
   </testsuite>
-  <testsuite name="HU14 · Responder invitación / Beto ya la ve en Mis metas" id="be4eb8de-9a65-4049-905e-b6a5751454d0" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.034">
-    <testcase name="responde 200" time="0.034" classname="Hu14ResponderInvitacionBetoYaLaVeEnMisMetas"/>
-    <testcase name="está en su lista" time="0.034" classname="Hu14ResponderInvitacionBetoYaLaVeEnMisMetas"/>
+  <testsuite name="HU14 · Responder invitación / Aceptar otra vez" id="398f755e-e6d8-4845-be8b-ff6dc8865c2c" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.013">
+    <testcase name="responde 404" time="0.013" classname="Hu14ResponderInvitacionAceptarOtraVez"/>
+    <testcase name="mensaje: No tienes una invitación pendiente a esta meta" time="0.013" classname="Hu14ResponderInvitacionAceptarOtraVez"/>
   </testsuite>
-  <testsuite name="HU14 · Responder invitación / Beto logra el hito 2 (el hito es del equipo)" id="c1ebac1a-e027-4b77-91a3-e3754c335e76" timestamp="2026-11-15T01:03:46.364Z" tests="3" failures="0" errors="0" time="0.033">
-    <testcase name="responde 200" time="0.033" classname="Hu14ResponderInvitacionBetoLograElHito2ElHitoEsDelEquipo"/>
-    <testcase name="queda quién lo logró" time="0.033" classname="Hu14ResponderInvitacionBetoLograElHito2ElHitoEsDelEquipo"/>
-    <testcase name="avance 100 %" time="0.033" classname="Hu14ResponderInvitacionBetoLograElHito2ElHitoEsDelEquipo"/>
+  <testsuite name="HU14 · Responder invitación / Beto ya la ve en Mis metas" id="2c45e788-1ac4-4a8b-8694-9008e05fb945" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.022">
+    <testcase name="responde 200" time="0.022" classname="Hu14ResponderInvitacionBetoYaLaVeEnMisMetas"/>
+    <testcase name="está en su lista" time="0.022" classname="Hu14ResponderInvitacionBetoYaLaVeEnMisMetas"/>
   </testsuite>
-  <testsuite name="HU25 · Ocultar metas / Ana oculta la meta de su perfil" id="08861c05-50b7-47fe-b593-94b18f689c29" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.028">
-    <testcase name="responde 200" time="0.028" classname="Hu25OcultarMetasAnaOcultaLaMetaDeSuPerfil"/>
-    <testcase name="oculta" time="0.028" classname="Hu25OcultarMetasAnaOcultaLaMetaDeSuPerfil"/>
+  <testsuite name="HU14 · Responder invitación / Ana genera otro código" id="7fda5987-91ab-4bff-8491-7df11b691418" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.021">
+    <testcase name="responde 201" time="0.021" classname="Hu14ResponderInvitacionAnaGeneraOtroCodigo"/>
   </testsuite>
-  <testsuite name="HU25 · Ocultar metas / Ana la vuelve a mostrar" id="4628344c-9cf5-41cb-8145-c339d65d3023" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.031">
-    <testcase name="responde 200" time="0.031" classname="Hu25OcultarMetasAnaLaVuelveAMostrar"/>
+  <testsuite name="HU14 · Responder invitación / Beto ya participa: no se une con el código" id="05895d0d-13ff-4c47-9f95-4c8b3aaa34cb" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.014">
+    <testcase name="responde 409" time="0.014" classname="Hu14ResponderInvitacionBetoYaParticipaNoSeUneConElCodigo"/>
+    <testcase name="mensaje: Ya participas en esta meta" time="0.014" classname="Hu14ResponderInvitacionBetoYaParticipaNoSeUneConElCodigo"/>
   </testsuite>
-  <testsuite name="HU25 · Ocultar metas / Sin el campo oculta" id="4b9cf461-27ed-4b1e-8d33-837ca6f7c25c" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.017">
-    <testcase name="responde 400" time="0.017" classname="Hu25OcultarMetasSinElCampoOculta"/>
+  <testsuite name="HU14 · Responder invitación / Ana desactiva el código" id="9cff28ed-caca-4e17-a8b5-4fba825d912c" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.015">
+    <testcase name="responde 204" time="0.015" classname="Hu14ResponderInvitacionAnaDesactivaElCodigo"/>
   </testsuite>
-  <testsuite name="HU6, HU11 y HU15 · Cumplir la meta / Beto no es el creador" id="4e429ce2-bcd6-40bb-a56e-04b127a978be" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.020">
-    <testcase name="responde 403" time="0.020" classname="Hu6Hu11YHu15CumplirLaMetaBetoNoEsElCreador"/>
+  <testsuite name="HU14 · Responder invitación / Beto logra el hito 2 (el hito es del equipo)" id="bd5c6ea9-99ad-4914-9af3-985eacdcca0f" timestamp="2026-11-15T06:33:27.139Z" tests="3" failures="0" errors="0" time="0.020">
+    <testcase name="responde 200" time="0.020" classname="Hu14ResponderInvitacionBetoLograElHito2ElHitoEsDelEquipo"/>
+    <testcase name="queda quién lo logró" time="0.020" classname="Hu14ResponderInvitacionBetoLograElHito2ElHitoEsDelEquipo"/>
+    <testcase name="avance 100 %" time="0.020" classname="Hu14ResponderInvitacionBetoLograElHito2ElHitoEsDelEquipo"/>
   </testsuite>
-  <testsuite name="HU6, HU11 y HU15 · Cumplir la meta / Ana la marca como cumplida" id="b44d2111-8411-4b59-9e55-64c2a3d3d60e" timestamp="2026-11-15T01:03:46.364Z" tests="3" failures="0" errors="0" time="0.059">
-    <testcase name="responde 200" time="0.059" classname="Hu6Hu11YHu15CumplirLaMetaAnaLaMarcaComoCumplida"/>
-    <testcase name="CUMPLIDA" time="0.059" classname="Hu6Hu11YHu15CumplirLaMetaAnaLaMarcaComoCumplida"/>
-    <testcase name="lista de insignias nuevas (HU11)" time="0.059" classname="Hu6Hu11YHu15CumplirLaMetaAnaLaMarcaComoCumplida"/>
+  <testsuite name="HU25 · Ocultar metas / Ana oculta la meta de su perfil" id="21084a1f-ef7e-4e96-bdc8-c0a63b4fc8a5" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.020">
+    <testcase name="responde 200" time="0.020" classname="Hu25OcultarMetasAnaOcultaLaMetaDeSuPerfil"/>
+    <testcase name="oculta" time="0.020" classname="Hu25OcultarMetasAnaOcultaLaMetaDeSuPerfil"/>
   </testsuite>
-  <testsuite name="HU6, HU11 y HU15 · Cumplir la meta / Marcarla otra vez no cambia nada (criterio 4)" id="0de6db74-4ee6-427c-8fa2-9e6a467a9936" timestamp="2026-11-15T01:03:46.364Z" tests="3" failures="0" errors="0" time="0.029">
-    <testcase name="responde 200" time="0.029" classname="Hu6Hu11YHu15CumplirLaMetaMarcarlaOtraVezNoCambiaNadaCriterio4"/>
-    <testcase name="conserva la fecha original" time="0.029" classname="Hu6Hu11YHu15CumplirLaMetaMarcarlaOtraVezNoCambiaNadaCriterio4"/>
-    <testcase name="no da insignias otra vez" time="0.029" classname="Hu6Hu11YHu15CumplirLaMetaMarcarlaOtraVezNoCambiaNadaCriterio4"/>
+  <testsuite name="HU25 · Ocultar metas / Ana la vuelve a mostrar" id="ff56f608-439d-4666-9d86-45ab3274add3" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.033">
+    <testcase name="responde 200" time="0.033" classname="Hu25OcultarMetasAnaLaVuelveAMostrar"/>
   </testsuite>
-  <testsuite name="HU6, HU11 y HU15 · Cumplir la meta / HU15: aparece en el perfil de Beto" id="a3a2c4ca-d18c-492a-a462-a8c6281dba63" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.038">
-    <testcase name="responde 200" time="0.038" classname="Hu6Hu11YHu15CumplirLaMetaHu15ApareceEnElPerfilDeBeto"/>
-    <testcase name="entre sus últimas cumplidas" time="0.038" classname="Hu6Hu11YHu15CumplirLaMetaHu15ApareceEnElPerfilDeBeto"/>
+  <testsuite name="HU25 · Ocultar metas / Sin el campo oculta" id="992c0c5f-6a38-49cd-b356-3ae82b78a206" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.011">
+    <testcase name="responde 400" time="0.011" classname="Hu25OcultarMetasSinElCampoOculta"/>
+    <testcase name="error: Indica si la meta queda oculta" time="0.011" classname="Hu25OcultarMetasSinElCampoOculta"/>
   </testsuite>
-  <testsuite name="HU6, HU11 y HU15 · Cumplir la meta / El camino queda en solo lectura" id="5e89e614-2e2e-49fc-89d2-04735be46e67" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.024">
-    <testcase name="responde 400" time="0.024" classname="Hu6Hu11YHu15CumplirLaMetaElCaminoQuedaEnSoloLectura"/>
+  <testsuite name="HU25 · Ocultar metas / Meta que no existe" id="298b8106-d3d8-4416-9db3-3d43326ff065" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.017">
+    <testcase name="responde 404" time="0.017" classname="Hu25OcultarMetasMetaQueNoExiste"/>
   </testsuite>
-  <testsuite name="HU21 · Compartir logro / Compartir" id="88de57e5-4826-4cb6-935e-4ed289d5c371" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.035">
-    <testcase name="responde 201" time="0.035" classname="Hu21CompartirLogroCompartir"/>
+  <testsuite name="HU6, HU11 y HU15 · Cumplir la meta / HU21 antes de cumplirla: una meta activa no se comparte" id="acc5afc8-5ef7-4a2b-8e8d-92b09671e33f" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.015">
+    <testcase name="responde 400" time="0.015" classname="Hu6Hu11YHu15CumplirLaMetaHu21AntesDeCumplirlaUnaMetaActivaNoSeComparte"/>
+    <testcase name="error: Solo se puede compartir una meta cumplida" time="0.015" classname="Hu6Hu11YHu15CumplirLaMetaHu21AntesDeCumplirlaUnaMetaActivaNoSeComparte"/>
   </testsuite>
-  <testsuite name="HU21 · Compartir logro / Página pública del logro (sin sesión)" id="fe13575b-2260-489c-ab4a-bb53cf64aac1" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.014">
-    <testcase name="responde 200" time="0.014" classname="Hu21CompartirLogroPaginaPublicaDelLogroSinSesion"/>
-    <testcase name="nombre de la meta" time="0.014" classname="Hu21CompartirLogroPaginaPublicaDelLogroSinSesion"/>
+  <testsuite name="HU6, HU11 y HU15 · Cumplir la meta / Beto no es el creador" id="b144f393-9825-41af-becc-370377059117" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.016">
+    <testcase name="responde 403" time="0.016" classname="Hu6Hu11YHu15CumplirLaMetaBetoNoEsElCreador"/>
+    <testcase name="mensaje: Solo el creador puede marcar la meta como cumplida" time="0.016" classname="Hu6Hu11YHu15CumplirLaMetaBetoNoEsElCreador"/>
   </testsuite>
-  <testsuite name="HU21 · Compartir logro / Logro que no existe" id="ba1869a3-546c-4f77-a20d-b5d84f36a0f2" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.008">
-    <testcase name="responde 404" time="0.008" classname="Hu21CompartirLogroLogroQueNoExiste"/>
+  <testsuite name="HU6, HU11 y HU15 · Cumplir la meta / Ana la marca como cumplida" id="81bc5a7e-a919-4735-b701-5b474b4d15d7" timestamp="2026-11-15T06:33:27.139Z" tests="3" failures="0" errors="0" time="0.040">
+    <testcase name="responde 200" time="0.040" classname="Hu6Hu11YHu15CumplirLaMetaAnaLaMarcaComoCumplida"/>
+    <testcase name="CUMPLIDA" time="0.040" classname="Hu6Hu11YHu15CumplirLaMetaAnaLaMarcaComoCumplida"/>
+    <testcase name="lista de insignias nuevas (HU11)" time="0.040" classname="Hu6Hu11YHu15CumplirLaMetaAnaLaMarcaComoCumplida"/>
   </testsuite>
-  <testsuite name="HU7 · Reporte general / Reporte" id="2b6ac44d-496f-4c35-83a6-929527ba9cd8" timestamp="2026-11-15T01:03:46.364Z" tests="3" failures="0" errors="0" time="0.025">
-    <testcase name="responde 200" time="0.025" classname="Hu7ReporteGeneralReporte"/>
-    <testcase name="al menos una cumplida" time="0.025" classname="Hu7ReporteGeneralReporte"/>
-    <testcase name="porcentaje de 0 a 100" time="0.025" classname="Hu7ReporteGeneralReporte"/>
+  <testsuite name="HU6, HU11 y HU15 · Cumplir la meta / Marcarla otra vez no cambia nada (criterio 4)" id="a346a9f0-4e7c-4ae8-9ff4-842eb6f0efb8" timestamp="2026-11-15T06:33:27.139Z" tests="3" failures="0" errors="0" time="0.018">
+    <testcase name="responde 200" time="0.018" classname="Hu6Hu11YHu15CumplirLaMetaMarcarlaOtraVezNoCambiaNadaCriterio4"/>
+    <testcase name="conserva la fecha original" time="0.018" classname="Hu6Hu11YHu15CumplirLaMetaMarcarlaOtraVezNoCambiaNadaCriterio4"/>
+    <testcase name="no da insignias otra vez" time="0.018" classname="Hu6Hu11YHu15CumplirLaMetaMarcarlaOtraVezNoCambiaNadaCriterio4"/>
   </testsuite>
-  <testsuite name="HU22 y HU12 · Mi perfil e insignias / Mi perfil" id="d477aef7-e4ee-48f2-a469-73e7571788da" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.035">
-    <testcase name="responde 200" time="0.035" classname="Hu22YHu12MiPerfilEInsigniasMiPerfil"/>
-    <testcase name="resumen de metas" time="0.035" classname="Hu22YHu12MiPerfilEInsigniasMiPerfil"/>
+  <testsuite name="HU6, HU11 y HU15 · Cumplir la meta / HU15: aparece en el perfil de Beto" id="a7ad2982-45e8-4da9-8583-b6859a650f75" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.021">
+    <testcase name="responde 200" time="0.021" classname="Hu6Hu11YHu15CumplirLaMetaHu15ApareceEnElPerfilDeBeto"/>
+    <testcase name="entre sus últimas cumplidas" time="0.021" classname="Hu6Hu11YHu15CumplirLaMetaHu15ApareceEnElPerfilDeBeto"/>
   </testsuite>
-  <testsuite name="HU22 y HU12 · Mi perfil e insignias / Galería de insignias" id="28bea082-38f6-4c46-885b-0256dfbe2779" timestamp="2026-11-15T01:03:46.364Z" tests="3" failures="0" errors="0" time="0.025">
-    <testcase name="responde 200" time="0.025" classname="Hu22YHu12MiPerfilEInsigniasGaleriaDeInsignias"/>
-    <testcase name="catálogo de 6" time="0.025" classname="Hu22YHu12MiPerfilEInsigniasGaleriaDeInsignias"/>
-    <testcase name="ganó al menos una" time="0.025" classname="Hu22YHu12MiPerfilEInsigniasGaleriaDeInsignias"/>
+  <testsuite name="HU6, HU11 y HU15 · Cumplir la meta / El camino queda en solo lectura" id="c573e076-accb-4c91-a74a-f2184e99c087" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.016">
+    <testcase name="responde 400" time="0.016" classname="Hu6Hu11YHu15CumplirLaMetaElCaminoQuedaEnSoloLectura"/>
+    <testcase name="error: La meta ya está cumplida: su camino es solo de lectura" time="0.016" classname="Hu6Hu11YHu15CumplirLaMetaElCaminoQuedaEnSoloLectura"/>
   </testsuite>
-  <testsuite name="HU24 y HU26 · Perfil de otros y perfil privado / Buscar «bet»" id="3287ebc3-3c2c-45cd-811a-99176d8bc022" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.022">
-    <testcase name="responde 200" time="0.022" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoBuscarBet"/>
-    <testcase name="encuentra a Beto" time="0.022" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoBuscarBet"/>
+  <testsuite name="HU6, HU11 y HU15 · Cumplir la meta / Tampoco se registran días" id="acf13bb4-6fd8-4e54-a442-c126ba29e642" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.021">
+    <testcase name="responde 400" time="0.021" classname="Hu6Hu11YHu15CumplirLaMetaTampocoSeRegistranDias"/>
+    <testcase name="error: La meta ya está cumplida: su camino es solo de lectura" time="0.021" classname="Hu6Hu11YHu15CumplirLaMetaTampocoSeRegistranDias"/>
   </testsuite>
-  <testsuite name="HU24 y HU26 · Perfil de otros y perfil privado / Búsqueda de una letra" id="c549c41f-8771-4c91-8dba-02b818e0cf0a" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.019">
-    <testcase name="responde 400" time="0.019" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoBusquedaDeUnaLetra"/>
+  <testsuite name="HU21 · Compartir logro / Compartir" id="645878ec-ddef-4681-9507-0eab01952290" timestamp="2026-11-15T06:33:27.139Z" tests="3" failures="0" errors="0" time="0.024">
+    <testcase name="responde 201" time="0.024" classname="Hu21CompartirLogroCompartir"/>
+    <testcase name="token de 10 caracteres sin ambiguos" time="0.024" classname="Hu21CompartirLogroCompartir"/>
+    <testcase name="URL del enlace" time="0.024" classname="Hu21CompartirLogroCompartir"/>
   </testsuite>
-  <testsuite name="HU24 y HU26 · Perfil de otros y perfil privado / Perfil público de Beto" id="7cee9405-e3da-44ab-9daa-b2610d22bc7f" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.040">
-    <testcase name="responde 200" time="0.040" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoPerfilPublicoDeBeto"/>
-    <testcase name="sin correo" time="0.040" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoPerfilPublicoDeBeto"/>
+  <testsuite name="HU21 · Compartir logro / Compartir otra vez reutiliza el enlace" id="6cc5ef46-22a4-48b5-aa99-ec8b16145e1f" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.019">
+    <testcase name="responde 201" time="0.019" classname="Hu21CompartirLogroCompartirOtraVezReutilizaElEnlace"/>
+    <testcase name="mismo token" time="0.019" classname="Hu21CompartirLogroCompartirOtraVezReutilizaElEnlace"/>
   </testsuite>
-  <testsuite name="HU24 y HU26 · Perfil de otros y perfil privado / Persona que no existe" id="bc5b6157-b5a5-4d99-8fc8-eb47d000d6db" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.021">
-    <testcase name="responde 404" time="0.021" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoPersonaQueNoExiste"/>
+  <testsuite name="HU21 · Compartir logro / Beto también puede compartirlo (participa)" id="0d6bd317-8815-4435-9d81-bd872246a838" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.022">
+    <testcase name="responde 201" time="0.022" classname="Hu21CompartirLogroBetoTambienPuedeCompartirloParticipa"/>
+    <testcase name="su propio enlace" time="0.022" classname="Hu21CompartirLogroBetoTambienPuedeCompartirloParticipa"/>
   </testsuite>
-  <testsuite name="HU24 y HU26 · Perfil de otros y perfil privado / Beto hace su perfil privado" id="8bff7d58-f45c-4c1b-bf3e-e94c1a3dce8e" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.023">
-    <testcase name="responde 200" time="0.023" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoBetoHaceSuPerfilPrivado"/>
-    <testcase name="privado" time="0.023" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoBetoHaceSuPerfilPrivado"/>
+  <testsuite name="HU21 · Compartir logro / Página pública del logro (sin sesión)" id="6c5bfcd0-b801-49a7-a7b9-4059be522a21" timestamp="2026-11-15T06:33:27.139Z" tests="3" failures="0" errors="0" time="0.010">
+    <testcase name="responde 200" time="0.010" classname="Hu21CompartirLogroPaginaPublicaDelLogroSinSesion"/>
+    <testcase name="nombre de la meta" time="0.010" classname="Hu21CompartirLogroPaginaPublicaDelLogroSinSesion"/>
+    <testcase name="nombre visible sin apellido completo" time="0.010" classname="Hu21CompartirLogroPaginaPublicaDelLogroSinSesion"/>
   </testsuite>
-  <testsuite name="HU24 y HU26 · Perfil de otros y perfil privado / Ana ve el perfil privado de Beto" id="fe229d73-db85-4822-b29c-33a2d7843158" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.021">
-    <testcase name="responde 200" time="0.021" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoAnaVeElPerfilPrivadoDeBeto"/>
-    <testcase name="marcado privado y sin metas" time="0.021" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoAnaVeElPerfilPrivadoDeBeto"/>
+  <testsuite name="HU21 · Compartir logro / Logro que no existe" id="6209fc9a-cce7-4676-90bd-d83491334c63" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.006">
+    <testcase name="responde 404" time="0.006" classname="Hu21CompartirLogroLogroQueNoExiste"/>
+    <testcase name="mensaje: Este logro no existe o el enlace no es válido" time="0.006" classname="Hu21CompartirLogroLogroQueNoExiste"/>
   </testsuite>
-  <testsuite name="HU24 y HU26 · Perfil de otros y perfil privado / Beto lo vuelve público" id="f194e811-357d-46f7-b4ed-86bfe6cf3be3" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.024">
-    <testcase name="responde 200" time="0.024" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoBetoLoVuelvePublico"/>
+  <testsuite name="HU7 · Reporte general / Reporte" id="0de32c9f-eb94-4fa8-94fa-d54968ba7843" timestamp="2026-11-15T06:33:27.139Z" tests="3" failures="0" errors="0" time="0.016">
+    <testcase name="responde 200" time="0.016" classname="Hu7ReporteGeneralReporte"/>
+    <testcase name="al menos una cumplida" time="0.016" classname="Hu7ReporteGeneralReporte"/>
+    <testcase name="porcentaje de 0 a 100" time="0.016" classname="Hu7ReporteGeneralReporte"/>
   </testsuite>
-  <testsuite name="HU19 · Perfil público / Frase y portada" id="23ec5364-ea53-4a5a-94a4-8a61ff42b04c" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.039">
-    <testcase name="responde 200" time="0.039" classname="Hu19PerfilPublicoFraseYPortada"/>
-    <testcase name="frase guardada" time="0.039" classname="Hu19PerfilPublicoFraseYPortada"/>
+  <testsuite name="HU22 y HU12 · Mi perfil e insignias / Mi perfil" id="1abdcf7f-2494-47fe-8036-304dd6f7be29" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.020">
+    <testcase name="responde 200" time="0.020" classname="Hu22YHu12MiPerfilEInsigniasMiPerfil"/>
+    <testcase name="resumen de metas" time="0.020" classname="Hu22YHu12MiPerfilEInsigniasMiPerfil"/>
   </testsuite>
-  <testsuite name="HU19 · Perfil público / Frase de más de 100 caracteres" id="2b986d25-140c-4089-809b-cfe5b75292b5" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.028">
-    <testcase name="responde 400" time="0.028" classname="Hu19PerfilPublicoFraseDeMasDe100Caracteres"/>
+  <testsuite name="HU22 y HU12 · Mi perfil e insignias / Galería de insignias" id="842e9257-03a3-4378-b6af-c494623696aa" timestamp="2026-11-15T06:33:27.139Z" tests="3" failures="0" errors="0" time="0.015">
+    <testcase name="responde 200" time="0.015" classname="Hu22YHu12MiPerfilEInsigniasGaleriaDeInsignias"/>
+    <testcase name="catálogo de 6" time="0.015" classname="Hu22YHu12MiPerfilEInsigniasGaleriaDeInsignias"/>
+    <testcase name="ganó al menos una" time="0.015" classname="Hu22YHu12MiPerfilEInsigniasGaleriaDeInsignias"/>
   </testsuite>
-  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Ver mi cuenta" id="2412920d-f63f-4a7f-8943-82119a07b73b" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.015">
-    <testcase name="responde 200" time="0.015" classname="Hu23Hu30YHu20MiCuentaVerMiCuenta"/>
-    <testcase name="avatar por defecto o elegido" time="0.015" classname="Hu23Hu30YHu20MiCuentaVerMiCuenta"/>
+  <testsuite name="HU24 y HU26 · Perfil de otros y perfil privado / Buscar «bet»" id="f950a4cf-a1ed-4039-884c-728c0aba24fe" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.013">
+    <testcase name="responde 200" time="0.013" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoBuscarBet"/>
+    <testcase name="encuentra a Beto" time="0.013" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoBuscarBet"/>
   </testsuite>
-  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Editar nombre" id="6c89bcf7-b1c4-4f59-9d8b-f1f5a29a7e39" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.020">
-    <testcase name="responde 200" time="0.020" classname="Hu23Hu30YHu20MiCuentaEditarNombre"/>
+  <testsuite name="HU24 y HU26 · Perfil de otros y perfil privado / Búsqueda de una letra" id="bcd21f0e-fe27-48ba-8837-014a18f257a4" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.010">
+    <testcase name="responde 400" time="0.010" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoBusquedaDeUnaLetra"/>
   </testsuite>
-  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Foto que no es imagen" id="a1685d9b-51a6-4d09-bd5b-744c193d5240" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.020">
-    <testcase name="responde 400" time="0.020" classname="Hu23Hu30YHu20MiCuentaFotoQueNoEsImagen"/>
+  <testsuite name="HU24 y HU26 · Perfil de otros y perfil privado / Perfil público de Beto" id="f53c3162-639f-46ea-8da8-f3059384f453" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.020">
+    <testcase name="responde 200" time="0.020" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoPerfilPublicoDeBeto"/>
+    <testcase name="sin correo" time="0.020" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoPerfilPublicoDeBeto"/>
   </testsuite>
-  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Apariencia Noche" id="acfe67cd-b44c-404d-a34c-35c9f7838d86" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.022">
+  <testsuite name="HU24 y HU26 · Perfil de otros y perfil privado / Persona que no existe" id="bc2e5801-c0cd-4e3b-8786-ab4448ace6c2" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.013">
+    <testcase name="responde 404" time="0.013" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoPersonaQueNoExiste"/>
+  </testsuite>
+  <testsuite name="HU24 y HU26 · Perfil de otros y perfil privado / Beto hace su perfil privado" id="71b202fc-180e-4be0-ac2c-48a033e8cbcc" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.018">
+    <testcase name="responde 200" time="0.018" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoBetoHaceSuPerfilPrivado"/>
+    <testcase name="privado" time="0.018" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoBetoHaceSuPerfilPrivado"/>
+  </testsuite>
+  <testsuite name="HU24 y HU26 · Perfil de otros y perfil privado / Ana ve el perfil privado de Beto" id="5b3aac4a-40fd-47ac-bf9e-d21afeaa05ce" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.014">
+    <testcase name="responde 200" time="0.014" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoAnaVeElPerfilPrivadoDeBeto"/>
+    <testcase name="marcado privado y sin metas" time="0.014" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoAnaVeElPerfilPrivadoDeBeto"/>
+  </testsuite>
+  <testsuite name="HU24 y HU26 · Perfil de otros y perfil privado / Beto lo vuelve público" id="ffbfdf81-3c15-4ed2-91e1-07666f866c72" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.016">
+    <testcase name="responde 200" time="0.016" classname="Hu24YHu26PerfilDeOtrosYPerfilPrivadoBetoLoVuelvePublico"/>
+  </testsuite>
+  <testsuite name="HU19 · Perfil público / Frase y portada" id="432477a2-1b9b-482f-8a86-61ceb2630023" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.026">
+    <testcase name="responde 200" time="0.026" classname="Hu19PerfilPublicoFraseYPortada"/>
+    <testcase name="frase guardada" time="0.026" classname="Hu19PerfilPublicoFraseYPortada"/>
+  </testsuite>
+  <testsuite name="HU19 · Perfil público / Frase de más de 100 caracteres" id="a6765ade-0e54-44fc-803a-81d553a5b030" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.016">
+    <testcase name="responde 400" time="0.016" classname="Hu19PerfilPublicoFraseDeMasDe100Caracteres"/>
+    <testcase name="error: La frase puede tener hasta 100 caracteres" time="0.016" classname="Hu19PerfilPublicoFraseDeMasDe100Caracteres"/>
+  </testsuite>
+  <testsuite name="HU19 · Perfil público / Portada que no existe" id="f77c6f58-893d-4032-9cc4-5e77034bcc2e" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.018">
+    <testcase name="responde 400" time="0.018" classname="Hu19PerfilPublicoPortadaQueNoExiste"/>
+    <testcase name="error: Elige una portada válida" time="0.018" classname="Hu19PerfilPublicoPortadaQueNoExiste"/>
+  </testsuite>
+  <testsuite name="HU19 · Perfil público / Insignia que no ganó" id="389d2358-5350-4fb7-b17c-82f51b38b935" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.017">
+    <testcase name="responde 400" time="0.017" classname="Hu19PerfilPublicoInsigniaQueNoGano"/>
+    <testcase name="error: Elige una insignia que hayas ganado" time="0.017" classname="Hu19PerfilPublicoInsigniaQueNoGano"/>
+  </testsuite>
+  <testsuite name="HU19 · Perfil público / Cuatro metas destacadas" id="b5e2b399-ce17-4abd-b8f3-c6a443f6c9cc" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.016">
+    <testcase name="responde 400" time="0.016" classname="Hu19PerfilPublicoCuatroMetasDestacadas"/>
+    <testcase name="error: Puedes destacar hasta 3 metas" time="0.016" classname="Hu19PerfilPublicoCuatroMetasDestacadas"/>
+  </testsuite>
+  <testsuite name="HU19 · Perfil público / Destacar la insignia y la meta cumplida" id="0f656164-195a-4eb1-a121-c3994c298b51" timestamp="2026-11-15T06:33:27.139Z" tests="3" failures="0" errors="0" time="0.107">
+    <testcase name="responde 200" time="0.107" classname="Hu19PerfilPublicoDestacarLaInsigniaYLaMetaCumplida"/>
+    <testcase name="insignia destacada" time="0.107" classname="Hu19PerfilPublicoDestacarLaInsigniaYLaMetaCumplida"/>
+    <testcase name="una meta destacada" time="0.107" classname="Hu19PerfilPublicoDestacarLaInsigniaYLaMetaCumplida"/>
+  </testsuite>
+  <testsuite name="HU19 · Perfil público / Sin cuerpo" id="387d6bfe-7cb4-4cd0-a405-5345353fd3e3" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.027">
+    <testcase name="responde 400" time="0.027" classname="Hu19PerfilPublicoSinCuerpo"/>
+    <testcase name="mensaje: Solicitud mal formada" time="0.027" classname="Hu19PerfilPublicoSinCuerpo"/>
+  </testsuite>
+  <testsuite name="HU19 · Perfil público / Dejar el perfil como estaba" id="17e9546c-e66f-46d6-9940-a7283c098710" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.081">
+    <testcase name="responde 200" time="0.081" classname="Hu19PerfilPublicoDejarElPerfilComoEstaba"/>
+  </testsuite>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Ver mi cuenta" id="ec9cfed9-88f5-471e-8e48-0e483b5755dd" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.041">
+    <testcase name="responde 200" time="0.041" classname="Hu23Hu30YHu20MiCuentaVerMiCuenta"/>
+    <testcase name="avatar por defecto o elegido" time="0.041" classname="Hu23Hu30YHu20MiCuentaVerMiCuenta"/>
+  </testsuite>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Editar nombre" id="6bc0f620-4582-4a82-8e49-847a91d79500" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.023">
+    <testcase name="responde 200" time="0.023" classname="Hu23Hu30YHu20MiCuentaEditarNombre"/>
+    <testcase name="sin espacios de más" time="0.023" classname="Hu23Hu30YHu20MiCuentaEditarNombre"/>
+  </testsuite>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Nombre y apellido vacíos" id="6f180e67-6ac8-425c-a00c-d2e1e03d9c6d" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.028">
+    <testcase name="responde 400" time="0.028" classname="Hu23Hu30YHu20MiCuentaNombreYApellidoVacios"/>
+    <testcase name="los dos errores" time="0.028" classname="Hu23Hu30YHu20MiCuentaNombreYApellidoVacios"/>
+  </testsuite>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Apellido de 51 caracteres" id="3f4968e0-3205-4529-8ae4-34f3748a4dae" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.024">
+    <testcase name="responde 400" time="0.024" classname="Hu23Hu30YHu20MiCuentaApellidoDe51Caracteres"/>
+    <testcase name="error: El apellido puede tener máximo 50 caracteres" time="0.024" classname="Hu23Hu30YHu20MiCuentaApellidoDe51Caracteres"/>
+  </testsuite>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Foto que no es imagen" id="815796b9-d0c6-4ae8-a390-dec457ba7164" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.029">
+    <testcase name="responde 400" time="0.029" classname="Hu23Hu30YHu20MiCuentaFotoQueNoEsImagen"/>
+    <testcase name="error: La foto debe ser una imagen JPG, PNG o WebP" time="0.029" classname="Hu23Hu30YHu20MiCuentaFotoQueNoEsImagen"/>
+  </testsuite>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Sin foto" id="f00695ee-7bba-4727-8246-2fbed5a9577f" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.038">
+    <testcase name="responde 400" time="0.038" classname="Hu23Hu30YHu20MiCuentaSinFoto"/>
+    <testcase name="error: Elige una foto" time="0.038" classname="Hu23Hu30YHu20MiCuentaSinFoto"/>
+  </testsuite>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Foto de más de 512 KB" id="398bc846-a09d-492a-af45-59a9bc1c2022" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.034">
+    <testcase name="responde 400" time="0.034" classname="Hu23Hu30YHu20MiCuentaFotoDeMasDe512Kb"/>
+    <testcase name="error: La foto pesa demasiado; elige una más liviana" time="0.034" classname="Hu23Hu30YHu20MiCuentaFotoDeMasDe512Kb"/>
+  </testsuite>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Foto PNG válida" id="923d0204-9eeb-473e-8c30-bb87f9be1ce1" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.019">
+    <testcase name="responde 200" time="0.019" classname="Hu23Hu30YHu20MiCuentaFotoPngValida"/>
+    <testcase name="foto guardada" time="0.019" classname="Hu23Hu30YHu20MiCuentaFotoPngValida"/>
+  </testsuite>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Quitar la foto" id="88c5b9ef-5737-49e3-ba48-099a5d13da89" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.017">
+    <testcase name="responde 200" time="0.017" classname="Hu23Hu30YHu20MiCuentaQuitarLaFoto"/>
+    <testcase name="sin foto" time="0.017" classname="Hu23Hu30YHu20MiCuentaQuitarLaFoto"/>
+  </testsuite>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Apariencia Noche" id="46d99d89-6f6e-4114-9f08-035a64662648" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.022">
     <testcase name="responde 200" time="0.022" classname="Hu23Hu30YHu20MiCuentaAparienciaNoche"/>
     <testcase name="guardada" time="0.022" classname="Hu23Hu30YHu20MiCuentaAparienciaNoche"/>
   </testsuite>
-  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Apariencia inválida" id="568bb661-3b82-41a4-bb6b-f0434d77340b" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.017">
-    <testcase name="responde 400" time="0.017" classname="Hu23Hu30YHu20MiCuentaAparienciaInvalida"/>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Apariencia inválida" id="cb86e53f-a687-4b44-8366-d4c1211ee1a8" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.014">
+    <testcase name="responde 400" time="0.014" classname="Hu23Hu30YHu20MiCuentaAparienciaInvalida"/>
+    <testcase name="dice qué falla" time="0.014" classname="Hu23Hu30YHu20MiCuentaAparienciaInvalida"/>
   </testsuite>
-  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Armar el avatar" id="845c51dd-f885-4539-8e07-d9dbac587ef4" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.031">
-    <testcase name="responde 200" time="0.031" classname="Hu23Hu30YHu20MiCuentaArmarElAvatar"/>
-    <testcase name="guardado" time="0.031" classname="Hu23Hu30YHu20MiCuentaArmarElAvatar"/>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Apariencia en minúsculas y con espacios" id="93098dee-8481-4d5e-a2f3-d1d93c0b6937" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.019">
+    <testcase name="responde 200" time="0.019" classname="Hu23Hu30YHu20MiCuentaAparienciaEnMinusculasYConEspacios"/>
+    <testcase name="se normaliza" time="0.019" classname="Hu23Hu30YHu20MiCuentaAparienciaEnMinusculasYConEspacios"/>
   </testsuite>
-  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Pieza de avatar que no existe" id="b6b9a68c-dce4-4d5d-b1eb-8c3859843501" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.020">
-    <testcase name="responde 400" time="0.020" classname="Hu23Hu30YHu20MiCuentaPiezaDeAvatarQueNoExiste"/>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Armar el avatar" id="96fae0ea-1eb9-4791-815d-3f921a0b86c4" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.017">
+    <testcase name="responde 200" time="0.017" classname="Hu23Hu30YHu20MiCuentaArmarElAvatar"/>
+    <testcase name="guardado" time="0.017" classname="Hu23Hu30YHu20MiCuentaArmarElAvatar"/>
   </testsuite>
-  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Volver a la apariencia clara" id="a8c43aaa-dcac-4da3-9345-772c796eede7" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.024">
-    <testcase name="responde 200" time="0.024" classname="Hu23Hu30YHu20MiCuentaVolverALaAparienciaClara"/>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Pieza de avatar que no existe" id="24c46015-a57b-45e0-bccb-09373ea5828b" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.015">
+    <testcase name="responde 400" time="0.015" classname="Hu23Hu30YHu20MiCuentaPiezaDeAvatarQueNoExiste"/>
+    <testcase name="solo el peinado falla" time="0.015" classname="Hu23Hu30YHu20MiCuentaPiezaDeAvatarQueNoExiste"/>
   </testsuite>
-  <testsuite name="HU4 · Eliminar meta / Crear una meta para borrar" id="b752b8bc-6d1d-4106-a95a-14b200328c6d" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.029">
-    <testcase name="responde 201" time="0.029" classname="Hu4EliminarMetaCrearUnaMetaParaBorrar"/>
+  <testsuite name="HU23, HU30 y HU20 · Mi cuenta / Volver a la apariencia clara" id="708583d9-552e-4803-b98d-d52ad770c7a1" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.018">
+    <testcase name="responde 200" time="0.018" classname="Hu23Hu30YHu20MiCuentaVolverALaAparienciaClara"/>
   </testsuite>
-  <testsuite name="HU4 · Eliminar meta / Beto no puede borrarla" id="7e0cb3c2-cd15-4514-bc93-ee13a964d5a0" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.021">
-    <testcase name="responde 403" time="0.021" classname="Hu4EliminarMetaBetoNoPuedeBorrarla"/>
+  <testsuite name="HU4 · Eliminar meta / Crear una meta para borrar" id="cf832a0d-902e-4a41-908e-24311497482c" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.021">
+    <testcase name="responde 201" time="0.021" classname="Hu4EliminarMetaCrearUnaMetaParaBorrar"/>
   </testsuite>
-  <testsuite name="HU4 · Eliminar meta / Ana la borra" id="c1353bc9-7604-42d2-b497-f16eb7efe483" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.027">
-    <testcase name="responde 204" time="0.027" classname="Hu4EliminarMetaAnaLaBorra"/>
+  <testsuite name="HU4 · Eliminar meta / HU25: Beto no participa, no la oculta" id="9b204191-05e4-4e74-b18f-95593e8aa999" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.016">
+    <testcase name="responde 403" time="0.016" classname="Hu4EliminarMetaHu25BetoNoParticipaNoLaOculta"/>
+    <testcase name="mensaje: Solo los participantes de la meta pueden ocultarla" time="0.016" classname="Hu4EliminarMetaHu25BetoNoParticipaNoLaOculta"/>
   </testsuite>
-  <testsuite name="HU4 · Eliminar meta / Ya no existe" id="1d4f380c-26f7-40ce-8071-06e28c398617" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.019">
-    <testcase name="responde 404" time="0.019" classname="Hu4EliminarMetaYaNoExiste"/>
+  <testsuite name="HU4 · Eliminar meta / HU21: Beto no participa, no comparte" id="114e5670-649d-4bf8-a9ad-20970390b98f" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.015">
+    <testcase name="responde 403" time="0.015" classname="Hu4EliminarMetaHu21BetoNoParticipaNoComparte"/>
+    <testcase name="mensaje: Solo un participante de la meta puede compartir el logro" time="0.015" classname="Hu4EliminarMetaHu21BetoNoParticipaNoComparte"/>
   </testsuite>
-  <testsuite name="HU8 · Registrarse / Pedir registro con un correo nuevo" id="ce8c090a-7479-43f6-a3d1-1b6673490b62" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.024">
-    <testcase name="responde 202" time="0.024" classname="Hu8RegistrarsePedirRegistroConUnCorreoNuevo"/>
+  <testsuite name="HU4 · Eliminar meta / Beto no puede borrarla" id="ed96583b-ebdb-4ccc-a4f8-c2882601fc15" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.013">
+    <testcase name="responde 403" time="0.013" classname="Hu4EliminarMetaBetoNoPuedeBorrarla"/>
   </testsuite>
-  <testsuite name="HU8 · Registrarse / Estado de la solicitud" id="ce01444c-cb37-4b8e-83c6-730e42f84e5f" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.008">
-    <testcase name="responde 200" time="0.008" classname="Hu8RegistrarseEstadoDeLaSolicitud"/>
-    <testcase name="pendiente de autorizar" time="0.008" classname="Hu8RegistrarseEstadoDeLaSolicitud"/>
+  <testsuite name="HU4 · Eliminar meta / Ana la borra" id="ed12dbfe-43eb-455d-9108-f3908c1250ce" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.017">
+    <testcase name="responde 204" time="0.017" classname="Hu4EliminarMetaAnaLaBorra"/>
   </testsuite>
-  <testsuite name="HU8 · Registrarse / Correo que ya tiene cuenta" id="053970bd-3d59-48d4-8d2a-793684231942" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.009">
-    <testcase name="responde 409" time="0.009" classname="Hu8RegistrarseCorreoQueYaTieneCuenta"/>
+  <testsuite name="HU4 · Eliminar meta / Ya no existe" id="f8d2b701-5587-4c87-937d-4d385cffa886" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.022">
+    <testcase name="responde 404" time="0.022" classname="Hu4EliminarMetaYaNoExiste"/>
   </testsuite>
-  <testsuite name="HU8 · Registrarse / Autorizar con un enlace falso" id="5f1c00d6-f821-45a7-a936-13810cdd1a0a" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.009">
-    <testcase name="responde 410" time="0.009" classname="Hu8RegistrarseAutorizarConUnEnlaceFalso"/>
+  <testsuite name="HU8 · Registrarse / Pedir registro con un correo nuevo" id="8524bc96-0495-41e7-b2c6-11a8ee789afb" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.016">
+    <testcase name="responde 202" time="0.016" classname="Hu8RegistrarsePedirRegistroConUnCorreoNuevo"/>
   </testsuite>
-  <testsuite name="HU8 · Registrarse / Registrarse con un enlace falso" id="17e4b318-4309-49e6-82a1-b9258d11db7c" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.012">
-    <testcase name="responde 410" time="0.012" classname="Hu8RegistrarseRegistrarseConUnEnlaceFalso"/>
+  <testsuite name="HU8 · Registrarse / Estado de la solicitud" id="71a5e16d-a58b-464c-8e6c-51a978346fd6" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.006">
+    <testcase name="responde 200" time="0.006" classname="Hu8RegistrarseEstadoDeLaSolicitud"/>
+    <testcase name="pendiente de autorizar" time="0.006" classname="Hu8RegistrarseEstadoDeLaSolicitud"/>
   </testsuite>
-  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / Sesión 1 de Ana" id="ac4dbefa-9c43-4222-8a91-118f12ab050e" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.103">
-    <testcase name="responde 200" time="0.103" classname="Hu10CerrarSesionCajaNegraEIntegracionSesion1DeAna"/>
+  <testsuite name="HU8 · Registrarse / Correo que ya tiene cuenta" id="548fdb19-9c91-408a-966a-fdb133cdb6a2" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="responde 409" time="0.007" classname="Hu8RegistrarseCorreoQueYaTieneCuenta"/>
   </testsuite>
-  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / Sesión 2 de Ana" id="ae766eb4-2f72-4246-9cc1-d343471cc2f9" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.107">
-    <testcase name="responde 200" time="0.107" classname="Hu10CerrarSesionCajaNegraEIntegracionSesion2DeAna"/>
+  <testsuite name="HU8 · Registrarse / Autorizar con un enlace falso" id="77e849ed-4d29-4b96-ba58-7f290024c5f2" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="responde 410" time="0.005" classname="Hu8RegistrarseAutorizarConUnEnlaceFalso"/>
   </testsuite>
-  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN1 · Cierre con token válido" id="cc501099-774b-4da3-8871-eed7f41513b4" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.023">
-    <testcase name="responde 204" time="0.023" classname="Hu10CerrarSesionCajaNegraEIntegracionCn1CierreConTokenValido"/>
-    <testcase name="sin cuerpo" time="0.023" classname="Hu10CerrarSesionCajaNegraEIntegracionCn1CierreConTokenValido"/>
+  <testsuite name="HU8 · Registrarse / Registrarse con un enlace falso" id="a125012c-8c32-47c3-b71c-6474c947a52d" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="responde 410" time="0.007" classname="Hu8RegistrarseRegistrarseConUnEnlaceFalso"/>
   </testsuite>
-  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN2 · Usar el token después de cerrar sesión" id="ccc56c7a-9382-4717-b253-63108c71d8f2" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.007">
+  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / Sesión 1 de Ana" id="2d2ee610-8259-4e6a-9898-c8f966761483" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.081">
+    <testcase name="responde 200" time="0.081" classname="Hu10CerrarSesionCajaNegraEIntegracionSesion1DeAna"/>
+  </testsuite>
+  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / Sesión 2 de Ana" id="f79e9ee5-e1a5-4ce1-ba1d-52b4b54e33c9" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.082">
+    <testcase name="responde 200" time="0.082" classname="Hu10CerrarSesionCajaNegraEIntegracionSesion2DeAna"/>
+  </testsuite>
+  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN1 · Cierre con token válido" id="57aa6fc0-c809-40c5-b07b-38383b3b331c" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.018">
+    <testcase name="responde 204" time="0.018" classname="Hu10CerrarSesionCajaNegraEIntegracionCn1CierreConTokenValido"/>
+    <testcase name="sin cuerpo" time="0.018" classname="Hu10CerrarSesionCajaNegraEIntegracionCn1CierreConTokenValido"/>
+  </testsuite>
+  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN2 · Usar el token después de cerrar sesión" id="db1d8323-e078-4822-acde-ffe1c1104a2e" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.007">
     <testcase name="responde 401" time="0.007" classname="Hu10CerrarSesionCajaNegraEIntegracionCn2UsarElTokenDespuesDeCerrarSesion"/>
     <testcase name="mensaje: Autenticación requerida" time="0.007" classname="Hu10CerrarSesionCajaNegraEIntegracionCn2UsarElTokenDespuesDeCerrarSesion"/>
   </testsuite>
-  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN3 · Cerrar sesión dos veces" id="7ae0a33d-cfa2-4059-bb43-339624577515" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.024">
-    <testcase name="responde 401" time="0.024" classname="Hu10CerrarSesionCajaNegraEIntegracionCn3CerrarSesionDosVeces"/>
-    <testcase name="mensaje: La sesión ya fue cerrada" time="0.024" classname="Hu10CerrarSesionCajaNegraEIntegracionCn3CerrarSesionDosVeces"/>
+  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN3 · Cerrar sesión dos veces" id="a7096684-1aca-474a-bb66-d4742d255009" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.014">
+    <testcase name="responde 401" time="0.014" classname="Hu10CerrarSesionCajaNegraEIntegracionCn3CerrarSesionDosVeces"/>
+    <testcase name="mensaje: La sesión ya fue cerrada" time="0.014" classname="Hu10CerrarSesionCajaNegraEIntegracionCn3CerrarSesionDosVeces"/>
   </testsuite>
-  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN4 · Sin cabecera Authorization" id="5fc43971-d09e-4e1e-88ef-60f5fb382cc4" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.005">
-    <testcase name="responde 401" time="0.005" classname="Hu10CerrarSesionCajaNegraEIntegracionCn4SinCabeceraAuthorization"/>
-    <testcase name="mensaje: Falta el token de autorización" time="0.005" classname="Hu10CerrarSesionCajaNegraEIntegracionCn4SinCabeceraAuthorization"/>
+  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN4 · Sin cabecera Authorization" id="c2740490-2d9c-4b1b-bb04-28139c441fa7" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.002">
+    <testcase name="responde 401" time="0.002" classname="Hu10CerrarSesionCajaNegraEIntegracionCn4SinCabeceraAuthorization"/>
+    <testcase name="mensaje: Falta el token de autorización" time="0.002" classname="Hu10CerrarSesionCajaNegraEIntegracionCn4SinCabeceraAuthorization"/>
   </testsuite>
-  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN5 · Cabecera sin el prefijo Bearer" id="21775491-8de4-4519-a8ed-040c0de18bab" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.006">
-    <testcase name="responde 401" time="0.006" classname="Hu10CerrarSesionCajaNegraEIntegracionCn5CabeceraSinElPrefijoBearer"/>
-    <testcase name="mensaje: Falta el token de autorización" time="0.006" classname="Hu10CerrarSesionCajaNegraEIntegracionCn5CabeceraSinElPrefijoBearer"/>
+  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN5 · Cabecera sin el prefijo Bearer" id="3745a94c-501d-4306-bede-2f2ca42f1977" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.003">
+    <testcase name="responde 401" time="0.003" classname="Hu10CerrarSesionCajaNegraEIntegracionCn5CabeceraSinElPrefijoBearer"/>
+    <testcase name="mensaje: Falta el token de autorización" time="0.003" classname="Hu10CerrarSesionCajaNegraEIntegracionCn5CabeceraSinElPrefijoBearer"/>
   </testsuite>
-  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN6 · Token alterado" id="6e5cda79-2f12-479d-adaa-9a40be82d027" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.017">
-    <testcase name="responde 401" time="0.017" classname="Hu10CerrarSesionCajaNegraEIntegracionCn6TokenAlterado"/>
-    <testcase name="mensaje: Token inválido o expirado" time="0.017" classname="Hu10CerrarSesionCajaNegraEIntegracionCn6TokenAlterado"/>
+  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN6 · Token alterado" id="392be253-3126-48c8-80c5-7fbb274567bf" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.018">
+    <testcase name="responde 401" time="0.018" classname="Hu10CerrarSesionCajaNegraEIntegracionCn6TokenAlterado"/>
+    <testcase name="mensaje: Token inválido o expirado" time="0.018" classname="Hu10CerrarSesionCajaNegraEIntegracionCn6TokenAlterado"/>
   </testsuite>
-  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN7 · Token vencido" id="f2205b12-d0f2-47c8-b83f-53cb3bfe1a98" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.011">
-    <testcase name="responde 401" time="0.011" classname="Hu10CerrarSesionCajaNegraEIntegracionCn7TokenVencido"/>
-    <testcase name="mensaje: Token inválido o expirado" time="0.011" classname="Hu10CerrarSesionCajaNegraEIntegracionCn7TokenVencido"/>
+  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN7 · Token vencido" id="fec29d35-f675-48a3-aa5e-94e48a751265" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.008">
+    <testcase name="responde 401" time="0.008" classname="Hu10CerrarSesionCajaNegraEIntegracionCn7TokenVencido"/>
+    <testcase name="mensaje: Token inválido o expirado" time="0.008" classname="Hu10CerrarSesionCajaNegraEIntegracionCn7TokenVencido"/>
   </testsuite>
-  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN8 · Otra sesión del mismo usuario sigue activa" id="274784c1-9630-4d70-a4ac-7489a762facd" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.021">
-    <testcase name="responde 200" time="0.021" classname="Hu10CerrarSesionCajaNegraEIntegracionCn8OtraSesionDelMismoUsuarioSigueActiva"/>
+  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / CN8 · Otra sesión del mismo usuario sigue activa" id="1d47556b-9f97-462f-a5e7-bdad4936e51d" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.014">
+    <testcase name="responde 200" time="0.014" classname="Hu10CerrarSesionCajaNegraEIntegracionCn8OtraSesionDelMismoUsuarioSigueActiva"/>
   </testsuite>
-  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / Integración · la sesión 2 también se puede cerrar" id="ad2b1e02-04cc-474a-8d6f-894c8b4708d4" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.024">
-    <testcase name="responde 204" time="0.024" classname="Hu10CerrarSesionCajaNegraEIntegracionIntegracionLaSesion2TambienSePuedeCerrar"/>
+  <testsuite name="HU10 · Cerrar sesión (caja negra e integración) / Integración · la sesión 2 también se puede cerrar" id="4240f5ac-96d0-44a5-be59-38962cfc66a5" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.017">
+    <testcase name="responde 204" time="0.017" classname="Hu10CerrarSesionCajaNegraEIntegracionIntegracionLaSesion2TambienSePuedeCerrar"/>
   </testsuite>
-  <testsuite name="HU32 · Cambiar la contraseña / Nueva que no cumple la regla ni coincide" id="913bfc65-105a-48ce-84eb-336e45b130b0" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.020">
-    <testcase name="responde 400" time="0.020" classname="Hu32CambiarLaContrasenaNuevaQueNoCumpleLaReglaNiCoincide"/>
-    <testcase name="dos errores" time="0.020" classname="Hu32CambiarLaContrasenaNuevaQueNoCumpleLaReglaNiCoincide"/>
+  <testsuite name="HU32 · Cambiar la contraseña / Nueva que no cumple la regla ni coincide" id="bc26a870-b164-4f98-9813-d119d2a51e4f" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.013">
+    <testcase name="responde 400" time="0.013" classname="Hu32CambiarLaContrasenaNuevaQueNoCumpleLaReglaNiCoincide"/>
+    <testcase name="dos errores" time="0.013" classname="Hu32CambiarLaContrasenaNuevaQueNoCumpleLaReglaNiCoincide"/>
   </testsuite>
-  <testsuite name="HU32 · Cambiar la contraseña / Nueva igual a la actual" id="f944f50f-87b0-47a2-a4b6-07ca000cfec4" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.109">
-    <testcase name="responde 400" time="0.109" classname="Hu32CambiarLaContrasenaNuevaIgualALaActual"/>
-    <testcase name="debe ser distinta" time="0.109" classname="Hu32CambiarLaContrasenaNuevaIgualALaActual"/>
+  <testsuite name="HU32 · Cambiar la contraseña / Nueva igual a la actual" id="e934a427-ea3d-4358-93fb-d6dcf51d9d98" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.081">
+    <testcase name="responde 400" time="0.081" classname="Hu32CambiarLaContrasenaNuevaIgualALaActual"/>
+    <testcase name="debe ser distinta" time="0.081" classname="Hu32CambiarLaContrasenaNuevaIgualALaActual"/>
   </testsuite>
-  <testsuite name="HU32 · Cambiar la contraseña / Cambiar la contraseña" id="f905bf34-5923-486e-a2e1-47882b6e1864" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.193">
-    <testcase name="responde 200" time="0.193" classname="Hu32CambiarLaContrasenaCambiarLaContrasena"/>
-    <testcase name="trae un token nuevo" time="0.193" classname="Hu32CambiarLaContrasenaCambiarLaContrasena"/>
+  <testsuite name="HU32 · Cambiar la contraseña / Sin la contraseña nueva" id="32a41952-6e66-4ce1-8604-ea2b94cbe20b" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.013">
+    <testcase name="responde 400" time="0.013" classname="Hu32CambiarLaContrasenaSinLaContrasenaNueva"/>
+    <testcase name="error: Escribe la contraseña nueva" time="0.013" classname="Hu32CambiarLaContrasenaSinLaContrasenaNueva"/>
   </testsuite>
-  <testsuite name="HU32 · Cambiar la contraseña / La sesión anterior ya no sirve" id="247bd1b4-4e60-44d5-9ece-b80483a01e0f" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.009">
-    <testcase name="responde 401" time="0.009" classname="Hu32CambiarLaContrasenaLaSesionAnteriorYaNoSirve"/>
+  <testsuite name="HU32 · Cambiar la contraseña / Cambiar la contraseña" id="77f3d3d6-8c75-41dc-b178-620edf40598f" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.162">
+    <testcase name="responde 200" time="0.162" classname="Hu32CambiarLaContrasenaCambiarLaContrasena"/>
+    <testcase name="trae un token nuevo" time="0.162" classname="Hu32CambiarLaContrasenaCambiarLaContrasena"/>
   </testsuite>
-  <testsuite name="HU32 · Cambiar la contraseña / El token nuevo sí sirve" id="5427af5e-79c8-4965-9669-d3a3d24b2975" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.015">
-    <testcase name="responde 200" time="0.015" classname="Hu32CambiarLaContrasenaElTokenNuevoSiSirve"/>
+  <testsuite name="HU32 · Cambiar la contraseña / La sesión anterior ya no sirve" id="85ba38d5-1636-4745-b585-c6ee6f0f5f2a" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="responde 401" time="0.007" classname="Hu32CambiarLaContrasenaLaSesionAnteriorYaNoSirve"/>
   </testsuite>
-  <testsuite name="HU32 · Cambiar la contraseña / Ya no entra con la contraseña vieja" id="3419d9cd-d200-4737-8378-317d05b8fbdb" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.114">
-    <testcase name="responde 401" time="0.114" classname="Hu32CambiarLaContrasenaYaNoEntraConLaContrasenaVieja"/>
+  <testsuite name="HU32 · Cambiar la contraseña / El token nuevo sí sirve" id="17b0fa86-9ea4-421c-bfb5-215a4bb18a2c" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.010">
+    <testcase name="responde 200" time="0.010" classname="Hu32CambiarLaContrasenaElTokenNuevoSiSirve"/>
   </testsuite>
-  <testsuite name="HU32 · Cambiar la contraseña / Volver a la contraseña de prueba" id="afdb11ef-ba04-450c-8aeb-b4568b5a7b15" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.201">
-    <testcase name="responde 200" time="0.201" classname="Hu32CambiarLaContrasenaVolverALaContrasenaDePrueba"/>
+  <testsuite name="HU32 · Cambiar la contraseña / Ya no entra con la contraseña vieja" id="1cefaf1f-d813-433b-8d75-5ec4c267f301" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.089">
+    <testcase name="responde 401" time="0.089" classname="Hu32CambiarLaContrasenaYaNoEntraConLaContrasenaVieja"/>
+    <testcase name="mensaje: Email o contraseña incorrectos" time="0.089" classname="Hu32CambiarLaContrasenaYaNoEntraConLaContrasenaVieja"/>
   </testsuite>
-  <testsuite name="HU33 · Recuperar la contraseña olvidada / Pedir el código" id="43d57b9f-fa52-46de-b446-6260e394379e" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.018">
-    <testcase name="responde 202" time="0.018" classname="Hu33RecuperarLaContrasenaOlvidadaPedirElCodigo"/>
+  <testsuite name="HU32 · Cambiar la contraseña / Volver a la contraseña de prueba" id="806b4f72-c21b-4094-aad2-dafca09cf9e9" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.159">
+    <testcase name="responde 200" time="0.159" classname="Hu32CambiarLaContrasenaVolverALaContrasenaDePrueba"/>
   </testsuite>
-  <testsuite name="HU33 · Recuperar la contraseña olvidada / Correo sin cuenta: la misma respuesta" id="36c1d9a3-3f12-47c4-af22-ba9179192467" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.013">
-    <testcase name="responde 202" time="0.013" classname="Hu33RecuperarLaContrasenaOlvidadaCorreoSinCuentaLaMismaRespuesta"/>
+  <testsuite name="HU33 · Recuperar la contraseña olvidada / Pedir el código" id="66d9471a-cf14-4dd1-9bf7-1292bc41f0d9" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.084">
+    <testcase name="responde 202" time="0.084" classname="Hu33RecuperarLaContrasenaOlvidadaPedirElCodigo"/>
   </testsuite>
-  <testsuite name="HU33 · Recuperar la contraseña olvidada / Correo con formato inválido" id="bde90266-e65e-4c22-89ef-00b8e9c7b031" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.005">
-    <testcase name="responde 400" time="0.005" classname="Hu33RecuperarLaContrasenaOlvidadaCorreoConFormatoInvalido"/>
+  <testsuite name="HU33 · Recuperar la contraseña olvidada / Correo sin cuenta: la misma respuesta" id="912bef15-44fc-4f37-9207-72ee6857c79b" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.010">
+    <testcase name="responde 202" time="0.010" classname="Hu33RecuperarLaContrasenaOlvidadaCorreoSinCuentaLaMismaRespuesta"/>
   </testsuite>
-  <testsuite name="HU33 · Recuperar la contraseña olvidada / Código incorrecto" id="67368a7c-5ec9-4ccc-8ac0-0fea0abd3029" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.117">
-    <testcase name="responde 400" time="0.117" classname="Hu33RecuperarLaContrasenaOlvidadaCodigoIncorrecto"/>
-    <testcase name="no cambia la contraseña" time="0.117" classname="Hu33RecuperarLaContrasenaOlvidadaCodigoIncorrecto"/>
+  <testsuite name="HU33 · Recuperar la contraseña olvidada / Correo con formato inválido" id="70ace625-56e3-438d-9446-dbc94ba52b8b" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.003">
+    <testcase name="responde 400" time="0.003" classname="Hu33RecuperarLaContrasenaOlvidadaCorreoConFormatoInvalido"/>
+    <testcase name="error: El formato del email no es válido" time="0.003" classname="Hu33RecuperarLaContrasenaOlvidadaCorreoConFormatoInvalido"/>
   </testsuite>
-  <testsuite name="HU33 · Recuperar la contraseña olvidada / Sin código y con la nueva mal" id="ab126045-e06d-4fcb-b17a-caf3ee4413ad" timestamp="2026-11-15T01:03:46.364Z" tests="2" failures="0" errors="0" time="0.007">
-    <testcase name="responde 400" time="0.007" classname="Hu33RecuperarLaContrasenaOlvidadaSinCodigoYConLaNuevaMal"/>
-    <testcase name="tres errores" time="0.007" classname="Hu33RecuperarLaContrasenaOlvidadaSinCodigoYConLaNuevaMal"/>
+  <testsuite name="HU33 · Recuperar la contraseña olvidada / Código incorrecto" id="20fe447b-feba-45f2-a678-1767ec29e7d6" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.085">
+    <testcase name="responde 400" time="0.085" classname="Hu33RecuperarLaContrasenaOlvidadaCodigoIncorrecto"/>
+    <testcase name="no cambia la contraseña" time="0.085" classname="Hu33RecuperarLaContrasenaOlvidadaCodigoIncorrecto"/>
   </testsuite>
-  <testsuite name="HU33 · Recuperar la contraseña olvidada / La contraseña de prueba sigue sirviendo" id="fcd772eb-fcd2-4a82-ab7b-756f34980e3e" timestamp="2026-11-15T01:03:46.364Z" tests="1" failures="0" errors="0" time="0.106">
-    <testcase name="responde 200" time="0.106" classname="Hu33RecuperarLaContrasenaOlvidadaLaContrasenaDePruebaSigueSirviendo"/>
+  <testsuite name="HU33 · Recuperar la contraseña olvidada / Sin código y con la nueva mal" id="3f6a2e52-d561-4330-97a5-233421c84e78" timestamp="2026-11-15T06:33:27.139Z" tests="2" failures="0" errors="0" time="0.003">
+    <testcase name="responde 400" time="0.003" classname="Hu33RecuperarLaContrasenaOlvidadaSinCodigoYConLaNuevaMal"/>
+    <testcase name="tres errores" time="0.003" classname="Hu33RecuperarLaContrasenaOlvidadaSinCodigoYConLaNuevaMal"/>
+  </testsuite>
+  <testsuite name="HU33 · Recuperar la contraseña olvidada / La contraseña de prueba sigue sirviendo" id="e0bed49c-4673-41ec-8ace-4debd8ff12d2" timestamp="2026-11-15T06:33:27.139Z" tests="1" failures="0" errors="0" time="0.082">
+    <testcase name="responde 200" time="0.082" classname="Hu33RecuperarLaContrasenaOlvidadaLaContrasenaDePruebaSigueSirviendo"/>
   </testsuite>
 </testsuites>

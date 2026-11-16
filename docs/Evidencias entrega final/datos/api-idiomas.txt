@@ -1,0 +1,27 @@
+PS> curl http://localhost:8090/api/metas -H "Accept-Language: es"
+{"estado":401,"mensaje":"Autenticación requerida","errores":[]}
+PS> curl http://localhost:8090/api/metas -H "Accept-Language: en"
+{"estado":401,"mensaje":"Authentication required","errores":[]}
+
+PS> curl -X POST http://localhost:8090/api/auth/contrasena/restablecer -H "Accept-Language: es" -d '{"email":"no-es-un-correo","codigo":"","nueva":"corta","confirmacion":"otra"}'
+{
+  "estado": 400,
+  "mensaje": "Datos inválidos",
+  "errores": [
+    "El formato del email no es válido",
+    "Escribe el código de 6 dígitos que te llegó al correo",
+    "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número",
+    "Las contraseñas nuevas no coinciden"
+  ]
+}
+PS> curl -X POST http://localhost:8090/api/auth/contrasena/restablecer -H "Accept-Language: en" -d '{"email":"no-es-un-correo","codigo":"","nueva":"corta","confirmacion":"otra"}'
+{
+  "estado": 400,
+  "mensaje": "Invalid data",
+  "errores": [
+    "The email format isn't valid",
+    "Enter the 6-digit code you received by email",
+    "The password must have at least 8 characters, an uppercase letter, a lowercase letter and a number",
+    "The new passwords don't match"
+  ]
+}
