@@ -389,6 +389,26 @@ ESTILO_RETORNO = f'html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;
 ESTILO_CREAR = f'html=1;verticalAlign=bottom;endArrow=open;endFill=0;dashed=1;rounded=0;fontSize={FUENTE};'
 
 
+def solo_exito(pasos):
+    """
+    Deja solo el caso de éxito: de cada fragmento 'alt' se dibuja únicamente su primera rama (la del éxito),
+    sin el recuadro del fragmento; un 'alt' de una sola rama que termina el flujo (un error) se quita.
+    Los 'loop' y 'opt' se conservan porque no son ramas de error.
+    """
+    resultado = []
+    for p in pasos:
+        if p[0] == 'alt':
+            guarda, sub = p[1][0]
+            if len(p[1]) == 1 and 'termina' in guarda:
+                continue
+            resultado.extend(solo_exito(sub))
+        elif p[0] in ('opt', 'loop'):
+            resultado.append((p[0], [(g, solo_exito(sub)) for g, sub in p[1]]))
+        else:
+            resultado.append(p)
+    return resultado
+
+
 def diagrama_secuencia(titulo, participantes, pasos):
     """
     participantes: lista de (clave, nombre, estereotipo). Estereotipo 'actor' dibuja una persona.
@@ -398,6 +418,7 @@ def diagrama_secuencia(titulo, participantes, pasos):
       ('nota', clave, texto)            nota sobre una línea de vida
       ('alt', [(guarda, [pasos...]), (guarda, [pasos...])])   fragmento alt (o 'opt' / 'loop' con una guarda)
     """
+    pasos = solo_exito(pasos)
     lienzo = Lienzo(titulo)
     margen = 40
     y0 = margen + 50
