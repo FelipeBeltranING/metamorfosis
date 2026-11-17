@@ -1,0 +1,8 @@
+{
+  "appId": "co.edu.unillanos.metamorfosis",
+  "appName": "Metamorfosis",
+  "webDir": "dist",
+  "plugins": {
+    "CapacitorHttp": { "enabled": true }
+  }
+}

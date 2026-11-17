@@ -24,7 +24,7 @@ del flujo de desarrollo (no hay un rol de documentador dedicado).
 ## Requisitos de la entrega final
 | Requisito | Cómo se cumple |
 |---|---|
-| Web y móvil | React con diseño responsive (probado en 375 px y 1280 px) |
+| Web y móvil | Web: React con diseño responsive (probado en 375 px y 1280 px). Móvil: **APK de Android** generada con Capacitor a partir del mismo frontend; ver [App móvil (APK Android)](#app-móvil-apk-android) |
 | Dos niveles | Cliente-servidor: el servidor ejecuta la API (Spring Boot) y la base de datos (PostgreSQL); cualquier otro equipo o celular entra por el navegador. Ver [docs/DESPLIEGUE.md](docs/DESPLIEGUE.md) |
 | ORM | JPA / Hibernate con migraciones Flyway (`backend/src/main/resources/db/migration`) |
 | Accesibilidad y usabilidad > 70 (online) | Puntaje de PageSpeed Insights (Lighthouse) sobre la URL pública, con WAVE como respaldo |
@@ -49,6 +49,22 @@ del idioma del navegador.
   español y `TraductorMensajes` los traduce al responder, con `backend/src/main/resources/i18n/mensajes_en.txt`
   (`mensaje en español => mensaje en inglés`; `{0}`, `{1}` para las partes que cambian). Los correos de
   registro e invitación también salen en el idioma de quien los origina.
+
+## App móvil (APK Android)
+La versión móvil es una **APK de Android** hecha con [Capacitor](https://capacitorjs.com) 8: empaqueta el mismo frontend
+React (minificado y ofuscado) dentro de una app nativa (`frontend/android`) que habla con el backend publicado en Render.
+Las peticiones a la API salen por el HTTP nativo de Android (plugin `CapacitorHttp`), así que no dependen de CORS.
+
+- **Descargar la APK:** GitHub → Actions → workflow «APK Android» → última ejecución → artefacto `app-metamorfosis-debug`
+  (trae `Metamorfosis.apk`). El workflow también la instala en un emulador Android 14 y guarda una captura (`evidencia-emulador`).
+- **Instalar en el celular:** pasar `Metamorfosis.apk` al teléfono, abrirla y aceptar «Instalar apps de origen desconocido».
+  Requiere Android 7.0 (API 24) o superior.
+- **Compilar en local** (necesita Android Studio o el SDK de Android y JDK 21):
+  ```bash
+  cd frontend
+  npm run build:android        # build web con .env.android y copia a frontend/android
+  cd android && ./gradlew assembleDebug   # APK en android/app/build/outputs/apk/debug/
+  ```
 
 ## Instalación y ejecución local
 Requisitos: Java 21, Node.js 22 o superior, Git y una base PostgreSQL (el equipo usa Supabase).

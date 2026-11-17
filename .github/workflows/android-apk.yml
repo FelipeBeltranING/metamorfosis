@@ -1,0 +1,88 @@
+# Compila la APK de Android de Metamorfosis (Capacitor) y la prueba en un emulador.
+# La APK queda como artefacto del workflow: Actions > "APK Android" > app-metamorfosis-debug.
+name: APK Android
+
+on:
+  push:
+    branches: [main, apk-android]
+    paths: ['frontend/**', '.github/workflows/android-apk.yml']
+  workflow_dispatch:
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - run: npm ci
+      - name: Build web (minificado y ofuscado) y copia al proyecto Android
+        run: npm run build:android
+      - name: Compilar la APK
+        working-directory: frontend/android
+        run: ./gradlew assembleDebug --no-daemon
+      - name: Renombrar la APK
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk ../Metamorfosis.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-metamorfosis-debug
+          path: Metamorfosis.apk
+
+  emulador:
+    needs: apk
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: app-metamorfosis-debug
+      - name: Habilitar KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Instalar y abrir la APK en un emulador Android 14
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          script: |
+            adb install -r Metamorfosis.apk
+            adb shell am start -n co.edu.unillanos.metamorfosis/.MainActivity
+            sleep 25
+            adb exec-out screencap -p > captura_inicio.png
+            # Prueba de conexión con la API: un inicio de sesión con datos falsos debe volver con el error del servidor.
+            curl -s -m 120 -o /dev/null -X POST https://metamorfosis-api.onrender.com/api/auth/login -H "Content-Type: application/json" -d '{}' || true
+            adb shell input tap 160 290
+            adb shell input text "prueba.apk@metamorfosis.test"
+            adb shell input tap 140 377
+            adb shell input text "ClaveFalsa123"
+            sleep 2
+            adb exec-out screencap -p > captura_formulario.png
+            adb shell input keyevent 66
+            sleep 25
+            adb exec-out screencap -p > captura_respuesta_api.png
+            adb shell input keyevent 3
+            sleep 3
+            adb exec-out screencap -p > captura_icono_instalado.png
+            adb shell dumpsys package co.edu.unillanos.metamorfosis | grep -E "versionName|targetSdk" > paquete.txt || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evidencia-emulador
+          path: |
+            captura_inicio.png
+            captura_formulario.png
+            captura_respuesta_api.png
+            captura_icono_instalado.png
+            paquete.txt

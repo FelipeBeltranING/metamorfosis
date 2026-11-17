@@ -9,9 +9,12 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:cobertura": "vitest run --coverage"
+    "test:cobertura": "vitest run --coverage",
+    "build:android": "vite build --mode android && cap sync android"
   },
   "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/core": "^8.6.2",
     "@dicebear/big-smile": "9.2.2",
     "@dicebear/core": "9.2.2",
     "@tailwindcss/vite": "^4.3.3",
@@ -28,6 +31,7 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.6.2",
     "@eslint/js": "^10.0.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
