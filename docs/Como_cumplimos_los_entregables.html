@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Cómo cumplimos los entregables · Metamorfosis</title>
+<style>
+@page { size: Letter; margin: 16mm 17mm 16mm 17mm; }
+body { font-family: Arial, Helvetica, sans-serif; font-size: 10.2pt; line-height: 1.42; color: #1f1f1f; }
+h1 { font-size: 20pt; color: #5b21b6; margin: 0 0 4pt; }
+.sub { color: #555; margin: 0 0 12pt; }
+h2 { font-size: 13pt; color: #2e1065; margin: 14pt 0 4pt; padding-bottom: 3pt; border-bottom: 1.5pt solid #ddd6fe; break-after: avoid; }
+h3 { font-size: 11pt; color: #5b21b6; margin: 12pt 0 3pt; break-after: avoid; }
+.req { break-inside: avoid; margin-bottom: 6pt; }
+.k { font-weight: bold; color: #5b21b6; }
+p { margin: 3pt 0; }
+.donde { color: #444; font-size: 9.4pt; }
+.box { background: #f5f3ff; border-left: 3pt solid #7c3aed; padding: 6pt 9pt; margin: 8pt 0 10pt; }
+.aviso { background: #fff7ed; border-left: 3pt solid #ea580c; padding: 5pt 9pt; margin: 6pt 0; font-size: 9.6pt; }
+.decir { background: #ecfdf5; border-left: 3pt solid #059669; padding: 5pt 9pt; margin: 5pt 0; font-size: 9.6pt; }
+.planb { color: #444; font-size: 9.2pt; margin: 3pt 0 0; }
+ol, ul { margin: 3pt 0 3pt 16pt; padding: 0; }
+li { margin: 1.5pt 0; }
+code { font-family: Consolas, monospace; font-size: 9pt; background: #f3f4f6; padding: 0 2pt; }
+table { border-collapse: collapse; width: 100%; font-size: 9.3pt; margin-top: 4pt; }
+td, th { border: 0.5pt solid #bfbfbf; padding: 3.5pt 6pt; vertical-align: top; text-align: left; }
+th { background: #5b21b6; color: #fff; }
+.item { break-inside: auto; margin-bottom: 4pt; }
+.salto { break-before: page; }
+</style></head><body>
+
+<h1>Cómo cumplimos cada entregable</h1>
+<p class="sub">Metamorfosis · Ingeniería de Software II · Universidad de los Llanos · noviembre de 2026<br>
+Primera parte: qué pedía el profe y cómo lo hicimos. Segunda parte: <b>guía para mostrar cada ítem en vivo</b> en la sustentación.</p>
+
+<div class="box"><b>En una frase:</b> Metamorfosis es una app web y una app Android (APK) para seguir metas.
+Cada meta tiene un <b>camino</b> con <b>hitos</b> (pasos que se logran una vez) y <b>hábitos</b> (cosas que se repiten ciertos días).
+Web: <b>metamorfosis-mu.vercel.app</b> · Servidor: <b>metamorfosis-api.onrender.com</b> · Base de datos: <b>Supabase</b> (PostgreSQL).</div>
+
+<h2>Primera parte · Qué hicimos</h2>
+
+<div class="req"><p><span class="k">Web y móvil.</span>
+<b>Web:</b> la app React se abre en cualquier navegador y se adapta al tamaño de la pantalla.
+<b>Móvil:</b> una <b>APK de Android</b> hecha con <b>Capacitor</b>, que mete esa misma app React dentro de una app nativa: se instala, tiene ícono y habla con el mismo servidor.
+GitHub Actions la compila sola y la prueba en un emulador de Android 14.</p>
+<p class="donde">Documento: sección 3.2.</p></div>
+
+<div class="req"><p><span class="k">Dos niveles (dos capas).</span>
+El <b>cliente</b> (React, publicado en Vercel) y el <b>servidor</b> (API en Java con Spring Boot, publicada en Render) corren en máquinas distintas. La base de datos PostgreSQL está en Supabase y <b>solo el servidor</b> la toca; el cliente le pide todo al servidor por HTTPS.</p>
+<p class="donde">Documento: sección 3.</p></div>
+
+<div class="req"><p><span class="k">ORM.</span>
+Usamos <b>JPA / Hibernate</b>: cada tabla es una clase Java con <code>@Entity</code> (Meta, Usuario, SubMeta…), y los repositorios heredan de <code>JpaRepository</code>, así que no se escribe SQL para guardar o buscar.
+<b>Flyway</b> crea y cambia la base con 28 migraciones (V1 a V28). El diccionario de datos y el modelo entidad-relación se <b>generaron con comandos</b> desde la base real: 14 tablas, 109 columnas, 14 llaves foráneas.</p>
+<p class="donde">Documento: sección 4 (4.4 diccionario de datos, 4.5 modelo E-R en Mermaid).</p></div>
+
+<div class="req"><p><span class="k">Web services.</span>
+El servidor <b>ofrece</b> una API REST en JSON, protegida con token JWT (la usan la web, la APK y Postman), y <b>consume</b> un web service externo: la API REST de <b>Brevo</b> (<code>POST https://api.brevo.com/v3/smtp/email</code>), con la que manda los correos de registro, invitación, código para recuperar la contraseña y aviso de cambio de contraseña.</p>
+<p class="donde">Documento: sección 5. Código: <code>backend/.../service/correo/BrevoCorreoService.java</code>.</p></div>
+
+<div class="req"><p><span class="k">Accesibilidad y usabilidad mayor a 70.</span>
+<b>Accesibilidad:</b> PageSpeed Insights (herramienta en línea de Google) sobre la app publicada: <b>100</b> en celular y en computador.
+<b>Usabilidad:</b> cuestionario SUS respondido en línea (Google Forms) por 5 personas: <b>83,0 sobre 100</b>.
+<b>Complemento:</b> el botón de accesibilidad Sienna (abajo a la izquierda) y, para el equipo, <code>eslint-plugin-jsx-a11y</code>.</p>
+<p class="donde">Documento: sección 6 (6.1, 6.2 y 6.3).</p></div>
+
+<div class="req"><p><span class="k">Minificar y ofuscar.</span>
+Al construir (<code>npm run build</code>) Vite minifica el código y <b>javascript-obfuscator</b> lo ofusca: nombres cambiados y textos escondidos en una tabla codificada. No se publican <i>source maps</i>. El JavaScript pasa de 1,9 MB a 1,1 MB y no se puede leer.</p>
+<p class="donde">Documento: sección 7.</p></div>
+
+<div class="req"><p><span class="k">Reportes y gráficas.</span>
+<b>Mi reporte</b> tiene cuatro gráficas hechas con Chart.js (cumplimiento general, por tipo, por plazo y estado, y cumplidas por mes), cada una con <b>Ver datos en tabla</b>. Cada hábito tiene además sus estadísticas: constancia, rachas, gráfica por día, semana o mes, e historial.</p>
+<p class="donde">Documento: sección 8.</p></div>
+
+<div class="req"><p><span class="k">Logs.</span>
+<b>Log de auditoría:</b> la tabla <code>log_actividad</code> guarda cada acción (CREAR_META, INICIAR_SESION…) con EXITO o ERROR; no se puede borrar ni modificar.
+<b>Log de aplicación:</b> los eventos técnicos del servidor, que en producción se ven en la pestaña <b>Logs</b> de Render (en local, en el archivo <code>metamorfosis.log</code>, que rota a los 10 MB y guarda 14 días).</p>
+<p class="donde">Documento: sección 9.</p></div>
+
+<div class="req"><p><span class="k">Evidencia de pruebas.</span>
+<b>Caja blanca:</b> 302 pruebas JUnit y Mockito en 36 clases, 0 fallos, cobertura JaCoCo de 78 % de instrucciones.
+<b>Caja negra:</b> colección de Postman con 162 peticiones y 291 aserciones, 0 fallos (con Newman).
+<b>Frontend:</b> 52 pruebas con Vitest, 0 fallos. <b>Integración:</b> flujos completos por HU.</p>
+<p class="donde">Documento: sección 10 y el plan de pruebas de cada HU (sección 16).</p></div>
+
+<div class="req"><p><span class="k">Internacionalización.</span>
+La app está en <b>español e inglés</b>: selector <b>ES · Español / EN · English</b>. También salen en el idioma elegido los mensajes del servidor y los correos.</p>
+<p class="donde">Documento: sección 11.</p></div>
+
+<div class="req"><p><span class="k">Manual técnico y de usuario.</span>
+Dos manuales en PDF, con portada, índice y capturas: el de usuario (25 páginas, con el texto exacto de cada botón) y el técnico (18 páginas: arquitectura, código, base de datos, API, seguridad, despliegue y APK).</p>
+<p class="donde">Documento: sección 12. PDF en la carpeta de Drive del proyecto y en <code>docs/Manuales</code> del repositorio.</p></div>
+
+<!-- ============================ GUÍA EN VIVO ============================ -->
+<h2 class="salto">Segunda parte · Guía para mostrarlo en vivo</h2>
+
+<div class="aviso"><b>Antes de entrar (10 minutos antes).</b>
+<ol>
+<li><b>Despertar el servidor:</b> abrir <code>https://metamorfosis-api.onrender.com/api/metas</code>. Render apaga el servidor sin uso y tarda cerca de un minuto en despertar. Cuando muestre un JSON con «Autenticación requerida», ya está listo.</li>
+<li><b>Pestañas abiertas:</b> la app (<code>metamorfosis-mu.vercel.app</code>) con la sesión iniciada en una cuenta que ya tenga metas, algunas cumplidas y hábitos con días registrados; el panel de <b>Vercel</b> (Felipe); el panel de <b>Render</b> (Samuel); <b>Supabase</b> → Table Editor; <b>Postman</b> con la colección importada; <code>pagespeed.web.dev</code>; el repositorio en GitHub; la carpeta de Drive con los manuales; y este documento.</li>
+<li><b>Celular de Daniel</b> con la APK instalada y la sesión iniciada en la misma cuenta.</li>
+<li><b>No mostrar contraseñas ni claves:</b> en Render y Vercel, las variables con claves (contraseña de la base, <code>BREVO_API_KEY</code>, secreto JWT) se dejan ocultas.</li>
+</ol></div>
+
+<h3>1. Evidencia de pruebas</h3>
+<div class="item">
+<p><b>Mostrar las pruebas corriendo en vivo contra el servidor real (Postman):</b></p>
+<ol>
+<li>En Postman: <b>Import</b> → <code>docs/Pruebas/postman/Metamorfosis.postman_collection.json</code> y <code>docs/Pruebas/postman/produccion.postman_environment.json</code>.</li>
+<li>Arriba a la derecha elegir el entorno <b>Metamorfosis producción (Render)</b>.</li>
+<li>En la colección, abrir la carpeta <b>Seguridad · rutas protegidas</b> → <b>Run</b> → <b>Run Metamorfosis</b>. Resultado: <b>8 peticiones y 16 pruebas en verde</b>, todas contra <code>metamorfosis-api.onrender.com</code> (lo comprobamos el 17 de noviembre).</li>
+<li>Abrir una petición, por ejemplo <b>Mis metas sin token</b>, y mostrar la pestaña <b>Tests</b> (lo que se comprueba) y la respuesta 401.</li>
+</ol>
+<p><b>Después mostrar los resultados completos:</b> sección 10 del documento, con Newman (162 peticiones, 291 aserciones, 0 fallos), <code>mvnw verify</code> (302 pruebas, 0 fallos) y el informe de JaCoCo (78 %). Si el profe pide ver otra corrida: en la carpeta <code>frontend</code>, <code>npm test</code> corre las 52 pruebas de Vitest en segundos.</p>
+<div class="decir">«La colección completa crea sus propios usuarios de prueba, por eso la corremos contra una base local; contra producción corremos la carpeta de seguridad, que no deja datos.»</div>
+</div>
+
+<h3>2. Dos capas (cliente en Vercel y servidor en Render)</h3>
+<div class="item">
+<p><b>La prueba más fuerte: que el navegador habla con otro servidor.</b></p>
+<ol>
+<li>En la app (<code>metamorfosis-mu.vercel.app</code>) presionar <b>F12</b> → pestaña <b>Red</b> (<i>Network</i>) → en el filtro escribir <code>onrender</code>.</li>
+<li>Crear una meta (<b>+ Nueva meta</b> → <b>Crear meta</b>). Aparece la petición <b>POST https://metamorfosis-api.onrender.com/api/metas</b> con estado <b>201</b>. Clic en ella → <b>Respuesta</b>: el JSON de la meta que devolvió el servidor. En <b>Encabezados</b> se ve <code>Authorization: Bearer …</code> (el token JWT).</li>
+<li>En <b>Supabase → Table Editor → tabla <code>meta</code></b>, ordenar por <code>codigo_meta</code> de mayor a menor: ahí está la fila que se acaba de crear. El cliente nunca tocó la base: lo hizo el servidor.</li>
+<li>Abrir en otra pestaña <code>https://metamorfosis-api.onrender.com/api/metas</code>: responde un JSON con «Autenticación requerida». Es otra máquina, con su propia seguridad.</li>
+</ol>
+<p><b>Dónde está configurada la conexión:</b></p>
+<ul>
+<li><b>Vercel</b> (cuenta de Felipe) → proyecto → <b>Settings → Environment Variables</b> → <code>VITE_API_URL = https://metamorfosis-api.onrender.com</code>: el cliente sabe a qué servidor llamar.</li>
+<li><b>Render</b> (cuenta de Samuel) → servicio <b>metamorfosis-api</b> → <b>Environment</b> → <code>APP_CORS_ALLOWED_ORIGINS = https://metamorfosis-mu.vercel.app</code> (el servidor solo acepta peticiones de ese cliente) y <code>SPRING_DATASOURCE_URL</code> apuntando a Supabase (sin mostrar la contraseña). En <b>Logs</b> se ve el servidor funcionando en ese momento.</li>
+<li>En el código: <code>frontend/src/services/*.js</code> usan <code>import.meta.env.VITE_API_URL</code>; nada de la base de datos está en el frontend.</li>
+</ul>
+<div class="decir">«Son tres lugares distintos: Vercel sirve la interfaz, Render ejecuta la API en Spring Boot y Supabase guarda los datos. Si apagáramos Render, la página cargaría pero no podría iniciar sesión ni mostrar metas.»</div>
+<p class="planb">Plan B: sección 3 del documento (arquitectura) y <code>docs/DESPLIEGUE.md</code>.</p>
+</div>
+
+<h3>3. ORM</h3>
+<div class="item">
+<ol>
+<li>Documento, sección 4: tabla de entidades (4.2), ejemplo de mapeo (4.3), <b>diccionario de datos generado por comando</b> (4.4) y <b>modelo E-R en Mermaid</b> (4.5).</li>
+<li>En GitHub abrir <code>backend/src/main/java/com/metamorfosis/backend/model/Meta.java</code>: <code>@Entity</code>, <code>@Table(name = "meta")</code>, <code>@Id</code>, <code>@ManyToOne</code> al creador, <code>@Enumerated</code> para tipo, plazo y estado, <code>@OneToMany</code> a las sub-metas.</li>
+<li>Abrir <code>repository/MetaRepository.java</code>: <code>extends JpaRepository&lt;Meta, Integer&gt;</code> da guardar, buscar y borrar sin SQL; las consultas especiales están en JPQL, sobre las entidades.</li>
+<li><code>application.properties</code>: <code>spring.jpa.hibernate.ddl-auto=validate</code> (Hibernate comprueba que las clases coinciden con la base) y <code>spring.flyway.enabled=true</code>.</li>
+<li>En Supabase → tabla <code>flyway_schema_history</code>: las 28 migraciones aplicadas.</li>
+</ol>
+<div class="decir">«El diccionario no se escribió a mano: lo sacamos de la base con <code>pg_dump</code> y con un script que consulta el catálogo de PostgreSQL (<code>docs/BaseDeDatos/generar.py</code>).»</div>
+</div>
+
+<h3>4. Manual técnico</h3>
+<div class="item">
+<p>Carpeta de Drive → <b>Anexo - Manual técnico Metamorfosis.pdf</b> (18 páginas), también en <code>docs/Manuales</code>. Recorrer el índice: arquitectura de dos niveles, tecnologías, estructura del código, modelo de datos y migraciones, API REST, seguridad, auditoría y logs, idiomas, accesibilidad y build, pruebas, instalación y despliegue, y la APK (sección 11). Documento: sección 12.1.</p>
+</div>
+
+<h3>5. Manual de usuario</h3>
+<div class="item">
+<p>Carpeta de Drive → <b>Anexo - Manual de usuario Metamorfosis.pdf</b> (25 páginas). Para demostrarlo, abrir una sección (por ejemplo «4. Trazar el camino») y hacer en la app exactamente lo que dice: cada botón está escrito tal como aparece en pantalla (<b>+ Trazar el camino</b>, <b>Guardar paso</b>…). Documento: sección 12.2.</p>
+</div>
+
+<h3>6. Ofuscación</h3>
+<div class="item">
+<ol>
+<li>En la app publicada presionar <b>Ctrl + U</b> (ver código fuente) y hacer clic en el enlace <code>/assets/index-….js</code>.</li>
+<li>Se ve todo en una sola línea, con funciones como <code>var e=B;(function(e,t){…parseInt(n(4716))…</code>: los nombres originales y los textos ya no existen, están en una tabla codificada.</li>
+<li>F12 → pestaña <b>Fuentes</b> (<i>Sources</i>): solo aparece la carpeta <code>assets</code>; no hay carpeta <code>src</code> ni archivos <code>.map</code>, porque los <i>source maps</i> no se publican.</li>
+<li>Configuración: <code>frontend/vite.config.js</code> (plugin de <code>javascript-obfuscator</code> y <code>sourcemap: false</code>). Tabla de tamaños en la sección 7 del documento.</li>
+</ol>
+</div>
+
+<h3>7. Gráficas e informe (Reporte)</h3>
+<div class="item">
+<ol>
+<li>En la app tocar <b>Reporte</b> en el encabezado → pantalla <b>Mi reporte</b>.</li>
+<li>En <b>Tipo de reporte</b> pasar por los cuatro: <b>Cumplimiento general</b>, <b>Cumplimiento por tipo de meta</b>, <b>Metas por plazo y estado</b> y <b>Metas cumplidas por mes</b>.</li>
+<li>Tocar <b>Ver datos en tabla</b>: los mismos números en una tabla (accesible para lectores de pantalla).</li>
+<li>Extra: en <b>Tu camino</b>, tocar el nombre de un hábito → sus estadísticas (<b>Últimos 7 días</b>, <b>Racha actual</b>, gráfica con <b>Agrupar por</b> día, semana o mes, <b>Historial</b>).</li>
+</ol>
+<div class="aviso">La cuenta que se use debe tener metas cumplidas en meses distintos; si no, las gráficas salen vacías. Prepararla antes.</div>
+<p class="planb">Plan B: capturas de los cuatro reportes en la sección 8 del documento.</p>
+</div>
+
+<h3>8. Web service (correo con Brevo)</h3>
+<div class="item">
+<ol>
+<li>Explicar: el servidor <b>consume</b> la API REST de Brevo. Al mandar un correo hace <code>POST https://api.brevo.com/v3/smtp/email</code> con la cabecera <code>api-key</code> y un JSON con destinatario, asunto y HTML. Código: <code>backend/.../service/correo/BrevoCorreoService.java</code> (usa <code>RestClient</code> de Spring).</li>
+<li>Demostrarlo sin tocar datos: cerrar sesión → <b>Iniciar sesión</b> → <b>¿Olvidaste tu contraseña?</b> → escribir el correo de la cuenta → <b>Enviar código</b>. En segundos llega al correo el código de 6 dígitos (no hay que usarlo). Otra opción: invitar a alguien a una meta con <b>Invitar personas</b>.</li>
+<li>Si se tiene abierta la cuenta de Brevo del proyecto: <b>Transactional → Logs</b> muestra el correo recién enviado.</li>
+<li>Además el servidor <b>ofrece</b> su propia API REST: es la que se vio en Postman (punto 1) y en la pestaña Red (punto 2).</li>
+</ol>
+</div>
+
+<h3>9. Nivel de accesibilidad y usabilidad</h3>
+<div class="item">
+<ol>
+<li><b>Accesibilidad en vivo:</b> abrir <code>pagespeed.web.dev</code>, pegar <code>https://metamorfosis-mu.vercel.app/login</code> → <b>Analizar</b>. En cerca de un minuto sale <b>Accesibilidad 100</b> en <b>Celular</b> y en <b>Computadora</b>.</li>
+<li>Si PageSpeed tarda o falla, abrir el informe guardado: <code>https://pagespeed.web.dev/analysis/https-metamorfosis-mu-vercel-app-login/y6bfj059k4</code> (sección 6.1).</li>
+<li><b>Usabilidad:</b> sección 6.2, cuestionario SUS en Google Forms respondido por 5 personas: <b>83,0 sobre 100</b>, con la hoja de respuestas y el cálculo.</li>
+<li><b>Complemento:</b> en la app, tocar el botón azul de abajo a la izquierda → <b>Menú de accesibilidad</b> → activar <b>Alto contraste</b> y <b>Fuente para dislexia</b>; <b>Restablecer configuración</b> lo deja como estaba.</li>
+</ol>
+<div class="decir">«Pedían más de 70 en una herramienta online: tenemos 100 en accesibilidad con PageSpeed y 83 en usabilidad con SUS.»</div>
+</div>
+
+<h3>10. Logs</h3>
+<div class="item">
+<ol>
+<li><b>Auditoría en vivo:</b> hacer una acción en la app (crear o editar una meta) y otra que falle (iniciar sesión con la contraseña equivocada, una sola vez).</li>
+<li>En <b>Supabase → Table Editor → <code>log_actividad</code></b>, ordenar por <code>fecha_hora</code> de más nueva a más vieja: aparecen las dos filas, por ejemplo <code>CREAR_META · EXITO</code> e <code>INICIAR_SESION · ERROR</code>, con usuario, entidad, fecha y detalle.</li>
+<li><b>Log de aplicación:</b> Render → servicio <b>metamorfosis-api</b> → <b>Logs</b>: arranque de Spring Boot, Flyway y avisos del servidor en tiempo real.</li>
+</ol>
+<div class="decir">«La tabla de auditoría solo admite insertar: un trigger impide editar o borrar filas.»</div>
+<p class="planb">Plan B: capturas en la sección 9 del documento.</p>
+</div>
+
+<h3>11. Internacionalización</h3>
+<div class="item">
+<ol>
+<li>En el encabezado cambiar el selector <b>ES · Español</b> a <b>EN · English</b>: toda la interfaz pasa a inglés al instante, incluidas las fechas.</li>
+<li>Recargar la página: sigue en inglés (la elección se recuerda).</li>
+<li>Mensajes del servidor: cerrar sesión e intentar entrar con una contraseña equivocada → «Incorrect email or password», que viene de la API en el idioma elegido.</li>
+<li>En el celular el selector está dentro del menú de la cuenta. Volver a <b>ES · Español</b> al terminar.</li>
+</ol>
+<p class="planb">Plan B: capturas en la sección 11 del documento.</p>
+</div>
+
+<h3>12. Web y móvil</h3>
+<div class="item">
+<ol>
+<li><b>Web:</b> la app en el navegador del computador. Con F12 → ícono de celular (<i>Toggle device toolbar</i>) se ve cómo se adapta a pantalla de celular.</li>
+<li><b>Móvil (APK):</b> en el celular de Daniel abrir la app <b>Metamorfosis</b> (ícono morado del brote). Muestra las mismas metas porque usa la misma cuenta y el mismo servidor.</li>
+<li><b>Prueba de que es la misma app:</b> crear una meta en la web y, en el celular, volver a <b>Mis metas</b>: aparece. O al revés.</li>
+<li>Dónde sale la APK: GitHub → <b>Actions</b> → <b>APK Android</b> → última corrida → artefacto <b>app-metamorfosis-debug</b> (y <b>evidencia-emulador</b> con las capturas del emulador de Android 14).</li>
+</ol>
+<p class="planb">Plan B: sección 3.2 del documento, con las capturas de la APK en el emulador.</p>
+</div>
+
+<h2>Resumen rápido para la sustentación</h2>
+<table>
+<tr><th style="width:24%">Ítem</th><th style="width:44%">Qué mostrar en vivo</th><th>Respaldo en el documento</th></tr>
+<tr><td>Evidencia de pruebas</td><td>Postman → entorno producción → carpeta Seguridad → Run (8/8)</td><td>Sección 10 (302 JUnit, Newman 162/291, JaCoCo 78 %)</td></tr>
+<tr><td>2 capas</td><td>F12 → Red → POST a onrender.com → fila en Supabase; variables en Vercel y Render</td><td>Sección 3</td></tr>
+<tr><td>ORM</td><td>Meta.java y MetaRepository en GitHub; flyway_schema_history</td><td>Sección 4 (4.4 diccionario, 4.5 E-R)</td></tr>
+<tr><td>Manual técnico</td><td>PDF en Drive (18 páginas)</td><td>Sección 12.1</td></tr>
+<tr><td>Manual de usuario</td><td>PDF en Drive (25 páginas) y seguir un paso en la app</td><td>Sección 12.2</td></tr>
+<tr><td>Ofuscación</td><td>Ctrl + U → /assets/index-….js; F12 → Fuentes sin .map</td><td>Sección 7</td></tr>
+<tr><td>Gráficas / informe</td><td>Reporte → Tipo de reporte (4) → Ver datos en tabla</td><td>Sección 8</td></tr>
+<tr><td>Web service</td><td>¿Olvidaste tu contraseña? → llega el código (API de Brevo)</td><td>Sección 5</td></tr>
+<tr><td>Accesibilidad + usabilidad</td><td>PageSpeed en vivo (100) y botón de Sienna</td><td>Sección 6 (SUS 83,0)</td></tr>
+<tr><td>Logs</td><td>Acción en la app → fila en log_actividad (Supabase); Render → Logs</td><td>Sección 9</td></tr>
+<tr><td>Internacionalización</td><td>ES · Español → EN · English; error del servidor en inglés</td><td>Sección 11</td></tr>
+<tr><td>Web y móvil</td><td>Navegador + APK en el celular de Daniel con la misma cuenta</td><td>Sección 3.2</td></tr>
+</table>
+</body></html>
