@@ -68,12 +68,14 @@ jobs:
             adb shell input text "prueba.apk@metamorfosis.test"
             adb shell input tap 140 377
             adb shell input text "ClaveFalsa123"
-            adb shell input keyevent 111
             sleep 2
             adb exec-out screencap -p > captura_formulario.png
-            adb shell input tap 160 469
-            sleep 20
+            adb shell input keyevent 66
+            sleep 25
             adb exec-out screencap -p > captura_respuesta_api.png
+            adb shell input keyevent 3
+            sleep 3
+            adb exec-out screencap -p > captura_icono_instalado.png
             adb shell dumpsys package co.edu.unillanos.metamorfosis | grep -E "versionName|targetSdk" > paquete.txt || true
       - uses: actions/upload-artifact@v4
         with:
@@ -82,4 +84,5 @@ jobs:
             captura_inicio.png
             captura_formulario.png
             captura_respuesta_api.png
+            captura_icono_instalado.png
             paquete.txt
