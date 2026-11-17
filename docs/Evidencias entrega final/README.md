@@ -12,6 +12,7 @@ repartieron entre junio y noviembre para que la gráfica por mes muestre una ten
 
 | Sección del doc | Archivo | Qué muestra |
 |---|---|---|
+| 3.2 App móvil (APK) | `10_apk_emulador_*.png` | La APK instalada en un emulador Android 14 (workflow «APK Android»): pantalla de inicio, formulario, respuesta del servidor («Incorrect email or password») y el ícono instalado |
 | 5 Web services | `05_web_services_newman.png` | Colección de Postman con Newman (15 nov): 162 peticiones, 291 aserciones, **0 fallos**, en 23 carpetas |
 | 6.1 Accesibilidad (online) | `06_pagespeed_online_login_movil.png`, `06_pagespeed_online_login_escritorio.png` | **PageSpeed Insights sobre la app publicada** (`https://metamorfosis-mu.vercel.app/login`): accesibilidad **100** en celular y escritorio. Informe: https://pagespeed.web.dev/analysis/https-metamorfosis-mu-vercel-app-login/y6bfj059k4 |
 | 6.1 Accesibilidad (online) | `06_pagespeed_online_login_*_auditorias.png` | Detalle de las auditorías de accesibilidad de ese informe |
