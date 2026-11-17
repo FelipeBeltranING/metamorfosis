@@ -62,10 +62,24 @@ jobs:
             adb shell am start -n co.edu.unillanos.metamorfosis/.MainActivity
             sleep 25
             adb exec-out screencap -p > captura_inicio.png
+            # Prueba de conexión con la API: un inicio de sesión con datos falsos debe volver con el error del servidor.
+            curl -s -m 120 -o /dev/null -X POST https://metamorfosis-api.onrender.com/api/auth/login -H "Content-Type: application/json" -d '{}' || true
+            adb shell input tap 160 290
+            adb shell input text "prueba.apk@metamorfosis.test"
+            adb shell input tap 140 377
+            adb shell input text "ClaveFalsa123"
+            adb shell input keyevent 111
+            sleep 2
+            adb exec-out screencap -p > captura_formulario.png
+            adb shell input tap 160 469
+            sleep 20
+            adb exec-out screencap -p > captura_respuesta_api.png
             adb shell dumpsys package co.edu.unillanos.metamorfosis | grep -E "versionName|targetSdk" > paquete.txt || true
       - uses: actions/upload-artifact@v4
         with:
           name: evidencia-emulador
           path: |
             captura_inicio.png
+            captura_formulario.png
+            captura_respuesta_api.png
             paquete.txt
