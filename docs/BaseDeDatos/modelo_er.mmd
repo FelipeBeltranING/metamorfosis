@@ -1,0 +1,148 @@
+erDiagram
+    usuario {
+        integer codigo_usuario PK
+        varchar nombre
+        varchar apellido
+        varchar email
+        varchar password_hash
+        text foto_perfil
+        boolean perfil_privado
+        date fecha_registro
+        varchar modo_tema
+        varchar color_acento
+        varchar frase
+        varchar portada
+        integer codigo_insignia_destacada FK
+        varchar avatar_piel
+        varchar avatar_peinado
+        varchar avatar_color_pelo
+        varchar avatar_ojos
+        varchar avatar_boca
+        varchar avatar_accesorio
+        timestamp contrasena_cambiada_en
+    }
+    meta {
+        integer codigo_meta PK
+        integer codigo_creador FK
+        varchar nombre
+        varchar plazo
+        varchar tipo
+        varchar estado
+        date fecha_creacion
+        varchar codigo_union
+        timestamp codigo_union_expira
+    }
+    participacion {
+        integer codigo_usuario PK, FK
+        integer codigo_meta PK, FK
+        varchar estado_invitacion
+        date fecha_cumplida
+        boolean oculta
+        integer codigo_invitador FK
+        timestamp fecha_invitacion
+        varchar token_hash
+        timestamp token_expira
+        boolean destacada
+    }
+    sub_meta {
+        integer codigo_sub_meta PK
+        integer codigo_meta FK
+        varchar nombre
+        varchar pregunta
+        varchar tipo
+        varchar unidad
+        numeric objetivo
+        varchar tipo_objetivo
+        smallint dias
+        varchar notas
+        date fecha_creacion
+        date fecha_logrado
+        integer codigo_usuario_logro FK
+    }
+    registro_sub_meta {
+        integer codigo_registro PK
+        integer codigo_sub_meta FK
+        integer codigo_usuario FK
+        date fecha
+        numeric valor
+    }
+    insignia {
+        integer codigo_insignia PK
+        varchar nombre
+        varchar descripcion
+        varchar icono
+        varchar criterio
+        varchar plazo_requerido
+        integer cantidad_requerida
+    }
+    usuario_insignia {
+        integer codigo_usuario PK, FK
+        integer codigo_insignia PK, FK
+        date fecha_obtenida
+    }
+    logro_compartido {
+        integer codigo_logro PK
+        varchar token
+        integer codigo_meta FK
+        integer codigo_usuario FK
+        date fecha_creacion
+    }
+    solicitud_registro {
+        integer codigo_solicitud PK
+        varchar email
+        varchar token_hash
+        timestamp fecha_expiracion
+        timestamp fecha_ultimo_envio
+        timestamp bloqueado_hasta
+        varchar sesion_hash
+        timestamp fecha_autorizacion
+    }
+    codigo_recuperacion {
+        integer codigo_usuario PK, FK
+        varchar codigo_hash
+        timestamp expira_en
+        timestamp enviado_en
+        integer intentos
+    }
+    token_revocado {
+        integer codigo_token PK
+        varchar jti
+        timestamp fecha_expiracion
+    }
+    intento_login {
+        varchar email PK
+        integer intentos
+        timestamp bloqueado_hasta
+    }
+    log_actividad {
+        integer codigo_log PK
+        timestamptz fecha_hora
+        integer codigo_usuario
+        varchar accion
+        varchar entidad
+        integer codigo_entidad
+        varchar resultado
+        text detalle
+    }
+    usuario ||--o{ codigo_recuperacion : "codigo_usuario"
+    meta ||--o{ logro_compartido : "codigo_meta"
+    usuario ||--o{ logro_compartido : "codigo_usuario"
+    usuario ||--o{ meta : "codigo_creador"
+    usuario ||--o{ participacion : "codigo_invitador"
+    meta ||--o{ participacion : "codigo_meta"
+    usuario ||--o{ participacion : "codigo_usuario"
+    sub_meta ||--o{ registro_sub_meta : "codigo_sub_meta"
+    usuario ||--o{ registro_sub_meta : "codigo_usuario"
+    meta ||--o{ sub_meta : "codigo_meta"
+    usuario ||--o{ sub_meta : "codigo_usuario_logro"
+    insignia ||--o{ usuario : "codigo_insignia_destacada"
+    insignia ||--o{ usuario_insignia : "codigo_insignia"
+    usuario ||--o{ usuario_insignia : "codigo_usuario"
+    classDef cuentas fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#2e1065
+    class usuario,solicitud_registro,codigo_recuperacion,token_revocado,intento_login cuentas
+    classDef metas fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#172554
+    class meta,participacion,sub_meta,registro_sub_meta,logro_compartido metas
+    classDef insignias fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#451a03
+    class insignia,usuario_insignia insignias
+    classDef auditoria fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#052e16
+    class log_actividad auditoria
