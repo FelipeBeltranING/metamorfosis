@@ -25,7 +25,7 @@ Cuenta de cada persona: datos personales, contraseña (hash BCrypt), foto, apari
 
 | Columna | Tipo | Nulo | Por defecto | Clave |
 | --- | --- | --- | --- | --- |
-| `codigo_usuario` | integer | No |  | PK |
+| `codigo_usuario` | integer | No | `identity (autoincremental)` | PK |
 | `nombre` | varchar(100) | No |  |  |
 | `apellido` | varchar(100) | No |  |  |
 | `email` | varchar(255) | No |  |  |
@@ -58,7 +58,7 @@ Meta que crea un usuario: nombre, tipo, plazo y estado ACTIVA o CUMPLIDA (HU1 a 
 
 | Columna | Tipo | Nulo | Por defecto | Clave |
 | --- | --- | --- | --- | --- |
-| `codigo_meta` | integer | No |  | PK |
+| `codigo_meta` | integer | No | `identity (autoincremental)` | PK |
 | `codigo_creador` | integer | No |  | FK → usuario.codigo_usuario (CASCADE) |
 | `nombre` | varchar(200) | No |  |  |
 | `plazo` | varchar(10) | No |  |  |
@@ -99,7 +99,7 @@ Paso del camino de una meta: hito (se logra una vez) o hábito (se repite cierto
 
 | Columna | Tipo | Nulo | Por defecto | Clave |
 | --- | --- | --- | --- | --- |
-| `codigo_sub_meta` | integer | No |  | PK |
+| `codigo_sub_meta` | integer | No | `identity (autoincremental)` | PK |
 | `codigo_meta` | integer | No |  | FK → meta.codigo_meta (CASCADE) |
 | `nombre` | varchar(100) | No |  |  |
 | `pregunta` | varchar(200) | Sí |  |  |
@@ -123,7 +123,7 @@ Registro de un hábito en una fecha: hecho/no hecho o el valor medido (HU5, HU29
 
 | Columna | Tipo | Nulo | Por defecto | Clave |
 | --- | --- | --- | --- | --- |
-| `codigo_registro` | integer | No |  | PK |
+| `codigo_registro` | integer | No | `identity (autoincremental)` | PK |
 | `codigo_sub_meta` | integer | No |  | FK → sub_meta.codigo_sub_meta (CASCADE) |
 | `codigo_usuario` | integer | No |  | FK → usuario.codigo_usuario (CASCADE) |
 | `fecha` | date | No |  |  |
@@ -141,7 +141,7 @@ Catálogo de insignias y el criterio para ganarlas (HU11, HU12).
 
 | Columna | Tipo | Nulo | Por defecto | Clave |
 | --- | --- | --- | --- | --- |
-| `codigo_insignia` | integer | No |  | PK |
+| `codigo_insignia` | integer | No | `identity (autoincremental)` | PK |
 | `nombre` | varchar(60) | No |  |  |
 | `descripcion` | varchar(150) | No |  |  |
 | `icono` | varchar(30) | No |  |  |
@@ -171,7 +171,7 @@ Enlace público de una meta cumplida (HU21).
 
 | Columna | Tipo | Nulo | Por defecto | Clave |
 | --- | --- | --- | --- | --- |
-| `codigo_logro` | integer | No |  | PK |
+| `codigo_logro` | integer | No | `identity (autoincremental)` | PK |
 | `token` | varchar(16) | No |  |  |
 | `codigo_meta` | integer | No |  | FK → meta.codigo_meta (CASCADE) |
 | `codigo_usuario` | integer | No |  | FK → usuario.codigo_usuario (CASCADE) |
@@ -187,7 +187,7 @@ Solicitud de registro pendiente de autorizar desde el correo (HU8).
 
 | Columna | Tipo | Nulo | Por defecto | Clave |
 | --- | --- | --- | --- | --- |
-| `codigo_solicitud` | integer | No |  | PK |
+| `codigo_solicitud` | integer | No | `identity (autoincremental)` | PK |
 | `email` | varchar(255) | No |  |  |
 | `token_hash` | varchar(64) | Sí |  |  |
 | `fecha_expiracion` | timestamp | No |  |  |
@@ -220,7 +220,7 @@ Tokens JWT cerrados con «Cerrar sesión» (HU10).
 
 | Columna | Tipo | Nulo | Por defecto | Clave |
 | --- | --- | --- | --- | --- |
-| `codigo_token` | integer | No |  | PK |
+| `codigo_token` | integer | No | `identity (autoincremental)` | PK |
 | `jti` | varchar(64) | No |  |  |
 | `fecha_expiracion` | timestamp | No |  |  |
 
@@ -244,7 +244,7 @@ Bitácora de auditoría: quién hizo qué, sobre qué dato y con qué resultado.
 
 | Columna | Tipo | Nulo | Por defecto | Clave |
 | --- | --- | --- | --- | --- |
-| `codigo_log` | integer | No |  | PK |
+| `codigo_log` | integer | No | `identity (autoincremental)` | PK |
 | `fecha_hora` | timestamptz | No | `now()` |  |
 | `codigo_usuario` | integer | Sí |  |  |
 | `accion` | varchar(30) | No |  |  |

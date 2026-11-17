@@ -7,10 +7,12 @@ Uso (desde la raíz del repositorio, con la base local de Docker encendida):
 Por defecto usa el contenedor `metamorfosis-pg-local` y la base `metamorfosis`, la misma que crea Flyway.
 Escribe en docs/BaseDeDatos:
   - diccionario_de_datos.md : cada tabla con sus columnas, tipos, nulos, valores por defecto, claves y restricciones
+  - diccionario_de_datos.json : lo mismo en JSON
   - modelo_er.mmd           : el modelo entidad-relación en Mermaid (erDiagram), con las llaves foráneas reales
 El esquema SQL completo se saca aparte con:
     docker exec metamorfosis-pg-local pg_dump -U postgres -d metamorfosis --schema-only --no-owner --no-privileges > docs/BaseDeDatos/esquema.sql
 """
+import json
 import subprocess
 import sys
 from collections import OrderedDict, defaultdict
@@ -61,7 +63,7 @@ def main():
     columnas = consulta("""
         select c.table_name, c.column_name, c.data_type, coalesce(c.character_maximum_length::text, ''),
                coalesce(c.numeric_precision::text, ''), coalesce(c.numeric_scale::text, ''), c.is_nullable,
-               coalesce(c.column_default, '')
+               coalesce(c.column_default, case when c.is_identity = 'YES' then 'identity (autoincremental)' else '' end)
         from information_schema.columns c
         join information_schema.tables t on t.table_name = c.table_name and t.table_schema = c.table_schema
         where c.table_schema = 'public' and t.table_type = 'BASE TABLE'
@@ -123,6 +125,10 @@ def main():
             md += ['', '**Restricciones CHECK:** ' + '; '.join(f'`{c}`' for c in checks[t])]
         if indices.get(t):
             md += ['', '**Índices:** ' + ', '.join(f'`{i}`' for i in indices[t])]
+    datos = {'tablas': {t: {'descripcion': DESCRIPCION.get(t, ''), 'columnas': tablas[t], 'unicas': unicas.get(t, []),
+                             'checks': checks.get(t, []), 'indices': indices.get(t, [])} for t in orden},
+             'llaves_foraneas': [[t, c, *fk[(t, c)]] for t, c in sorted(fk)]}
+    (AQUI / 'diccionario_de_datos.json').write_text(json.dumps(datos, ensure_ascii=False, indent=1), encoding='utf-8')
     (AQUI / 'diccionario_de_datos.md').write_text('\n'.join(md) + '\n', encoding='utf-8')
 
     # Modelo entidad-relación (Mermaid)
@@ -137,7 +143,9 @@ def main():
             er.append(f'        {tipo_mmd} {c}{(" " + marca) if marca else ""}')
         er.append('    }')
     for (tabla, col), (ref_tabla, ref_col, _) in sorted(fk.items()):
-        er.append(f'    {ref_tabla} ||--o{{ {tabla} : "{col}"')
+        # Si la llave foránea es toda la llave primaria, la relación es 1 a 0..1; si no, 1 a N
+        solo_pk = (tabla, col) in pk and sum(1 for t, _ in pk if t == tabla) == 1
+        er.append(f'    {ref_tabla} ||--{"o|" if solo_pk else "o{"} {tabla} : "{col}"')
     # Colores por módulo: cuentas y acceso, metas, insignias y auditoría
     for nombre, estilo, miembros in GRUPOS:
         er.append(f'    classDef {nombre} {estilo}')

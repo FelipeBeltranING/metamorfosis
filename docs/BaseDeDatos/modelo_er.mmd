@@ -124,7 +124,7 @@ erDiagram
         varchar resultado
         text detalle
     }
-    usuario ||--o{ codigo_recuperacion : "codigo_usuario"
+    usuario ||--o| codigo_recuperacion : "codigo_usuario"
     meta ||--o{ logro_compartido : "codigo_meta"
     usuario ||--o{ logro_compartido : "codigo_usuario"
     usuario ||--o{ meta : "codigo_creador"
